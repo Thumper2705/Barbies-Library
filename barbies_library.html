@@ -477,7 +477,7 @@
     max-width: 580px;
     max-height: 580px;
     margin: 0 auto 24px;
-    transition: all 0.2s ease-in-out;
+    transition: transform 0.1s ease-out;
   }
   
   #canvasTBRWheel {
@@ -485,8 +485,9 @@
     height: 100%;
     border-radius: 50%;
     box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4);
-    transform: rotate(0deg);
+    cursor: grab;
   }
+  #canvasTBRWheel:active { cursor: grabbing; }
   
   .wheel-pointer {
     position: absolute;
@@ -500,6 +501,7 @@
     border-top: 28px solid var(--gold);
     filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
     z-index: 100;
+    pointer-events: none;
   }
 
   .stakes-panel {
@@ -547,17 +549,18 @@
     background: rgba(230, 57, 70, 0.1);
   }
 
-  .jackpot-overlay {
+  /* 🃏 GOTHIC TRADING CARD ENCOUNTER OVERLAYS */
+  .trading-card-overlay {
     position: absolute;
     inset: 12px;
     background: rgba(10, 7, 9, 0.96);
-    border: 2px dashed var(--gold);
+    border: 2px solid var(--gold);
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 24px 16px;
     opacity: 0;
     pointer-events: none;
     transform: scale(0.9);
@@ -565,34 +568,107 @@
     z-index: 200;
   }
   
-  .jackpot-overlay.show {
+  .trading-card-overlay.show {
     opacity: 1;
     pointer-events: auto;
     transform: scale(1);
   }
-  
-  .jackpot-title {
-    font-family: 'Cinzel', serif;
-    font-size: 24px;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 10px var(--gold), 0 0 20px var(--crimson-light);
-    animation: neonBlinkPulse 1s infinite alternate;
-  }
-  
-  @keyframes neonBlinkPulse {
-    0% { opacity: 0.9; text-shadow: 0 0 8px var(--gold); }
-    100% { opacity: 1; text-shadow: 0 0 15px var(--gold), 0 0 25px var(--crimson-light); }
-  }
-  
-  .jackpot-book-card {
-    background: #161215;
-    border: 1px solid var(--border-iron);
-    border-left: 4px solid var(--gold);
+
+  .trading-card-chassis {
     width: 100%;
-    padding: 16px;
-    margin: 16px 0;
+    max-width: 340px;
+    background: #110e11;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 15px rgba(179, 146, 67, 0.3);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     border-radius: 4px;
+    text-align: left;
+  }
+
+  .card-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-iron);
+    padding-bottom: 6px;
+  }
+  
+  .card-title-slot {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--text-parchment);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+  }
+  
+  .card-genre-pill {
+    background: var(--dark-void);
+    border: 1px solid var(--crimson);
+    color: var(--crimson-light);
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .card-artwork-frame {
+    width: 100%;
+    height: 140px;
+    background: radial-gradient(circle, #2d1216 0%, var(--dark-void) 100%);
+    border: 1px solid var(--border-iron);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .card-artwork-glyph {
+    font-family: 'Cinzel', serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--crimson);
+    text-shadow: 0 0 15px rgba(166, 38, 38, 0.6);
+    letter-spacing: 2px;
+  }
+
+  .card-author-line {
+    font-size: 10px;
+    color: var(--text-muted);
+    border-bottom: 1px dashed var(--border-iron);
+    padding-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .card-attributes-strip {
+    background: #000;
+    border: 1px solid var(--border-iron);
+    padding: 6px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  
+  .card-attr-item span { color: var(--gold); }
+
+  .card-lore-box {
+    background: #090709;
+    border: 1px dashed var(--border-iron);
+    padding: 10px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-parchment);
+    min-height: 66px;
   }
 
   /* EDGE TO EDGE LAYOUT FOR ULTRA ULTRA COMPACT DISPLAY CHASSIS RULES */
@@ -769,35 +845,47 @@
 <!-- 🎰 THE INDECISION CASINO CONTAINER INTERFACE -->
 <div class="paralysis-view" id="paralysisView">
   <div class="casino-container">
-    <div class="jackpot-overlay" id="casinoJackpotCard">
-      <div style="font-size: 28px; margin-bottom: 4px;">🎉</div>
-      <div class="jackpot-title">Jackpot Payout!</div>
-      <div style="font-size:9px; color:var(--text-muted); letter-spacing:1px; margin-top:2px;">THE PARALYSIS SYSTEM SELECTS:</div>
-      
-      <div class="jackpot-book-card">
-        <div id="jackpotBookTitle" style="font-family:'Cinzel', serif; font-size:16px; font-weight:700; color:var(--text-parchment);">Loading Title</div>
-        <div id="jackpotBookAuthor" style="font-size:11px; color:var(--text-muted); margin-top:2px;">Loading Author</div>
-        <div id="jackpotBookMeta" style="font-size:10px; color:var(--gold); margin-top:8px; font-weight:700; letter-spacing:0.5px;">Loading Meta</div>
+    
+    <!-- 🃏 TRADING CARD LAYOUT OVERLAY INTERFACE MODULE -->
+    <div class="trading-card-overlay" id="casinoTradingCardOverlay">
+      <div class="trading-card-chassis">
+        <div class="card-header-bar">
+          <div class="card-title-slot" id="cardBookTitle">Loading Title</div>
+          <div class="card-genre-pill" id="cardBookGenre">GENRE</div>
+        </div>
+        
+        <div class="card-artwork-frame">
+          <div class="card-artwork-glyph" id="cardBookGlyph">BK</div>
+        </div>
+        
+        <div class="card-author-line" id="cardBookAuthor">BY AUTHOR UNKNOWN</div>
+        
+        <div class="card-attributes-strip">
+          <div class="card-attr-item">HP: <span id="cardBookHp">000</span> PGS</div>
+          <div class="card-attr-item">POWER: <span id="cardBookPower">0.00</span> GR</div>
+        </div>
+        
+        <div class="card-lore-box" id="cardBookLore">Loading archival database summaries...</div>
+        
+        <button class="cta-button" style="background:var(--green-poison); margin-top:4px;" onclick="acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
+        <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
       </div>
-      
-      <button class="cta-button" style="background:var(--green-poison); margin-top:0;" onclick="acceptParalysisDestiny()">Cash In (Start Reading) ✓</button>
-      <button class="secondary-button" style="margin-top:8px; background:#000;" onclick="closeJackpotOverlay()">Forfeit & Re-Roll ✕</button>
     </div>
 
     <div class="casino-header">Break the Paralysis</div>
-    <div class="casino-sub">Bet your TBR pool • Defeat Indecision</div>
+    <div class="casino-sub" id="casinoSubLabel">Bet your TBR pool • Defeat Indecision</div>
     
     <div class="stakes-panel">
       <div class="stakes-title">Configure Wheel Risk Pool</div>
       <div class="stakes-row-chips">
         <div class="stake-chip active" id="stakeWeightAll" onclick="setWheelWeightFilter('All')">All TBR</div>
-        <div class="stake-chip" id="stakeWeightShort" onclick="setWheelWeightFilter('short')">Short (<350p)</div>
+        <div class="stake-chip" id="stakeWeightShort" onclick="setWheelWeightFilter('short')">Short (&lt;350p)</div>
         <div class="stake-chip" id="stakeWeightMedium" onclick="setWheelWeightFilter('medium')">Medium (350-550p)</div>
-        <div class="stake-chip" id="stakeWeightLong" onclick="setWheelWeightFilter('long')">Epic Tomes (>550p)</div>
+        <div class="stake-chip" id="stakeWeightLong" onclick="setWheelWeightFilter('long')">Epic Tomes (&gt;550p)</div>
       </div>
     </div>
 
-    <div class="wheel-wrapper">
+    <div class="wheel-wrapper" id="wheelWrapperFrame">
       <div class="wheel-pointer"></div>
       <canvas id="canvasTBRWheel"></canvas>
     </div>
@@ -1716,7 +1804,7 @@ function showView(view) {
   if (view === 'home') updateHomeView();
   else if (view === 'library') { renderGenreRow(); renderBooks(); updateUIRowCounters(); }
   else if (view === 'charts') renderCharts();
-  else if (view === 'paralysis') configureRouletteDataPool();
+  else if (view === 'paralysis') { configureRouletteDataPool(); initParalysisInputListeners(); }
 }
 
 function statusKey(s) { 
@@ -1739,6 +1827,17 @@ let rouletteTBRPool = [];
 let wheelWeightFilter = 'All';
 let isWheelCurrentlySpinning = false;
 let paralysisWinningBookPointer = null;
+
+// Core Kinetic Rendering State Engine Variables
+let wheelCurrentRotationAngle = 0; 
+let wheelCurrentVelocityValue = 0; 
+let pickedWedgeIndexPointer = null; 
+let isUserDraggingWheelTimeline = false; 
+let dragAngleStartCoord = 0; 
+let dragAngleBaseOffset = 0; 
+let dragTimestampRegistry = []; 
+let paralysisAnimationRequestPointer = null; 
+let dragMovementDeltaThreshold = 0;
 
 function playCasinoTickAudio(frequencyScale = 1) {
   try {
@@ -1783,6 +1882,7 @@ function configureRouletteDataPool() {
   else if (wheelWeightFilter === 'long') list = list.filter(b => parseInt(b.pages) > 550);
   
   rouletteTBRPool = list.slice(0, 16); 
+  pickedWedgeIndexPointer = null;
   renderHTML5CasinoCanvasWheel();
 }
 
@@ -1801,7 +1901,7 @@ function renderHTML5CasinoCanvasWheel() {
   const h = canvas.height;
   const cx = w / 2;
   const cy = h / 2;
-  const r = cx - (14 * dpr);
+  const r = cx - (35 * dpr); // Built-in padding boundaries to handle wedge lift steps safely
 
   ctx.clearRect(0, 0, w, h);
 
@@ -1818,39 +1918,59 @@ function renderHTML5CasinoCanvasWheel() {
   const arcSize = (2 * Math.PI) / rouletteTBRPool.length;
   const spectrumColors = ['#e63946', '#f4a261', '#e9c46a', '#2a9d8f', '#457b9d', '#a2d2ff', '#b5e2fa', '#c8b6ff', '#ffc6ff', '#e07a5f'];
 
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(wheelCurrentRotationAngle);
+
   rouletteTBRPool.forEach((book, i) => {
     const angleStart = i * arcSize;
     const angleEnd = angleStart + arcSize;
     
+    ctx.save();
+    
+    // Smooth geometric slide-out offset translation metrics
+    if (pickedWedgeIndexPointer === i) {
+      const shiftDistanceScalar = 26 * dpr;
+      const bisectAngleVector = angleStart + arcSize / 2;
+      ctx.translate(Math.cos(bisectAngleVector) * shiftDistanceScalar, Math.sin(bisectAngleVector) * shiftDistanceScalar);
+    }
+
     ctx.fillStyle = spectrumColors[i % spectrumColors.length];
+    if (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) {
+      ctx.fillStyle = '#141113'; // Ominous blur dimming step rules
+    }
+    
     ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angleStart, angleEnd);
+    ctx.moveTo(0, 0);
+    ctx.arc(0, 0, r, angleStart, angleEnd);
     ctx.closePath();
     ctx.fill();
     
     ctx.lineWidth = 1 * dpr;
-    ctx.strokeStyle = '#161215';
+    ctx.strokeStyle = '#0a0709';
     ctx.stroke();
 
     ctx.save();
-    ctx.translate(cx, cy);
     ctx.rotate(angleStart + arcSize / 2);
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#383036' : '#000';
     
-    // Auto-calculates scaled typography based on mobile vs desktop boundaries
     let computedFontSize = renderBounds.width < 340 ? 9 * dpr : 12 * dpr;
     ctx.font = `bold ${computedFontSize}px 'JetBrains Mono', monospace`;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     
     let label = book.title;
-    let maxCharLength = renderBounds.width < 340 ? 14 : 26;
+    let maxCharLength = renderBounds.width < 340 ? 12 : 24;
     if (label.length > maxCharLength) label = label.substring(0, maxCharLength - 2) + "...";
     ctx.fillText(label, r - (16 * dpr), 0);
     ctx.restore();
+    
+    ctx.restore();
   });
 
+  ctx.restore();
+
+  // Draw Central Anchor Cap
   ctx.fillStyle = '#161215';
   ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
   ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
@@ -1860,8 +1980,8 @@ function varLabelGet(variableName) {
   return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; 
 }
 
-// Slices data pools cleanly with strict TBR page count restrictions
 function setWheelWeightFilter(weightClass) {
+  if (isWheelCurrentlySpinning) return;
   wheelWeightFilter = weightClass;
   updateCasinoChipsUI('stakeWeight' + weightClass.charAt(0).toUpperCase() + weightClass.slice(1));
   configureRouletteDataPool();
@@ -1872,59 +1992,203 @@ function updateCasinoChipsUI(activeId) {
   document.getElementById(activeId).classList.add('active');
 }
 
-function executeParalysisWheelSpin() {
-  if (isWheelCurrentlySpinning || rouletteTBRPool.length === 0) return;
-  
-  isWheelCurrentlySpinning = true;
-  closeJackpotOverlay();
-  
+// ── KINETIC SWIPE TOSS AND TAP INTERACTION MANAGER MODULES ───────────────────
+function initParalysisInputListeners() {
   const canvas = document.getElementById('canvasTBRWheel');
-  const spinVelocityTarget = Math.random() * 4000 + 3500; 
-  const runtimeDuration = 4500; 
-  const executionStart = performance.now();
-  
-  let lastTickAngle = 0;
-  const totalArcSize = 360 / rouletteTBRPool.length;
+  if (!canvas || canvas.dataset.listenersHooked === "true") return;
 
-  function runFrame(now) {
-    const elapsed = now - executionStart;
-    const progress = Math.min(elapsed / runtimeDuration, 1);
+  function calculateTouchAngle(e) {
+    const rect = canvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = clientX - rect.left - rect.width / 2;
+    const y = clientY - rect.top - rect.height / 2;
+    return Math.atan2(y, x);
+  }
+
+  canvas.addEventListener('mousedown', initiateKineticDragSequence);
+  canvas.addEventListener('touchstart', initiateKineticDragSequence, { passive: true });
+
+  function initiateKineticDragSequence(e) {
+    if (isWheelCurrentlySpinning) return;
+    isUserDraggingWheelTimeline = true;
+    dragMovementDeltaThreshold = 0;
+    dragAngleStartCoord = calculateTouchAngle(e);
+    dragAngleBaseOffset = wheelCurrentRotationAngle;
+    dragTimestampRegistry = [{ angle: dragAngleStartCoord, time: performance.now() }];
     
-    const progressComplement = 1 - progress;
-    const easeOutFactor = 1 - progressComplement * progressComplement * progressComplement * progressComplement;
-    const currentFrameRotationAngle = (easeOutFactor * spinVelocityTarget) % 360;
+    if (paralysisAnimationRequestPointer) cancelAnimationFrame(paralysisAnimationRequestPointer);
+
+    window.addEventListener('mousemove', computeKineticDragStep);
+    window.addEventListener('touchmove', computeKineticDragStep, { passive: false });
+    window.addEventListener('mouseup', terminateKineticDragSequence);
+    window.addEventListener('touchend', terminateKineticDragSequence);
+  }
+
+  function computeKineticDragStep(e) {
+    if (!isUserDraggingWheelTimeline) return;
+    if (e.cancelable) e.preventDefault();
+
+    const currentAngle = calculateTouchAngle(e);
+    const deltaAngle = currentAngle - dragAngleStartCoord;
     
-    canvas.style.transform = `rotate(${currentFrameRotationAngle}deg)`;
+    dragMovementDeltaThreshold += Math.abs(deltaAngle);
+    wheelCurrentRotationAngle = dragAngleBaseOffset + deltaAngle;
     
-    if (Math.abs(currentFrameRotationAngle - lastTickAngle) >= totalArcSize) {
-      playCasinoTickAudio(1 - (progress * 0.4));
-      lastTickAngle = currentFrameRotationAngle;
+    dragTimestampRegistry.push({ angle: wheelCurrentRotationAngle, time: performance.now() });
+    if (dragTimestampRegistry.length > 5) dragTimestampRegistry.shift();
+
+    renderHTML5CasinoCanvasWheel();
+  }
+
+  function terminateKineticDragSequence() {
+    if (!isUserDraggingWheelTimeline) return;
+    isUserDraggingWheelTimeline = false;
+
+    window.removeEventListener('mousemove', computeKineticDragStep);
+    window.removeEventListener('touchmove', computeKineticDragStep);
+    window.removeEventListener('mouseup', terminateKineticDragSequence);
+    window.removeEventListener('touchend', terminateKineticDragSequence);
+
+    const history = dragTimestampRegistry;
+    if (history.length >= 2) {
+      const first = history[0];
+      const last = history[history.length - 1];
+      const dt = last.time - first.time;
+      const da = last.angle - first.angle;
+      
+      // Filter out high-velocity throw releases
+      if (dt > 10 && Math.abs(da) > 0.05 && dragMovementDeltaThreshold > 0.05) {
+        wheelCurrentVelocityValue = (da / dt) * 16; 
+        if (Math.abs(wheelCurrentVelocityValue) > 0.12) {
+          executeInertialDecelerationLoop();
+          return;
+        }
+      }
     }
 
-    if (progress < 1) {
-      requestAnimationFrame(runFrame);
-    } else {
-      isWheelCurrentlySpinning = false;
-      
-      const dynamicOffsetAngle = (270 - currentFrameRotationAngle + 360) % 360;
-      const indexWinner = Math.floor((dynamicOffsetAngle / 360) * rouletteTBRPool.length) % rouletteTBRPool.length;
-      
-      paralysisWinningBookPointer = rouletteTBRPool[indexWinner];
-      triggerJackpotPayoutModal();
+    // Fallback path: Execute micro tap segment picker checks if no drag vectors registered
+    if (dragMovementDeltaThreshold < 0.15) {
+      processWedgeTapInspection(dragAngleStartCoord);
     }
   }
-  requestAnimationFrame(runFrame);
+
+  canvas.dataset.listenersHooked = "true";
 }
 
-function triggerJackpotPayoutModal() {
+function processWedgeTapInspection(absoluteRadialAngle) {
+  if (rouletteTBRPool.length === 0) return;
+
+  let transformedAngle = (absoluteRadialAngle - wheelCurrentRotationAngle) % (2 * Math.PI);
+  if (transformedAngle < 0) transformedAngle += 2 * Math.PI;
+
+  const segmentArcSize = (2 * Math.PI) / rouletteTBRPool.length;
+  const pickedIndex = Math.floor(transformedAngle / segmentArcSize) % rouletteTBRPool.length;
+
+  if (pickedWedgeIndexPointer === pickedIndex) {
+    pickedWedgeIndexPointer = null;
+    document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision";
+    renderHTML5CasinoCanvasWheel();
+  } else {
+    pickedWedgeIndexPointer = pickedIndex;
+    paralysisWinningBookPointer = rouletteTBRPool[pickedIndex];
+    
+    // Auto align physics: calculate ideal angle vector to sit slice flat horizontally at 0 radians
+    const sliceCenterRadial = (pickedIndex * segmentArcSize) + (segmentArcSize / 2);
+    const lockedAlignmentTarget = -sliceCenterRadial;
+
+    document.getElementById('casinoSubLabel').textContent = "INSPECTING SELECTED TOME ENTRY...";
+
+    let easeStartTimestamp = performance.now();
+    let initialRotationVector = wheelCurrentRotationAngle;
+    
+    function stepAlignmentEase(now) {
+      let durationElapsed = now - easeStartTimestamp;
+      let progressRatio = Math.min(durationElapsed / 320, 1); 
+      let easeMultiplier = progressRatio * (2 - progressRatio);
+      
+      wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * easeMultiplier;
+      renderHTML5CasinoCanvasWheel();
+      
+      if (progressRatio < 1) {
+        requestAnimationFrame(stepAlignmentEase);
+      } else {
+        triggerTradingCardEncounterModal();
+      }
+    }
+    requestAnimationFrame(stepAlignmentEase);
+  }
+}
+
+function executeInertialDecelerationLoop() {
+  isWheelCurrentlySpinning = true;
+  pickedWedgeIndexPointer = null;
+  document.getElementById('btnSpinParalysis').textContent = "🎰 SPINNING...";
+  document.getElementById('btnSpinParalysis').disabled = true;
+
+  let lastTickAngle = wheelCurrentRotationAngle;
+  const deltaAudioTickLimit = (2 * Math.PI) / rouletteTBRPool.length;
+
+  function processDecelerationTick() {
+    wheelCurrentRotationAngle += wheelCurrentVelocityValue;
+    wheelCurrentVelocityValue *= 0.984; // Kinetic air resistance reduction parameter
+
+    if (Math.abs(wheelCurrentRotationAngle - lastTickAngle) >= deltaAudioTickLimit) {
+      playCasinoTickAudio(Math.max(0.6, Math.min(1.4, Math.abs(wheelCurrentVelocityValue) * 4.5)));
+      lastTickAngle = wheelCurrentRotationAngle;
+    }
+
+    if (Math.abs(wheelCurrentVelocityValue) > 0.0015) {
+      renderHTML5CasinoCanvasWheel();
+      paralysisAnimationRequestPointer = requestAnimationFrame(processDecelerationTick);
+    } else {
+      isWheelCurrentlySpinning = false;
+      document.getElementById('btnSpinParalysis').textContent = "Break The Paralysis 🎰";
+      document.getElementById('btnSpinParalysis').disabled = false;
+      document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision";
+
+      // Map stopping point coordinate back to top golden cursor peg arrow offset maps
+      let finalPegOffsetAngle = (-wheelCurrentRotationAngle + (Math.PI * 1.5)) % (2 * Math.PI);
+      if (finalPegOffsetAngle < 0) finalPegOffsetAngle += 2 * Math.PI;
+
+      const singleSliceArc = (2 * Math.PI) / rouletteTBRPool.length;
+      const verifiedIndexWinner = Math.floor(finalPegOffsetAngle / singleSliceArc) % rouletteTBRPool.length;
+
+      paralysisWinningBookPointer = rouletteTBRPool[verifiedIndexWinner];
+      pickedWedgeIndexPointer = verifiedIndexWinner;
+      renderHTML5CasinoCanvasWheel();
+      triggerTradingCardEncounterModal();
+    }
+  }
+  paralysisAnimationRequestPointer = requestAnimationFrame(processDecelerationTick);
+}
+
+function executeParalysisWheelSpin() {
+  if (isWheelCurrentlySpinning || rouletteTBRPool.length === 0) return;
+  closeTradingCardOverlay();
+  
+  wheelCurrentVelocityValue = (Math.random() * 0.35) + 0.45; 
+  executeInertialDecelerationLoop();
+}
+
+function triggerTradingCardEncounterModal() {
   if (!paralysisWinningBookPointer) return;
   playCasinoJackpotChimeAudio();
   
-  document.getElementById('jackpotBookTitle').textContent = paralysisWinningBookPointer.title;
-  document.getElementById('jackpotBookAuthor').textContent = "By Scribe " + paralysisWinningBookPointer.author;
-  document.getElementById('jackpotBookMeta').textContent = `${normalizeGenre(paralysisWinningBookPointer.genre)} • ${paralysisWinningBookPointer.pages} Pages`;
+  // Update Gothic trading card content parameters dynamically
+  document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
+  document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
+  document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
+  document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
+  document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
+  document.getElementById('cardBookGlyph').textContent = getTitleInitials(paralysisWinningBookPointer.title);
   
-  document.getElementById('casinoJackpotCard').classList.add('show');
+  // Set summary descriptors using master file archives or fallback strings
+  document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || 
+    "A legendary chronicle waiting to be uncovered within the deep stacks of Barbie's framework structure.";
+  
+  // Display modal presentation mask window elements
+  document.getElementById('casinoTradingCardOverlay').classList.add('show');
 }
 
 function acceptParalysisDestiny() {
@@ -1939,13 +2203,15 @@ function acceptParalysisDestiny() {
     localStorage.setItem('barbies_library', JSON.stringify(saved));
   } catch(e) {}
   
-  closeJackpotOverlay();
+  closeTradingCardOverlay();
   updateHomeView();
   showView('home');
 }
 
-function closeJackpotOverlay() {
-  document.getElementById('casinoJackpotCard').classList.remove('show');
+function closeTradingCardOverlay() {
+  document.getElementById('casinoTradingCardOverlay').classList.remove('show');
+  pickedWedgeIndexPointer = null;
+  renderHTML5CasinoCanvasWheel();
 }
 
 window.addEventListener('resize', () => {
