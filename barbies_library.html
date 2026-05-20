@@ -360,9 +360,31 @@
     display: none;
   }
   .scanner-viewport-box.active { display: block; }
-  #interactiveReaderElement { width: 100%; min-height: 200px; }
+  #interactiveReaderElement { width: 100%; min-height: 240px; }
   .input-inline-btn-row { display: flex; gap: 8px; align-items: center; }
   
+  /* MANUAL ZOOM TRACKER */
+  .zoom-control-panel {
+    background: #0d0a0d;
+    border: 1px solid var(--border-iron);
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .zoom-slider-element {
+    flex: 1;
+    accent-color: var(--crimson);
+    cursor: pointer;
+    background: #000;
+    height: 6px;
+    border-radius: 3px;
+  }
+
   /* DUPLICATION ALERT SENTRY BANNER */
   .sentry-alert-banner {
     background: #4a0d11;
@@ -592,6 +614,12 @@
         <button class="secondary-button" id="toggleScannerBtn" onclick="toggleOpticalScannerArray()" style="margin-top:0; background:#1f1317; border-color:var(--crimson);">📡 Initialize Viewfinder Scanning</button>
         <div class="scanner-viewport-box" id="scannerViewportWrapper">
           <div id="interactiveReaderElement"></div>
+          
+          <div class="zoom-control-panel">
+            <span>ZOOM</span>
+            <input type="range" id="manualZoomTrackSlider" class="zoom-slider-element" min="1" max="5" step="0.5" value="2.5" oninput="executeDynamicZoomOverride(this.value)">
+            <span id="zoomDisplayNumericLabel">2.5x</span>
+          </div>
         </div>
       </div>
 
@@ -965,7 +993,7 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
   return `${surname}, ${initial}.`;
 }
 
-/* OPTICAL VIEWPORTSCANNER ENGINE (OPTION A) - LONG-DISTANCE EXTENSION MODS */
+/* OPTICAL VIEWPORTSCANNER ENGINE (OPTION A) - RADAR DELAY DISTANCE STABILIZATION */
 function toggleOpticalScannerArray() {
   const elementWrapper = document.getElementById('scannerViewportWrapper');
   const toggleBtn = document.getElementById('toggleScannerBtn');
@@ -975,13 +1003,16 @@ function toggleOpticalScannerArray() {
   } else {
     elementWrapper.classList.add('active');
     toggleBtn.textContent = "🛑 Terminate Viewfinder Scanning";
+    document.getElementById('manualZoomTrackSlider').value = 2.5;
+    document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
     
     html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
     html5QrCodeScannerInstance.start(
       { facingMode: "environment" },
       { 
         fps: 15, 
-        qrbox: { width: 280, height: 120 } 
+        qrbox: { width: 280, height: 120 },
+        aspectRatio: 1.0 // Force a concentrated resolution profile to counter micro-lens blurring
       },
       (decodedText) => {
         document.getElementById('addManualISBNInput').value = decodedText;
@@ -990,20 +1021,29 @@ function toggleOpticalScannerArray() {
       },
       () => {} 
     ).then(() => {
-      try {
-        const videoTrackArray = html5QrCodeScannerInstance.getCameraCapabilities();
-        if (videoTrackArray && videoTrackArray.zoom) {
-          const pipelineTrack = html5QrCodeScannerInstance.getRunningTrack();
-          const customizedZoomSetting = Math.min(2.5, videoTrackArray.zoom.max);
-          pipelineTrack.applyConstraints({
-            advanced: [{ zoom: customizedZoomSetting }]
-          });
-        }
-      } catch(e) {}
+      // Hardware-assisted zoom pipeline constraint override sequence execution delay
+      setTimeout(function () {
+        executeDynamicZoomOverride(2.5);
+      }, 1200); // 1.2s buffer block ensures camera stream registers capabilities accurately before processing shifts
     }).catch(() => {
       toggleBtn.textContent = "⚠️ Viewfinder Error / No Permission";
     });
   }
+}
+
+/* HIGH-DENSITY DIGITAL LENS EXTENSION INTERCEPTOR */
+function executeDynamicZoomOverride(zoomFactorValue) {
+  if (!html5QrCodeScannerInstance) return;
+  document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x";
+  
+  try {
+    // Inject constraint maps explicitly into active stream context blocks
+    html5QrCodeScannerInstance.applyVideoConstraints({
+      advanced: [{ zoom: parseFloat(zoomFactorValue) }]
+    }).catch(() => {
+      // Fail silently if hardware layer rejects macro value step boundaries
+    });
+  } catch(e) {}
 }
 
 function deconstructOpticalScanner() {
