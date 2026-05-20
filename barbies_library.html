@@ -931,7 +931,7 @@ const BOOKS_RAW = [
   [120,"Dish","Nicholson R.","TBR","Standalone","Nonfiction","320",4.04,null,null],
   [121,"The Book of Azrael","Nicole, A.","TBR","Gods & Monsters, Book 1","Romantasy","536",4.12,null,null],
   [122,"Heart Stopper","Oseman A.","TBR","Heartstopper, Volume 1","Graphic Novel","288",4.41,null,null],
-  [123,"Songbird of Sorrows","Otto B.","TBR","Myths of the Empyrieos, Book 1","Romantic Fantasy","400",3.94,null,null],
+  [123,"Songbird of Sorrows","Otto B.","TBR","My Myths of the Empyrieos, Book 1","Romantic Fantasy","400",3.94,null,null],
   [124,"Dark Rise","Pacat C.","Complete","Dark Rise, Book 1","Young Adult","464",4.15,9,null],
   [125,"Dark Heir","Pacat C.","Complete","Dark Rise, Book 2","Fantasy High-Fantasy","496",4.52,9.5,null],
   [126,"The Wolf King","Palphreyman, L.","Complete","The Wolf King, Book 1","Fantasy Romance","464",4.14,8,null],
@@ -1153,7 +1153,7 @@ function triggerSentryAlert(customMessageText = null) {
 
 function toggleSettingsControlShelfArray() { document.getElementById('globalSettingsControlShelf').classList.toggle('open'); }
 
-// ── TEXT EXTENSION FILE DATA PIPELINES (TSV TEXT MODE MATRIX) ─────────────────
+// ── UNIVERSAL ARCHITECTURE DATA PIPELINES (IPHONE & iOS HYBRID FALLBACK) ───
 function triggerMasterImportPipeline() { 
   document.getElementById('hiddenSaveStateFileReaderElement').click(); 
 }
@@ -1249,8 +1249,10 @@ function convertLibraryArrayToTextString() {
 
 async function triggerMasterExportPipeline() {
   const plainTextLibraryContent = convertLibraryArrayToTextString();
-  
-  if (window.showSaveFilePicker) {
+  const isIOSPlatformDetected = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  // Branch A: Desktop Google Chrome / MS Edge Native Directory Hooks
+  if (window.showSaveFilePicker && !isIOSPlatformDetected) {
     try {
       const pickerOptions = {
         suggestedName: 'BarbiesLibrary_Manifest.txt',
@@ -1262,8 +1264,40 @@ async function triggerMasterExportPipeline() {
       await outputWritableTrack.close();
       document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Linked. Autosave Active!";
       alert("PC Text Save State established. Changes will overwrite this text file smoothly.");
+      return;
     } catch (e) {}
+  }
+
+  // Branch B: iPhone Apple WebKit Environment (Strict Content Decoupling Fallback)
+  if (isIOSPlatformDetected) {
+    try {
+      // Force direct Base64 encoding pipeline to stop iOS Safari from loading errors or blank pages
+      const rawUtf8Bytes = new TextEncoder().encode(plainTextLibraryContent);
+      let binaryByteString = "";
+      for (let i = 0; i < rawUtf8Bytes.length; i++) {
+        binaryByteString += String.fromCharCode(rawUtf8Bytes[i]);
+      }
+      const compiledBase64Token = btoa(binaryByteString);
+      
+      // Inject raw octet download sequence via explicit context attachment element click loops
+      const link = document.createElement('a');
+      link.href = 'data:application/octet-stream;layout=tsv;base64,' + compiledBase64Token;
+      link.download = 'BarbiesLibrary_Manifest.txt';
+      link.target = '_self'; 
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Sent To iOS Files Vault.";
+      alert("iPhone Export Triggered:\nSafari will prompt to download 'BarbiesLibrary_Manifest.txt'. Check your native Apple 'Files' App inside the Downloads path.");
+    } catch (iOSException) {
+      // Emergency Screen Display Fallback for unsupported legacy iOS environments
+      const displayContainerWindow = window.open("", "_blank");
+      displayContainerWindow.document.write("<pre style='font-family:monospace; background:#000; color:#fff; padding:20px;'>" + plainTextLibraryContent + "</pre>");
+      alert("iOS Security Restriction Intercepted.\nYour records database has been printed cleanly inside a new workspace tab. Select all, copy, and paste text directly into a notepad file.");
+    }
   } else {
+    // Branch C: Standard Android Mobile Chrome / Desktop Safari Blobs Pipeline
     const textBlobDataToken = new Blob([plainTextLibraryContent], { type: 'text/plain;charset=utf-8' });
     const virtualDownloadElement = document.createElement('a');
     virtualDownloadElement.download = 'BarbiesLibrary_Manifest.txt';
@@ -1272,7 +1306,7 @@ async function triggerMasterExportPipeline() {
     document.body.appendChild(virtualDownloadElement);
     virtualDownloadElement.click();
     document.body.removeChild(virtualDownloadElement);
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Log Sent To Native System Download Manager.";
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Log Transferred To System Vault.";
   }
 }
 
@@ -1849,7 +1883,7 @@ function initParalysisInputListeners() {
     dragMovementDeltaThreshold += Math.abs(deltaAngle); wheelCurrentRotationAngle = dragAngleBaseOffset + deltaAngle;
     dragTimestampRegistry.push({ angle: wheelCurrentRotationAngle, time: performance.now() });
     if (dragTimestampRegistry.length > 5) dragTimestampRegistry.shift();
-    renderHTML5CasinoCanvasWheel();
+    renderHTML5CanvasWheel();
   }
 
   function terminateKineticDragSequence() {
@@ -1982,7 +2016,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   }
   try {
     const query = encodeURIComponent(`intitle:"${paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${paralysisWinningBookPointer.author.split(',')[0].trim()}"`);
-    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
+    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1[];`);
     const searchData = await searchResponse.json();
     if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
       assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
@@ -2008,10 +2042,9 @@ function closeTradingCardOverlay() {
   pickedWedgeIndexPointer = null; renderHTML5CasinoCanvasWheel();
 }
 
-// Global visual adjustments setup hook parameters
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('footerVersionStamp').textContent = "Secure Matrix Build " + SYSTEM_BUILD_VERSION;
+  document.getElementById('footerVersionStamp').innerHTML = "Secure Matrix Build " + SYSTEM_BUILD_VERSION;
   updateHomeView();
 });
 </script>
