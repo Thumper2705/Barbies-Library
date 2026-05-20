@@ -784,19 +784,19 @@
   </div>
 
   <div class="stats-grid">
-    <div class="stat-box">
+    <div class="stats-box">
       <div class="stat-number" id="statTBR">0</div>
       <div class="stat-label">To Read (TBR)</div>
     </div>
-    <div class="stat-box">
+    <div class="stats-box">
       <div class="stat-number" id="statRead">0</div>
       <div class="stat-label">Completed</div>
     </div>
-    <div class="stat-box">
+    <div class="stats-box">
       <div class="stat-number" id="statDNF">0</div>
       <div class="stat-label">Dropped (DNF)</div>
     </div>
-    <div class="stat-box">
+    <div class="stats-box">
       <div class="stat-number" id="statOld">0</div>
       <div class="stat-label">Past Reads</div>
     </div>
@@ -828,7 +828,7 @@
     <div class="stat-pill" onclick="filterStatus(this,'TBR')">
       <span class="count" id="pillCountTBR">0</span><span class="label">To Read</span>
     </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Complete').label">
+    <div class="stat-pill" onclick="filterStatus(this,'Complete')">
       <span class="count" id="pillCountComplete">0</span><span class="label">Completed</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Reading')">
@@ -995,7 +995,7 @@
       <span class="icon">🎰</span><span>Break Paralysis</span>
     </button>
   </div>
-  <div class="console-version-stamp">Secure Matrix Build v2.9</div>
+  <div class="console-version-stamp">Secure Matrix Build v3.0</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -2019,7 +2019,6 @@ function triggerCasinoEmoteFountainSplash() {
   const emotePool = ['👑', '⚔️', '🎰', '📜', '✨', '🔥', '📚'];
   const particleCount = 45;
 
-  // Track coordinates relative to the interactive viewport bounding window
   const rect = overlayCardNode.getBoundingClientRect();
   const spawnX = rect.left + (rect.width / 2);
   const spawnY = rect.top + (rect.height / 3);
@@ -2033,18 +2032,16 @@ function triggerCasinoEmoteFountainSplash() {
       particle.style.left = `${spawnX}px`;
       particle.style.top = `${spawnY}px`;
 
-      // Assign trajectory vector coordinates randomly
       const angle = (Math.random() * Math.PI * 2);
       const velocity = (Math.random() * 180) + 70;
       const xVector = Math.cos(angle) * velocity;
-      const yVector = Math.sin(angle) * velocity - 120; // Bias trajectory upwards first
+      const yVector = Math.sin(angle) * velocity - 120; 
 
       particle.style.setProperty('--x-vector', `${xVector}px`);
       particle.style.setProperty('--y-vector', `${yVector}px`);
 
       document.body.appendChild(particle);
 
-      // Garbaging lifecycle tracking
       particle.addEventListener('animationend', () => {
         particle.remove();
       });
@@ -2238,7 +2235,7 @@ function renderHTML5CasinoCanvasWheel() {
   const h = canvas.height;
   const cx = w / 2;
   const cy = h / 2;
-  const r = cx - (35 * dpr); // Built-in padding boundaries to handle wedge lift steps safely
+  const r = cx - (35 * dpr); 
 
   ctx.clearRect(0, 0, w, h);
 
@@ -2265,7 +2262,6 @@ function renderHTML5CasinoCanvasWheel() {
     
     ctx.save();
     
-    // Smooth geometric slide-out offset translation metrics
     if (pickedWedgeIndexPointer === i) {
       const shiftDistanceScalar = 26 * dpr;
       const bisectAngleVector = angleStart + arcSize / 2;
@@ -2274,7 +2270,7 @@ function renderHTML5CasinoCanvasWheel() {
 
     ctx.fillStyle = spectrumColors[i % spectrumColors.length];
     if (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) {
-      ctx.fillStyle = '#141113'; // Ominous dim layout step parameters
+      ctx.fillStyle = '#141113'; 
     }
     
     ctx.beginPath();
@@ -2523,7 +2519,6 @@ async function triggerTradingCardEncounterModal() {
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || 
     "A legendary chronicle waiting to be uncovered within the deep stacks of Barbie's framework structure.";
 
-  // Activate overlay display layer prior to running streamer effects triggers
   overlayCardNode.classList.add('show');
   triggerCasinoEmoteFountainSplash();
 
