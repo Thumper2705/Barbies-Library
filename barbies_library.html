@@ -122,7 +122,7 @@
   .action-sub-btn { background: var(--border-iron); color: var(--text-parchment); padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
   .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover { filter: brightness(1.15); }
 
-  /* PROGRESS METER - GEOMETRIC PROGRESS METERS OVERHAUL */
+  /* PROGRESS METER */
   .goal-bar-card {
      background: var(--card-slate);
      border-radius: 4px;
@@ -232,7 +232,7 @@
   .charts-view-podium-height { height: 160px !important; }
   .charts-view-title-size { font-size: 11px; }
 
-  /* SLEEK COMPACT ADJUSTMENTS FOR TOP 10 GRID CORES */
+  /* Top 10 rankings list adjustments */
   .sub-rankings-list { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
   .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
@@ -266,32 +266,16 @@
   .genre-chip.active { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
   .results-count { padding: 0 16px 8px; font-size: 11px; color: var(--text-muted); }
 
-  /* 📚 TEXTURE OVERHAUL: COHESIVE CARD STRUCTURE WITH COVERS */
+  /* 📚 CARD STRUCTURAL LAYOUTS */
   .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
   .book-card { 
-    background: var(--card-slate); 
-    border-radius: 4px; 
-    padding: 14px 16px; 
-    border: 1px solid var(--border-iron); 
-    display: flex; 
-    align-items: center;
-    gap: 16px; 
-    cursor: pointer; 
-    transition: transform 0.15s ease, border-color 0.15s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    position: relative;
-    overflow: hidden;
+    background: var(--card-slate); border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border-iron); 
+    display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.15s ease, border-color 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
   }
   .book-card:hover { border-color: #4a3b45; transform: translateY(-1px); }
   
-  /* Left Edge Minimal Trim Highlights Dynamic Realignment Array */
-  .book-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 4px;
-    background: transparent;
-  }
+  .book-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: transparent; }
   .book-card.status-TBR::before { background: var(--purple-void); }
   .book-card.status-Complete::before { background: var(--green-poison); }
   .book-card.status-Reading::before { background: var(--blue-shadow); }
@@ -325,9 +309,7 @@
     background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
     display: flex; flex-direction: column; align-items: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6); gap: 6px;
   }
-  .nav-buttons-row {
-    width: 100%; display: flex;
-  }
+  .nav-buttons-row { width: 100%; display: flex; }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
     cursor: pointer; font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
@@ -336,17 +318,7 @@
   .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); }
   .nav-btn.active { color: var(--gold); }
   .nav-btn.active .icon { filter: grayscale(0); }
-
-  /* APP BUILD STAMP DECK */
-  .console-version-stamp {
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-    opacity: 0.5;
-    text-transform: uppercase;
-    font-weight: 400;
-    padding-bottom: 4px;
-  }
+  .console-version-stamp { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; font-weight: 400; padding-bottom: 4px; }
 
   /* SYSTEM MODALS LAYOUTS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: flex-end; backdrop-filter: blur(6px); }
@@ -382,348 +354,79 @@
   .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #231d22; transition: color 0.1s; }
   .star-btn.active { color: var(--gold); }
 
-  /* AUTOMATIC LENS CAM SCANNER DECK UI PANEL */
-  .scanner-viewport-box {
-    width: 100%;
-    background: #000;
-    border: 1px dashed var(--border-iron);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-    margin-bottom: 12px;
-    display: none;
-  }
+  /* AUTOMATIC LENS CAM SCANNER UI PANEL */
+  .scanner-viewport-box { width: 100%; background: #000; border: 1px dashed var(--border-iron); border-radius: 4px; overflow: hidden; position: relative; margin-bottom: 12px; display: none; }
   .scanner-viewport-box.active { display: block; }
   #interactiveReaderElement { width: 100%; min-height: 240px; }
   .input-inline-btn-row { display: flex; gap: 8px; align-items: center; }
   
-  /* MANUAL ZOOM SLIDER HOOKS */
-  .zoom-control-panel {
-    background: #0d0a0d;
-    border: 1px solid var(--border-iron);
-    border-radius: 4px;
-    padding: 10px 12px;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .zoom-slider-element {
-    flex: 1;
-    accent-color: var(--crimson);
-    cursor: pointer;
-    background: #000;
-    height: 6px;
-    border-radius: 3px;
-    border: none;
-  }
+  /* ZOOM SLIDER PANEL HOOKS */
+  .zoom-control-panel { background: #0d0a0d; border: 1px solid var(--border-iron); border-radius: 4px; padding: 10px 12px; margin-top: 8px; display: flex; align-items: center; gap: 12px; font-size: 11px; color: var(--text-muted); }
+  .zoom-slider-element { flex: 1; accent-color: var(--crimson); cursor: pointer; background: #000; height: 6px; border-radius: 3px; border: none; }
 
-  /* DUPLICATION ALERT SPLASH BANNERS */
-  .sentry-alert-banner {
-    background: #4a0d11;
-    border: 1px solid var(--crimson);
-    color: #ffb3b7;
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    display: none;
-    text-align: center;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+  /* DUPLICATION BANNER */
+  .sentry-alert-banner { background: #4a0d11; border: 1px solid var(--crimson); color: #ffb3b7; padding: 12px; border-radius: 4px; font-size: 11px; font-weight: 700; margin-bottom: 16px; display: none; text-align: center; letter-spacing: 1px; text-transform: uppercase; }
 
-  /* 🎰 BREAK THE PARALYSIS CASINO ENGINE STYLING */
-  .casino-container {
-    background: #0d0a0d;
-    border: 2px solid var(--border-iron);
-    box-shadow: 0 0 20px rgba(230, 57, 70, 0.15);
-    border-radius: 8px;
-    padding: 24px 16px;
-    text-align: center;
-    max-width: 650px;
-    margin: 0 auto;
-    position: relative;
-    width: 100%;
-  }
-  
-  .casino-header {
-    font-family: 'Cinzel', serif;
-    font-size: 18px;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 8px #e63946, 0 0 12px var(--gold);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .casino-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+  /* 🎰 BREAK THE PARALYSIS CASINO STYLING */
+  .casino-container { background: #0d0a0d; border: 2px solid var(--border-iron); box-shadow: 0 0 20px rgba(230, 57, 70, 0.15); border-radius: 8px; padding: 24px 16px; text-align: center; max-width: 650px; margin: 0 auto; position: relative; width: 100%; }
+  .casino-header { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 0 8px #e63946, 0 0 12px var(--gold); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .casino-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+  .wheel-wrapper { position: relative; width: 92vw; height: 92vw; max-width: 580px; max-height: 580px; margin: 0 auto 24px; transition: transform 0.1s ease-out; }
+  #canvasTBRWheel { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4); transform: rotate(0deg); touch-action: none; }
+  .wheel-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 28px solid var(--gold); filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); z-index: 100; pointer-events: none; }
+  .stakes-panel { background: #000; border: 1px solid var(--border-iron); padding: 12px; border-radius: 4px; margin-bottom: 16px; width: 100%; }
+  .stakes-title { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
+  .stakes-row-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 8px; }
+  .stake-chip { background: #161215; border: 1px solid var(--border-iron); color: var(--text-muted); padding: 6px 10px; font-size: 10px; border-radius: 2px; cursor: pointer; font-weight: 700; text-transform: uppercase; transition: all 0.15s ease; }
+  .stake-chip.active { border-color: #e63946; color: #fff; box-shadow: 0 0 8px rgba(230, 57, 70, 0.4); background: rgba(230, 57, 70, 0.1); }
 
-  /* 📲 HIGH PERFORMANCE FLUID VIEWPORT RESPONSIVITY RULES */
-  .wheel-wrapper {
-    position: relative;
-    width: 92vw;
-    height: 92vw;
-    max-width: 580px;
-    max-height: 580px;
-    margin: 0 auto 24px;
-    transition: transform 0.1s ease-out;
-  }
-  
-  #canvasTBRWheel {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4);
-    transform: rotate(0deg);
-    touch-action: none; 
-  }
-  
-  .wheel-pointer {
-    position: absolute;
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 16px solid transparent;
-    border-right: 16px solid transparent;
-    border-top: 28px solid var(--gold);
-    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
-    z-index: 100;
-    pointer-events: none;
-  }
+  /* 🃏 TRADING CARD LAYOUT OVERLAYS */
+  .trading-card-overlay { position: absolute; inset: 12px; background: rgba(10, 7, 9, 0.96); border: 2px solid var(--gold); border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 16px; opacity: 0; pointer-events: none; transform: scale(0.9); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 200; }
+  .trading-card-overlay.show { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-  .stakes-panel {
-    background: #000;
-    border: 1px solid var(--border-iron);
-    padding: 12px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-    width: 100%;
+  /* 🎰 GLOBAL SEPARATE FLOATING CELEBRATION WINNER BANNER STYLE */
+  .global-winner-banner {
+    position: fixed; top: 35%; left: 50%; transform: translate(-50%, -50%) scale(0.6);
+    background: linear-gradient(180deg, #260a0d 0%, #0d0a0d 100%);
+    border: 2px solid var(--crimson-light); box-shadow: 0 0 35px rgba(230, 57, 70, 0.85);
+    border-radius: 6px; padding: 20px 24px; text-align: center; z-index: 300000; /* Dominates card chassis */
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none;
+    width: 90%; max-width: 420px;
   }
-  
-  .stakes-title {
-    font-size: 10px;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
-  
-  .stakes-row-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    justify-content: center;
-  }
-  
-  .stake-chip {
-    background: #161215;
-    border: 1px solid var(--border-iron);
-    color: var(--text-muted);
-    padding: 6px 10px;
-    font-size: 10px;
-    border-radius: 2px;
-    cursor: pointer;
-    font-weight: 700;
-    text-transform: uppercase;
-    transition: all 0.15s ease;
-  }
-  
-  .stake-chip.active {
-    border-color: #e63946;
-    color: #fff;
-    box-shadow: 0 0 8px rgba(230, 57, 70, 0.4);
-    background: rgba(230, 57, 70, 0.1);
-  }
+  .global-winner-banner.pop-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .winner-banner-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 10px rgba(179, 146, 67, 0.6); text-transform: uppercase; }
+  .winner-banner-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text-parchment); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; }
 
-  /* 🃏 GOTHIC TRADING CARD INTERFACE ENGINE OVERLAYS */
-  .trading-card-overlay {
-    position: absolute;
-    inset: 12px;
-    background: rgba(10, 7, 9, 0.96);
-    border: 2px solid var(--gold);
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 24px 16px;
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.9);
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 200;
-  }
-  
-  .trading-card-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: scale(1);
-  }
+  .trading-card-overlay.winner-flash-active { animation: neonWinnerPulse 0.4s ease infinite alternate; }
+  @keyframes neonWinnerPulse { from { border-color: var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.5); } to { border-color: var(--crimson-light); box-shadow: 0 0 25px rgba(230, 57, 70, 0.9); } }
 
-  /* 🎰 HIGH EFFECT STREAMER NEON WINNER LIGHTS */
-  .trading-card-overlay.winner-flash-active {
-    animation: neonWinnerPulse 0.4s ease infinite alternate;
-  }
-  @keyframes neonWinnerPulse {
-    from { border-color: var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.5); }
-    to { border-color: var(--crimson-light); box-shadow: 0 0 25px rgba(230, 57, 70, 0.9); }
-  }
-
-  /* FLOATING INDEPENDENT APP-LEVEL OVERLAY MATRIX RULES FOR LORE INTEL CARDS */
-  .global-info-card-overlay-sleeve {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.88);
-    backdrop-filter: blur(6px);
-    z-index: 200000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
+  .global-info-card-overlay-sleeve { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(6px); z-index: 200000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .global-info-card-overlay-sleeve.show { display: flex; }
-
-  .trading-card-chassis {
-    width: 100%;
-    max-width: 340px;
-    background: #110e11;
-    border: 2px solid var(--gold);
-    box-shadow: 0 0 15px rgba(179, 146, 67, 0.3);
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    border-radius: 4px;
-    text-align: left;
-  }
-
-  .card-header-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--border-iron);
-    padding-bottom: 6px;
-  }
-  
-  .card-title-slot {
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    font-weight: 900;
-    color: var(--text-parchment);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 70%;
-  }
-  
-  .card-genre-pill {
-    background: var(--dark-void);
-    border: 1px solid var(--crimson);
-    color: var(--crimson-light);
-    font-size: 8px;
-    font-weight: 700;
-    padding: 2px 6px;
-    text-transform: uppercase;
-    border-radius: 2px;
-    letter-spacing: 0.5px;
-  }
-
-  .card-artwork-frame {
-    width: 100%;
-    height: 140px;
-    background: radial-gradient(circle, #2d1216 0%, var(--dark-void) 100%);
-    border: 1px solid var(--border-iron);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-
-  .card-artwork-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-    display: none;
-  }
-  
-  .card-artwork-glyph {
-    width: 60px;
-    height: 60px;
-    display: block;
-  }
-
-  .card-author-line {
-    font-size: 10px;
-    color: var(--text-muted);
-    border-bottom: 1px dashed var(--border-iron);
-    padding-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .card-attributes-strip {
-    background: #000;
-    border: 1px solid var(--border-iron);
-    padding: 6px;
-    display: flex;
-    justify-content: space-around;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  
+  .trading-card-chassis { width: 100%; max-width: 340px; background: #110e11; border: 2px solid var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.3); padding: 14px; display: flex; flex-direction: column; gap: 12px; border-radius: 4px; text-align: left; }
+  .card-header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-iron); padding-bottom: 6px; }
+  .card-title-slot { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 900; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+  .card-genre-pill { background: var(--dark-void); border: 1px solid var(--crimson); color: var(--crimson-light); font-size: 8px; font-weight: 700; padding: 2px 6px; text-transform: uppercase; border-radius: 2px; letter-spacing: 0.5px; }
+  .card-artwork-frame { width: 100%; height: 140px; background: radial-gradient(circle, #2d1216 0%, var(--dark-void) 100%); border: 1px solid var(--border-iron); position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .card-artwork-img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: none; }
+  .card-artwork-glyph { width: 60px; height: 60px; display: block; }
+  .card-author-line { font-size: 10px; color: var(--text-muted); border-bottom: 1px dashed var(--border-iron); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-attributes-strip { background: #000; border: 1px solid var(--border-iron); padding: 6px; display: flex; justify-content: space-around; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
   .card-attr-item span { color: var(--gold); }
+  .card-lore-box { background: #090709; border: 1px dashed var(--border-iron); padding: 10px; font-size: 11px; line-height: 1.5; color: var(--text-parchment); min-height: 66px; }
 
-  .card-lore-box {
-    background: #090709;
-    border: 1px dashed var(--border-iron);
-    padding: 10px;
-    font-size: 11px;
-    line-height: 1.5;
-    color: var(--text-parchment);
-    min-height: 66px;
-  }
+  .casino-splash-particle { position: fixed; z-index: 250000; font-size: 24px; pointer-events: none; user-select: none; animation: particleFallFountain 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+  @keyframes particleFallFountain { 0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; } 15% { opacity: 1; transform: translate(var(--x-vector), var(--y-vector)) scale(1.3) rotate(45deg); } 100% { transform: translate(var(--x-vector), calc(var(--y-vector) + 400px)) scale(0.6) rotate(270deg); opacity: 0; } }
 
-  /* 🌌 FLOATING WINNER SPLASH STREAMER EMOTE CONTAINERS */
-  .casino-splash-particle {
-    position: fixed;
-    z-index: 250000;
-    font-size: 24px;
-    pointer-events: none;
-    user-select: none;
-    animation: particleFallFountain 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-  }
-  @keyframes particleFallFountain {
-    0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; }
-    15% { opacity: 1; transform: translate(var(--x-vector), var(--y-vector)) scale(1.3) rotate(45deg); }
-    100% { transform: translate(var(--x-vector), calc(var(--y-vector) + 400px)) scale(0.6) rotate(270deg); opacity: 0; }
-  }
-
-  /* EDGE TO EDGE LAYOUT FOR ULTRA ULTRA COMPACT DISPLAY CHASSIS RULES */
-  @media(max-width: 650px) {
-    .paralysis-view { padding: 12px 4px 140px; }
-    .casino-container { border-left: none; border-right: none; border-radius: 0; padding: 20px 8px; }
-    .wheel-wrapper { width: 95vw; height: 95vw; }
-  }
+  @media(max-width: 650px) { .paralysis-view { padding: 12px 4px 140px; } .casino-container { border-left: none; border-right: none; border-radius: 0; padding: 20px 8px; } .wheel-wrapper { width: 95vw; height: 95vw; } }
 </style>
 </head>
 <body>
+
+<!-- 🎰 SEPARATE INDEPENDENT VICTORY BANNER DOM MATRIX BLOCK -->
+<div class="global-winner-banner" id="casinoWinnerBanner">
+  <div class="winner-banner-title">⚔️ Fate Manifested ⚔️</div>
+  <div class="winner-banner-subtitle" id="winnerBannerBookName">LOADING ARCHIVES...</div>
+</div>
 
 <div class="header">
   <div class="header-title">Barbie's <span>Library</span> 📚</div>
@@ -886,7 +589,7 @@
   </div>
 </div>
 
-<!-- 🎰 THE INDECISION CASINO CONTAINER INTERFACE -->
+<!-- 🎰 INDECISION CASINO ENGINE CONTROLS -->
 <div class="paralysis-view" id="paralysisView">
   <div class="casino-container">
     
@@ -917,7 +620,7 @@
           <div class="card-attr-item">POWER: <span id="cardBookPower">0.00</span> GR</div>
         </div>
         
-        <div class="card-lore-box" id="cardBookLore">Loading archival database summaries...</div>
+        <div class="card-lore-box" id="cardBookLore">Loading summaries...</div>
         
         <button class="cta-button" style="background:var(--green-poison); margin-top:4px;" onclick="acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
         <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
@@ -927,13 +630,28 @@
     <div class="casino-header">Break the Paralysis</div>
     <div class="casino-sub" id="casinoSubLabel">Bet your TBR pool • Defeat Indecision</div>
     
+    <!-- AUDIO FX MASTER TOGGLE PANEL -->
+    <div class="stakes-panel" style="margin-bottom: 12px; padding: 12px;">
+      <div class="stakes-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0;">
+        <span>Casino Settings Framework</span>
+        <label style="cursor:pointer; font-size:10px; color:var(--text-parchment); display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-weight:700;">
+          <input type="checkbox" id="casinoAudioToggle" checked style="accent-color:var(--crimson); width:14px; height:14px; cursor:pointer;"> SOUND ON
+        </label>
+      </div>
+    </div>
+
+    <!-- RISK POOL TUNER PANEL -->
     <div class="stakes-panel">
       <div class="stakes-title">Configure Wheel Risk Pool</div>
-      <div class="stakes-row-chips">
+      <div class="stakes-row-chips" id="casinoStructuralPageChips">
         <div class="stake-chip active" id="stakeWeightAll" onclick="setWheelWeightFilter('All')">All TBR</div>
         <div class="stake-chip" id="stakeWeightShort" onclick="setWheelWeightFilter('short')">Short (&lt;350p)</div>
         <div class="stake-chip" id="stakeWeightMedium" onclick="setWheelWeightFilter('medium')">Medium (350-550p)</div>
         <div class="stake-chip" id="stakeWeightLong" onclick="setWheelWeightFilter('long')">Epic Tomes (&gt;550p)</div>
+      </div>
+      <div style="border-top: 1px dashed var(--border-iron); margin: 8px 0; padding-top: 6px;">
+        <div class="stakes-title" style="font-size:9px;">Filter by Core Narrative Aesthetic</div>
+        <div class="stakes-row-chips" id="casinoDynamicGenreChips"></div>
       </div>
     </div>
 
@@ -973,7 +691,7 @@
       <div class="card-attr-item">METRIC: <span id="infoCardMetric">0.00</span> GR</div>
     </div>
     
-    <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading system framework notes...</div>
+    <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading observations...</div>
     
     <button class="cta-button" style="background:var(--purple-void); margin-top:4px;" onclick="pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
     <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
@@ -1020,7 +738,7 @@
       </div>
       <div class="modal-section">
         <div class="modal-label">Personal Notes & Thoughts</div>
-        <textarea class="notes-input" id="notesInput" placeholder="Write down your observations here..."></textarea>
+        <textarea class="notes-input" id="notesInput" placeholder="Write downObservations here..."></textarea>
       </div>
       <button class="save-btn" onclick="saveBook()">Save Changes ✓</button>
       <button class="danger-button" style="margin-top: 16px; background: #260a0d;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
@@ -1281,75 +999,26 @@ const BOOK_BLURBS_REGISTRY = {
   "Quicksilver": "Intricate Fae politics, dangerous alchemy, and a slow-burn romance ignite when a mortal thief matches wits with an enigmatic, lethal immortal king in a high-stakes struggle for leverage."
 };
 
-// Open Library & Google Books Static ISBN Mapping Matrix Array
 const PRELOADED_ISBN_REGISTRY = {
-  "Lightlark": "9781419760860",
-  "Nightbane": "9781419760907",
-  "Skyshade": "9781419760938",
-  "Crowntide": "9781419771149",
-  "Grim and Oro": "9781419778230",
-  "Starside": "9781419772092",
-  "Daughter of No Worlds": "9781640639898",
-  "Children of Fallen Gods": "9781640639911",
-  "Mother of Death & Dawn": "9781640639935",
-  "Red Rising": "9780345539786",
-  "Golden Son": "9780345539816",
-  "Morning Star": "9780345539847",
-  "Whispers Beneath Crowstone": "9781804365731",
-  "House of Leaves": "9780375703768",
-  "Carnival": "9781250157539",
-  "Legendary": "9781250157539",
-  "Finale": "9781250157553",
-  "Black Thorn": "9781736632420",
-  "The Knight and the Moth": "9781398533141",
-  "Two Twisted Crowns": "9784344043138",
-  "Cleopatra": "9788466668798",
-  "Dark Rise": "9780062870773",
-  "Dark Heir": "9780062870810",
-  "When Moon Hatched": "9780593815717",
-  "Rites of the Starling": "9781035905256",
-  "Shield of Sparrows": "9781035905249",
-  "Dawn of the Fire Bird": "9780008546113",
-  "Wind and Truth": "9781250319180",
-  "Metal Slinger": "9781737719601",
-  "A Day of Fallen Night": "9781635577068",
-  "Among the Burning Flowers": "9780593451557",
-  "Priory of the Orange Tree": "9781632866004",
-  "Dire Bound": "9781639103980",
-  "Fury Bound": "9781639106820",
-  "Stage Set for Villains": "9780756418854",
-  "We Who Will Die": "9781837910540",
-  "Conform": "9781649375544",
-  "Death Bringer": "9781733479608",
-  "The Poet Empress": "9781982180478",
-  "Godstorm": "9780062205796",
-  "Iron Flame": "9781649374172",
-  "Onyx Storm": "9781649374189",
-  "13 Reasons why": "9781595141880",
-  "The Alchemist": "9780062315007",
-  "The Hunger Games": "9780439023481",
-  "Mockingjay": "9780439023511",
-  "Gone Girl": "9780307588371",
-  "The Girl on the Train": "9781594634024",
-  "Crescent City": "9781635574050",
-  "House of Sky and Breath": "9781635574074",
-  "House of Flame and Shadow": "9781635574104",
-  "A Court of Thorns and Roses": "9781619634480",
-  "Throne of Glass": "9781619630345",
-  "Crown of Midnight": "9781619630628",
-  "The Assassin's Blade": "9781101934739",
-  "Heir of Fire": "9781619636064",
-  "Queen of Shadows": "9781101934784",
-  "Empire of Storms": "9781619636071",
-  "Tower of Dawn": "9781681195773",
-  "Kingdom of Ash": "9781619636101",
-  "The Game of Thrones": "9780553103540",
-  "The Clash of Kings": "9780553108033",
-  "A Storm of Swords": "9780553106633",
-  "Babel": "9780063021426",
-  "Fourth Wing": "9781649374042",
-  "The Housemaid": "9781728260372",
-  "The Housemaid's Secret": "9781728278056",
+  "Lightlark": "9781419760860", "Nightbane": "9781419760907", "Skyshade": "9781419760938", "Crowntide": "9781419771149",
+  "Grim and Oro": "9781419778230", "Starside": "9781419772092", "Daughter of No Worlds": "9781640639898", "Children of Fallen Gods": "9781640639911",
+  "Mother of Death & Dawn": "9781640639935", "Red Rising": "9780345539786", "Golden Son": "9780345539816", "Morning Star": "9780345539847",
+  "Whispers Beneath Crowstone": "9781804365731", "House of Leaves": "9780375703768", "Carnival": "9781250157539", "Legendary": "9781250157539",
+  "Finale": "9781250157553", "Black Thorn": "9781736632420", "The Knight and the Moth": "9781398533141", "Two Twisted Crowns": "9784344043138",
+  "Cleopatra": "9788466668798", "Dark Rise": "9780062870773", "Dark Heir": "9780062870810", "When Moon Hatched": "9780593815717",
+  "Rites of the Starling": "9781035905256", "Shield of Sparrows": "9781035905249", "Dawn of the Fire Bird": "9780008546113",
+  "Wind and Truth": "9781250319180", "Metal Slinger": "9781737719601", "A Day of Fallen Night": "9781635577068",
+  "Among the Burning Flowers": "9780593451557", "Priory of the Orange Tree": "9781632866004", "Dire Bound": "9781639103980",
+  "Fury Bound": "9781639106820", "Stage Set for Villains": "9780756418854", "We Who Will Die": "9781837910540",
+  "Conform": "9781649375544", "Death Bringer": "9781733479608", "The Poet Empress": "9781982180478", "Godstorm": "9780062205796",
+  "Iron Flame": "9781649374172", "Onyx Storm": "9781649374189", "13 Reasons why": "9781595141880", "The Alchemist": "9780062315007",
+  "The Hunger Games": "9780439023481", "Mockingjay": "9780439023511", "Gone Girl": "9780307588371", "The Girl on the Train": "9781594634024",
+  "Crescent City": "9781635574050", "House of Sky and Breath": "9781635574074", "House of Flame and Shadow": "9781635574104",
+  "A Court of Thorns and Roses": "9781619634480", "Throne of Glass": "9781619630345", "Crown of Midnight": "9781619630628",
+  "The Assassin's Blade": "9781101934739", "Heir of Fire": "9781619636064", "Queen of Shadows": "9781101934784",
+  "Empire of Storms": "9781619636071", "Tower of Dawn": "9781681195773", "Kingdom of Ash": "9781619636101",
+  "The Game of Thrones": "9780553103540", "The Clash of Kings": "9780553108033", "A Storm of Swords": "9780553106633",
+  "Babel": "9780063021426", "Fourth Wing": "9781649374042", "The Housemaid": "9781728260372", "The Housemaid's Secret": "9781728278056",
   "Project Hail Mary": "9780593135204"
 };
 
@@ -1471,87 +1140,59 @@ function closeAddBookModal() {
 
 function setAddStatus(el, val) { targetAddBookStatus = val; document.querySelectorAll('#addStatusBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
 
-/* SENTRY INTELLIGENCE SYSTEM ALERTS */
-function hideSentryAlert() {
-  document.getElementById('addDuplicationSentryBanner').style.display = 'none';
-}
+function hideSentryAlert() { document.getElementById('addDuplicationSentryBanner').style.display = 'none'; }
 function triggerSentryAlert(customMessageText = null) {
   const banner = document.getElementById('addDuplicationSentryBanner');
-  if (customMessageText) {
-    banner.textContent = customMessageText;
-  } else {
-    banner.textContent = "⚠️ This book is already logged within your library framework.";
-  }
+  banner.textContent = customMessageText || "⚠️ This book is already logged within your library framework.";
   banner.style.display = 'block';
   banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-/* 📥 UNIFIED ENVIRONMENT DATA INTERFACE MANAGEMENT PORTAL PIPELINES */
-function toggleSettingsControlShelfArray() {
-  document.getElementById('globalSettingsControlShelf').classList.toggle('open');
-}
-
-function triggerMasterImportPipeline() {
-  document.getElementById('hiddenSaveStateFileReaderElement').click();
-}
+function toggleSettingsControlShelfArray() { document.getElementById('globalSettingsControlShelf').classList.toggle('open'); }
+function triggerMasterImportPipeline() { document.getElementById('hiddenSaveStateFileReaderElement').click(); }
 
 function executeSaveStateFileReaderImport(inputElement) {
   const file = inputElement.files[0];
   if (!file) return;
-  
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
       const decodedImportPackage = JSON.parse(e.target.result);
       if (Array.isArray(decodedImportPackage)) {
         books = decodedImportPackage;
-        
         const savedLocalStorageRebuild = {};
         const customAddedRebuild = [];
-        
         books.forEach(b => {
           savedLocalStorageRebuild[b.id] = { status: b.status, currentPage: b.currentPage || 0, myRating: b.myRating, notes: b.notes, coverUrl: b.coverUrl || null };
           if (b.id > 170) customAddedRebuild.push(b);
         });
-        
         localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
         localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
-        
         document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Import Complete. Library Synced Successfully ✓";
         updateHomeView();
         if (currentView === 'library') renderBooks();
         setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
-      } else {
-        alert('Invalid schema data footprint discovered.');
-      }
-    } catch(err) {
-      alert('Failed to interpret import packet integrity maps.');
-    }
+      } else { alert('Invalid schema data footprint discovered.'); }
+    } catch(err) { alert('Failed to interpret import packet integrity maps.'); }
   };
   reader.readAsText(file);
 }
 
-/* 📤 UNIFIED SAVE ENGINE MAPS: EXPORT PIPELINE RULES */
 async function triggerMasterExportPipeline() {
   const currentLibraryDataString = JSON.stringify(books, null, 2);
-  
   if (window.showSaveFilePicker) {
     try {
       const pickerOptions = {
         suggestedName: 'BarbiesLibrary_Save.json',
         types: [{ description: 'JSON Library Save Files', accept: { 'application/json': ['.json'] } }]
       };
-      
       masterFileHandlePointerPC = await window.showSaveFilePicker(pickerOptions);
       const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
       await outputWritableTrack.write(currentLibraryDataString);
       await outputWritableTrack.close();
-      
       document.getElementById('saveSystemStatusOutputLine').textContent = "Status: PC File Linked. Local Autosave Active!";
       alert("PC Save State established. Future database changes will overwrite this file automatically.");
-    } catch (e) {
-      // Picker tracking override catch loops
-    }
+    } catch (e) {}
   } else {
     const textBlobDataToken = new Blob([currentLibraryDataString], { type: 'application/json' });
     const virtualDownloadElement = document.createElement('a');
@@ -1561,7 +1202,6 @@ async function triggerMasterExportPipeline() {
     document.body.appendChild(virtualDownloadElement);
     virtualDownloadElement.click();
     document.body.removeChild(virtualDownloadElement);
-    
     document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Backup File Sent To Native System Download Manager.";
   }
 }
@@ -1579,63 +1219,41 @@ async function executeAutomatedBackgroundPipelineAutosave() {
   }
 }
 
-/* Author nomenclature layout formatter logic */
 function processScribeNameMilitaryFormatting(rawAuthorString) {
   if (!rawAuthorString || typeof rawAuthorString !== 'string') return "UNKNOWN, X.";
-  
   let cleanInput = rawAuthorString.replace(/\(.*?\)|\[.*?\]/g, "").trim();
   if (!cleanInput) return "UNKNOWN, X.";
-
   if (cleanInput.includes(',')) {
     let components = cleanInput.split(',');
     let surname = components[0].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase();
     let firstName = components[1].trim();
-    let initial = firstName.length > 0 ? firstName[0].toUpperCase() : 'X';
-    return `${surname}, ${initial}.`;
+    return `${surname}, ${firstName.length > 0 ? firstName[0].toUpperCase() : 'X'}.`;
   }
-
   let tokens = cleanInput.split(/\s+/).filter(t => t.length > 0);
-  if (tokens.length === 1) {
-    return `${tokens[0].toUpperCase()}, X.`;
-  }
-
+  if (tokens.length === 1) return `${tokens[0].toUpperCase()}, X.`;
   let surname = tokens[tokens.length - 1].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase();
-  let initial = tokens[0][0].toUpperCase();
-  return `${surname}, ${initial}.`;
+  return `${surname}, ${tokens[0][0].toUpperCase()}.`;
 }
 
-/* BARCODE SCAN CAMERA STABILIZATION ARRAY HOOKS (OPTION A) */
 function toggleOpticalScannerArray() {
   const elementWrapper = document.getElementById('scannerViewportWrapper');
   const toggleBtn = document.getElementById('toggleScannerBtn');
-  
-  if (elementWrapper.classList.contains('active')) {
-    deconstructOpticalScanner();
-  } else {
+  if (elementWrapper.classList.contains('active')) { deconstructOpticalScanner(); } else {
     elementWrapper.classList.add('active');
     toggleBtn.textContent = "🛑 Terminate Video Scanner";
     document.getElementById('manualZoomTrackSlider').value = 2.5;
     document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
-    
     html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
     html5QrCodeScannerInstance.start(
       { facingMode: "environment" },
-      { 
-        fps: 15, 
-        qrbox: { width: 280, height: 120 },
-        aspectRatio: 1.0 
-      },
+      { fps: 15, qrbox: { width: 280, height: 120 }, aspectRatio: 1.0 },
       (decodedText) => {
         document.getElementById('addManualISBNInput').value = decodedText;
         deconstructOpticalScanner();
         executeISBNDeepIntelQuery(decodedText);
       },
       () => {} 
-    ).then(() => {
-      setTimeout(function () {
-        executeDynamicZoomOverride(2.5);
-      }, 1200);
-    }).catch(() => {
+    ).then(() => { setTimeout(function () { executeDynamicZoomOverride(2.5); }, 1200); }).catch(() => {
       toggleBtn.textContent = "⚠️ Camera Error / Check Permissions";
     });
   }
@@ -1644,12 +1262,7 @@ function toggleOpticalScannerArray() {
 function executeDynamicZoomOverride(zoomFactorValue) {
   if (!html5QrCodeScannerInstance) return;
   document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x";
-  
-  try {
-    html5QrCodeScannerInstance.applyVideoConstraints({
-      advanced: [{ zoom: parseFloat(zoomFactorValue) }]
-    }).catch(() => {});
-  } catch(e) {}
+  try { html5QrCodeScannerInstance.applyVideoConstraints({ advanced: [{ zoom: parseFloat(zoomFactorValue) }] }).catch(() => {}); } catch(e) {}
 }
 
 function deconstructOpticalScanner() {
@@ -1657,51 +1270,32 @@ function deconstructOpticalScanner() {
   const toggleBtn = document.getElementById('toggleScannerBtn');
   elementWrapper.classList.remove('active');
   toggleBtn.textContent = "📡 Start Camera Scanner";
-  
   if (html5QrCodeScannerInstance) {
-    html5QrCodeScannerInstance.stop().then(() => {
-      html5QrCodeScannerInstance = null;
-    }).catch(() => {});
+    html5QrCodeScannerInstance.stop().then(() => { html5QrCodeScannerInstance = null; }).catch(() => {});
   }
 }
 
-/* OPEN LIBRARY REPOSITORY QUERY ENGINE FETCH METHODS */
 async function executeISBNDeepIntelQuery(forcedISBN = null) {
   const targetISBN = forcedISBN || document.getElementById('addManualISBNInput').value.trim();
   if (!targetISBN) { alert('Specify valid barcode coordinates.'); return; }
-  
   const cleanISBN = targetISBN.replace(/[^0-9X]/gi, '');
   const searchFieldButton = document.querySelector('.action-sub-btn');
   const originalLabel = searchFieldButton.textContent;
-  
   searchFieldButton.textContent = "Fetching...";
   searchFieldButton.disabled = true;
   hideSentryAlert();
-  
   try {
     const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${cleanISBN}&jscmd=data&format=json`);
     const payload = await response.json();
     const dataKey = `ISBN:${cleanISBN}`;
-    
     if (payload && payload[dataKey]) {
       const bookData = payload[dataKey];
-      
       document.getElementById('addTitle').value = bookData.title || '';
-      
       let fetchedAuthorString = bookData.authors ? bookData.authors.map(a => a.name).join(', ') : '';
       document.getElementById('addAuthor').value = processScribeNameMilitaryFormatting(fetchedAuthorString);
       document.getElementById('addPages').value = bookData.number_of_pages || 300;
-      
-      if (bookData.subjects && bookData.subjects.length > 0) {
-        document.getElementById('addGenre').value = bookData.subjects[0].name;
-      } else {
-        document.getElementById('addGenre').value = 'High Fantasy';
-      }
-      
-      const isDuplicate = books.some(b => b.title.toLowerCase().trim() === bookData.title.toLowerCase().trim());
-      if (isDuplicate) {
-        triggerSentryAlert();
-      }
+      document.getElementById('addGenre').value = (bookData.subjects && bookData.subjects.length > 0) ? bookData.subjects[0].name : 'High Fantasy';
+      if (books.some(b => b.title.toLowerCase().trim() === bookData.title.toLowerCase().trim())) triggerSentryAlert();
     } else {
       deconstructOpticalScanner();
       document.getElementById('addTitle').value = '';
@@ -1709,9 +1303,7 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
       triggerSentryAlert("⚠️ Book not found in repository database. Enter details manually below.");
       document.getElementById('addTitle').focus();
     }
-  } catch (error) {
-    triggerSentryAlert("⚠️ NETWORK INTERRUPT. CONNECTION FAILED.");
-  } finally {
+  } catch (error) { triggerSentryAlert("⚠️ NETWORK INTERRUPT. CONNECTION FAILED."); } finally {
     searchFieldButton.textContent = originalLabel;
     searchFieldButton.disabled = false;
   }
@@ -1725,65 +1317,37 @@ function commitNewBook() {
   const gr = document.getElementById('addGR').value.trim();
   const mIsbn = document.getElementById('addManualISBNInput').value.trim();
   const explicitUrl = document.getElementById('addCustomCoverUrl') ? document.getElementById('addCustomCoverUrl').value.trim() : null;
-  
   if(!t || !rawAuthor || !g) { alert('Required name parameters missing.'); return; } 
-  
-  const isDuplicate = books.some(b => b.title.toLowerCase().trim() === t.toLowerCase());
-  if (isDuplicate) {
-    triggerSentryAlert();
-    return;
-  }
-
+  if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
   const formattedAuthor = processScribeNameMilitaryFormatting(rawAuthor);
-
   const newId = Math.max(...books.map(b => b.id)) + 1;
   const obj = { id: newId, title: t, author: formattedAuthor, status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: explicitUrl || null };
   books.push(obj);
-  
   const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); 
   arr.push(obj); 
   localStorage.setItem('barbies_library_added', JSON.stringify(arr));
-  
   document.getElementById('addManualISBNInput').value = '';
   document.getElementById('addTitle').value = '';
   document.getElementById('addAuthor').value = '';
   document.getElementById('addGenre').value = '';
   if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
-  
-  closeAddBookModal(); 
-  updateHomeView(); 
-  showView('library');
+  closeAddBookModal(); updateHomeView(); showView('library');
   executeAutomatedBackgroundPipelineAutosave();
 }
 
 function purgeCurrentBookEntry() {
   if (!currentBook) return;
-  
-  const configurationConfirmationOverride = confirm(`⚠️ DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library? This action cannot be undone.`);
-  
-  if (configurationConfirmationOverride) {
+  if (confirm(`⚠️ DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library?`)) {
     books = books.filter(b => b.id !== currentBook.id);
-    
     try {
       const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
-      if (saved[currentBook.id]) {
-        delete saved[currentBook.id];
-        localStorage.setItem('barbies_library', JSON.stringify(saved));
-      }
-      
+      if (saved[currentBook.id]) { delete saved[currentBook.id]; localStorage.setItem('barbies_library', JSON.stringify(saved)); }
       let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
       customAdded = customAdded.filter(b => b.id !== currentBook.id);
       localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
     } catch (e) {}
-    
-    closeModal();
-    closeInfoCardOverlay();
-    updateHomeView();
-    if (currentView === 'library') {
-      renderBooks();
-    } else if (currentView === 'charts') {
-      renderCharts();
-    }
+    closeModal(); closeInfoCardOverlay(); updateHomeView();
+    if (currentView === 'library') renderBooks(); else if (currentView === 'charts') renderCharts();
     executeAutomatedBackgroundPipelineAutosave();
   }
 }
@@ -1801,9 +1365,7 @@ function renderGenreRow() {
   const genres = ['All', ...getTopGenres()];
   document.getElementById('genreRow').innerHTML = genres.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g}')">${g}</div>`).join('');
 }
-
 function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderBooks(); }
-
 function getTitleInitials(title) {
   if(!title) return "BK";
   const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0);
@@ -1813,33 +1375,24 @@ function getTitleInitials(title) {
 
 function renderBooks() {
   let list = getFiltered(); 
-  
   if(sortMode === 1) list.sort((a,b) => a.title.localeCompare(b.title));
   else if(sortMode === 2) list.sort((a,b) => (b.myRating || 0) - (a.myRating || 0));
   else if(sortMode === 3) list.sort((a,b) => (b.grRating || 0) - (a.grRating || 0));
-
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
     const statusClass = statusKey(b.status);
     const resolvedIsbn = b.isbn || PRELOADED_ISBN_REGISTRY[b.title];
     const queryPlaceholderId = `mini-thumb-fallback-${b.id}`;
-
-    let thumbnailImgTag = '';
-    if (b.coverUrl) {
-      thumbnailImgTag = `<img src="${b.coverUrl}" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="this.onerror=null; this.src='https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg';" alt="">`;
-    } else if (resolvedIsbn) {
-      thumbnailImgTag = `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="executeInlineTextCoverFallback(this, '${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${queryPlaceholderId}')" alt="">`;
-    } else {
-      executeInlineTextCoverFallback(null, b.title, b.author, queryPlaceholderId);
-      thumbnailImgTag = `
-        <img id="${queryPlaceholderId}" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron); display:none;" alt="">
-        <div id="initials-${queryPlaceholderId}" style="width: 36px; height: 52px; display: flex; align-items: center; justify-content: center; background: #000; border: 1px dashed var(--border-iron); font-size: 10px; color: var(--text-muted); font-weight: 700;">${getTitleInitials(b.title)}</div>`;
-    }
-
+    let thumbnailImgTag = b.coverUrl ? 
+      `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" onerror="this.onerror=null; this.src='https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg';" alt="">` :
+      (resolvedIsbn ? 
+        `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" onerror="executeInlineTextCoverFallback(this, '${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${queryPlaceholderId}')" alt="">` :
+        `<img id="${queryPlaceholderId}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron); display:none;" alt=""><div id="initials-${queryPlaceholderId}" style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700;">${getTitleInitials(b.title)}</div>`
+      );
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
-        <div class="book-info" style="margin-left: 4px;">
+        <div class="book-info">
            <div class="book-title">${b.title}</div>
            <div class="book-author">${b.author}</div>
            <div class="book-meta">
@@ -1847,41 +1400,26 @@ function renderBooks() {
              <span class="badge badge-genre">${normalizeGenre(b.genre)}</span>
            </div>
         </div>
-        
         <div class="book-ratings">
-          <div class="rating-row-value">
-            ${b.myRating != null ? `<span>★</span>${b.myRating}` : '<div style="color:var(--border-iron);font-weight:500;">–</div>'}
-          </div>
+          <div class="rating-row-value">${b.myRating != null ? `<span>★</span>${b.myRating}` : '<div style="color:var(--border-iron);font-weight:500;">–</div>'}</div>
           <div class="rating-gr-subtext">GR ${b.grRating || '–'}</div>
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
 async function executeInlineTextCoverFallback(imgElement, titleString, authorString, elementIdFallback) {
   try {
-    const cleanT = titleString.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
-    const cleanA = authorString.split(',')[0].trim();
-    const query = encodeURIComponent(`intitle:"${cleanT}"+inauthor:"${cleanA}"`);
-    
+    const query = encodeURIComponent(`intitle:"${titleString.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${authorString.split(',')[0].trim()}"`);
     const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
     const data = await response.json();
-    
     if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
       const targetUrl = data.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-      if (imgElement) {
-        imgElement.onerror = null;
-        imgElement.src = targetUrl;
-      }
+      if (imgElement) { imgElement.onerror = null; imgElement.src = targetUrl; }
       if (elementIdFallback) {
         const targetNode = document.getElementById(elementIdFallback);
         const initialsNode = document.getElementById(`initials-${elementIdFallback}`);
-        if (targetNode) {
-          targetNode.src = targetUrl;
-          targetNode.style.display = "block";
-          if (initialsNode) initialsNode.style.display = "none";
-        }
+        if (targetNode) { targetNode.src = targetUrl; targetNode.style.display = "block"; if (initialsNode) initialsNode.style.display = "none"; }
       }
     }
   } catch(e) {}
@@ -1897,99 +1435,57 @@ function getFiltered() {
   });
 }
 
-/* 📜 ASYNC CORE RENDERING PIPELINE MODULE FOR MANUAL INFO OVERLAYS */
 async function openInfoCardOverlay(id) {
-  currentBook = books.find(b => b.id === id);
-  if (!currentBook) return;
-  
+  currentBook = books.find(b => b.id === id); if (!currentBook) return;
   const coverImg = document.getElementById('infoCardCoverImg');
   const fallbackIllustration = document.getElementById('infoCardGlyph');
-  
-  coverImg.style.display = "none";
-  fallbackIllustration.style.display = "block";
-
-  // Assign Structural Text Content Parameters With Lore Book Puns
+  coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${currentBook.title}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.toUpperCase();
   document.getElementById('infoCardGenre').textContent = normalizeGenre(currentBook.genre);
   document.getElementById('infoCardMass').textContent = currentBook.pages;
   document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
-  
-  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || 
-    `SYSTEM NOTE: "${currentBook.title}" field logs are compiled and indexed cleanly within the matrix local framework.`;
-
+  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${currentBook.title}" indexed cleanly in local framework.`;
   document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
-
-  // Trigger Asynchronous Cascade resolution maps
-  if (currentBook.coverUrl) {
-    assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl);
-    return;
-  }
-
+  if (currentBook.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl); return; }
   const targetISBN = currentBook.isbn || PRELOADED_ISBN_REGISTRY[currentBook.title];
   if (targetISBN) {
     try {
       const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`);
       const gBooksData = await gBooksResponse.json();
       if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-        let secureUrl = gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-        assignImageToTargetNode(coverImg, fallbackIllustration, secureUrl);
+        assignImageToTargetNode(coverImg, fallbackIllustration, gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
         return;
       }
     } catch(e) {}
   }
-
   try {
-    const cleanT = currentBook.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
-    const cleanA = currentBook.author.split(',')[0].trim();
-    const query = encodeURIComponent(`intitle:"${cleanT}"+inauthor:"${cleanA}"`);
+    const query = encodeURIComponent(`intitle:"${currentBook.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${currentBook.author.split(',')[0].trim()}"`);
     const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
     const searchData = await searchResponse.json();
-    
     if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-      let textSecureUrl = searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-      assignImageToTargetNode(coverImg, fallbackIllustration, textSecureUrl);
-    } else {
-      handleInfoCardImageError();
-    }
-  } catch(e) {
-    handleInfoCardImageError();
-  }
+      assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
+    } else { handleInfoCardImageError(); }
+  } catch(e) { handleInfoCardImageError(); }
 }
 
 function assignImageToTargetNode(imgNode, fallbackNode, urlString) {
   imgNode.src = urlString;
   imgNode.onload = function() {
-    if (imgNode.naturalWidth > 5) {
-      imgNode.style.display = "block";
-      fallbackNode.style.display = "none";
-    } else {
-      imgNode.style.display = "none";
-      fallbackNode.style.display = "block";
-    }
+    if (imgNode.naturalWidth > 5) { imgNode.style.display = "block"; fallbackNode.style.display = "none"; } 
+    else { imgNode.style.display = "none"; fallbackNode.style.display = "block"; }
   };
 }
-
-function handleInfoCardImageError() {
-  document.getElementById('infoCardCoverImg').style.display = "none";
-  document.getElementById('infoCardGlyph').style.display = "block";
-}
-
-function closeInfoCardOverlay() {
-  document.getElementById('globalInfoCardOverlaySleeve').classList.remove('show');
-}
+function handleInfoCardImageError() { document.getElementById('infoCardCoverImg').style.display = "none"; document.getElementById('infoCardGlyph').style.display = "block"; }
+function closeInfoCardOverlay() { document.getElementById('globalInfoCardOverlaySleeve').classList.remove('show'); }
 
 function pivotToConfigurationModal() {
   closeInfoCardOverlay();
-  
-  // Map parameters into structural standard forms immediately
   document.getElementById('mTitle').textContent = currentBook.title; 
   document.getElementById('mAuthor').textContent = "By Author " + currentBook.author;
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
-  
   const w = document.getElementById('modalProgressWrapper');
   if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
-  
   renderStarSelectors(currentBook.myRating);
   document.getElementById('notesInput').value = currentBook.notes || '';
   document.getElementById('modalOverlay').classList.add('open');
@@ -1997,54 +1493,31 @@ function pivotToConfigurationModal() {
 
 function renderStarSelectors(currentRating) {
   let starsHtml = '';
-  for(let i=1; i<=10; i++) {
-    starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`;
-  }
+  for(let i=1; i<=10; i++) starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`;
   document.getElementById('ratingBtns').innerHTML = starsHtml;
 }
-
 function setModalRating(val) {
   currentBook._pendingRating = val;
-  document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => {
-    if(idx < val) btn.classList.add('active');
-    else btn.classList.remove('active');
-  });
+  document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => { if(idx < val) btn.classList.add('active'); else btn.classList.remove('active'); });
 }
 
-// ── CONFETTI EMOTE FOUNTAIN SIMULATOR FOR WINNER CARDS ───────────────────
 function triggerCasinoEmoteFountainSplash() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   overlayCardNode.classList.add('winner-flash-active');
-
   const emotePool = ['👑', '⚔️', '🎰', '📜', '✨', '🔥', '📚'];
-  const particleCount = 45;
-
   const rect = overlayCardNode.getBoundingClientRect();
   const spawnX = rect.left + (rect.width / 2);
   const spawnY = rect.top + (rect.height / 3);
-
-  for (let i = 0; i < particleCount; i++) {
+  for (let i = 0; i < 45; i++) {
     setTimeout(() => {
       const particle = document.createElement('div');
-      particle.className = 'casino-splash-particle';
-      particle.textContent = emotePool[Math.floor(Math.random() * emotePool.length)];
-      
-      particle.style.left = `${spawnX}px`;
-      particle.style.top = `${spawnY}px`;
-
-      const angle = (Math.random() * Math.PI * 2);
-      const velocity = (Math.random() * 180) + 70;
-      const xVector = Math.cos(angle) * velocity;
-      const yVector = Math.sin(angle) * velocity - 120; 
-
-      particle.style.setProperty('--x-vector', `${xVector}px`);
-      particle.style.setProperty('--y-vector', `${yVector}px`);
-
+      particle.className = 'casino-splash-particle'; particle.textContent = emotePool[Math.floor(Math.random() * emotePool.length)];
+      particle.style.left = `${spawnX}px`; particle.style.top = `${spawnY}px`;
+      const angle = (Math.random() * Math.PI * 2); const velocity = (Math.random() * 180) + 70;
+      particle.style.setProperty('--x-vector', `${Math.cos(angle) * velocity}px`);
+      particle.style.setProperty('--y-vector', `${Math.sin(angle) * velocity - 120}px`);
       document.body.appendChild(particle);
-
-      particle.addEventListener('animationend', () => {
-        particle.remove();
-      });
+      particle.addEventListener('animationend', () => particle.remove());
     }, i * 15);
   }
 }
@@ -2057,13 +1530,11 @@ function saveBook() {
   if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
   currentBook.notes = document.getElementById('notesInput').value.trim();
   if(currentBook.status === 'Reading') currentBook.currentPage = parseInt(document.getElementById('inputCurrentPage').value) || 0;
-  
   try { 
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}'); 
     saved[currentBook.id] = { status: currentBook.status, currentPage: currentBook.currentPage || 0, myRating: currentBook.myRating, notes: currentBook.notes, coverUrl: currentBook.coverUrl || null }; 
     localStorage.setItem('barbies_library', JSON.stringify(saved)); 
   } catch(e) {}
-  
   currentBook._pendingStatus = null; currentBook._pendingRating = undefined;
   updateHomeView(); renderBooks(); document.getElementById('modalOverlay').classList.remove('open'); 
   executeAutomatedBackgroundPipelineAutosave();
@@ -2081,11 +1552,10 @@ function renderHomepageChartsPreview() {
         <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold);">${p1.title}</div><div class="podium-book-rating">👑 ${p1.myRating||'—'}</div><div class="podium-block podium-step-1"><span class="podium-number">I</span></div></div>
         <div class="podium-column"><div class="podium-book-title">${p3.title}</div><div class="podium-book-rating">★ ${p3.myRating||'—'}</div><div class="podium-block podium-step-3"><span class="podium-number">III</span></div></div>
       </div>`;
-  if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
   const canvasEl = document.getElementById('homeStatusPieChart');
   if (canvasEl) {
-    const ctx = canvasEl.getContext('2d');
-    activeCharts.homeStatus = new Chart(ctx, { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#3b629b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+    if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
+    activeCharts.homeStatus = new Chart(canvasEl.getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#3b629b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
   }
 }
 
@@ -2098,27 +1568,18 @@ function renderCharts() {
         <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold);">${p1.title}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
         <div class="podium-column"><div class="podium-book-title charts-view-title-size">${p3.title}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
-  
-  const sublist = rated.slice(3, 10);
-  document.getElementById('subRankingsMount').innerHTML = sublist.map((b, i) => `
+  document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
     <div class="sub-rank-item">
       <span class="sub-rank-num">#${i+4}</span>
       <div class="sub-rank-details"><div class="sub-rank-title">${b.title}</div><div class="sub-rank-author">${b.author}</div></div>
       <span class="sub-rank-score">★ ${b.myRating}</span>
-    </div>
-  `).join('');
+    </div>`).join('');
 
-  if(activeCharts.status) activeCharts.status.destroy(); 
-  if(activeCharts.genre) activeCharts.genre.destroy();
-  
-  const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
-  activeCharts.status = new Chart(ctxStatus, { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#3b629b', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-  
+  if(activeCharts.status) activeCharts.status.destroy(); if(activeCharts.genre) activeCharts.genre.destroy();
+  activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#3b629b', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
   const genreLookup = {}; books.forEach(b => { const normalized = normalizeGenre(b.genre); genreLookup[normalized] = (genreLookup[normalized] || 0) + 1; });
   const sortedGenres = Object.entries(genreLookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
-  const ctxGenre = document.getElementById('genrePieChart').getContext('2d');
-  activeCharts.genre = new Chart(ctxGenre, { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#3b629b', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-
+  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#3b629b', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
   const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim(); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
   document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill">${count} books</span></div>`).join('');
 }
@@ -2129,30 +1590,20 @@ function showView(view) {
   document.getElementById('libraryView').className = 'library-view' + (view === 'library'?' visible':'');
   document.getElementById('chartsView').className = 'charts-view' + (view === 'charts'?' visible':'');
   document.getElementById('paralysisView').className = 'paralysis-view' + (view === 'paralysis'?' visible':'');
-  
   document.getElementById('navHome').className = 'nav-btn' + (view === 'home'?' active':'');
   document.getElementById('navLib').className = 'nav-btn' + (view === 'library'?' active':'');
   document.getElementById('navCharts').className = 'nav-btn' + (view === 'charts'?' active':'');
   document.getElementById('navParalysis').className = 'nav-btn' + (view === 'paralysis'?' active':'');
-  
   if (view === 'home') updateHomeView();
   else if (view === 'library') { renderGenreRow(); renderBooks(); updateUIRowCounters(); }
   else if (view === 'charts') renderCharts();
-  else if (view === 'paralysis') { configureRouletteDataPool(); initParalysisInputListeners(); }
+  else if (view === 'paralysis') { configureRouletteDataPool(); populateDynamicCasinoGenreChips(); initParalysisInputListeners(); }
 }
 
-function statusKey(s) { 
-  if (s === "Won't Continue" || s === "Wont") return "Wont"; 
-  return s; 
-}
-
-function statusLabel(s) { 
-  if (s === "TBR") return "To Read";
-  if (s === "Reading") return "Reading";
-  if (s === "Complete") return "Completed";
-  if (s === "DNF") return "Dropped";
-  if (s === "Old") return "Past Reads";
-  if (s === "Won't Continue" || s === "Wont") return "Won't Continue";
+function statusKey(s) { return (s === "Won't Continue" || s === "Wont") ? "Wont" : s; }
+function statusLabel(s) {
+  if (s === "TBR") return "To Read"; if (s === "Reading") return "Reading"; if (s === "Complete") return "Completed";
+  if (s === "DNF") return "Dropped"; if (s === "Old") return "Past Reads"; if (s === "Won't Continue" || s === "Wont") return "Won't Continue";
   return s; 
 }
 
@@ -2162,9 +1613,7 @@ let wheelWeightFilter = 'All';
 let isWheelCurrentlySpinning = false;
 let paralysisWinningBookPointer = null;
 
-// Core Kinetic Rendering State Engine Variables
 let wheelCurrentRotationAngle = 0; 
-let wheelCurrentVelocityValue = 0; 
 let pickedWedgeIndexPointer = null; 
 let isUserDraggingWheelTimeline = false; 
 let dragAngleStartCoord = 0; 
@@ -2173,440 +1622,325 @@ let dragTimestampRegistry = [];
 let paralysisAnimationRequestPointer = null; 
 let dragMovementDeltaThreshold = 0;
 
+let spinDurationTarget = 0;
+let spinStartTimestamp = 0;
+let spinAngleInitialOffset = 0;
+let spinAngleTotalDistance = 0;
+
+function isAudioFXEnabled() {
+  return document.getElementById('casinoAudioToggle')?.checked;
+}
+
 function playCasinoTickAudio(frequencyScale = 1) {
+  if (!isAudioFXEnabled()) return;
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(120 * frequencyScale, ctx.currentTime);
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.06);
+    const osc = ctx.createOscillator(); const filter = ctx.createBiquadFilter(); const gain = ctx.createGain();
+    osc.type = 'sawtooth'; osc.frequency.setValueAtTime(45 * frequencyScale, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(10, ctx.currentTime + 0.12);
+    filter.type = 'lowpass'; filter.frequency.setValueAtTime(280, ctx.currentTime);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 0.12);
   } catch(e) {}
 }
 
 function playCasinoJackpotChimeAudio() {
+  if (!isAudioFXEnabled()) return;
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [440, 554, 659, 880];
-    notes.forEach((freq, index) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + (index * 0.1));
-      gain.gain.setValueAtTime(0.1, ctx.currentTime + (index * 0.1));
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (index * 0.1) + 0.3);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + (index * 0.1));
-      osc.stop(ctx.currentTime + (index * 0.1) + 0.35);
+    const now = ctx.currentTime;
+    [261.63, 329.63, 392.00, 523.25, 659.25, 783.99].forEach((freq, index) => {
+      const osc = ctx.createOscillator(); const envelopeGain = ctx.createGain();
+      osc.type = 'sine'; osc.frequency.setValueAtTime(freq, now + (index * 0.08));
+      envelopeGain.gain.setValueAtTime(0.12, now + (index * 0.08));
+      envelopeGain.gain.linearRampToValueAtTime(0.08, now + (index * 0.08) + 0.2);
+      envelopeGain.gain.exponentialRampToValueAtTime(0.001, now + (index * 0.08) + 0.6);
+      osc.connect(envelopeGain); envelopeGain.connect(ctx.destination);
+      osc.start(now + (index * 0.08)); osc.stop(now + (index * 0.08) + 0.65);
     });
   } catch(e) {}
 }
 
+function populateDynamicCasinoGenreChips() {
+  const tbrBooks = books.filter(b => b.status === 'TBR');
+  const distinctGenres = [...new Set(tbrBooks.map(b => normalizeGenre(b.genre)))].sort();
+  const tray = document.getElementById('casinoDynamicGenreChips');
+  if (!tray) return;
+  if (distinctGenres.length === 0) {
+    tray.innerHTML = `<span style="font-size:10px; color:var(--text-muted)">No genres logged in TBR pool</span>`;
+    return;
+  }
+  tray.innerHTML = distinctGenres.map(genre => {
+    const chipId = `stakeGenre_${genre.replace(/[^a-zA-Z0-9]/g, '')}`;
+    return `<div class="stake-chip" id="${chipId}" onclick="setWheelWeightFilter('genre:${genre.replace(/'/g, "\\'")}')">${genre}</div>`;
+  }).join('');
+}
+
 function configureRouletteDataPool() {
   let list = books.filter(b => b.status === 'TBR');
-  
   if (wheelWeightFilter === 'short') list = list.filter(b => parseInt(b.pages) < 350);
   else if (wheelWeightFilter === 'medium') list = list.filter(b => parseInt(b.pages) >= 350 && parseInt(b.pages) <= 550);
   else if (wheelWeightFilter === 'long') list = list.filter(b => parseInt(b.pages) > 550);
+  else if (wheelWeightFilter.startsWith('genre:')) {
+    list = list.filter(b => normalizeGenre(b.genre) === wheelWeightFilter.split('genre:')[1]);
+  }
   
-  rouletteTBRPool = list.slice(0, 16); 
-  pickedWedgeIndexPointer = null;
+  // ── FISHER-YATES TRUE RANDOM COLLECTION SHUFFLE ──
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  
+  rouletteTBRPool = list.slice(0, 16); pickedWedgeIndexPointer = null;
   renderHTML5CasinoCanvasWheel();
 }
 
 function renderHTML5CasinoCanvasWheel() {
-  const canvas = document.getElementById('canvasTBRWheel');
-  if (!canvas) return;
+  const canvas = document.getElementById('canvasTBRWheel'); if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
-  const renderBounds = canvas.getBoundingClientRect();
-  const dpr = window.devicePixelRatio || 1;
-  
-  canvas.width = renderBounds.width * dpr;
-  canvas.height = renderBounds.height * dpr;
-  
-  const w = canvas.width;
-  const h = canvas.height;
-  const cx = w / 2;
-  const cy = h / 2;
-  const r = cx - (35 * dpr); 
-
+  const renderBounds = canvas.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
+  canvas.width = renderBounds.width * dpr; canvas.height = renderBounds.height * dpr;
+  const w = canvas.width; const h = canvas.height; const cx = w / 2; const cy = h / 2; const r = cx - (35 * dpr); 
   ctx.clearRect(0, 0, w, h);
 
   if (rouletteTBRPool.length === 0) {
-    ctx.fillStyle = '#1c181c';
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI); ctx.fill();
-    ctx.fillStyle = '#8c7f70';
-    ctx.font = `bold ${16 * dpr}px 'JetBrains Mono', monospace`;
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("NO TBR RECORDS MATCH FILTER", cx, cy);
+    ctx.fillStyle = '#1c181c'; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillStyle = '#8c7f70'; ctx.font = `bold ${14 * dpr}px 'JetBrains Mono', monospace`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("NO TBR ENTRIES MATCH CRITERIA", cx, cy);
     return;
   }
 
   const arcSize = (2 * Math.PI) / rouletteTBRPool.length;
   const spectrumColors = ['#e63946', '#f4a261', '#e9c46a', '#2a9d8f', '#457b9d', '#a2d2ff', '#b5e2fa', '#c8b6ff', '#ffc6ff', '#e07a5f'];
 
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(wheelCurrentRotationAngle);
-
+  ctx.save(); ctx.translate(cx, cy); ctx.rotate(wheelCurrentRotationAngle);
   rouletteTBRPool.forEach((book, i) => {
-    const angleStart = i * arcSize;
-    const angleEnd = angleStart + arcSize;
-    
+    const angleStart = i * arcSize; const angleEnd = angleStart + arcSize;
     ctx.save();
-    
     if (pickedWedgeIndexPointer === i) {
-      const shiftDistanceScalar = 26 * dpr;
-      const bisectAngleVector = angleStart + arcSize / 2;
+      const shiftDistanceScalar = 26 * dpr; const bisectAngleVector = angleStart + arcSize / 2;
       ctx.translate(Math.cos(bisectAngleVector) * shiftDistanceScalar, Math.sin(bisectAngleVector) * shiftDistanceScalar);
     }
+    ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#141113' : spectrumColors[i % spectrumColors.length];
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r, angleStart, angleEnd); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 1 * dpr; ctx.strokeStyle = '#0a0709'; ctx.stroke();
 
-    ctx.fillStyle = spectrumColors[i % spectrumColors.length];
-    if (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) {
-      ctx.fillStyle = '#141113'; 
-    }
-    
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(0, 0, r, angleStart, angleEnd);
-    ctx.closePath();
-    ctx.fill();
-    
-    ctx.lineWidth = 1 * dpr;
-    ctx.strokeStyle = '#0a0709';
-    ctx.stroke();
-
-    ctx.save();
-    ctx.rotate(angleStart + arcSize / 2);
+    ctx.save(); ctx.rotate(angleStart + arcSize / 2);
     ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#383036' : '#000';
-    
-    let computedFontSize = renderBounds.width < 340 ? 9 * dpr : 12 * dpr;
-    ctx.font = `bold ${computedFontSize}px 'JetBrains Mono', monospace`;
-    ctx.textAlign = "right";
-    ctx.textBaseline = "middle";
-    
-    let label = book.title;
-    let maxCharLength = renderBounds.width < 340 ? 12 : 24;
-    if (label.length > maxCharLength) label = label.substring(0, maxCharLength - 2) + "...";
+    ctx.font = `bold ${(renderBounds.width < 340 ? 9 : 12) * dpr}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    let label = book.title; let maxChar = renderBounds.width < 340 ? 12 : 24;
+    if (label.length > maxChar) label = label.substring(0, maxChar - 2) + "...";
     ctx.fillText(label, r - (16 * dpr), 0);
-    ctx.restore();
-    
-    ctx.restore();
+    ctx.restore(); ctx.restore();
   });
-
   ctx.restore();
-
-  // Draw Central Anchor Cap
-  ctx.fillStyle = '#161215';
-  ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
+  ctx.fillStyle = '#161215'; ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
   ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
 }
 
-function varLabelGet(variableName) { 
-  return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; 
-}
+function varLabelGet(variableName) { return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; }
 
 function setWheelWeightFilter(weightClass) {
   if (isWheelCurrentlySpinning) return;
   wheelWeightFilter = weightClass;
-  updateCasinoChipsUI('stakeWeight' + weightClass.charAt(0).toUpperCase() + weightClass.slice(1));
+  document.querySelectorAll('.stakes-panel .stake-chip').forEach(c => c.classList.remove('active'));
+  if (weightClass.startsWith('genre:')) {
+    document.getElementById(`stakeGenre_${weightClass.split('genre:')[1].replace(/[^a-zA-Z0-9]/g, '')}`)?.classList.add('active');
+  } else {
+    document.getElementById('stakeWeight' + weightClass.charAt(0).toUpperCase() + weightClass.slice(1))?.classList.add('active');
+  }
   configureRouletteDataPool();
 }
 
-function updateCasinoChipsUI(activeId) {
-  document.querySelectorAll('.stakes-row-chips .stake-chip').forEach(c => c.classList.remove('active'));
-  document.getElementById(activeId).classList.add('active');
-}
-
-// ── KINETIC SWIPE TOSS AND TAP INTERACTION MANAGER MODULES ───────────────────
 function initParalysisInputListeners() {
-  const canvas = document.getElementById('canvasTBRWheel');
-  if (!canvas || canvas.dataset.listenersHooked === "true") return;
-
+  const canvas = document.getElementById('canvasTBRWheel'); if (!canvas || canvas.dataset.listenersHooked === "true") return;
   function calculateTouchAngle(e) {
     const rect = canvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const x = clientX - rect.left - rect.width / 2;
-    const y = clientY - rect.top - rect.height / 2;
-    return Math.atan2(y, x);
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    return Math.atan2(clientY - rect.top - rect.height / 2, clientX - rect.left - rect.width / 2);
   }
-
   canvas.addEventListener('mousedown', initiateKineticDragSequence);
   canvas.addEventListener('touchstart', initiateKineticDragSequence, { passive: true });
 
   function initiateKineticDragSequence(e) {
     if (isWheelCurrentlySpinning) return;
-    isUserDraggingWheelTimeline = true;
-    dragMovementDeltaThreshold = 0;
-    dragAngleStartCoord = calculateTouchAngle(e);
-    dragAngleBaseOffset = wheelCurrentRotationAngle;
+    isUserDraggingWheelTimeline = true; dragMovementDeltaThreshold = 0;
+    dragAngleStartCoord = calculateTouchAngle(e); dragAngleBaseOffset = wheelCurrentRotationAngle;
     dragTimestampRegistry = [{ angle: dragAngleStartCoord, time: performance.now() }];
-    
     if (paralysisAnimationRequestPointer) cancelAnimationFrame(paralysisAnimationRequestPointer);
-
-    window.addEventListener('mousemove', computeKineticDragStep);
-    window.addEventListener('touchmove', computeKineticDragStep, { passive: false });
-    window.addEventListener('mouseup', terminateKineticDragSequence);
-    window.addEventListener('touchend', terminateKineticDragSequence);
+    window.addEventListener('mousemove', computeKineticDragStep); window.addEventListener('touchmove', computeKineticDragStep, { passive: false });
+    window.addEventListener('mouseup', terminateKineticDragSequence); window.addEventListener('touchend', terminateKineticDragSequence);
   }
 
   function computeKineticDragStep(e) {
-    if (!isUserDraggingWheelTimeline) return;
-    if (e.cancelable) e.preventDefault();
-
-    const currentAngle = calculateTouchAngle(e);
-    const deltaAngle = currentAngle - dragAngleStartCoord;
-    
-    dragMovementDeltaThreshold += Math.abs(deltaAngle);
-    wheelCurrentRotationAngle = dragAngleBaseOffset + deltaAngle;
-    
+    if (!isUserDraggingWheelTimeline) return; if (e.cancelable) e.preventDefault();
+    const currentAngle = calculateTouchAngle(e); const deltaAngle = currentAngle - dragAngleStartCoord;
+    dragMovementDeltaThreshold += Math.abs(deltaAngle); wheelCurrentRotationAngle = dragAngleBaseOffset + deltaAngle;
     dragTimestampRegistry.push({ angle: wheelCurrentRotationAngle, time: performance.now() });
     if (dragTimestampRegistry.length > 5) dragTimestampRegistry.shift();
-
     renderHTML5CasinoCanvasWheel();
   }
 
   function terminateKineticDragSequence() {
-    if (!isUserDraggingWheelTimeline) return;
-    isUserDraggingWheelTimeline = false;
-
-    window.removeEventListener('mousemove', computeKineticDragStep);
-    window.removeEventListener('touchmove', computeKineticDragStep);
-    window.removeEventListener('mouseup', terminateKineticDragSequence);
-    window.removeEventListener('touchend', terminateKineticDragSequence);
-
+    if (!isUserDraggingWheelTimeline) return; isUserDraggingWheelTimeline = false;
+    window.removeEventListener('mousemove', computeKineticDragStep); window.removeEventListener('touchmove', computeKineticDragStep);
+    window.removeEventListener('mouseup', terminateKineticDragSequence); window.removeEventListener('touchend', terminateKineticDragSequence);
     const history = dragTimestampRegistry;
     if (history.length >= 2) {
-      const first = history[0];
-      const last = history[history.length - 1];
-      const dt = last.time - first.time;
-      const da = last.angle - first.angle;
-      
+      const first = history[0]; const last = history[history.length - 1];
+      const dt = last.time - first.time; const da = last.angle - first.angle;
       if (dt > 10 && Math.abs(da) > 0.05 && dragMovementDeltaThreshold > 0.05) {
-        wheelCurrentVelocityValue = (da / dt) * 16; 
-        if (Math.abs(wheelCurrentVelocityValue) > 0.12) {
-          executeInertialDecelerationLoop();
+        let microForceToss = (da / dt) * 16;
+        if (Math.abs(microForceToss) > 0.12) {
+          spinAngleInitialOffset = wheelCurrentRotationAngle;
+          spinDurationTarget = (Math.random() * 4000) + 3000;
+          spinAngleTotalDistance = microForceToss * (spinDurationTarget / 15);
+          spinStartTimestamp = performance.now();
+          executeTimeEasedDecelerationLoop();
           return;
         }
       }
     }
-
-    if (dragMovementDeltaThreshold < 0.15) {
-      processWedgeTapInspection(dragAngleStartCoord);
-    }
+    if (dragMovementDeltaThreshold < 0.15) processWedgeTapInspection(dragAngleStartCoord);
   }
-
   canvas.dataset.listenersHooked = "true";
 }
 
 function processWedgeTapInspection(absoluteRadialAngle) {
   if (rouletteTBRPool.length === 0) return;
-
   let transformedAngle = (absoluteRadialAngle - wheelCurrentRotationAngle) % (2 * Math.PI);
   if (transformedAngle < 0) transformedAngle += 2 * Math.PI;
-
   const segmentArcSize = (2 * Math.PI) / rouletteTBRPool.length;
   const pickedIndex = Math.floor(transformedAngle / segmentArcSize) % rouletteTBRPool.length;
-
   if (pickedWedgeIndexPointer === pickedIndex) {
-    pickedWedgeIndexPointer = null;
-    document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision";
-    renderHTML5CasinoCanvasWheel();
+    pickedWedgeIndexPointer = null; document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision"; renderHTML5CasinoCanvasWheel();
   } else {
-    pickedWedgeIndexPointer = pickedIndex;
-    paralysisWinningBookPointer = rouletteTBRPool[pickedIndex];
-    
-    const sliceCenterRadial = (pickedIndex * segmentArcSize) + (segmentArcSize / 2);
-    const lockedAlignmentTarget = -sliceCenterRadial;
-
+    pickedWedgeIndexPointer = pickedIndex; paralysisWinningBookPointer = rouletteTBRPool[pickedIndex];
     document.getElementById('casinoSubLabel').textContent = "INSPECTING SELECTED TOME ENTRY...";
-
-    let easeStartTimestamp = performance.now();
-    let initialRotationVector = wheelCurrentRotationAngle;
-    
+    let easeStartTimestamp = performance.now(); let initialRotationVector = wheelCurrentRotationAngle;
+    const lockedAlignmentTarget = -((pickedIndex * segmentArcSize) + (segmentArcSize / 2));
     function stepAlignmentEase(now) {
-      let durationElapsed = now - easeStartTimestamp;
-      let progressRatio = Math.min(durationElapsed / 320, 1); 
-      let easeMultiplier = progressRatio * (2 - progressRatio);
-      
-      wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * easeMultiplier;
+      let progressRatio = Math.min((now - easeStartTimestamp) / 320, 1);
+      wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * (progressRatio * (2 - progressRatio));
       renderHTML5CasinoCanvasWheel();
-      
-      if (progressRatio < 1) {
-        requestAnimationFrame(stepAlignmentEase);
-      } else {
-        triggerTradingCardEncounterModal();
-      }
+      if (progressRatio < 1) requestAnimationFrame(stepAlignmentEase); else triggerTradingCardEncounterModal(false);
     }
     requestAnimationFrame(stepAlignmentEase);
   }
 }
 
-function executeInertialDecelerationLoop() {
-  isWheelCurrentlySpinning = true;
-  pickedWedgeIndexPointer = null;
-  document.getElementById('btnSpinParalysis').textContent = "🎰 SPINNING...";
-  document.getElementById('btnSpinParalysis').disabled = true;
+function executeTimeEasedDecelerationLoop() {
+  isWheelCurrentlySpinning = true; pickedWedgeIndexPointer = null;
+  document.getElementById('btnSpinParalysis').textContent = "🎰 ROLLING THE WHEEL..."; document.getElementById('btnSpinParalysis').disabled = true;
+  let lastTickAngle = wheelCurrentRotationAngle; const sliceArcUnit = (2 * Math.PI) / rouletteTBRPool.length;
 
-  let lastTickAngle = wheelCurrentRotationAngle;
-  const deltaAudioTickLimit = (2 * Math.PI) / rouletteTBRPool.length;
-
-  function processDecelerationTick() {
-    wheelCurrentRotationAngle += wheelCurrentVelocityValue;
-    wheelCurrentVelocityValue *= 0.984; 
-
-    if (Math.abs(wheelCurrentRotationAngle - lastTickAngle) >= deltaAudioTickLimit) {
-      playCasinoTickAudio(Math.max(0.6, Math.min(1.4, Math.abs(wheelCurrentVelocityValue) * 4.5)));
+  function runFrame(now) {
+    let elapsed = now - spinStartTimestamp; let progressRatio = Math.min(elapsed / spinDurationTarget, 1);
+    wheelCurrentRotationAngle = spinAngleInitialOffset + (spinAngleTotalDistance * (1 - Math.pow(1 - progressRatio, 3)));
+    if (Math.abs(wheelCurrentRotationAngle - lastTickAngle) >= sliceArcUnit) {
+      playCasinoTickAudio(Math.max(0.4, (1 - progressRatio) * 1.5));
       lastTickAngle = wheelCurrentRotationAngle;
     }
-
-    if (Math.abs(wheelCurrentVelocityValue) > 0.0015) {
-      renderHTML5CasinoCanvasWheel();
-      paralysisAnimationRequestPointer = requestAnimationFrame(processDecelerationTick);
+    if (progressRatio < 1) {
+      renderHTML5CasinoCanvasWheel(); paralysisAnimationRequestPointer = requestAnimationFrame(runFrame);
     } else {
       isWheelCurrentlySpinning = false;
-      document.getElementById('btnSpinParalysis').textContent = "Break The Paralysis 🎰";
-      document.getElementById('btnSpinParalysis').disabled = false;
+      document.getElementById('btnSpinParalysis').textContent = "Break The Paralysis 🎰"; document.getElementById('btnSpinParalysis').disabled = false;
       document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision";
-
       let finalPegOffsetAngle = (-wheelCurrentRotationAngle + (Math.PI * 1.5)) % (2 * Math.PI);
       if (finalPegOffsetAngle < 0) finalPegOffsetAngle += 2 * Math.PI;
-
-      const singleSliceArc = (2 * Math.PI) / rouletteTBRPool.length;
-      const verifiedIndexWinner = Math.floor(finalPegOffsetAngle / singleSliceArc) % rouletteTBRPool.length;
-
-      paralysisWinningBookPointer = rouletteTBRPool[verifiedIndexWinner];
-      pickedWedgeIndexPointer = verifiedIndexWinner;
-      renderHTML5CasinoCanvasWheel();
-      triggerTradingCardEncounterModal();
+      const verifiedIndexWinner = Math.floor(finalPegOffsetAngle / sliceArcUnit) % rouletteTBRPool.length;
+      paralysisWinningBookPointer = rouletteTBRPool[verifiedIndexWinner]; pickedWedgeIndexPointer = verifiedIndexWinner;
+      renderHTML5CasinoCanvasWheel(); 
+      triggerGrandVictorySequence();
     }
   }
-  paralysisAnimationRequestPointer = requestAnimationFrame(processDecelerationTick);
+  paralysisAnimationRequestPointer = requestAnimationFrame(runFrame);
 }
 
 function executeParalysisWheelSpin() {
   if (isWheelCurrentlySpinning || rouletteTBRPool.length === 0) return;
   closeTradingCardOverlay();
-  
-  wheelCurrentVelocityValue = (Math.random() * 0.35) + 0.45; 
-  executeInertialDecelerationLoop();
+  configureRouletteDataPool(); // Dynamic shuffle trigger prior to spin initialization loop setup
+  spinDurationTarget = (Math.random() * 4000) + 3000; 
+  spinAngleInitialOffset = wheelCurrentRotationAngle;
+  spinAngleTotalDistance = (Math.random() * 25) + 35; 
+  spinStartTimestamp = performance.now();
+  executeTimeEasedDecelerationLoop();
 }
 
-async function triggerTradingCardEncounterModal() {
+function triggerGrandVictorySequence() {
   if (!paralysisWinningBookPointer) return;
-  
-  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
-  const coverImg = document.getElementById('cardBookCoverImg');
-  const fallbackIllustration = document.getElementById('cardBookGlyph');
-  
-  coverImg.style.display = "none";
-  fallbackIllustration.style.display = "block";
+  const bannerNode = document.getElementById('casinoWinnerBanner');
+  document.getElementById('winnerBannerBookName').textContent = paralysisWinningBookPointer.title.toUpperCase();
+  bannerNode.classList.add('pop-active');
+  playCasinoJackpotChimeAudio();
+  setTimeout(() => {
+    bannerNode.classList.remove('pop-active');
+    triggerTradingCardEncounterModal(true);   
+  }, 2200);
+}
 
+async function triggerTradingCardEncounterModal(isFromSpin = false) {
+  if (!paralysisWinningBookPointer) return;
+  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
+  const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
+  
+  coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
   document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
+  document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
   
-  document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || 
-    "A legendary chronicle waiting to be uncovered within the deep stacks of Barbie's framework structure.";
-
-  overlayCardNode.classList.add('show');
-  triggerCasinoEmoteFountainSplash();
-
-  if (paralysisWinningBookPointer.coverUrl) {
-    assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl);
-    return;
-  }
-
+  overlayCardNode.classList.add('show'); 
+  if (isFromSpin) triggerCasinoEmoteFountainSplash();
+  
+  if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
     try {
       const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`);
       const gBooksData = await gBooksResponse.json();
       if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-        let secureUrl = gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-        assignImageToTargetNode(coverImg, fallbackIllustration, secureUrl);
+        assignImageToTargetNode(coverImg, fallbackIllustration, gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
         return;
       }
     } catch(e) {}
   }
-
   try {
-    const cleanTitle = paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
-    const cleanAuthor = paralysisWinningBookPointer.author.split(',')[0].trim();
-    const textQueryString = encodeURIComponent(`intitle:"${cleanTitle}"+inauthor:"${cleanAuthor}"`);
-    
-    const textSearchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${textQueryString}&maxResults=1`);
-    const textSearchData = await textSearchResponse.json();
-    
-    if (textSearchData.items && textSearchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-      let textSecureUrl = textSearchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-      assignImageToTargetNode(coverImg, fallbackIllustration, textSecureUrl);
-      return;
-    }
-  } catch(e) {}
-
-  try {
-    const encodedTitle = encodeURIComponent(paralysisWinningBookPointer.title);
-    const searchResponse = await fetch(`https://openlibrary.org/search.json?title=${encodedTitle}&limit=1`);
+    const query = encodeURIComponent(`intitle:"${paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${paralysisWinningBookPointer.author.split(',')[0].trim()}"`);
+    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
     const searchData = await searchResponse.json();
-    
-    if (searchData.docs && searchData.docs[0]?.cover_i) {
-      const coverId = searchData.docs[0].cover_i;
-      assignImageToTargetNode(coverImg, fallbackIllustration, `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`);
-      return;
-    }
-  } catch(err) {
-    handleTradingCardImageError();
-  }
+    if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+      assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
+    } else { handleTradingCardImageError(); }
+  } catch(e) { handleTradingCardImageError(); }
 }
 
-function handleTradingCardImageError() {
-  document.getElementById('cardBookCoverImg').style.display = "none";
-  document.getElementById('cardBookGlyph').style.display = "block";
-}
-
+function handleTradingCardImageError() { document.getElementById('cardBookCoverImg').style.display = "none"; document.getElementById('cardBookGlyph').style.display = "block"; }
 function acceptParalysisDestiny() {
   if (!paralysisWinningBookPointer) return;
-  
-  paralysisWinningBookPointer.status = 'Reading';
-  paralysisWinningBookPointer.currentPage = 0;
-  
+  paralysisWinningBookPointer.status = 'Reading'; paralysisWinningBookPointer.currentPage = 0;
   try {
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
     saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes, coverUrl: paralysisWinningBookPointer.coverUrl || null };
     localStorage.setItem('barbies_library', JSON.stringify(saved));
   } catch(e) {}
-  
-  closeTradingCardOverlay();
-  updateHomeView();
-  showView('home');
+  closeTradingCardOverlay(); updateHomeView(); showView('home');
 }
-
 function closeTradingCardOverlay() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
-  overlayCardNode.classList.remove('show');
-  overlayCardNode.classList.remove('winner-flash-active');
-  pickedWedgeIndexPointer = null;
-  renderHTML5CasinoCanvasWheel();
+  document.getElementById('casinoWinnerBanner').classList.remove('pop-active');
+  overlayCardNode.classList.remove('show'); overlayCardNode.classList.remove('winner-flash-active');
+  pickedWedgeIndexPointer = null; renderHTML5CasinoCanvasWheel();
 }
 
-window.addEventListener('resize', () => {
-  if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  updateHomeView();
-});
+window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
+window.addEventListener('DOMContentLoaded', () => updateHomeView());
 </script>
 </body>
 </html>
