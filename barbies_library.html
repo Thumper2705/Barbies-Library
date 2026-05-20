@@ -146,7 +146,7 @@
   .reading-label { font-size: 11px; text-transform: uppercase; color: var(--blue-shadow); font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
   .reading-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--text-parchment); font-weight: 700; }
   .reading-author { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
-  
+   
   .reading-blurb-box {
      background: #080608; padding: 12px; font-size: 12px;
      color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
@@ -389,7 +389,7 @@
     position: fixed; top: 35%; left: 50%; transform: translate(-50%, -50%) scale(0.6);
     background: linear-gradient(180deg, #260a0d 0%, #0d0a0d 100%);
     border: 2px solid var(--crimson-light); box-shadow: 0 0 35px rgba(230, 57, 70, 0.85);
-    border-radius: 6px; padding: 20px 24px; text-align: center; z-index: 300000; /* Dominates card chassis */
+    border-radius: 6px; padding: 20px 24px; text-align: center; z-index: 300000;
     transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); opacity: 0; pointer-events: none;
     width: 90%; max-width: 420px;
   }
@@ -438,9 +438,9 @@
   <div class="shelf-grid-layout">
     <div class="shelf-title">Data & Sync Settings</div>
     <div class="shelf-status-readout" id="saveSystemStatusOutputLine">Status: App Running Offline (LocalStorage-Cached)</div>
-    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import 📥</button>
-    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export 📤</button>
-    <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".json" onchange="executeSaveStateFileReaderImport(this)">
+    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
+    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
+    <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
   </div>
 </div>
 
@@ -713,7 +713,7 @@
       <span class="icon">🎰</span><span>Break Paralysis</span>
     </button>
   </div>
-  <div class="console-version-stamp">Secure Matrix Build v3.0</div>
+  <div class="console-version-stamp" id="footerVersionStamp">Secure Matrix Build v3.1</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -738,7 +738,7 @@
       </div>
       <div class="modal-section">
         <div class="modal-label">Personal Notes & Thoughts</div>
-        <textarea class="notes-input" id="notesInput" placeholder="Write downObservations here..."></textarea>
+        <textarea class="notes-input" id="notesInput" placeholder="Write down Observations here..."></textarea>
       </div>
       <button class="save-btn" onclick="saveBook()">Save Changes ✓</button>
       <button class="danger-button" style="margin-top: 16px; background: #260a0d;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
@@ -804,6 +804,9 @@
 </div>
 
 <script>
+// ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
+const SYSTEM_BUILD_VERSION = "v3.1";
+
 // ── DATA REGISTRY PACKAGES ───────────────────────────────────────────────────
 const BOOKS_RAW = [
   [1,"13 Reasons why","Asher J","Won't Continue","Standalone","Young Adult","288",3.84,null,null],
@@ -1149,7 +1152,11 @@ function triggerSentryAlert(customMessageText = null) {
 }
 
 function toggleSettingsControlShelfArray() { document.getElementById('globalSettingsControlShelf').classList.toggle('open'); }
-function triggerMasterImportPipeline() { document.getElementById('hiddenSaveStateFileReaderElement').click(); }
+
+// ── TEXT EXTENSION FILE DATA PIPELINES (TSV TEXT MODE MATRIX) ─────────────────
+function triggerMasterImportPipeline() { 
+  document.getElementById('hiddenSaveStateFileReaderElement').click(); 
+}
 
 function executeSaveStateFileReaderImport(inputElement) {
   const file = inputElement.files[0];
@@ -1157,61 +1164,124 @@ function executeSaveStateFileReaderImport(inputElement) {
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const decodedImportPackage = JSON.parse(e.target.result);
-      if (Array.isArray(decodedImportPackage)) {
-        books = decodedImportPackage;
-        const savedLocalStorageRebuild = {};
-        const customAddedRebuild = [];
-        books.forEach(b => {
-          savedLocalStorageRebuild[b.id] = { status: b.status, currentPage: b.currentPage || 0, myRating: b.myRating, notes: b.notes, coverUrl: b.coverUrl || null };
-          if (b.id > 170) customAddedRebuild.push(b);
+      const rawTextContent = e.target.result;
+      const dataRows = rawTextContent.split('\n').map(r => r.trim()).filter(r => r.length > 0);
+      
+      if (dataRows.length < 2) {
+        alert('Invalid text structure. Missing headers or matrix records.');
+        return;
+      }
+      
+      const fieldsHeader = dataRows[0].split('\t');
+      const standardValidationFields = ['id', 'title', 'author', 'status', 'genre', 'pages'];
+      const profileHeaderCheck = standardValidationFields.every(field => fieldsHeader.includes(field));
+      
+      if (!profileHeaderCheck) {
+        alert('Invalid Text Schema: Missing structural library manifest column layouts.');
+        return;
+      }
+      
+      const reconstructedBooksArray = [];
+      const savedLocalStorageRebuild = {};
+      const customAddedRebuild = [];
+      
+      for (let i = 1; i < dataRows.length; i++) {
+        const itemValues = dataRows[i].split('\t');
+        const bookObject = {};
+        
+        fieldsHeader.forEach((headerKey, index) => {
+          let value = itemValues[index];
+          if (value === 'null' || value === undefined) value = null;
+          bookObject[headerKey] = value;
         });
-        localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
-        localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
-        document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Import Complete. Library Synced Successfully ✓";
-        updateHomeView();
-        if (currentView === 'library') renderBooks();
-        setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
-      } else { alert('Invalid schema data footprint discovered.'); }
-    } catch(err) { alert('Failed to interpret import packet integrity maps.'); }
+        
+        bookObject.id = parseInt(bookObject.id);
+        bookObject.grRating = bookObject.grRating ? parseFloat(bookObject.grRating) : 4.0;
+        bookObject.myRating = bookObject.myRating ? parseFloat(bookObject.myRating) : null;
+        bookObject.currentPage = bookObject.currentPage ? parseInt(bookObject.currentPage) : 0;
+        
+        reconstructedBooksArray.push(bookObject);
+        
+        savedLocalStorageRebuild[bookObject.id] = {
+          status: bookObject.status,
+          currentPage: bookObject.currentPage || 0,
+          myRating: bookObject.myRating,
+          notes: bookObject.notes,
+          coverUrl: bookObject.coverUrl || null
+        };
+        
+        if (bookObject.id > 170) {
+          customAddedRebuild.push(bookObject);
+        }
+      }
+      
+      books = reconstructedBooksArray;
+      localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
+      localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
+      
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Import Complete. Library Synced! ✓";
+      updateHomeView();
+      if (currentView === 'library') renderBooks();
+      setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
+      
+    } catch(err) {
+      alert('Failed to interpret plain text file mapping records structure.');
+    }
   };
   reader.readAsText(file);
 }
 
+function convertLibraryArrayToTextString() {
+  if (books.length === 0) return "";
+  const trackingProperties = Object.keys(books[0]);
+  const textHeaderString = trackingProperties.join('\t');
+  
+  const compiledDataLines = books.map(book => {
+    return trackingProperties.map(key => {
+      const dataValue = book[key];
+      if (dataValue === null || dataValue === undefined) return 'null';
+      return String(dataValue).replace(/[\r\n\t]+/g, " ");
+    }).join('\t');
+  });
+  
+  return [textHeaderString, ...compiledDataLines].join('\n');
+}
+
 async function triggerMasterExportPipeline() {
-  const currentLibraryDataString = JSON.stringify(books, null, 2);
+  const plainTextLibraryContent = convertLibraryArrayToTextString();
+  
   if (window.showSaveFilePicker) {
     try {
       const pickerOptions = {
-        suggestedName: 'BarbiesLibrary_Save.json',
-        types: [{ description: 'JSON Library Save Files', accept: { 'application/json': ['.json'] } }]
+        suggestedName: 'BarbiesLibrary_Manifest.txt',
+        types: [{ description: 'Plain Text Book Registers (.txt)', accept: { 'text/plain': ['.txt'] } }]
       };
       masterFileHandlePointerPC = await window.showSaveFilePicker(pickerOptions);
       const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
-      await outputWritableTrack.write(currentLibraryDataString);
+      await outputWritableTrack.write(plainTextLibraryContent);
       await outputWritableTrack.close();
-      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: PC File Linked. Local Autosave Active!";
-      alert("PC Save State established. Future database changes will overwrite this file automatically.");
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Linked. Autosave Active!";
+      alert("PC Text Save State established. Changes will overwrite this text file smoothly.");
     } catch (e) {}
   } else {
-    const textBlobDataToken = new Blob([currentLibraryDataString], { type: 'application/json' });
+    const textBlobDataToken = new Blob([plainTextLibraryContent], { type: 'text/plain;charset=utf-8' });
     const virtualDownloadElement = document.createElement('a');
-    virtualDownloadElement.download = 'BarbiesLibrary_Save.json';
+    virtualDownloadElement.download = 'BarbiesLibrary_Manifest.txt';
     virtualDownloadElement.href = URL.createObjectURL(textBlobDataToken);
     virtualDownloadElement.style.display = 'none';
     document.body.appendChild(virtualDownloadElement);
     virtualDownloadElement.click();
     document.body.removeChild(virtualDownloadElement);
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Backup File Sent To Native System Download Manager.";
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Log Sent To Native System Download Manager.";
   }
 }
 
 async function executeAutomatedBackgroundPipelineAutosave() {
   if (!masterFileHandlePointerPC) return; 
   try {
-    const currentLibraryDataString = JSON.stringify(books, null, 2);
+    const plainTextLibraryContent = convertLibraryArrayToTextString();
     const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
-    await outputWritableTrack.write(currentLibraryDataString);
+    await outputWritableTrack.write(plainTextLibraryContent);
     await outputWritableTrack.close();
   } catch(e) {
     masterFileHandlePointerPC = null;
@@ -1686,7 +1756,6 @@ function configureRouletteDataPool() {
     list = list.filter(b => normalizeGenre(b.genre) === wheelWeightFilter.split('genre:')[1]);
   }
   
-  // ── FISHER-YATES TRUE RANDOM COLLECTION SHUFFLE ──
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [list[i], list[j]] = [list[j], list[i]];
@@ -1863,7 +1932,7 @@ function executeTimeEasedDecelerationLoop() {
 function executeParalysisWheelSpin() {
   if (isWheelCurrentlySpinning || rouletteTBRPool.length === 0) return;
   closeTradingCardOverlay();
-  configureRouletteDataPool(); // Dynamic shuffle trigger prior to spin initialization loop setup
+  configureRouletteDataPool();
   spinDurationTarget = (Math.random() * 4000) + 3000; 
   spinAngleInitialOffset = wheelCurrentRotationAngle;
   spinAngleTotalDistance = (Math.random() * 25) + 35; 
@@ -1939,8 +2008,12 @@ function closeTradingCardOverlay() {
   pickedWedgeIndexPointer = null; renderHTML5CasinoCanvasWheel();
 }
 
+// Global visual adjustments setup hook parameters
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
-window.addEventListener('DOMContentLoaded', () => updateHomeView());
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('footerVersionStamp').textContent = "Secure Matrix Build " + SYSTEM_BUILD_VERSION;
+  updateHomeView();
+});
 </script>
 </body>
 </html>
