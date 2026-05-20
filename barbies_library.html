@@ -237,7 +237,7 @@
   .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
   .sub-rank-details { flex: 1; min-width: 0; }
-  .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
   .sub-rank-author { font-size: 11px; color: var(--text-muted); }
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
@@ -284,7 +284,7 @@
   .book-card.status-Wont::before { background: var(--text-muted); }
 
   .book-info { flex: 1; min-width: 0; margin-left: 4px; }
-  .book-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .book-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
   .book-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   
   .book-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
@@ -395,7 +395,7 @@
   }
   .global-winner-banner.pop-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
   .winner-banner-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 10px rgba(179, 146, 67, 0.6); text-transform: uppercase; }
-  .winner-banner-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text-parchment); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; }
+  .winner-banner-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text-parchment); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
   .trading-card-overlay.winner-flash-active { animation: neonWinnerPulse 0.4s ease infinite alternate; }
   @keyframes neonWinnerPulse { from { border-color: var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.5); } to { border-color: var(--crimson-light); box-shadow: 0 0 25px rgba(230, 57, 70, 0.9); } }
@@ -487,21 +487,23 @@
   </div>
 
   <div class="stats-grid">
-    <div class="stats-box">
-      <div class="stat-number" id="statTBR">0</div>
-      <div class="stat-label">To Read (TBR)</div>
-    </div>
-    <div class="stats-box">
-      <div class="stat-number" id="statRead">0</div>
-      <div class="stat-label">Completed</div>
-    </div>
-    <div class="stats-box">
-      <div class="stat-number" id="statDNF">0</div>
-      <div class="stat-label">Dropped (DNF)</div>
-    </div>
-    <div class="stats-box">
-      <div class="stat-number" id="statOld">0</div>
-      <div class="stat-label">Past Reads</div>
+    <div class="stats-grid">
+      <div class="stats-box">
+        <div class="stat-number" id="statTBR">0</div>
+        <div class="stat-label">To Read (TBR)</div>
+      </div>
+      <div class="stats-box">
+        <div class="stat-number" id="statRead">0</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stats-box">
+        <div class="stat-number" id="statDNF">0</div>
+        <div class="stat-label">Dropped (DNF)</div>
+      </div>
+      <div class="stats-box">
+        <div class="stat-number" id="statOld">0</div>
+        <div class="stat-label">Past Reads</div>
+      </div>
     </div>
   </div>
 
@@ -756,49 +758,62 @@
       
       <div class="sentry-alert-banner" id="addDuplicationSentryBanner">⚠️ This book is already logged within your library framework.</div>
 
-      <div class="modal-section">
-        <div class="modal-label">Barcode Camera Scanner (Option A)</div>
-        <button class="secondary-button" id="toggleScannerBtn" onclick="toggleOpticalScannerArray()" style="margin-top:0; background:#1f1317; border-color:var(--crimson);">📡 Start Camera Scanner</button>
-        <div class="scanner-viewport-box" id="scannerViewportWrapper">
-          <div id="interactiveReaderElement"></div>
-          
-          <div class="zoom-control-panel">
-            <span>ZOOM</span>
-            <input type="range" id="manualZoomTrackSlider" class="zoom-slider-element" min="1" max="5" step="0.5" value="2.5" oninput="executeDynamicZoomOverride(this.value)">
-            <span id="zoomDisplayNumericLabel">2.5x</span>
+      <!-- STEP 1: GATEKEEPER OPTIONS PATH SELECTOR -->
+      <div id="addBookOptionsSelectorPanel">
+        <button class="cta-button" style="background: var(--blue-shadow); margin-bottom: 8px;" onclick="verifyHardwareAndSwitchWorkflow('scan')">📡 Start Camera Scanner</button>
+        <button class="cta-button" style="background: var(--gold); color: #000;" onclick="switchAddBookWorkflowPath('manual')">✍️ Add Book Manually</button>
+        <button class="secondary-button" style="margin-top: 24px; background: #000; border-color: var(--border-iron);" onclick="closeAddBookModal()">Cancel ✕</button>
+      </div>
+
+      <!-- STEP 2A: CAMERA OPTICAL SCANNER PANEL -->
+      <div id="addBookScannerWorkflowPanel" style="display: none;">
+        <div class="modal-section">
+          <div class="modal-label">Barcode Camera Scanner</div>
+          <div class="scanner-viewport-box active" style="display: block;">
+            <div id="interactiveReaderElement"></div>
+            <div class="zoom-control-panel">
+              <span>ZOOM</span>
+              <input type="range" id="manualZoomTrackSlider" class="zoom-slider-element" min="1" max="5" step="0.5" value="2.5" oninput="executeDynamicZoomOverride(this.value)">
+              <span id="zoomDisplayNumericLabel">2.5x</span>
+            </div>
           </div>
         </div>
+        <button class="secondary-button" style="background: #000; border-color: var(--border-iron); margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('scan')">◀ Back to Options</button>
       </div>
 
-      <div class="modal-section">
-        <div class="modal-label">Manual ISBN Lookup (Option B)</div>
-        <div class="input-inline-btn-row">
-          <input type="text" id="addManualISBNInput" class="simple-text-input" placeholder="e.g. 9780593135204" oninput="hideSentryAlert()">
-          <button class="action-sub-btn" onclick="executeISBNDeepIntelQuery()">Query Database</button>
+      <!-- STEP 2B: MANUAL ENTRY FORM FIELD MATRIX -->
+      <div id="addBookManualFormWorkflowPanel" style="display: none;">
+        <div class="modal-section">
+          <div class="modal-label">Manual ISBN Lookup (Optional API Engine)</div>
+          <div class="input-inline-btn-row">
+            <input type="text" id="addManualISBNInput" class="simple-text-input" placeholder="e.g. 9780593135204" oninput="hideSentryAlert()">
+            <button class="action-sub-btn" onclick="executeISBNDeepIntelQuery()">Query Database</button>
+          </div>
         </div>
-      </div>
 
-      <hr style="border:0; border-top:1px solid var(--border-iron); margin:16px 0;">
+        <hr style="border:0; border-top:1px solid var(--border-iron); margin:16px 0;">
 
-      <div class="modal-section"><div class="modal-label">Book Title *</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
-      <div class="modal-section"><div class="modal-label">Author Name *</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
-      <div class="modal-section"><div class="modal-label">Genre Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
-      <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
-      <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
-      <div class="modal-section">
-        <div class="modal-label">Custom Cover Image URL (Optional Override)</div>
-        <input type="text" id="addCustomCoverUrl" class="simple-text-input" placeholder="e.g. https://site.com/image.jpg">
-      </div>
-      <div class="modal-section">
-        <div class="modal-label">Initial Library Tracking Status</div>
-        <div class="status-select-row" id="addStatusBtns">
-          <button class="status-sel-btn selected" onclick="setAddStatus(this, 'TBR')">To Read</button>
-          <button class="status-sel-btn" onclick="setAddStatus(this, 'Reading')">Reading</button>
-          <button class="status-sel-btn" onclick="setAddStatus(this, 'Complete')">Completed</button>
+        <div class="modal-section"><div class="modal-label">Book Title *</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
+        <div class="modal-section"><div class="modal-label">Author Name *</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
+        <div class="modal-section"><div class="modal-label">Genre Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
+        <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
+        <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
+        <div class="modal-section">
+          <div class="modal-label">Custom Cover Image URL (Optional Override)</div>
+          <input type="text" id="addCustomCoverUrl" class="simple-text-input" placeholder="e.g. https://site.com/image.jpg">
         </div>
+        <div class="modal-section">
+          <div class="modal-label">Initial Library Tracking Status</div>
+          <div class="status-select-row" id="addStatusBtns">
+            <button class="status-sel-btn selected" onclick="setAddStatus(this, 'TBR')">To Read</button>
+            <button class="status-sel-btn" onclick="setAddStatus(this, 'Reading')">Reading</button>
+            <button class="status-sel-btn" onclick="setAddStatus(this, 'Complete')">Completed</button>
+          </div>
+        </div>
+        <button class="save-btn" style="background: var(--crimson); color:#fff" onclick="commitNewBook()">Save Book to Library ✓</button>
+        <button class="secondary-button" style="margin-top: 12px; background: #000; border-color: var(--border-iron);" onclick="navigateBackToOptionsFromWorkflow('manual')">◀ Back to Options</button>
       </div>
-      <button class="save-btn" style="background: var(--crimson); color:#fff" onclick="commitNewBook()">Save Book to Library ✓</button>
-      <button class="secondary-button" style="margin-top: 12px; background: #000; border-color: var(--border-iron);" onclick="closeAddBookModal()">Cancel ✕</button>
+
     </div>
   </div>
 </div>
@@ -1074,7 +1089,7 @@ function updateHomeView() {
     document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
     const currentP = parseInt(reading.currentPage) || 0;
-    
+     
     if (totalP > 0) {
        const percentage = Math.min(100, Math.max(0, Math.round((currentP / totalP) * 100)));
        document.getElementById('readingBarFill').style.width = `${percentage}%`;
@@ -1127,6 +1142,9 @@ function resetSandbox() { if (confirm("Reset custom data entries and clear brows
 function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
 
 function openAddBookModal() { 
+  document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
+  document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
+  document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
   document.getElementById('addBookModalOverlay').classList.add('open'); 
 }
 
@@ -1139,6 +1157,79 @@ function closeAddBookModal() {
   if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
   document.getElementById('addBookModalOverlay').classList.remove('open'); 
   hideSentryAlert();
+}
+
+// Intercept Pre-Check Engine: Validates input media device matrices before triggering standard switches
+function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
+  if (targetWorkflowPath === 'scan') {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+      alert("System Exception: Modern media device framework not found inside this layout workspace. Routing to manual panel.");
+      switchAddBookWorkflowPath('manual');
+      return;
+    }
+    navigator.mediaDevices.enumerateDevices()
+      .then((connectedDevices) => {
+        const hasActiveCameraHardware = connectedDevices.some(device => device.kind === 'videoinput');
+        if (hasActiveCameraHardware) {
+          switchAddBookWorkflowPath('scan');
+        } else {
+          alert("Hardware Alert: No functional video capture peripherals detected on this platform. Routing to Manual Add workflow.");
+          switchAddBookWorkflowPath('manual');
+        }
+      })
+      .catch(() => {
+        alert("Permission Exception: Call denied or intercept security lock engaged. Accessing manual registry panels.");
+        switchAddBookWorkflowPath('manual');
+      });
+  } else {
+    switchAddBookWorkflowPath(targetWorkflowPath);
+  }
+}
+
+function switchAddBookWorkflowPath(workflowType) {
+  document.getElementById('addBookOptionsSelectorPanel').style.display = 'none';
+  if (workflowType === 'scan') {
+    document.getElementById('addBookScannerWorkflowPanel').style.display = 'block';
+    executeScannerBootSequence();
+  } else if (workflowType === 'manual') {
+    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
+  }
+}
+
+function navigateBackToOptionsFromWorkflow(currentWorkflow) {
+  if (currentWorkflow === 'scan') {
+    deconstructOpticalScanner();
+    document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
+  } else if (currentWorkflow === 'manual') {
+    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
+  }
+  hideSentryAlert();
+  document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
+}
+
+function executeScannerBootSequence() {
+  document.getElementById('manualZoomTrackSlider').value = 2.5;
+  document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
+  html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
+  html5QrCodeScannerInstance.start(
+    { facingMode: "environment" },
+    { fps: 15, qrbox: { width: 280, height: 120 }, aspectRatio: 1.0 },
+    (decodedText) => {
+      deconstructOpticalScanner();
+      document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
+      document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
+      document.getElementById('addManualISBNInput').value = decodedText;
+      executeISBNDeepIntelQuery(decodedText);
+    },
+    () => {} 
+  ).then(() => { 
+    setTimeout(function () { executeDynamicZoomOverride(2.5); }, 1200); 
+  }).catch(() => {
+    alert("Runtime Exception: Camera feed stream context dropped instantly. Shifting cleanly to Manual Add workflow.");
+    deconstructOpticalScanner();
+    document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
+    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
+  });
 }
 
 function setAddStatus(el, val) { targetAddBookStatus = val; document.querySelectorAll('#addStatusBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
@@ -1251,7 +1342,6 @@ async function triggerMasterExportPipeline() {
   const plainTextLibraryContent = convertLibraryArrayToTextString();
   const isIOSPlatformDetected = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-  // Branch A: Desktop Google Chrome / MS Edge Native Directory Hooks
   if (window.showSaveFilePicker && !isIOSPlatformDetected) {
     try {
       const pickerOptions = {
@@ -1268,10 +1358,8 @@ async function triggerMasterExportPipeline() {
     } catch (e) {}
   }
 
-  // Branch B: iPhone Apple WebKit Environment (Strict Content Decoupling Fallback)
   if (isIOSPlatformDetected) {
     try {
-      // Force direct Base64 encoding pipeline to stop iOS Safari from loading errors or blank pages
       const rawUtf8Bytes = new TextEncoder().encode(plainTextLibraryContent);
       let binaryByteString = "";
       for (let i = 0; i < rawUtf8Bytes.length; i++) {
@@ -1279,7 +1367,6 @@ async function triggerMasterExportPipeline() {
       }
       const compiledBase64Token = btoa(binaryByteString);
       
-      // Inject raw octet download sequence via explicit context attachment element click loops
       const link = document.createElement('a');
       link.href = 'data:application/octet-stream;layout=tsv;base64,' + compiledBase64Token;
       link.download = 'BarbiesLibrary_Manifest.txt';
@@ -1291,13 +1378,11 @@ async function triggerMasterExportPipeline() {
       document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Sent To iOS Files Vault.";
       alert("iPhone Export Triggered:\nSafari will prompt to download 'BarbiesLibrary_Manifest.txt'. Check your native Apple 'Files' App inside the Downloads path.");
     } catch (iOSException) {
-      // Emergency Screen Display Fallback for unsupported legacy iOS environments
       const displayContainerWindow = window.open("", "_blank");
       displayContainerWindow.document.write("<pre style='font-family:monospace; background:#000; color:#fff; padding:20px;'>" + plainTextLibraryContent + "</pre>");
       alert("iOS Security Restriction Intercepted.\nYour records database has been printed cleanly inside a new workspace tab. Select all, copy, and paste text directly into a notepad file.");
     }
   } else {
-    // Branch C: Standard Android Mobile Chrome / Desktop Safari Blobs Pipeline
     const textBlobDataToken = new Blob([plainTextLibraryContent], { type: 'text/plain;charset=utf-8' });
     const virtualDownloadElement = document.createElement('a');
     virtualDownloadElement.download = 'BarbiesLibrary_Manifest.txt';
@@ -1339,30 +1424,6 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
   return `${surname}, ${tokens[0][0].toUpperCase()}.`;
 }
 
-function toggleOpticalScannerArray() {
-  const elementWrapper = document.getElementById('scannerViewportWrapper');
-  const toggleBtn = document.getElementById('toggleScannerBtn');
-  if (elementWrapper.classList.contains('active')) { deconstructOpticalScanner(); } else {
-    elementWrapper.classList.add('active');
-    toggleBtn.textContent = "🛑 Terminate Video Scanner";
-    document.getElementById('manualZoomTrackSlider').value = 2.5;
-    document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
-    html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
-    html5QrCodeScannerInstance.start(
-      { facingMode: "environment" },
-      { fps: 15, qrbox: { width: 280, height: 120 }, aspectRatio: 1.0 },
-      (decodedText) => {
-        document.getElementById('addManualISBNInput').value = decodedText;
-        deconstructOpticalScanner();
-        executeISBNDeepIntelQuery(decodedText);
-      },
-      () => {} 
-    ).then(() => { setTimeout(function () { executeDynamicZoomOverride(2.5); }, 1200); }).catch(() => {
-      toggleBtn.textContent = "⚠️ Camera Error / Check Permissions";
-    });
-  }
-}
-
 function executeDynamicZoomOverride(zoomFactorValue) {
   if (!html5QrCodeScannerInstance) return;
   document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x";
@@ -1370,10 +1431,6 @@ function executeDynamicZoomOverride(zoomFactorValue) {
 }
 
 function deconstructOpticalScanner() {
-  const elementWrapper = document.getElementById('scannerViewportWrapper');
-  const toggleBtn = document.getElementById('toggleScannerBtn');
-  elementWrapper.classList.remove('active');
-  toggleBtn.textContent = "📡 Start Camera Scanner";
   if (html5QrCodeScannerInstance) {
     html5QrCodeScannerInstance.stop().then(() => { html5QrCodeScannerInstance = null; }).catch(() => {});
   }
@@ -1401,7 +1458,6 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
       document.getElementById('addGenre').value = (bookData.subjects && bookData.subjects.length > 0) ? bookData.subjects[0].name : 'High Fantasy';
       if (books.some(b => b.title.toLowerCase().trim() === bookData.title.toLowerCase().trim())) triggerSentryAlert();
     } else {
-      deconstructOpticalScanner();
       document.getElementById('addTitle').value = '';
       document.getElementById('addAuthor').value = '';
       triggerSentryAlert("⚠️ Book not found in repository database. Enter details manually below.");
@@ -1843,6 +1899,7 @@ function renderHTML5CasinoCanvasWheel() {
   ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
 }
 
+// Event system frameworks integration bindings
 function varLabelGet(variableName) { return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; }
 
 function setWheelWeightFilter(weightClass) {
@@ -1883,7 +1940,7 @@ function initParalysisInputListeners() {
     dragMovementDeltaThreshold += Math.abs(deltaAngle); wheelCurrentRotationAngle = dragAngleBaseOffset + deltaAngle;
     dragTimestampRegistry.push({ angle: wheelCurrentRotationAngle, time: performance.now() });
     if (dragTimestampRegistry.length > 5) dragTimestampRegistry.shift();
-    renderHTML5CanvasWheel();
+    renderHTML5CasinoCanvasWheel();
   }
 
   function terminateKineticDragSequence() {
@@ -1990,7 +2047,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   if (!paralysisWinningBookPointer) return;
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
-  
+   
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
@@ -1998,10 +2055,10 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
-  
+   
   overlayCardNode.classList.add('show'); 
   if (isFromSpin) triggerCasinoEmoteFountainSplash();
-  
+   
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
@@ -2016,7 +2073,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   }
   try {
     const query = encodeURIComponent(`intitle:"${paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${paralysisWinningBookPointer.author.split(',')[0].trim()}"`);
-    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1[];`);
+    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
     const searchData = await searchResponse.json();
     if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
       assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
