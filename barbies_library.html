@@ -93,7 +93,7 @@
   .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
 
   .home-view { padding: 24px 16px 140px; }
-  .library-view { padding: 16px 12px 140px; }
+  .library-view { padding: 16px 0 140px; } /* Clean layout margins for floating button matrix wrapper */
   .charts-view { padding: 24px 16px 140px; }
   .paralysis-view { padding: 24px 16px 140px; }
 
@@ -237,21 +237,61 @@
   .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
   .sub-rank-details { flex: 1; min-width: 0; }
-  .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+  .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub-rank-author { font-size: 11px; color: var(--text-muted); }
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
   .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-iron); font-size: 12px; }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
 
-  /* PILLS AND TOOLBAR MODULES */
-  .stats-row { display: flex; gap: 8px; overflow-x: auto; padding: 16px 16px 4px; scrollbar-width: none; }
+  /* STICKY COLLECTION STABILIZER ANCHOR FRAME WITH EXTENDED MARGIN FLEX SYSTEM */
+  .collection-sticky-header-dock {
+    display: flex;
+    align-items: center;
+    background: #0d0a0d;
+    border-bottom: 1px solid var(--border-iron);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 12px 0 0;
+    width: 100%;
+  }
+  .stats-row { 
+    flex: 1; 
+    display: flex; 
+    gap: 8px; 
+    overflow-x: auto; 
+    padding: 16px 12px; 
+    scrollbar-width: none; 
+  }
   .stats-row::-webkit-scrollbar { display: none; }
   .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 1px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
   .stat-pill.active { border-color: var(--crimson); background: var(--crimson); }
   .stat-pill.active .count, .stat-pill.active .label { color: #fff; }
   .stat-pill .count { font-size: 16px; font-weight: 700; display: block; line-height: 1; color: var(--text-parchment); }
   .stat-pill .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-top: 4px; }
+
+  /* ANCHORED STICKY DOCK ACTION COMPONENT */
+  .sticky-dock-add-trigger-btn {
+    flex-shrink: 0;
+    background: var(--crimson);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(166, 38, 38, 0.4);
+    transition: transform 0.1s, filter 0.15s;
+    z-index: 110;
+  }
+  .sticky-dock-add-trigger-btn:hover { filter: brightness(1.2); }
+  .sticky-dock-add-trigger-btn:active { transform: scale(0.95); }
   
   .toolbar { padding: 12px 16px; display: flex; gap: 10px; align-items: center; }
   .search-wrap { flex: 1; position: relative; }
@@ -325,6 +365,7 @@
   .modal-overlay.open { display: flex; }
   .modal { background: var(--dark-iron); border-radius: 0; border-top: 3px solid var(--crimson); padding: 0 0 40px; width: 100%; max-height: 88vh; overflow-y: auto; animation: slideUp 0.25s ease; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 40px; height: 3px; background: var(--border-iron); margin: 12px auto 0; }
   .modal-handle { width: 40px; height: 3px; background: var(--border-iron); margin: 12px auto 0; }
   .modal-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border-iron); }
   .modal-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--text-parchment); }
@@ -487,23 +528,21 @@
   </div>
 
   <div class="stats-grid">
-    <div class="stats-grid">
-      <div class="stats-box">
-        <div class="stat-number" id="statTBR">0</div>
-        <div class="stat-label">To Read (TBR)</div>
-      </div>
-      <div class="stats-box">
-        <div class="stat-number" id="statRead">0</div>
-        <div class="stat-label">Completed</div>
-      </div>
-      <div class="stats-box">
-        <div class="stat-number" id="statDNF">0</div>
-        <div class="stat-label">Dropped (DNF)</div>
-      </div>
-      <div class="stats-box">
-        <div class="stat-number" id="statOld">0</div>
-        <div class="stat-label">Past Reads</div>
-      </div>
+    <div class="stats-box">
+      <div class="stat-number" id="statTBR">0</div>
+      <div class="stat-label">To Read (TBR)</div>
+    </div>
+    <div class="stats-box">
+      <div class="stat-number" id="statRead">0</div>
+      <div class="stat-label">Completed</div>
+    </div>
+    <div class="stats-box">
+      <div class="stat-number" id="statDNF">0</div>
+      <div class="stat-label">Dropped (DNF)</div>
+    </div>
+    <div class="stats-box">
+      <div class="stat-number" id="statOld">0</div>
+      <div class="stat-label">Past Reads</div>
     </div>
   </div>
 
@@ -521,36 +560,39 @@
   </div>
 
   <button class="cta-button" onclick="showView('library')">View Book Collection</button>
-  <button class="secondary-button" onclick="openAddBookModal()">➕ Add New Book</button>
   <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
 </div>
 
 <div class="library-view" id="libraryView">
-  <div class="stats-row" id="statsRow2">
-    <div class="stat-pill active" id="filterPillAll" onclick="filterStatus(this,'All')">
-      <span class="count" id="pillCountAll">0</span><span class="label">Total</span>
+  <!-- STICKY OPTION A CONTAINER FRAME BLOCK -->
+  <div class="collection-sticky-header-dock">
+    <div class="stats-row" id="statsRow2">
+      <div class="stat-pill active" id="filterPillAll" onclick="filterStatus(this,'All')">
+        <span class="count" id="pillCountAll">0</span><span class="label">Total</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'TBR')">
+        <span class="count" id="pillCountTBR">0</span><span class="label">To Read</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'Complete')">
+        <span class="count" id="pillCountComplete">0</span><span class="label">Completed</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'Reading')">
+        <span class="count" id="pillCountReading">0</span><span class="label">Reading</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'DNF')">
+        <span class="count" id="pillCountDNF">0</span><span class="label">Dropped</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'Old')">
+        <span class="count" id="pillCountOld">0</span><span class="label">Past Reads</span>
+      </div>
+      <div class="stat-pill" onclick="filterStatus(this,'Wont')">
+        <span class="count" id="pillCountWont">0</span><span class="label">Won't Continue</span>
+      </div>
     </div>
-    <div class="stat-pill" onclick="filterStatus(this,'TBR')">
-      <span class="count" id="pillCountTBR">0</span><span class="label">To Read</span>
-    </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Complete')">
-      <span class="count" id="pillCountComplete">0</span><span class="label">Completed</span>
-    </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Reading')">
-      <span class="count" id="pillCountReading">0</span><span class="label">Reading</span>
-    </div>
-    <div class="stat-pill" onclick="filterStatus(this,'DNF')">
-      <span class="count" id="pillCountDNF">0</span><span class="label">Dropped</span>
-    </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Old')">
-      <span class="count" id="pillCountOld">0</span><span class="label">Past Reads</span>
-    </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Wont')">
-      <span class="count" id="pillCountWont">0</span><span class="label">Won't Continue</span>
-    </div>
+    <button class="sticky-dock-add-trigger-btn" onclick="openAddBookModal()">➕</button>
   </div>
   
-  <div class="toolbar">
+  <div class="toolbar" style="padding: 12px 16px 4px;">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search by title, author, or genre..." oninput="renderBooks()">
@@ -558,7 +600,7 @@
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Filter Mode ✦</button>
   </div>
   
-  <div class="genre-row" id="genreRow"></div>
+  <div class="genre-row" id="genreRow" style="padding: 8px 16px 12px;"></div>
   <div class="results-count" id="resultsCount"></div>
   <div class="book-list" id="bookList"></div>
 </div>
@@ -1159,7 +1201,6 @@ function closeAddBookModal() {
   hideSentryAlert();
 }
 
-// Intercept Pre-Check Engine: Validates input media device matrices before triggering standard switches
 function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
   if (targetWorkflowPath === 'scan') {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
@@ -1651,6 +1692,7 @@ function pivotToConfigurationModal() {
   document.getElementById('modalOverlay').classList.add('open');
 }
 
+// Interactive selectors engine loops binding context values
 function renderStarSelectors(currentRating) {
   let starsHtml = '';
   for(let i=1; i<=10; i++) starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`;
@@ -1899,19 +1941,30 @@ function renderHTML5CasinoCanvasWheel() {
   ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
 }
 
-// Event system frameworks integration bindings
-function varLabelGet(variableName) { return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; }
-
-function setWheelWeightFilter(weightClass) {
-  if (isWheelCurrentlySpinning) return;
-  wheelWeightFilter = weightClass;
-  document.querySelectorAll('.stakes-panel .stake-chip').forEach(c => c.classList.remove('active'));
-  if (weightClass.startsWith('genre:')) {
-    document.getElementById(`stakeGenre_${weightClass.split('genre:')[1].replace(/[^a-zA-Z0-9]/g, '')}`)?.classList.add('active');
+function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
+  if (targetWorkflowPath === 'scan') {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+      alert("System Exception: Modern media device framework not found inside this layout workspace. Routing to manual panel.");
+      switchAddBookWorkflowPath('manual');
+      return;
+    }
+    navigator.mediaDevices.enumerateDevices()
+      .then((connectedDevices) => {
+        const hasActiveCameraHardware = connectedDevices.some(device => device.kind === 'videoinput');
+        if (hasActiveCameraHardware) {
+          switchAddBookWorkflowPath('scan');
+        } else {
+          alert("Hardware Alert: No functional video capture peripherals detected on this platform. Routing to Manual Add workflow.");
+          switchAddBookWorkflowPath('manual');
+        }
+      })
+      .catch(() => {
+        alert("Permission Exception: Call denied or intercept security lock engaged. Accessing manual registry panels.");
+        switchAddBookWorkflowPath('manual');
+      });
   } else {
-    document.getElementById('stakeWeight' + weightClass.charAt(0).toUpperCase() + weightClass.slice(1))?.classList.add('active');
+    switchAddBookWorkflowPath(targetWorkflowPath);
   }
-  configureRouletteDataPool();
 }
 
 function initParalysisInputListeners() {
@@ -1984,7 +2037,7 @@ function processWedgeTapInspection(absoluteRadialAngle) {
     function stepAlignmentEase(now) {
       let progressRatio = Math.min((now - easeStartTimestamp) / 320, 1);
       wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * (progressRatio * (2 - progressRatio));
-      renderHTML5CasinoCanvasWheel();
+      renderHTML5CanvasWheel();
       if (progressRatio < 1) requestAnimationFrame(stepAlignmentEase); else triggerTradingCardEncounterModal(false);
     }
     requestAnimationFrame(stepAlignmentEase);
