@@ -266,7 +266,7 @@
   .genre-chip.active { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
   .results-count { padding: 0 16px 8px; font-size: 11px; color: var(--text-muted); }
 
-  /* 📚 TEXTURE OVERHAUL: COHESIVE CARD STRUCTURE */
+  /* 📚 TEXTURE OVERHAUL: COHESIVE CARD STRUCTURE WITH COVERS */
   .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
   .book-card { 
     background: var(--card-slate); 
@@ -1185,7 +1185,7 @@ const BOOKS_RAW = [
   [167,"Chopstick or Fork?","Wong J.","Complete","Standalone","Non-Fiction","256",4.00,5,null],
   [168,"Fourth Wing","Yarros, R.","DNF","The Empyrean, Book 1","Fantasy Romance","517",4.57,3,null],
   [169,"Iron Flame","Yarros, R.","TBR","The Empyrean, Book 2","Romantasy","640",4.36,null,null],
-  [170,"Onyx Storm","Yarros, R.","TBR","The Empyrean, Book 3","Fantasy Romance","544",4.21,null,null],
+  [170,"Onyx Storm","Yarros, R.","TBR","The Empyrean, Book  üçüncü","Fantasy Romance","544",4.21,null,null],
 ];
 
 let books = BOOKS_RAW.map(r => ({
@@ -1209,7 +1209,7 @@ const BOOK_BLURBS_REGISTRY = {
   "Quicksilver": "Intricate Fae politics, dangerous alchemy, and a slow-burn romance ignite when a mortal thief matches wits with an enigmatic, lethal immortal king in a high-stakes struggle for leverage."
 };
 
-// Open Library Static ISBN Mapping Matrix Array for Preloaded TBR Pool Records
+// Open Library & Google Books Static ISBN Mapping Matrix Array
 const PRELOADED_ISBN_REGISTRY = {
   "Lightlark": "9781419760860",
   "Nightbane": "9781419760907",
@@ -1225,7 +1225,7 @@ const PRELOADED_ISBN_REGISTRY = {
   "Morning Star": "9780345539847",
   "Whispers Beneath Crowstone": "9781804365731",
   "House of Leaves": "9780375703768",
-  "Carnival": "9782745995537",
+  "Carnival": "9781250157539",
   "Legendary": "9781250157539",
   "Finale": "9781250157553",
   "Black Thorn": "9781736632420",
@@ -1234,8 +1234,6 @@ const PRELOADED_ISBN_REGISTRY = {
   "Cleopatra": "9788466668798",
   "Dark Rise": "9780062870773",
   "Dark Heir": "9780062870810",
-  "The Wolf King": "9781958619117",
-  "The Night Prince": "9781958619124",
   "When Moon Hatched": "9780593815717",
   "Rites of the Starling": "9781035905256",
   "Shield of Sparrows": "9781035905249",
@@ -1260,7 +1258,27 @@ const PRELOADED_ISBN_REGISTRY = {
   "The Hunger Games": "9780439023481",
   "Mockingjay": "9780439023511",
   "Gone Girl": "9780307588371",
-  "The Girl on the Train": "9781594634024"
+  "The Girl on the Train": "9781594634024",
+  "Crescent City": "9781635574050",
+  "House of Sky and Breath": "9781635574074",
+  "House of Flame and Shadow": "9781635574104",
+  "A Court of Thorns and Roses": "9781619634480",
+  "Throne of Glass": "9781619630345",
+  "Crown of Midnight": "9781619630628",
+  "The Assassin's Blade": "9781101934739",
+  "Heir of Fire": "9781619636064",
+  "Queen of Shadows": "9781101934784",
+  "Empire of Storms": "9781619636071",
+  "Tower of Dawn": "9781681195773",
+  "Kingdom of Ash": "9781619636101",
+  "The Game of Thrones": "9780553103540",
+  "The Clash of Kings": "9780553108033",
+  "A Storm of Swords": "9780553106633",
+  "Babel": "9780063021426",
+  "Fourth Wing": "9781649374042",
+  "The Housemaid": "9781728260372",
+  "The Housemaid's Secret": "9781728278056",
+  "Project Hail Mary": "9780593135204"
 };
 
 const COMPLETED_BOOK_QUOTES = [
@@ -1448,7 +1466,7 @@ async function triggerMasterExportPipeline() {
   if (window.showSaveFilePicker) {
     try {
       const pickerOptions = {
-        suggestedName: 'BarbiesLibrary_Save.json',
+        suggestName: 'BarbiesLibrary_Save.json',
         types: [{ description: 'JSON Library Save Files', accept: { 'application/json': ['.json'] } }]
       };
       
@@ -1731,14 +1749,18 @@ function renderBooks() {
   document.getElementById('bookList').innerHTML = list.map(b => {
     const statusClass = statusKey(b.status);
     const resolvedIsbn = b.isbn || PRELOADED_ISBN_REGISTRY[b.title];
-    
+    const queryPlaceholderId = `mini-thumb-fallback-${b.id}`;
+
     let thumbnailImgTag = '';
     if (b.coverUrl) {
       thumbnailImgTag = `<img src="${b.coverUrl}" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="this.onerror=null; this.src='https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg';" alt="">`;
     } else if (resolvedIsbn) {
-      thumbnailImgTag = `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="this.style.display='none'" alt="">`;
+      thumbnailImgTag = `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="executeInlineTextCoverFallback(this, '${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${queryPlaceholderId}')" alt="">`;
     } else {
-      thumbnailImgTag = `<div style="width: 36px; height: 52px; display: flex; align-items: center; justify-content: center; background: #000; border: 1px dashed var(--border-iron); font-size: 10px; color: var(--text-muted); font-weight: 700;">${getTitleInitials(b.title)}</div>`;
+      executeInlineTextCoverFallback(null, b.title, b.author, queryPlaceholderId);
+      thumbnailImgTag = `
+        <img id="${queryPlaceholderId}" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron); display:none;" alt="">
+        <div id="initials-${queryPlaceholderId}" style="width: 36px; height: 52px; display: flex; align-items: center; justify-content: center; background: #000; border: 1px dashed var(--border-iron); font-size: 10px; color: var(--text-muted); font-weight: 700;">${getTitleInitials(b.title)}</div>`;
     }
 
     return `
@@ -1762,6 +1784,34 @@ function renderBooks() {
       </div>
     `;
   }).join('');
+}
+
+async function executeInlineTextCoverFallback(imgElement, titleString, authorString, elementIdFallback) {
+  try {
+    const cleanT = titleString.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
+    const cleanA = authorString.split(',')[0].trim();
+    const query = encodeURIComponent(`intitle:"${cleanT}"+inauthor:"${cleanA}"`);
+    
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
+    const data = await response.json();
+    
+    if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+      const targetUrl = data.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
+      if (imgElement) {
+        imgElement.onerror = null;
+        imgElement.src = targetUrl;
+      }
+      if (elementIdFallback) {
+        const targetNode = document.getElementById(elementIdFallback);
+        const initialsNode = document.getElementById(`initials-${elementIdFallback}`);
+        if (targetNode) {
+          targetNode.src = targetUrl;
+          targetNode.style.display = "block";
+          if (initialsNode) initialsNode.style.display = "none";
+        }
+      }
+    }
+  } catch(e) {}
 }
 
 function getFiltered() {
@@ -2277,11 +2327,13 @@ async function triggerTradingCardEncounterModal() {
 
   document.getElementById('casinoTradingCardOverlay').classList.add('show');
 
+  // Tier 1: User Explicit Local Link String Override
   if (paralysisWinningBookPointer.coverUrl) {
     assignImageToCardFrame(paralysisWinningBookPointer.coverUrl);
     return;
   }
 
+  // Tier 2: Static Hardcoded + Custom ISBN Direct Parameter Lookup
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
     try {
@@ -2292,12 +2344,26 @@ async function triggerTradingCardEncounterModal() {
         assignImageToCardFrame(secureUrl);
         return;
       }
-    } catch(e) { console.log("Google Books fallback triggered."); }
-
-    assignImageToCardFrame(`https://covers.openlibrary.org/b/isbn/${targetISBN}-M.jpg`);
-    return;
+    } catch(e) {}
   }
 
+  // Tier 3: Fuzzy Metadata text sweeping algorithms (Matches alternative editions/Goodreads indexing profiles)
+  try {
+    const cleanTitle = paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
+    const cleanAuthor = paralysisWinningBookPointer.author.split(',')[0].trim();
+    const textQueryString = encodeURIComponent(`intitle:"${cleanTitle}"+inauthor:"${cleanAuthor}"`);
+    
+    const textSearchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${textQueryString}&maxResults=1`);
+    const textSearchData = await textSearchResponse.json();
+    
+    if (textSearchData.items && textSearchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+      let textSecureUrl = textSearchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
+      assignImageToCardFrame(textSecureUrl);
+      return;
+    }
+  } catch(e) {}
+
+  // Tier 4: Open Library Open Title Archive Scraping fallback
   try {
     const encodedTitle = encodeURIComponent(paralysisWinningBookPointer.title);
     const searchResponse = await fetch(`https://openlibrary.org/search.json?title=${encodedTitle}&limit=1`);
@@ -2306,6 +2372,7 @@ async function triggerTradingCardEncounterModal() {
     if (searchData.docs && searchData.docs[0]?.cover_i) {
       const coverId = searchData.docs[0].cover_i;
       assignImageToCardFrame(`https://covers.openlibrary.org/b/id/${coverId}-M.jpg`);
+      return;
     }
   } catch(err) {
     handleTradingCardImageError();
