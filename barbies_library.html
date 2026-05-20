@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Sir Barbie's Library">
-<title>Sir Barbie's Crypt & Chronicle Sandbox 📚</title>
+<meta name="apple-mobile-web-app-title" content="Barbie's Library">
+<title>Barbie's Library 📚</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -22,27 +22,27 @@
     --card-slate: #1c181c;
     --text-parchment: #ded5c9;
     --text-muted: #8c7f70;
-    --border-iron: #332a30;
+    --border-iron: #2d262b;
     --green-poison: #2b7a4b;
     --blue-shadow: #3b629b;
     --purple-void: #5e35b1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { font-family: 'JetBrains Mono', monospace; background: var(--dark-void); color: var(--text-parchment); min-height: 100vh; overflow-x: hidden; }
+  body { font-family: 'JetBrains Mono', monospace; background: var(--dark-void); color: var(--text-parchment); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-  /* HEADER STYLE - WAR ROOM BANNER */
+  /* HEADER STYLE - MODERN TOP APP BAR */
   .header {
     background: linear-gradient(180deg, #000 0%, var(--dark-iron) 100%);
     padding: 48px 20px 24px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    border-bottom: 2px solid var(--border-iron);
+    border-bottom: 1px solid var(--border-iron);
   }
   .header::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, rgba(166, 38, 38, 0.15) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 50% 50%, rgba(166, 38, 38, 0.12) 0%, transparent 70%);
   }
   .header-title {
     font-family: 'Cinzel', serif;
@@ -54,7 +54,7 @@
     z-index: 1;
     text-transform: uppercase;
   }
-  .header-title span { color: var(--crimson); text-shadow: 0 0 10px rgba(166, 38, 38, 0.5); }
+  .header-title span { color: var(--crimson); text-shadow: 0 0 10px rgba(166, 38, 38, 0.4); }
   .header-sub { color: var(--text-muted); font-size: 11px; margin-top: 6px; position: relative; z-index: 1; letter-spacing: 2px; text-transform: uppercase; }
 
   /* THREE-DOTS MENU TRIGGER AT UPPER PERIMETER */
@@ -75,8 +75,8 @@
 
   /* SLIDEOUT DATA CONTROL SHELF PANEL */
   .settings-control-shelf {
-    background: #0f0c0e;
-    border-bottom: 2px solid var(--border-iron);
+    background: #0d0a0d;
+    border-bottom: 1px solid var(--border-iron);
     display: none;
     padding: 20px;
     position: relative;
@@ -89,20 +89,21 @@
   .shelf-status-readout { font-size: 10px; color: var(--text-muted); text-align: center; background: #000; padding: 6px; border: 1px solid var(--border-iron); border-radius: 2px; }
 
   /* VIEW ENGINE */
-  .home-view, .library-view, .charts-view { display: none; }
-  .home-view.visible, .library-view.visible, .charts-view.visible { display: block; }
+  .home-view, .library-view, .charts-view, .paralysis-view { display: none; }
+  .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
 
   .home-view { padding: 24px 16px 140px; }
   .library-view { padding: 16px 12px 140px; }
   .charts-view { padding: 24px 16px 140px; }
+  .paralysis-view { padding: 24px 16px 140px; }
 
   .welcome-card {
     background: var(--dark-iron);
     border-radius: 4px;
     padding: 24px;
     margin-bottom: 20px;
-    border: 2px solid var(--border-iron);
-    border-top: 4px solid var(--crimson);
+    border: 1px solid var(--border-iron);
+    border-top: 3px solid var(--crimson);
     text-align: center;
   }
   .welcome-emoji { font-size: 36px; margin-bottom: 8px; filter: grayscale(0.2); }
@@ -114,50 +115,50 @@
     width: 100%; padding: 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
     font-size: 13px; font-weight: 700; border: none; cursor: pointer; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
   }
-  .cta-button { background: var(--crimson); color: #fff; box-shadow: 0 4px 12px rgba(166,38,38,0.3); }
-  .secondary-button { background: var(--card-slate); color: var(--text-parchment); border: 2px solid var(--border-iron); }
-  .danger-button { background: #1a0f11; color: var(--crimson-light); border: 1px solid rgba(166,38,38,0.3); }
+  .cta-button { background: var(--crimson); color: #fff; box-shadow: 0 4px 12px rgba(166,38,38,0.25); }
+  .secondary-button { background: var(--card-slate); color: var(--text-parchment); border: 1px solid var(--border-iron); }
+  .danger-button { background: #1a0f11; color: var(--crimson-light); border: 1px solid rgba(166,38,38,0.2); }
   .save-btn { background: var(--gold); color: #000; font-weight: 900; margin-top: 20px; }
-  .action-sub-btn { background: var(--border-iron); color: var(--text-parchment); padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; }
-  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover { filter: brightness(1.2); }
+  .action-sub-btn { background: var(--border-iron); color: var(--text-parchment); padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
+  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover { filter: brightness(1.15); }
 
-  /* PROGRESS METER - THE CAMPAIGN TRACKER */
+  /* PROGRESS METER - GEOMETRIC PROGRESS METERS OVERHAUL */
   .goal-bar-card {
      background: var(--card-slate);
      border-radius: 4px;
      padding: 20px;
      margin-bottom: 20px;
-     border: 2px solid var(--border-iron);
+     border: 1px solid var(--border-iron);
   }
   .goal-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .goal-bar-main-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
   .goal-bar-count-badge { font-size: 11px; font-weight: 700; color: #fff; background: var(--crimson); padding: 4px 10px; border-radius: 2px; }
-  .goal-bar-container-sleeve { background: #000; border: 1px solid var(--border-iron); height: 14px; width: 100%; overflow: hidden; margin-bottom: 6px; padding: 2px; }
-  .goal-bar-fill-track { background: var(--gold); height: 100%; width: 0%; transition: width 0.5s cubic-bezier(0.1, 1, 0.1, 1); }
+  .goal-bar-container-sleeve { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
+  .goal-bar-fill-track { background: var(--gold); height: 100%; width: 0%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.1, 1, 0.1, 1); }
   .goal-bar-sub-message { font-size: 11px; color: var(--text-muted); }
 
-  /* CURRENT MANIFEST MODULE */
+  /* CURRENT READING MANIFEST CARD */
   .currently-reading-card {
     background: var(--dark-iron); border-radius: 4px; padding: 20px; margin-bottom: 20px;
-    border: 2px solid var(--border-iron); border-left: 4px solid var(--crimson); display: none;
+    border: 1px solid var(--border-iron); border-left: 4px solid var(--blue-shadow); display: none;
   }
   .currently-reading-card.show { display: block; }
-  .reading-label { font-size: 11px; text-transform: uppercase; color: var(--crimson-light); font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
+  .reading-label { font-size: 11px; text-transform: uppercase; color: var(--blue-shadow); font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
   .reading-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--text-parchment); font-weight: 700; }
   .reading-author { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
   
   .reading-blurb-box {
-     background: #0d0a0d; padding: 12px; font-size: 12px;
+     background: #080608; padding: 12px; font-size: 12px;
      color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
   }
-  .progress-bar-container { background: #000; border: 1px solid var(--border-iron); height: 10px; width: 100%; overflow: hidden; margin-bottom: 6px; padding: 1px; }
-  .progress-bar-fill { background: var(--crimson); height: 100%; width: 0%; transition: width 0.4s ease; }
+  .progress-bar-container { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
+  .progress-bar-fill { background: var(--crimson); height: 100%; width: 0%; border-radius: 4px; transition: width 0.4s ease; }
   .progress-text-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
 
-  /* LORE WITNESS ASSEMBLY BOARD */
+  /* LORE BOOK HIGHLIGHTS ASSEMBLY PANEL */
   .quote-board-card {
     background: var(--card-slate); border-radius: 4px; padding: 20px; margin-bottom: 20px;
-    border: 2px solid var(--border-iron); position: relative;
+    border: 1px solid var(--border-iron); position: relative;
   }
   .quote-board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
   .quote-board-title { font-size: 11px; text-transform: uppercase; color: var(--gold); font-weight: 700; letter-spacing: 1px; }
@@ -166,17 +167,17 @@
   .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--crimson-light); margin-top: 8px; text-transform: uppercase; }
   .memory-lane-flashback-text { font-size: 11px; color: var(--text-parchment); margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
 
-  /* CAMPAIGN METRIC GRID MAPPED AT BASE GRID */
+  /* METRIC STATS SUMMARY DASHBOARD GRID */
   .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-  .stat-box { background: var(--dark-iron); border-radius: 4px; padding: 16px; border: 2px solid var(--border-iron); text-align: center; }
-  .stat-number { font-family: 'Cinzel', serif; font-size: 24px; color: var(--text-parchment); font-weight: 700; margin-bottom: 4px; }
+  .stat-box { background: var(--dark-iron); border-radius: 4px; padding: 16px; border: 1px solid var(--border-iron); text-align: center; }
+  .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
   .stat-box:nth-child(1) .stat-number { color: var(--purple-void); }
   .stat-box:nth-child(2) .stat-number { color: var(--green-poison); }
   .stat-box:nth-child(3) .stat-number { color: var(--crimson); }
   .stat-box:nth-child(4) .stat-number { color: var(--gold); }
   .stat-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
 
-  /* HOMEPAGE & ANALYTICS DOUBLE COLUMN LAYOUT RULES */
+  /* CORES DOUBLE PANEL COLUMNS RULES LAYOUTS */
   .home-analytics-row, .pie-charts-flex-row { 
     display: flex; 
     flex-direction: column; 
@@ -188,7 +189,7 @@
     background: var(--card-slate); 
     border-radius: 4px; 
     padding: 16px; 
-    border: 2px solid var(--border-iron); 
+    border: 1px solid var(--border-iron); 
     width: 100%; 
     min-width: 0; 
   }
@@ -196,7 +197,7 @@
     font-family: 'Cinzel', serif; 
     font-size: 13px; 
     font-weight: 700; 
-    color: var(--text-parchment); 
+    color: var(--text-muted); 
     margin-bottom: 14px; 
     text-align: center; 
     letter-spacing: 1px; 
@@ -205,7 +206,6 @@
   .home-canvas-holder, .canvas-holder { position: relative; height: 190px; width: 100%; }
   .canvas-holder { height: 240px; }
 
-  /* Opposite Edge Splitting for Homepage Columns & Analytics Pie Charts */
   @media(min-width: 640px) { 
     .home-analytics-row, .pie-charts-flex-row { 
       flex-direction: row; 
@@ -219,7 +219,7 @@
   }
 
   /* PODIUM MATRIX LOGIC */
-  .f1-podium-container { display: flex; justify-content: center; align-items: flex-end; height: 145px; margin-bottom: 12px; padding: 0 4px; gap: 6px; border-bottom: 2px solid var(--border-iron); }
+  .f1-podium-container { display: flex; justify-content: center; align-items: flex-end; height: 145px; margin-bottom: 12px; padding: 0 4px; gap: 6px; border-bottom: 1px solid var(--border-iron); }
   .podium-column { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center; min-width: 0; }
   .podium-block { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #000; font-weight: 700; border-radius: 2px 2px 0 0; position: relative; }
   .podium-step-2 { height: 60px; background: #4a4e59; color: #fff; }
@@ -232,8 +232,9 @@
   .charts-view-podium-height { height: 160px !important; }
   .charts-view-title-size { font-size: 11px; }
 
-  .sub-rankings-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-  .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
+  /* SLEEK COMPACT ADJUSTMENTS FOR TOP 10 GRID CORES */
+  .sub-rankings-list { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
+  .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
   .sub-rank-details { flex: 1; min-width: 0; }
   .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -246,7 +247,7 @@
   /* PILLS AND TOOLBAR MODULES */
   .stats-row { display: flex; gap: 8px; overflow-x: auto; padding: 16px 16px 4px; scrollbar-width: none; }
   .stats-row::-webkit-scrollbar { display: none; }
-  .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 2px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 1px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
   .stat-pill.active { border-color: var(--crimson); background: var(--crimson); }
   .stat-pill.active .count, .stat-pill.active .label { color: #fff; }
   .stat-pill .count { font-size: 16px; font-weight: 700; display: block; line-height: 1; color: var(--text-parchment); }
@@ -254,10 +255,10 @@
   
   .toolbar { padding: 12px 16px; display: flex; gap: 10px; align-items: center; }
   .search-wrap { flex: 1; position: relative; }
-  .search-wrap input { width: 100%; padding: 10px 14px 10px 36px; border: 2px solid var(--border-iron); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: #000; color: var(--text-parchment); outline: none; }
+  .search-wrap input { width: 100%; padding: 10px 14px 10px 36px; border: 1px solid var(--border-iron); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: #000; color: var(--text-parchment); outline: none; }
   .search-wrap input:focus { border-color: var(--crimson); }
   .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
-  .sort-btn { flex-shrink: 0; padding: 10px 14px; border: 2px solid var(--border-iron); border-radius: 4px; background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  .sort-btn { flex-shrink: 0; padding: 10px 14px; border: 1px solid var(--border-iron); border-radius: 4px; background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
   .sort-btn.active { border-color: var(--gold); color: var(--gold); }
   
   .genre-row { display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 12px; scrollbar-width: none; }
@@ -265,51 +266,53 @@
   .genre-chip.active { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
   .results-count { padding: 0 16px 8px; font-size: 11px; color: var(--text-muted); }
 
-  /* 📚 RE-DESIGNED CARD LISTS STYLE MODULES */
+  /* 📚 TEXTURE OVERHAUL: COHESIVE CARD STRUCTURE */
   .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
   .book-card { 
     background: var(--card-slate); 
     border-radius: 4px; 
     padding: 14px 16px; 
-    border: 2px solid var(--border-iron); 
+    border: 1px solid var(--border-iron); 
     display: flex; 
     align-items: center;
     gap: 16px; 
     cursor: pointer; 
     transition: transform 0.15s ease, border-color 0.15s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
   }
-  .book-card:hover { border-color: #55444f; transform: translateY(-1px); }
+  .book-card:hover { border-color: #4a3b45; transform: translateY(-1px); }
   
-  .book-spine-wrapper { position: relative; width: 28px; height: 64px; flex-shrink: 0; }
-  .book-spine-cylinder {
-    width: 100%; height: 100%; border-radius: 2px;
-    box-shadow: inset -4px 0 8px rgba(0,0,0,0.4), 2px 2px 5px rgba(0,0,0,0.5);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px; font-weight: 700; color: #fff; text-transform: uppercase;
+  /* Left Edge Minimal Trim Highlights Dynamic Realignment Array */
+  .book-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: transparent;
   }
-  
-  .book-card.status-TBR .book-spine-cylinder { background: linear-gradient(90deg, #422963, var(--purple-void)); }
-  .book-card.status-Complete .book-spine-cylinder { background: linear-gradient(90deg, #18472b, var(--green-poison)); }
-  .book-card.status-Reading .book-spine-cylinder { background: linear-gradient(90deg, #223a5e, var(--blue-shadow)); }
-  .book-card.status-DNF .book-spine-cylinder { background: linear-gradient(90deg, #611818, var(--crimson)); }
-  .book-card.status-Old .book-spine-cylinder { background: linear-gradient(90deg, #7a632b, var(--gold)); }
-  .book-card.status-Wont .book-spine-cylinder { background: linear-gradient(90deg, #4f454c, var(--text-muted)); }
-  
-  .book-info { flex: 1; min-width: 0; }
+  .book-card.status-TBR::before { background: var(--purple-void); }
+  .book-card.status-Complete::before { background: var(--green-poison); }
+  .book-card.status-Reading::before { background: var(--blue-shadow); }
+  .book-card.status-DNF::before { background: var(--crimson); }
+  .book-card.status-Old::before { background: var(--gold); }
+  .book-card.status-Wont::before { background: var(--text-muted); }
+
+  .book-info { flex: 1; min-width: 0; margin-left: 4px; }
   .book-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .book-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   
   .book-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
   .badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
   
-  .badge-status-TBR { background: rgba(94,53,177,0.2); color: #b39ddb; border: 1px solid rgba(94,53,177,0.4); }
-  .badge-status-Complete { background: rgba(43,122,75,0.2); color: #a1dbb6; border: 1px solid rgba(43,122,75,0.4); }
-  .badge-status-Reading { background: rgba(59,98,155,0.2); color: #adc9f2; border: 1px solid rgba(59,98,155,0.4); }
-  .badge-status-DNF { background: rgba(166,38,38,0.2); color: #f2aeae; border: 1px solid rgba(166,38,38,0.4); }
-  .badge-status-Old { background: rgba(179,146,67,0.2); color: #f2dfb1; border: 1px solid rgba(179,146,67,0.4); }
-  .badge-status-Wont { background: rgba(140,127,112,0.2); color: #d6ce075; border: 1px solid rgba(140,127,112,0.4); }
-  .badge-genre { background: #000; color: var(--text-parchment); border: 1px solid var(--border-iron); }
+  .badge-status-TBR { background: rgba(94,53,177,0.15); color: #b39ddb; border: 1px solid rgba(94,53,177,0.3); }
+  .badge-status-Complete { background: rgba(43,122,75,0.15); color: #a1dbb6; border: 1px solid rgba(43,122,75,0.3); }
+  .badge-status-Reading { background: rgba(59,98,155,0.15); color: #adc9f2; border: 1px solid rgba(59,98,155,0.3); }
+  .badge-status-DNF { background: rgba(166,38,38,0.15); color: #f2aeae; border: 1px solid rgba(166,38,38,0.3); }
+  .badge-status-Old { background: rgba(179,146,67,0.15); color: #f2dfb1; border: 1px solid rgba(179,146,67,0.3); }
+  .badge-status-Wont { background: rgba(140,127,112,0.15); color: #d6ce75; border: 1px solid rgba(140,127,112,0.3); }
+  .badge-genre { background: #000; color: var(--text-muted); border: 1px solid var(--border-iron); }
   
   .book-ratings { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; flex-shrink: 0; min-width: 52px; }
   .rating-row-value { font-size: 13px; font-weight: 700; color: var(--text-parchment); display: flex; align-items: center; gap: 3px; }
@@ -319,7 +322,7 @@
   /* SYSTEM STICKY FOOTER NAV BAR */
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: #0d0a0d; border-top: 2px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
+    background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
     display: flex; flex-direction: column; align-items: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6); gap: 6px;
   }
   .nav-buttons-row {
@@ -334,12 +337,12 @@
   .nav-btn.active { color: var(--gold); }
   .nav-btn.active .icon { filter: grayscale(0); }
 
-  /* CONSOLE VERSION CONTROL LABELS */
+  /* APP BUILD STAMP DECK */
   .console-version-stamp {
     font-size: 9px;
     color: var(--text-muted);
     letter-spacing: 2px;
-    opacity: 0.6;
+    opacity: 0.5;
     text-transform: uppercase;
     font-weight: 400;
     padding-bottom: 4px;
@@ -351,7 +354,7 @@
   .modal { background: var(--dark-iron); border-radius: 0; border-top: 3px solid var(--crimson); padding: 0 0 40px; width: 100%; max-height: 88vh; overflow-y: auto; animation: slideUp 0.25s ease; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
   .modal-handle { width: 40px; height: 3px; background: var(--border-iron); margin: 12px auto 0; }
-  .modal-header { padding: 20px 20px 16px; border-bottom: 2px solid var(--border-iron); }
+  .modal-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border-iron); }
   .modal-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--text-parchment); }
   .modal-author { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
   .modal-body { padding: 20px; }
@@ -359,31 +362,31 @@
   .modal-section { margin-bottom: 20px; }
   
   .simple-text-input {
-    width: 100%; padding: 12px; border-radius: 4px; border: 2px solid var(--border-iron);
+    width: 100%; padding: 12px; border-radius: 4px; border: 1px solid var(--border-iron);
     font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; background: #000; color: var(--text-parchment);
   }
   .simple-text-input:focus { border-color: var(--crimson); }
   .notes-input {
-    width: 100%; height: 90px; padding: 12px; border-radius: 4px; border: 2px solid var(--border-iron);
+    width: 100%; height: 90px; padding: 12px; border-radius: 4px; border: 1px solid var(--border-iron);
     font-family: 'JetBrains Mono', monospace; font-size: 13px; outline: none; resize: none; background: #000; color: var(--text-parchment);
   }
   .notes-input:focus { border-color: var(--crimson); }
   .status-select-row { display: flex; flex-wrap: wrap; gap: 6px; }
   .status-sel-btn {
-    padding: 6px 12px; border-radius: 2px; border: 2px solid var(--border-iron);
+    padding: 6px 12px; border-radius: 2px; border: 1px solid var(--border-iron);
     background: var(--card-slate); font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; color: var(--text-parchment);
   }
   .status-sel-btn.selected { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
   
   .stars-row { display: flex; gap: 4px; }
-  .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #2e262a; transition: color 0.1s; }
+  .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #231d22; transition: color 0.1s; }
   .star-btn.active { color: var(--gold); }
 
-  /* SCANNING TACTICAL ARRAY INTERFACE GUI */
+  /* AUTOMATIC LENS CAM SCANNER DECK UI PANEL */
   .scanner-viewport-box {
     width: 100%;
     background: #000;
-    border: 2px dashed var(--border-iron);
+    border: 1px dashed var(--border-iron);
     border-radius: 4px;
     overflow: hidden;
     position: relative;
@@ -394,7 +397,7 @@
   #interactiveReaderElement { width: 100%; min-height: 240px; }
   .input-inline-btn-row { display: flex; gap: 8px; align-items: center; }
   
-  /* MANUAL ZOOM TRACKER */
+  /* MANUAL ZOOM SLIDER HOOKS */
   .zoom-control-panel {
     background: #0d0a0d;
     border: 1px solid var(--border-iron);
@@ -414,12 +417,13 @@
     background: #000;
     height: 6px;
     border-radius: 3px;
+    border: none;
   }
 
-  /* DUPLICATION ALERT SENTRY BANNER */
+  /* DUPLICATION ALERT SPLASH BANNERS */
   .sentry-alert-banner {
     background: #4a0d11;
-    border: 2px solid var(--crimson);
+    border: 1px solid var(--crimson);
     color: #ffb3b7;
     padding: 12px;
     border-radius: 4px;
@@ -431,22 +435,188 @@
     letter-spacing: 1px;
     text-transform: uppercase;
   }
+
+  /* 🎰 BREAK THE PARALYSIS CASINO ENGINE STYLING */
+  .casino-container {
+    background: #0d0a0d;
+    border: 2px solid var(--border-iron);
+    box-shadow: 0 0 20px rgba(230, 57, 70, 0.15);
+    border-radius: 8px;
+    padding: 24px 16px;
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+  }
+  
+  .casino-header {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 8px #e63946, 0 0 12px var(--gold);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .casino-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* 📲 HIGH PERFORMANCE FLUID VIEWPORT RESPONSIVITY RULES */
+  .wheel-wrapper {
+    position: relative;
+    width: 92vw;
+    height: 92vw;
+    max-width: 580px;
+    max-height: 580px;
+    margin: 0 auto 24px;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  #canvasTBRWheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4);
+    transform: rotate(0deg);
+  }
+  
+  .wheel-pointer {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 28px solid var(--gold);
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
+    z-index: 100;
+  }
+
+  .stakes-panel {
+    background: #000;
+    border: 1px solid var(--border-iron);
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  
+  .stakes-title {
+    font-size: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  
+  .stakes-row-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+  }
+  
+  .stake-chip {
+    background: #161215;
+    border: 1px solid var(--border-iron);
+    color: var(--text-muted);
+    padding: 6px 10px;
+    font-size: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
+  }
+  
+  .stake-chip.active {
+    border-color: #e63946;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(230, 57, 70, 0.4);
+    background: rgba(230, 57, 70, 0.1);
+  }
+
+  .jackpot-overlay {
+    position: absolute;
+    inset: 12px;
+    background: rgba(10, 7, 9, 0.96);
+    border: 2px dashed var(--gold);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.9);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 200;
+  }
+  
+  .jackpot-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+  
+  .jackpot-title {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 10px var(--gold), 0 0 20px var(--crimson-light);
+    animation: neonBlinkPulse 1s infinite alternate;
+  }
+  
+  @keyframes neonBlinkPulse {
+    0% { opacity: 0.9; text-shadow: 0 0 8px var(--gold); }
+    100% { opacity: 1; text-shadow: 0 0 15px var(--gold), 0 0 25px var(--crimson-light); }
+  }
+  
+  .jackpot-book-card {
+    background: #161215;
+    border: 1px solid var(--border-iron);
+    border-left: 4px solid var(--gold);
+    width: 100%;
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 4px;
+  }
+
+  /* EDGE TO EDGE LAYOUT FOR ULTRA ULTRA COMPACT DISPLAY CHASSIS RULES */
+  @media(max-width: 650px) {
+    .paralysis-view { padding: 12px 4px 140px; }
+    .casino-container { border-left: none; border-right: none; border-radius: 0; padding: 20px 8px; }
+    .wheel-wrapper { width: 95vw; height: 95vw; }
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-title">Sir Barbie's <span>Library</span> ⚔️</div>
-  <div class="header-sub"><span id="headerTrackerCount">170</span> tomes chronicled</div>
+  <div class="header-title">Barbie's <span>Library</span> 📚</div>
+  <div class="header-sub"><span id="headerTrackerCount">170</span> books logged</div>
   <button class="settings-dots-trigger" onclick="toggleSettingsControlShelfArray()">⋮</button>
 </div>
 
 <div class="settings-control-shelf" id="globalSettingsControlShelf">
   <div class="shelf-grid-layout">
-    <div class="shelf-title">Strategic File Management</div>
-    <div class="shelf-status-readout" id="saveSystemStatusOutputLine">Status: Session Running Offline (LocalStorage-Cached)</div>
-    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import Grimoire Save File 📥</button>
-    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export Grimoire Save File 📤</button>
+    <div class="shelf-title">Data & Sync Settings</div>
+    <div class="shelf-status-readout" id="saveSystemStatusOutputLine">Status: App Running Offline (LocalStorage-Cached)</div>
+    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import 📥</button>
+    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export 📤</button>
     <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".json" onchange="executeSaveStateFileReaderImport(this)">
   </div>
 </div>
@@ -454,26 +624,26 @@
 <div class="home-view visible" id="homeView">
   <div class="welcome-card">
     <div class="welcome-emoji">🏰</div>
-    <div class="welcome-text">Tactical Command Outpost</div>
-    <div class="welcome-sub">Campaign progress metrics and grimoires safely logged</div>
+    <div class="welcome-text">Main Menu</div>
+    <div class="welcome-sub">Track your reading goals, statistics, and book collections.</div>
   </div>
 
   <div class="goal-bar-card">
      <div class="goal-bar-header">
-        <span class="goal-bar-main-title">🎯 Campaign Conquest Goal</span>
-        <span class="goal-bar-count-badge" id="milestoneCounterLabel">0 / 50 Conquered</span>
+        <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
+        <span class="goal-bar-count-badge" id="milestoneCounterLabel">0 / 50 Books</span>
      </div>
      <div class="goal-bar-container-sleeve">
         <div class="goal-bar-fill-track" id="milestoneFillTrack"></div>
      </div>
-     <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking progress toward 50 completed books total.</div>
+     <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking execution progress toward your 50 volume book goal.</div>
   </div>
 
   <div class="currently-reading-card" id="readingCard">
-    <div class="reading-label">📖 Active Engagement</div>
+    <div class="reading-label">📖 Currently Reading</div>
     <div class="reading-title" id="readingTitle"></div>
     <div class="reading-author" id="readingAuthor"></div>
-    <div class="reading-blurb-box" id="readingBlurbSlot">Parsing profile parameters...</div>
+    <div class="reading-blurb-box" id="readingBlurbSlot">Loading metadata fields...</div>
     <div class="progress-bar-container">
       <div class="progress-bar-fill" id="readingBarFill"></div>
     </div>
@@ -485,49 +655,49 @@
 
   <div class="quote-board-card" id="quoteBoardContainer">
      <div class="quote-board-header">
-        <span class="quote-board-title">📜 Witness Chronicles Wisdom</span>
-        <button class="quote-board-refresh" onclick="rotateCompletedQuote()">Next Tome 🔄</button>
+        <span class="quote-board-title">📜 Highlights & Wisdom Chronicles</span>
+        <button class="quote-board-refresh" onclick="rotateCompletedQuote()">Next Book 🔄</button>
      </div>
      <div class="quote-display-pane" id="quoteTextPane">"Loading logs..."</div>
      <div class="quote-display-source" id="quoteSourcePane">— Loading</div>
-     <div class="memory-lane-flashback-text" id="memoryLanePane">Parsing tactical files...</div>
+     <div class="memory-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
   <div class="stats-grid">
     <div class="stat-box">
       <div class="stat-number" id="statTBR">0</div>
-      <div class="stat-label">Grimoire Manifest</div>
+      <div class="stat-label">To Read (TBR)</div>
     </div>
     <div class="stat-box">
       <div class="stat-number" id="statRead">0</div>
-      <div class="stat-label">Conquered</div>
+      <div class="stat-label">Completed</div>
     </div>
     <div class="stat-box">
       <div class="stat-number" id="statDNF">0</div>
-      <div class="stat-label">Fallen / Abandoned</div>
+      <div class="stat-label">Dropped (DNF)</div>
     </div>
     <div class="stat-box">
       <div class="stat-number" id="statOld">0</div>
-      <div class="stat-label">Ancient Logs</div>
+      <div class="stat-label">Past Reads</div>
     </div>
   </div>
 
   <div class="home-analytics-row">
      <div class="home-preview-pane">
-        <div class="home-preview-title">🏆 Elite Chronicles</div>
+        <div class="home-preview-title">🏆 Top Rated Books</div>
         <div id="homePodiumContainerMount"></div>
      </div>
      <div class="home-preview-pane">
-        <div class="home-preview-title">📊 Division Metrics</div>
+        <div class="home-preview-title">📊 Collection Breakdown</div>
         <div class="home-canvas-holder">
-           <canvas id="homeStatusPieChart"></canvas>
+            <canvas id="homeStatusPieChart"></canvas>
         </div>
      </div>
   </div>
 
-  <button class="cta-button" onclick="showView('library')">⚔️ Inspect Grimoire Manifest</button>
-  <button class="secondary-button" onclick="openAddBookModal()">➕ Forge New Entry</button>
-  <button class="danger-button" onclick="resetSandbox()">🧹 Purge Custom Records</button>
+  <button class="cta-button" onclick="showView('library')">View Book Collection</button>
+  <button class="secondary-button" onclick="openAddBookModal()">➕ Add New Book</button>
+  <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
 </div>
 
 <div class="library-view" id="libraryView">
@@ -536,29 +706,29 @@
       <span class="count" id="pillCountAll">0</span><span class="label">Total</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'TBR')">
-      <span class="count" id="pillCountTBR">0</span><span class="label">Manifest</span>
+      <span class="count" id="pillCountTBR">0</span><span class="label">To Read</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Complete')">
-      <span class="count" id="pillCountComplete">0</span><span class="label">Conquered</span>
+      <span class="count" id="pillCountComplete">0</span><span class="label">Completed</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Reading')">
-      <span class="count" id="pillCountReading">0</span><span class="label">Engaged</span>
+      <span class="count" id="pillCountReading">0</span><span class="label">Reading</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'DNF')">
-      <span class="count" id="pillCountDNF">0</span><span class="label">Fallen</span>
+      <span class="count" id="pillCountDNF">0</span><span class="label">Dropped</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Old')">
-      <span class="count" id="pillCountOld">0</span><span class="label">Ancient</span>
+      <span class="count" id="pillCountOld">0</span><span class="label">Past Reads</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Wont')">
-      <span class="count" id="pillCountWont">0</span><span class="label">Exiled</span>
+      <span class="count" id="pillCountWont">0</span><span class="label">Won't Continue</span>
     </div>
   </div>
   
   <div class="toolbar">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Scan codes, tactical manuscripts..." oninput="renderBooks()">
+      <input type="text" id="searchInput" placeholder="Search by title, author, or genre..." oninput="renderBooks()">
     </div>
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Filter Mode ✦</button>
   </div>
@@ -570,20 +740,20 @@
 
 <div class="charts-view" id="chartsView">
   <div class="chart-card">
-    <div class="chart-title">🏆 High-Command Elite Reads</div>
+    <div class="chart-title">🏆 Top Tier Library Rankings</div>
     <div id="podiumContainerMount"></div>
     <div class="sub-rankings-list" id="subRankingsMount"></div>
   </div>
 
   <div class="pie-charts-flex-row">
     <div class="pie-wrapper">
-      <div class="chart-title">📊 Strategic Breakdown</div>
+      <div class="chart-title">📊 Status Breakdown</div>
       <div class="canvas-holder">
         <canvas id="statusPieChart"></canvas>
       </div>
     </div>
     <div class="pie-wrapper">
-      <div class="chart-title">🎭 Favoured Mythologies</div>
+      <div class="chart-title">🎭 Favorite Genres</div>
       <div class="canvas-holder">
         <canvas id="genrePieChart"></canvas>
       </div>
@@ -591,24 +761,67 @@
   </div>
   
   <div class="chart-card">
-    <div class="chart-title">✍️ Master Scribes In Network</div>
+    <div class="chart-title">✍️ Most Read Authors</div>
     <div id="topAuthorsListMount"></div>
+  </div>
+</div>
+
+<!-- 🎰 THE INDECISION CASINO CONTAINER INTERFACE -->
+<div class="paralysis-view" id="paralysisView">
+  <div class="casino-container">
+    <div class="jackpot-overlay" id="casinoJackpotCard">
+      <div style="font-size: 28px; margin-bottom: 4px;">🎉</div>
+      <div class="jackpot-title">Jackpot Payout!</div>
+      <div style="font-size:9px; color:var(--text-muted); letter-spacing:1px; margin-top:2px;">THE PARALYSIS SYSTEM SELECTS:</div>
+      
+      <div class="jackpot-book-card">
+        <div id="jackpotBookTitle" style="font-family:'Cinzel', serif; font-size:16px; font-weight:700; color:var(--text-parchment);">Loading Title</div>
+        <div id="jackpotBookAuthor" style="font-size:11px; color:var(--text-muted); margin-top:2px;">Loading Author</div>
+        <div id="jackpotBookMeta" style="font-size:10px; color:var(--gold); margin-top:8px; font-weight:700; letter-spacing:0.5px;">Loading Meta</div>
+      </div>
+      
+      <button class="cta-button" style="background:var(--green-poison); margin-top:0;" onclick="acceptParalysisDestiny()">Cash In (Start Reading) ✓</button>
+      <button class="secondary-button" style="margin-top:8px; background:#000;" onclick="closeJackpotOverlay()">Forfeit & Re-Roll ✕</button>
+    </div>
+
+    <div class="casino-header">Break the Paralysis</div>
+    <div class="casino-sub">Bet your TBR pool • Defeat Indecision</div>
+    
+    <div class="stakes-panel">
+      <div class="stakes-title">Configure Wheel Risk Pool</div>
+      <div class="stakes-row-chips">
+        <div class="stake-chip active" id="stakeWeightAll" onclick="setWheelWeightFilter('All')">All TBR</div>
+        <div class="stake-chip" id="stakeWeightShort" onclick="setWheelWeightFilter('short')">Short (<350p)</div>
+        <div class="stake-chip" id="stakeWeightMedium" onclick="setWheelWeightFilter('medium')">Medium (350-550p)</div>
+        <div class="stake-chip" id="stakeWeightLong" onclick="setWheelWeightFilter('long')">Epic Tomes (>550p)</div>
+      </div>
+    </div>
+
+    <div class="wheel-wrapper">
+      <div class="wheel-pointer"></div>
+      <canvas id="canvasTBRWheel"></canvas>
+    </div>
+
+    <button class="cta-button" id="btnSpinParalysis" style="background:var(--crimson); font-size:14px; padding:16px;" onclick="executeParalysisWheelSpin()">Break The Paralysis 🎰</button>
   </div>
 </div>
 
 <div class="bottom-nav">
   <div class="nav-buttons-row">
     <button class="nav-btn active" id="navHome" onclick="showView('home')">
-      <span class="icon">🏰</span><span>Outpost</span>
+      <span class="icon">🏰</span><span>Main Menu</span>
     </button>
     <button class="nav-btn" id="navLib" onclick="showView('library')">
-      <span class="icon">⚔️</span><span>Manifest</span>
+      <span class="icon">⚔️</span><span>Collection</span>
     </button>
     <button class="nav-btn" id="navCharts" onclick="showView('charts')">
       <span class="icon">📊</span><span>Analytics</span>
     </button>
+    <button class="nav-btn" id="navParalysis" onclick="showView('paralysis')">
+      <span class="icon">🎰</span><span>Break Paralysis</span>
+    </button>
   </div>
-  <div class="console-version-stamp">Secure Matrix Build v2.6</div>
+  <div class="console-version-stamp">Secure Matrix Build v2.9</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -620,23 +833,23 @@
     </div>
     <div class="modal-body">
       <div class="modal-section">
-        <div class="modal-label">Tactical Placement</div>
+        <div class="modal-label">Reading Status</div>
         <div class="status-select-row" id="statusBtns"></div>
       </div>
       <div class="modal-section" id="modalProgressWrapper" style="display:none;">
-        <div class="modal-label">Current Page Alignment Log</div>
+        <div class="modal-label">Current Page Tracker</div>
         <input type="number" id="inputCurrentPage" class="simple-text-input" min="0">
       </div>
       <div class="modal-section">
-        <div class="modal-label">Personal Evaluation Tier (out of 10)</div>
+        <div class="modal-label">My Rating Evaluation (out of 10)</div>
         <div class="stars-row" id="ratingBtns"></div>
       </div>
       <div class="modal-section">
-        <div class="modal-label">Scribe Observations Notes</div>
-        <textarea class="notes-input" id="notesInput" placeholder="Log your observations..."></textarea>
+        <div class="modal-label">Personal Notes & Thoughts</div>
+        <textarea class="notes-input" id="notesInput" placeholder="Write down your observations here..."></textarea>
       </div>
-      <button class="save-btn" onclick="saveBook()">Seal Changes ✓</button>
-      <button class="danger-button" style="margin-top: 16px; background: #260a0d;" onclick="purgeCurrentBookEntry()">Purge Asset from Database 🗑️</button>
+      <button class="save-btn" onclick="saveBook()">Save Changes ✓</button>
+      <button class="danger-button" style="margin-top: 16px; background: #260a0d;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
     </div>
   </div>
 </div>
@@ -645,15 +858,15 @@
   <div class="modal" id="addBookModal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <div class="modal-title">Forge New Catalogue Entry</div>
+      <div class="modal-title">Add New Book to Collection</div>
     </div>
     <div class="modal-body">
       
-      <div class="sentry-alert-banner" id="addDuplicationSentryBanner">⚠️ Asset Already Logged Within Crypt Matrix</div>
+      <div class="sentry-alert-banner" id="addDuplicationSentryBanner">⚠️ This book is already logged within your library framework.</div>
 
       <div class="modal-section">
-        <div class="modal-label">Optical Scan Array (Option A)</div>
-        <button class="secondary-button" id="toggleScannerBtn" onclick="toggleOpticalScannerArray()" style="margin-top:0; background:#1f1317; border-color:var(--crimson);">📡 Initialize Viewfinder Scanning</button>
+        <div class="modal-label">Barcode Camera Scanner (Option A)</div>
+        <button class="secondary-button" id="toggleScannerBtn" onclick="toggleOpticalScannerArray()" style="margin-top:0; background:#1f1317; border-color:var(--crimson);">📡 Start Camera Scanner</button>
         <div class="scanner-viewport-box" id="scannerViewportWrapper">
           <div id="interactiveReaderElement"></div>
           
@@ -666,30 +879,30 @@
       </div>
 
       <div class="modal-section">
-        <div class="modal-label">Manual Barcode / ISBN Entry (Option B)</div>
+        <div class="modal-label">Manual ISBN Lookup (Option B)</div>
         <div class="input-inline-btn-row">
           <input type="text" id="addManualISBNInput" class="simple-text-input" placeholder="e.g. 9780593135204" oninput="hideSentryAlert()">
-          <button class="action-sub-btn" onclick="executeISBNDeepIntelQuery()">Query Intel</button>
+          <button class="action-sub-btn" onclick="executeISBNDeepIntelQuery()">Query Database</button>
         </div>
       </div>
 
-      <hr style="border:0; border-top:1px dashed var(--border-iron); margin:16px 0;">
+      <hr style="border:0; border-top:1px solid var(--border-iron); margin:16px 0;">
 
-      <div class="modal-section"><div class="modal-label">Manuscript Title *</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
-      <div class="modal-section"><div class="modal-label">Author/Scribe *</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
-      <div class="modal-section"><div class="modal-label">Genre Lore Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Grimdark Fantasy"></div>
-      <div class="modal-section"><div class="modal-label">Page Length</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
-      <div class="modal-section"><div class="modal-label">Goodreads Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
+      <div class="modal-section"><div class="modal-label">Book Title *</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
+      <div class="modal-section"><div class="modal-label">Author Name *</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
+      <div class="modal-section"><div class="modal-label">Genre Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
+      <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
+      <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
       <div class="modal-section">
-        <div class="modal-label">Starting Placement</div>
+        <div class="modal-label">Initial Library Tracking Status</div>
         <div class="status-select-row" id="addStatusBtns">
-          <button class="status-sel-btn selected" onclick="setAddStatus(this, 'TBR')">Manifest</button>
-          <button class="status-sel-btn" onclick="setAddStatus(this, 'Reading')">Engage</button>
-          <button class="status-sel-btn" onclick="setAddStatus(this, 'Complete')">Conquer</button>
+          <button class="status-sel-btn selected" onclick="setAddStatus(this, 'TBR')">To Read</button>
+          <button class="status-sel-btn" onclick="setAddStatus(this, 'Reading')">Reading</button>
+          <button class="status-sel-btn" onclick="setAddStatus(this, 'Complete')">Completed</button>
         </div>
       </div>
-      <button class="save-btn" style="background: var(--crimson); color:#fff" onclick="commitNewBook()">Commit Entry To Database ✓</button>
-      <button class="secondary-button" style="margin-top: 12px; background: #000; border-color: var(--border-iron);" onclick="closeAddBookModal()">Abort Entry Matrix ✕</button>
+      <button class="save-btn" style="background: var(--crimson); color:#fff" onclick="commitNewBook()">Save Book to Library ✓</button>
+      <button class="secondary-button" style="margin-top: 12px; background: #000; border-color: var(--border-iron);" onclick="closeAddBookModal()">Cancel ✕</button>
     </div>
   </div>
 </div>
@@ -878,7 +1091,7 @@ let books = BOOKS_RAW.map(r => ({
 let targetAddBookStatus = 'TBR';
 let activeCharts = {};
 let html5QrCodeScannerInstance = null;
-let masterFileHandlePointerPC = null; // PC Direct hard-drive stream token link
+let masterFileHandlePointerPC = null; 
 
 const BOOK_BLURBS_REGISTRY = {
   "One Dark Window": "Fevered magic, ancient cards, and a deadly misty curse. Elspeth Spindle needs a monster to stay safe in her own mind—and the price of unleashing him might just destroy the kingdom.",
@@ -935,7 +1148,7 @@ function updateHomeView() {
     card.classList.add('show'); 
     document.getElementById('readingTitle').textContent = reading.title; 
     document.getElementById('readingAuthor').textContent = reading.author;
-    document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Observations customizable in operational logs.";
+    document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
     const currentP = parseInt(reading.currentPage) || 0;
     
@@ -945,10 +1158,10 @@ function updateHomeView() {
        document.getElementById('readingPagesRatio').textContent = `${currentP} / ${totalP} pages`;
        
        let diaryMessage = `${percentage}% complete`;
-       if (percentage <= 15) diaryMessage = `Shattering the front gate... (${percentage}%)`;
-       else if (percentage <= 45) diaryMessage = `Deeply embedded inside enemy lines. (${percentage}%)`;
-       else if (percentage <= 75) diaryMessage = `Securing major structural objectives! (${percentage}%)`;
-       else diaryMessage = `Annihilating the remaining resistance! (${percentage}%)`;
+       if (percentage <= 15) diaryMessage = `Starting the book... (${percentage}%)`;
+       else if (percentage <= 45) diaryMessage = `Making steady reading progress. (${percentage}%)`;
+       else if (percentage <= 75) diaryMessage = `Deep into the main story chapters! (${percentage}%)`;
+       else diaryMessage = `Finishing the final pages! (${percentage}%)`;
        
        document.getElementById('readingProgressText').textContent = diaryMessage;
     }
@@ -962,9 +1175,9 @@ function updateHomeView() {
 
   const targetThreshold = 50; 
   const targetPercentage = Math.min(100, Math.round((countComplete / targetThreshold) * 100));
-  document.getElementById('milestoneCounterLabel').textContent = `${countComplete} / ${targetThreshold} Conquered`;
+  document.getElementById('milestoneCounterLabel').textContent = `${countComplete} / ${targetThreshold} Books`;
   document.getElementById('milestoneFillTrack').style.width = `${targetPercentage}%`;
-  document.getElementById('milestoneMessageLabel').textContent = `${targetPercentage}% execution toward your 50 volume military conquest!`;
+  document.getElementById('milestoneMessageLabel').textContent = `${targetPercentage}% progress toward your 50 volume book goal.`;
 
   renderQuoteSlotValue(); 
   updateUIRowCounters(); 
@@ -981,13 +1194,13 @@ function renderQuoteSlotValue() {
    const ratedReads = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && b.myRating != null);
    if (ratedReads.length > 0) {
       const memoryBook = ratedReads[Math.floor(Math.abs(Math.sin(activeQuoteIndex)) * ratedReads.length) % ratedReads.length];
-      document.getElementById('memoryLanePane').textContent = `⚔️ Historical Log: You marked "${memoryBook.title}" as an elite Level ${memoryBook.myRating}/10 asset.`;
+      document.getElementById('memoryLanePane').textContent = `📚 Historical Log: You rated "${memoryBook.title}" a solid ${memoryBook.myRating}/10 stars.`;
    } else {
-      document.getElementById('memoryLanePane').textContent = `🌿 Evaluate items inside the manifest matrix to unlock past deep-intel diagnostics here!`;
+      document.getElementById('memoryLanePane').textContent = `🌿 Evaluate items inside the library filters to unlock your reading history logs here!`;
    }
 }
 
-function resetSandbox() { if (confirm("Purge custom entries and reset registry defaults?")) { localStorage.clear(); window.location.reload(); } }
+function resetSandbox() { if (confirm("Reset custom data entries and clear browser storage?")) { localStorage.clear(); window.location.reload(); } }
 function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
 
 function openAddBookModal() { 
@@ -1015,13 +1228,13 @@ function triggerSentryAlert(customMessageText = null) {
   if (customMessageText) {
     banner.textContent = customMessageText;
   } else {
-    banner.textContent = "⚠️ Asset Already Logged Within Crypt Matrix";
+    banner.textContent = "⚠️ This book is already logged within your library framework.";
   }
   banner.style.display = 'block';
   banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-/* 📥 UNIFIED SAVE ENGINE MAPS: IMPORT PIPELINE RULES */
+/* 📥 UNIFIED ENVIRONMENT DATA INTERFACE MANAGEMENT PORTAL PIPELINES */
 function toggleSettingsControlShelfArray() {
   document.getElementById('globalSettingsControlShelf').classList.toggle('open');
 }
@@ -1041,7 +1254,6 @@ function executeSaveStateFileReaderImport(inputElement) {
       if (Array.isArray(decodedImportPackage)) {
         books = decodedImportPackage;
         
-        // Rebuild clean local storage sync state maps matching package parameters
         const savedLocalStorageRebuild = {};
         const customAddedRebuild = [];
         
@@ -1053,7 +1265,7 @@ function executeSaveStateFileReaderImport(inputElement) {
         localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
         localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
         
-        document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Import Complete. Master Database Synchronized ✓";
+        document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Import Complete. Library Synced Successfully ✓";
         updateHomeView();
         if (currentView === 'library') renderBooks();
         setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
@@ -1071,12 +1283,11 @@ function executeSaveStateFileReaderImport(inputElement) {
 async function triggerMasterExportPipeline() {
   const currentLibraryDataString = JSON.stringify(books, null, 2);
   
-  // Environment Check: PC Direct Storage Stream API Verification
   if (window.showSaveFilePicker) {
     try {
       const pickerOptions = {
         suggestedName: 'BarbiesLibrary_Save.json',
-        types: [{ description: 'JSON Database Save Files', accept: { 'application/json': ['.json'] } }]
+        types: [{ description: 'JSON Library Save Files', accept: { 'application/json': ['.json'] } }]
       };
       
       masterFileHandlePointerPC = await window.showSaveFilePicker(pickerOptions);
@@ -1084,13 +1295,12 @@ async function triggerMasterExportPipeline() {
       await outputWritableTrack.write(currentLibraryDataString);
       await outputWritableTrack.close();
       
-      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: PC File Connected & Locked Live. Background Autosave Active!";
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: PC File Linked. Local Autosave Active!";
       alert("PC Save State established. Future database changes will overwrite this file automatically.");
     } catch (e) {
-      // User canceled or blocked explicit disk write access picker hooks
+      // Picker tracking override catch loops
     }
   } else {
-    // Mobile Sandbox Fallback Loop: Forced browser trigger download stream action
     const textBlobDataToken = new Blob([currentLibraryDataString], { type: 'application/json' });
     const virtualDownloadElement = document.createElement('a');
     virtualDownloadElement.download = 'BarbiesLibrary_Save.json';
@@ -1100,26 +1310,24 @@ async function triggerMasterExportPipeline() {
     virtualDownloadElement.click();
     document.body.removeChild(virtualDownloadElement);
     
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Backup File Dispatched To Native Share/Download Sheet.";
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Backup File Sent To Native System Download Manager.";
   }
 }
 
-/* HIGH-SPEED AUTOMATIC BACKGROUND FILE-WRITING SYNC SENTRIES */
 async function executeAutomatedBackgroundPipelineAutosave() {
-  if (!masterFileHandlePointerPC) return; // Ignore if mobile loop or if link hasn't been established via export button yet
+  if (!masterFileHandlePointerPC) return; 
   try {
     const currentLibraryDataString = JSON.stringify(books, null, 2);
     const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
     await outputWritableTrack.write(currentLibraryDataString);
     await outputWritableTrack.close();
   } catch(e) {
-    // Storage linkage drops are logged internally
     masterFileHandlePointerPC = null;
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: File Connection Cleared. Re-link via Export button.";
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: File link dropped. Re-link via Export option.";
   }
 }
 
-/* MILITARY NOMENCLATURE SCRIBE NAME TRANSFORMER (SURNAME, INITIAL.) */
+/* Author nomenclature layout formatter logic */
 function processScribeNameMilitaryFormatting(rawAuthorString) {
   if (!rawAuthorString || typeof rawAuthorString !== 'string') return "UNKNOWN, X.";
   
@@ -1144,7 +1352,7 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
   return `${surname}, ${initial}.`;
 }
 
-/* OPTICAL VIEWPORTSCANNER ENGINE (OPTION A) - RADAR DELAY DISTANCE STABILIZATION */
+/* BARCODE SCAN CAMERA STABILIZATION ARRAY HOOKS (OPTION A) */
 function toggleOpticalScannerArray() {
   const elementWrapper = document.getElementById('scannerViewportWrapper');
   const toggleBtn = document.getElementById('toggleScannerBtn');
@@ -1153,7 +1361,7 @@ function toggleOpticalScannerArray() {
     deconstructOpticalScanner();
   } else {
     elementWrapper.classList.add('active');
-    toggleBtn.textContent = "🛑 Terminate Viewfinder Scanning";
+    toggleBtn.textContent = "🛑 Terminate Video Scanner";
     document.getElementById('manualZoomTrackSlider').value = 2.5;
     document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
     
@@ -1176,12 +1384,11 @@ function toggleOpticalScannerArray() {
         executeDynamicZoomOverride(2.5);
       }, 1200); 
     }).catch(() => {
-      toggleBtn.textContent = "⚠️ Viewfinder Error / No Permission";
+      toggleBtn.textContent = "⚠️ Camera Error / Check Permissions";
     });
   }
 }
 
-/* HIGH-DENSITY DIGITAL LENS EXTENSION INTERCEPTOR */
 function executeDynamicZoomOverride(zoomFactorValue) {
   if (!html5QrCodeScannerInstance) return;
   document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x";
@@ -1197,7 +1404,7 @@ function deconstructOpticalScanner() {
   const elementWrapper = document.getElementById('scannerViewportWrapper');
   const toggleBtn = document.getElementById('toggleScannerBtn');
   elementWrapper.classList.remove('active');
-  toggleBtn.textContent = "📡 Initialize Viewfinder Scanning";
+  toggleBtn.textContent = "📡 Start Camera Scanner";
   
   if (html5QrCodeScannerInstance) {
     html5QrCodeScannerInstance.stop().then(() => {
@@ -1206,7 +1413,7 @@ function deconstructOpticalScanner() {
   }
 }
 
-/* EXTERNAL INTELLIGENCE OPEN LIBRARY SEARCH LOGIC */
+/* OPEN LIBRARY REPOSITORY QUERY ENGINE FETCH METHODS */
 async function executeISBNDeepIntelQuery(forcedISBN = null) {
   const targetISBN = forcedISBN || document.getElementById('addManualISBNInput').value.trim();
   if (!targetISBN) { alert('Specify valid barcode coordinates.'); return; }
@@ -1247,11 +1454,11 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
       deconstructOpticalScanner();
       document.getElementById('addTitle').value = '';
       document.getElementById('addAuthor').value = '';
-      triggerSentryAlert("⚠️ COORDINATES UNMAPPED. MANUSCRIPT NOT FOUND. DEFINE MATRIX MANUALLY.");
+      triggerSentryAlert("⚠️ Book not found in repository database. Enter details manually below.");
       document.getElementById('addTitle').focus();
     }
   } catch (error) {
-    triggerSentryAlert("⚠️ SIGNAL LINKAGE INTERRUPTED. SYSTEM OFFLINE.");
+    triggerSentryAlert("⚠️ NETWORK INTERRUPT. CONNECTION FAILED.");
   } finally {
     searchFieldButton.textContent = originalLabel;
     searchFieldButton.disabled = false;
@@ -1265,7 +1472,7 @@ function commitNewBook() {
   const p = document.getElementById('addPages').value.trim();
   const gr = document.getElementById('addGR').value.trim();
   
-  if(!t || !rawAuthor || !g) { alert('Required matrix parameters missing.'); return; } 
+  if(!t || !rawAuthor || !g) { alert('Required name parameters missing.'); return; } 
   
   const isDuplicate = books.some(b => b.title.toLowerCase().trim() === t.toLowerCase());
   if (isDuplicate) {
@@ -1294,11 +1501,10 @@ function commitNewBook() {
   executeAutomatedBackgroundPipelineAutosave();
 }
 
-/* EXTENSION FEATURE: DELETE / PURGE MANIFEST ASSET FROM STORAGE PACKAGES */
 function purgeCurrentBookEntry() {
   if (!currentBook) return;
   
-  const configurationConfirmationOverride = confirm(`⚠️ SYSTEM COMMAND ACTION:\nAre you absolutely positive you wish to permanently purge "${currentBook.title}" from your chronicle logs? This asset signature cannot be recovered.`);
+  const configurationConfirmationOverride = confirm(`⚠️ DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library? This action cannot be undone.`);
   
   if (configurationConfirmationOverride) {
     books = books.filter(b => b.id !== currentBook.id);
@@ -1356,16 +1562,11 @@ function renderBooks() {
   else if(sortMode === 2) list.sort((a,b) => (b.myRating || 0) - (a.myRating || 0));
   else if(sortMode === 3) list.sort((a,b) => (b.grRating || 0) - (a.grRating || 0));
 
-  document.getElementById('resultsCount').textContent = `${list.length} files uncovered`;
+  document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
-    const statusClass = b.status === "Won't Continue" ? 'Wont' : b.status;
-    const initials = getTitleInitials(b.title);
+    const statusClass = statusKey(b.status);
     return `
       <div class="book-card status-${statusClass}" onclick="openBook(${b.id})">
-        <div class="book-spine-wrapper">
-          <div class="book-spine-cylinder">${initials}</div>
-        </div>
-        
         <div class="book-info">
            <div class="book-title">${b.title}</div>
            <div class="book-author">${b.author}</div>
@@ -1399,8 +1600,8 @@ function getFiltered() {
 function openBook(id) {
   currentBook = books.find(b => b.id === id); 
   document.getElementById('mTitle').textContent = currentBook.title; 
-  document.getElementById('mAuthor').textContent = "By Scribe " + currentBook.author;
-  document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${s}</button>`).join('');
+  document.getElementById('mAuthor').textContent = "By Author " + currentBook.author;
+  document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
   
   const w = document.getElementById('modalProgressWrapper');
   if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
@@ -1459,8 +1660,11 @@ function renderHomepageChartsPreview() {
         <div class="podium-column"><div class="podium-book-title">${p3.title}</div><div class="podium-book-rating">★ ${p3.myRating||'—'}</div><div class="podium-block podium-step-3"><span class="podium-number">III</span></div></div>
       </div>`;
   if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
-  const ctx = document.getElementById('homeStatusPieChart').getContext('2d');
-  activeCharts.homeStatus = new Chart(ctx, { type: 'pie', data: { labels: ['Manifest', 'Conquered', 'Engaged', 'Abandoned', 'Ancient'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#3b629b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+  const canvasEl = document.getElementById('homeStatusPieChart');
+  if (canvasEl) {
+    const ctx = canvasEl.getContext('2d');
+    activeCharts.homeStatus = new Chart(ctx, { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#3b629b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+  }
 }
 
 function renderCharts() {
@@ -1473,7 +1677,7 @@ function renderCharts() {
         <div class="podium-column"><div class="podium-book-title charts-view-title-size">${p3.title}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
   
-  const sublist = rated.slice(3, 8);
+  const sublist = rated.slice(3, 10);
   document.getElementById('subRankingsMount').innerHTML = sublist.map((b, i) => `
     <div class="sub-rank-item">
       <span class="sub-rank-num">#${i+4}</span>
@@ -1486,15 +1690,15 @@ function renderCharts() {
   if(activeCharts.genre) activeCharts.genre.destroy();
   
   const ctxStatus = document.getElementById('statusPieChart').getContext('2d');
-  activeCharts.status = new Chart(ctxStatus, { type: 'pie', data: { labels: ['Manifest', 'Engaged', 'Conquered', 'Abandoned', 'Ancient'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#3b629b', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false } });
+  activeCharts.status = new Chart(ctxStatus, { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#3b629b', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
   
   const genreLookup = {}; books.forEach(b => { const normalized = normalizeGenre(b.genre); genreLookup[normalized] = (genreLookup[normalized] || 0) + 1; });
   const sortedGenres = Object.entries(genreLookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
   const ctxGenre = document.getElementById('genrePieChart').getContext('2d');
-  activeCharts.genre = new Chart(ctxGenre, { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#3b629b', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false } });
+  activeCharts.genre = new Chart(ctxGenre, { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#3b629b', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
 
   const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim(); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
-  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill">${count} volumes</span></div>`).join('');
+  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill">${count} books</span></div>`).join('');
 }
 
 function showView(view) {
@@ -1502,32 +1706,256 @@ function showView(view) {
   document.getElementById('homeView').className = 'home-view' + (view === 'home'?' visible':'');
   document.getElementById('libraryView').className = 'library-view' + (view === 'library'?' visible':'');
   document.getElementById('chartsView').className = 'charts-view' + (view === 'charts'?' visible':'');
+  document.getElementById('paralysisView').className = 'paralysis-view' + (view === 'paralysis'?' visible':'');
+  
   document.getElementById('navHome').className = 'nav-btn' + (view === 'home'?' active':'');
   document.getElementById('navLib').className = 'nav-btn' + (view === 'library'?' active':'');
   document.getElementById('navCharts').className = 'nav-btn' + (view === 'charts'?' active':'');
+  document.getElementById('navParalysis').className = 'nav-btn' + (view === 'paralysis'?' active':'');
   
   if (view === 'home') updateHomeView();
   else if (view === 'library') { renderGenreRow(); renderBooks(); updateUIRowCounters(); }
   else if (view === 'charts') renderCharts();
+  else if (view === 'paralysis') configureRouletteDataPool();
 }
 
 function statusKey(s) { 
-  if (s === "Won't Continue") return "Wont"; 
+  if (s === "Won't Continue" || s === "Wont") return "Wont"; 
   return s; 
 }
 
 function statusLabel(s) { 
-  if (s === "TBR") return "Manifest";
-  if (s === "Reading") return "Engaged";
-  if (s === "Complete") return "Conquered";
-  if (s === "DNF") return "Abandoned";
-  if (s === "Old") return "Ancient";
-  if (s === "Won't Continue" || s === "Wont") return "Exiled";
+  if (s === "TBR") return "To Read";
+  if (s === "Reading") return "Reading";
+  if (s === "Complete") return "Completed";
+  if (s === "DNF") return "Dropped";
+  if (s === "Old") return "Past Reads";
+  if (s === "Won't Continue" || s === "Wont") return "Won't Continue";
   return s; 
 }
 
-// Fire Layout Engine
-updateHomeView();
+// ── 🎰 THE "BREAK THE PARALYSIS" CASINO ENGINE SCRIPTS ──────────────────────
+let rouletteTBRPool = [];
+let wheelWeightFilter = 'All';
+let isWheelCurrentlySpinning = false;
+let paralysisWinningBookPointer = null;
+
+function playCasinoTickAudio(frequencyScale = 1) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(120 * frequencyScale, ctx.currentTime);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.06);
+  } catch(e) {}
+}
+
+function playCasinoJackpotChimeAudio() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [440, 554, 659, 880];
+    notes.forEach((freq, index) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + (index * 0.1));
+      gain.gain.setValueAtTime(0.1, ctx.currentTime + (index * 0.1));
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (index * 0.1) + 0.3);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + (index * 0.1));
+      osc.stop(ctx.currentTime + (index * 0.1) + 0.35);
+    });
+  } catch(e) {}
+}
+
+function configureRouletteDataPool() {
+  let list = books.filter(b => b.status === 'TBR');
+  
+  if (wheelWeightFilter === 'short') list = list.filter(b => parseInt(b.pages) < 350);
+  else if (wheelWeightFilter === 'medium') list = list.filter(b => parseInt(b.pages) >= 350 && parseInt(b.pages) <= 550);
+  else if (wheelWeightFilter === 'long') list = list.filter(b => parseInt(b.pages) > 550);
+  
+  rouletteTBRPool = list.slice(0, 16); 
+  renderHTML5CasinoCanvasWheel();
+}
+
+function renderHTML5CasinoCanvasWheel() {
+  const canvas = document.getElementById('canvasTBRWheel');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  const renderBounds = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  
+  canvas.width = renderBounds.width * dpr;
+  canvas.height = renderBounds.height * dpr;
+  
+  const w = canvas.width;
+  const h = canvas.height;
+  const cx = w / 2;
+  const cy = h / 2;
+  const r = cx - (14 * dpr);
+
+  ctx.clearRect(0, 0, w, h);
+
+  if (rouletteTBRPool.length === 0) {
+    ctx.fillStyle = '#1c181c';
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillStyle = '#8c7f70';
+    ctx.font = `bold ${16 * dpr}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("NO TBR RECORDS MATCH FILTER", cx, cy);
+    return;
+  }
+
+  const arcSize = (2 * Math.PI) / rouletteTBRPool.length;
+  const spectrumColors = ['#e63946', '#f4a261', '#e9c46a', '#2a9d8f', '#457b9d', '#a2d2ff', '#b5e2fa', '#c8b6ff', '#ffc6ff', '#e07a5f'];
+
+  rouletteTBRPool.forEach((book, i) => {
+    const angleStart = i * arcSize;
+    const angleEnd = angleStart + arcSize;
+    
+    ctx.fillStyle = spectrumColors[i % spectrumColors.length];
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angleStart, angleEnd);
+    ctx.closePath();
+    ctx.fill();
+    
+    ctx.lineWidth = 1 * dpr;
+    ctx.strokeStyle = '#161215';
+    ctx.stroke();
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angleStart + arcSize / 2);
+    ctx.fillStyle = '#000';
+    
+    // Auto-calculates scaled typography based on mobile vs desktop boundaries
+    let computedFontSize = renderBounds.width < 340 ? 9 * dpr : 12 * dpr;
+    ctx.font = `bold ${computedFontSize}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    
+    let label = book.title;
+    let maxCharLength = renderBounds.width < 340 ? 14 : 26;
+    if (label.length > maxCharLength) label = label.substring(0, maxCharLength - 2) + "...";
+    ctx.fillText(label, r - (16 * dpr), 0);
+    ctx.restore();
+  });
+
+  ctx.fillStyle = '#161215';
+  ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
+  ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
+}
+
+function varLabelGet(variableName) { 
+  return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim() || '#b39243'; 
+}
+
+// Slices data pools cleanly with strict TBR page count restrictions
+function setWheelWeightFilter(weightClass) {
+  wheelWeightFilter = weightClass;
+  updateCasinoChipsUI('stakeWeight' + weightClass.charAt(0).toUpperCase() + weightClass.slice(1));
+  configureRouletteDataPool();
+}
+
+function updateCasinoChipsUI(activeId) {
+  document.querySelectorAll('.stakes-row-chips .stake-chip').forEach(c => c.classList.remove('active'));
+  document.getElementById(activeId).classList.add('active');
+}
+
+function executeParalysisWheelSpin() {
+  if (isWheelCurrentlySpinning || rouletteTBRPool.length === 0) return;
+  
+  isWheelCurrentlySpinning = true;
+  closeJackpotOverlay();
+  
+  const canvas = document.getElementById('canvasTBRWheel');
+  const spinVelocityTarget = Math.random() * 4000 + 3500; 
+  const runtimeDuration = 4500; 
+  const executionStart = performance.now();
+  
+  let lastTickAngle = 0;
+  const totalArcSize = 360 / rouletteTBRPool.length;
+
+  function runFrame(now) {
+    const elapsed = now - executionStart;
+    const progress = Math.min(elapsed / runtimeDuration, 1);
+    
+    const progressComplement = 1 - progress;
+    const easeOutFactor = 1 - progressComplement * progressComplement * progressComplement * progressComplement;
+    const currentFrameRotationAngle = (easeOutFactor * spinVelocityTarget) % 360;
+    
+    canvas.style.transform = `rotate(${currentFrameRotationAngle}deg)`;
+    
+    if (Math.abs(currentFrameRotationAngle - lastTickAngle) >= totalArcSize) {
+      playCasinoTickAudio(1 - (progress * 0.4));
+      lastTickAngle = currentFrameRotationAngle;
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(runFrame);
+    } else {
+      isWheelCurrentlySpinning = false;
+      
+      const dynamicOffsetAngle = (270 - currentFrameRotationAngle + 360) % 360;
+      const indexWinner = Math.floor((dynamicOffsetAngle / 360) * rouletteTBRPool.length) % rouletteTBRPool.length;
+      
+      paralysisWinningBookPointer = rouletteTBRPool[indexWinner];
+      triggerJackpotPayoutModal();
+    }
+  }
+  requestAnimationFrame(runFrame);
+}
+
+function triggerJackpotPayoutModal() {
+  if (!paralysisWinningBookPointer) return;
+  playCasinoJackpotChimeAudio();
+  
+  document.getElementById('jackpotBookTitle').textContent = paralysisWinningBookPointer.title;
+  document.getElementById('jackpotBookAuthor').textContent = "By Scribe " + paralysisWinningBookPointer.author;
+  document.getElementById('jackpotBookMeta').textContent = `${normalizeGenre(paralysisWinningBookPointer.genre)} • ${paralysisWinningBookPointer.pages} Pages`;
+  
+  document.getElementById('casinoJackpotCard').classList.add('show');
+}
+
+function acceptParalysisDestiny() {
+  if (!paralysisWinningBookPointer) return;
+  
+  paralysisWinningBookPointer.status = 'Reading';
+  paralysisWinningBookPointer.currentPage = 0;
+  
+  try {
+    const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
+    saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes };
+    localStorage.setItem('barbies_library', JSON.stringify(saved));
+  } catch(e) {}
+  
+  closeJackpotOverlay();
+  updateHomeView();
+  showView('home');
+}
+
+function closeJackpotOverlay() {
+  document.getElementById('casinoJackpotCard').classList.remove('show');
+}
+
+window.addEventListener('resize', () => {
+  if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel();
+});
+
+// Fire Layout Engine after DOM finishes initialization parse sequences
+window.addEventListener('DOMContentLoaded', () => {
+  updateHomeView();
+});
 </script>
 </body>
 </html>
