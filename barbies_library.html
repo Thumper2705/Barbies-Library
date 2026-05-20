@@ -57,6 +57,37 @@
   .header-title span { color: var(--crimson); text-shadow: 0 0 10px rgba(166, 38, 38, 0.5); }
   .header-sub { color: var(--text-muted); font-size: 11px; margin-top: 6px; position: relative; z-index: 1; letter-spacing: 2px; text-transform: uppercase; }
 
+  /* THREE-DOTS MENU TRIGGER AT UPPER PERIMETER */
+  .settings-dots-trigger {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 10;
+    padding: 4px 8px;
+    transition: color 0.15s;
+  }
+  .settings-dots-trigger:hover { color: var(--gold); }
+
+  /* SLIDEOUT DATA CONTROL SHELF PANEL */
+  .settings-control-shelf {
+    background: #0f0c0e;
+    border-bottom: 2px solid var(--border-iron);
+    display: none;
+    padding: 20px;
+    position: relative;
+    animation: fadeSleeveDown 0.2s cubic-bezier(0.1, 1, 0.1, 1);
+  }
+  .settings-control-shelf.open { display: block; }
+  @keyframes fadeSleeveDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  .shelf-grid-layout { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 0 auto; }
+  .shelf-title { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-bottom: 4px; }
+  .shelf-status-readout { font-size: 10px; color: var(--text-muted); text-align: center; background: #000; padding: 6px; border: 1px solid var(--border-iron); border-radius: 2px; }
+
   /* VIEW ENGINE */
   .home-view, .library-view, .charts-view { display: none; }
   .home-view.visible, .library-view.visible, .charts-view.visible { display: block; }
@@ -407,6 +438,17 @@
 <div class="header">
   <div class="header-title">Sir Barbie's <span>Library</span> ⚔️</div>
   <div class="header-sub"><span id="headerTrackerCount">170</span> tomes chronicled</div>
+  <button class="settings-dots-trigger" onclick="toggleSettingsControlShelfArray()">⋮</button>
+</div>
+
+<div class="settings-control-shelf" id="globalSettingsControlShelf">
+  <div class="shelf-grid-layout">
+    <div class="shelf-title">Strategic File Management</div>
+    <div class="shelf-status-readout" id="saveSystemStatusOutputLine">Status: Session Running Offline (LocalStorage-Cached)</div>
+    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import Grimoire Save File 📥</button>
+    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export Grimoire Save File 📤</button>
+    <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".json" onchange="executeSaveStateFileReaderImport(this)">
+  </div>
 </div>
 
 <div class="home-view visible" id="homeView">
@@ -566,7 +608,7 @@
       <span class="icon">📊</span><span>Analytics</span>
     </button>
   </div>
-  <div class="console-version-stamp">Secure Matrix Build v2.5</div>
+  <div class="console-version-stamp">Secure Matrix Build v2.6</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -836,6 +878,7 @@ let books = BOOKS_RAW.map(r => ({
 let targetAddBookStatus = 'TBR';
 let activeCharts = {};
 let html5QrCodeScannerInstance = null;
+let masterFileHandlePointerPC = null; // PC Direct hard-drive stream token link
 
 const BOOK_BLURBS_REGISTRY = {
   "One Dark Window": "Fevered magic, ancient cards, and a deadly misty curse. Elspeth Spindle needs a monster to stay safe in her own mind—and the price of unleashing him might just destroy the kingdom.",
@@ -978,6 +1021,104 @@ function triggerSentryAlert(customMessageText = null) {
   banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+/* 📥 UNIFIED SAVE ENGINE MAPS: IMPORT PIPELINE RULES */
+function toggleSettingsControlShelfArray() {
+  document.getElementById('globalSettingsControlShelf').classList.toggle('open');
+}
+
+function triggerMasterImportPipeline() {
+  document.getElementById('hiddenSaveStateFileReaderElement').click();
+}
+
+function executeSaveStateFileReaderImport(inputElement) {
+  const file = inputElement.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const decodedImportPackage = JSON.parse(e.target.result);
+      if (Array.isArray(decodedImportPackage)) {
+        books = decodedImportPackage;
+        
+        // Rebuild clean local storage sync state maps matching package parameters
+        const savedLocalStorageRebuild = {};
+        const customAddedRebuild = [];
+        
+        books.forEach(b => {
+          savedLocalStorageRebuild[b.id] = { status: b.status, currentPage: b.currentPage || 0, myRating: b.myRating, notes: b.notes };
+          if (b.id > 170) customAddedRebuild.push(b);
+        });
+        
+        localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
+        localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
+        
+        document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Import Complete. Master Database Synchronized ✓";
+        updateHomeView();
+        if (currentView === 'library') renderBooks();
+        setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
+      } else {
+        alert('Invalid schema data footprint discovered.');
+      }
+    } catch(err) {
+      alert('Failed to interpret import packet integrity maps.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+/* 📤 UNIFIED SAVE ENGINE MAPS: EXPORT PIPELINE RULES */
+async function triggerMasterExportPipeline() {
+  const currentLibraryDataString = JSON.stringify(books, null, 2);
+  
+  // Environment Check: PC Direct Storage Stream API Verification
+  if (window.showSaveFilePicker) {
+    try {
+      const pickerOptions = {
+        suggestedName: 'BarbiesLibrary_Save.json',
+        types: [{ description: 'JSON Database Save Files', accept: { 'application/json': ['.json'] } }]
+      };
+      
+      masterFileHandlePointerPC = await window.showSaveFilePicker(pickerOptions);
+      const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
+      await outputWritableTrack.write(currentLibraryDataString);
+      await outputWritableTrack.close();
+      
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: PC File Connected & Locked Live. Background Autosave Active!";
+      alert("PC Save State established. Future database changes will overwrite this file automatically.");
+    } catch (e) {
+      // User canceled or blocked explicit disk write access picker hooks
+    }
+  } else {
+    // Mobile Sandbox Fallback Loop: Forced browser trigger download stream action
+    const textBlobDataToken = new Blob([currentLibraryDataString], { type: 'application/json' });
+    const virtualDownloadElement = document.createElement('a');
+    virtualDownloadElement.download = 'BarbiesLibrary_Save.json';
+    virtualDownloadElement.href = URL.createObjectURL(textBlobDataToken);
+    virtualDownloadElement.style.display = 'none';
+    document.body.appendChild(virtualDownloadElement);
+    virtualDownloadElement.click();
+    document.body.removeChild(virtualDownloadElement);
+    
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Backup File Dispatched To Native Share/Download Sheet.";
+  }
+}
+
+/* HIGH-SPEED AUTOMATIC BACKGROUND FILE-WRITING SYNC SENTRIES */
+async function executeAutomatedBackgroundPipelineAutosave() {
+  if (!masterFileHandlePointerPC) return; // Ignore if mobile loop or if link hasn't been established via export button yet
+  try {
+    const currentLibraryDataString = JSON.stringify(books, null, 2);
+    const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
+    await outputWritableTrack.write(currentLibraryDataString);
+    await outputWritableTrack.close();
+  } catch(e) {
+    // Storage linkage drops are logged internally
+    masterFileHandlePointerPC = null;
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: File Connection Cleared. Re-link via Export button.";
+  }
+}
+
 /* MILITARY NOMENCLATURE SCRIBE NAME TRANSFORMER (SURNAME, INITIAL.) */
 function processScribeNameMilitaryFormatting(rawAuthorString) {
   if (!rawAuthorString || typeof rawAuthorString !== 'string') return "UNKNOWN, X.";
@@ -1103,7 +1244,6 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
         triggerSentryAlert();
       }
     } else {
-      /* BUILD 2.5 LOCALIZED SPLASH BANNER FALLBACK OVERRIDE */
       deconstructOpticalScanner();
       document.getElementById('addTitle').value = '';
       document.getElementById('addAuthor').value = '';
@@ -1151,6 +1291,7 @@ function commitNewBook() {
   closeAddBookModal(); 
   updateHomeView(); 
   showView('library');
+  executeAutomatedBackgroundPipelineAutosave();
 }
 
 /* EXTENSION FEATURE: DELETE / PURGE MANIFEST ASSET FROM STORAGE PACKAGES */
@@ -1181,6 +1322,7 @@ function purgeCurrentBookEntry() {
     } else if (currentView === 'charts') {
       renderCharts();
     }
+    executeAutomatedBackgroundPipelineAutosave();
   }
 }
 
@@ -1301,6 +1443,7 @@ function saveBook() {
   
   currentBook._pendingStatus = null; currentBook._pendingRating = undefined;
   updateHomeView(); renderBooks(); document.getElementById('modalOverlay').classList.remove('open'); 
+  executeAutomatedBackgroundPipelineAutosave();
 }
 
 function filterStatus(el, val) { activeStatus = val; document.querySelectorAll('#statsRow2 .stat-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderBooks(); }
