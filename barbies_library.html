@@ -485,9 +485,9 @@
     height: 100%;
     border-radius: 50%;
     box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4);
-    cursor: grab;
+    transform: rotate(0deg);
+    touch-action: none; 
   }
-  #canvasTBRWheel:active { cursor: grabbing; }
   
   .wheel-pointer {
     position: absolute;
@@ -549,7 +549,7 @@
     background: rgba(230, 57, 70, 0.1);
   }
 
-  /* 🃏 GOTHIC TRADING CARD ENCOUNTER OVERLAYS */
+  /* 🃏 GOTHIC TRADING CARD INTERFACE ENGINE OVERLAYS */
   .trading-card-overlay {
     position: absolute;
     inset: 12px;
@@ -628,15 +628,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+  }
+
+  .card-artwork-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: none;
   }
   
   .card-artwork-glyph {
-    font-family: 'Cinzel', serif;
-    font-size: 44px;
-    font-weight: 900;
-    color: var(--crimson);
-    text-shadow: 0 0 15px rgba(166, 38, 38, 0.6);
-    letter-spacing: 2px;
+    width: 60px;
+    height: 60px;
+    display: block;
   }
 
   .card-author-line {
@@ -855,7 +861,15 @@
         </div>
         
         <div class="card-artwork-frame">
-          <div class="card-artwork-glyph" id="cardBookGlyph">BK</div>
+          <img src="" id="cardBookCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleTradingCardImageError()">
+          <div id="cardBookGlyph" class="card-artwork-glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <path d="M12 6v6"></path>
+              <path d="M9 9h6"></path>
+            </svg>
+          </div>
         </div>
         
         <div class="card-author-line" id="cardBookAuthor">BY AUTHOR UNKNOWN</div>
@@ -981,6 +995,10 @@
       <div class="modal-section"><div class="modal-label">Genre Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
       <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
       <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
+      <div class="modal-section">
+        <div class="modal-label">Custom Cover Image URL (Optional Override)</div>
+        <input type="text" id="addCustomCoverUrl" class="simple-text-input" placeholder="e.g. https://site.com/image.jpg">
+      </div>
       <div class="modal-section">
         <div class="modal-label">Initial Library Tracking Status</div>
         <div class="status-select-row" id="addStatusBtns">
@@ -1173,7 +1191,8 @@ const BOOKS_RAW = [
 let books = BOOKS_RAW.map(r => ({
   id: r[0], title: r[1], author: r[2], status: r[3],
   series: r[4], genre: r[5], pages: r[6], grRating: r[7],
-  myRating: r[8], notes: r[9], currentPage: r[0] === 55 ? 120 : 0
+  myRating: r[8], notes: r[9], currentPage: r[0] === 55 ? 120 : 0,
+  coverUrl: null
 }));
 
 let targetAddBookStatus = 'TBR';
@@ -1188,6 +1207,60 @@ const BOOK_BLURBS_REGISTRY = {
   "Project Hail Mary": "Ryland Grace is the sole survivor on a desperate, last-chance mission to save humanity from an extinction-level solar crisis. He has no memories, zero backup—and a very unexpected alien companion.",
   "Fourth Wing": "Enter the brutal, cutthroat world of a military college for dragon riders, where graduation means survival, and failure means falling to your death. Violet Sorrengail must learn to fight or burn.",
   "Quicksilver": "Intricate Fae politics, dangerous alchemy, and a slow-burn romance ignite when a mortal thief matches wits with an enigmatic, lethal immortal king in a high-stakes struggle for leverage."
+};
+
+// Open Library Static ISBN Mapping Matrix Array for Preloaded TBR Pool Records
+const PRELOADED_ISBN_REGISTRY = {
+  "Lightlark": "9781419760860",
+  "Nightbane": "9781419760907",
+  "Skyshade": "9781419760938",
+  "Crowntide": "9781419771149",
+  "Grim and Oro": "9781419778230",
+  "Starside": "9781419772092",
+  "Daughter of No Worlds": "9781640639898",
+  "Children of Fallen Gods": "9781640639911",
+  "Mother of Death & Dawn": "9781640639935",
+  "Red Rising": "9780345539786",
+  "Golden Son": "9780345539816",
+  "Morning Star": "9780345539847",
+  "Whispers Beneath Crowstone": "9781804365731",
+  "House of Leaves": "9780375703768",
+  "Carnival": "9782745995537",
+  "Legendary": "9781250157539",
+  "Finale": "9781250157553",
+  "Black Thorn": "9781736632420",
+  "The Knight and the Moth": "9781398533141",
+  "Two Twisted Crowns": "9784344043138",
+  "Cleopatra": "9788466668798",
+  "Dark Rise": "9780062870773",
+  "Dark Heir": "9780062870810",
+  "The Wolf King": "9781958619117",
+  "The Night Prince": "9781958619124",
+  "When Moon Hatched": "9780593815717",
+  "Rites of the Starling": "9781035905256",
+  "Shield of Sparrows": "9781035905249",
+  "Dawn of the Fire Bird": "9780008546113",
+  "Wind and Truth": "9781250319180",
+  "Metal Slinger": "9781737719601",
+  "A Day of Fallen Night": "9781635577068",
+  "Among the Burning Flowers": "9780593451557",
+  "Priory of the Orange Tree": "9781632866004",
+  "Dire Bound": "9781639103980",
+  "Fury Bound": "9781639106820",
+  "Stage Set for Villains": "9780756418854",
+  "We Who Will Die": "9781837910540",
+  "Conform": "9781649375544",
+  "Death Bringer": "9781733479608",
+  "The Poet Empress": "9781982180478",
+  "Godstorm": "9780062205796",
+  "Iron Flame": "9781649374172",
+  "Onyx Storm": "9781649374189",
+  "13 Reasons why": "9781595141880",
+  "The Alchemist": "9780062315007",
+  "The Hunger Games": "9780439023481",
+  "Mockingjay": "9780439023511",
+  "Gone Girl": "9780307588371",
+  "The Girl on the Train": "9781594634024"
 };
 
 const COMPLETED_BOOK_QUOTES = [
@@ -1301,6 +1374,7 @@ function closeAddBookModal() {
   document.getElementById('addTitle').value = '';
   document.getElementById('addAuthor').value = '';
   document.getElementById('addGenre').value = '';
+  if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
   document.getElementById('addBookModalOverlay').classList.remove('open'); 
   hideSentryAlert();
 }
@@ -1346,7 +1420,7 @@ function executeSaveStateFileReaderImport(inputElement) {
         const customAddedRebuild = [];
         
         books.forEach(b => {
-          savedLocalStorageRebuild[b.id] = { status: b.status, currentPage: b.currentPage || 0, myRating: b.myRating, notes: b.notes };
+          savedLocalStorageRebuild[b.id] = { status: b.status, currentPage: b.currentPage || 0, myRating: b.myRating, notes: b.notes, coverUrl: b.coverUrl || null };
           if (b.id > 170) customAddedRebuild.push(b);
         });
         
@@ -1470,7 +1544,7 @@ function toggleOpticalScannerArray() {
     ).then(() => {
       setTimeout(function () {
         executeDynamicZoomOverride(2.5);
-      }, 1200); 
+      }, 1200);
     }).catch(() => {
       toggleBtn.textContent = "⚠️ Camera Error / Check Permissions";
     });
@@ -1559,6 +1633,8 @@ function commitNewBook() {
   const g = document.getElementById('addGenre').value.trim();
   const p = document.getElementById('addPages').value.trim();
   const gr = document.getElementById('addGR').value.trim();
+  const mIsbn = document.getElementById('addManualISBNInput').value.trim();
+  const explicitUrl = document.getElementById('addCustomCoverUrl') ? document.getElementById('addCustomCoverUrl').value.trim() : null;
   
   if(!t || !rawAuthor || !g) { alert('Required name parameters missing.'); return; } 
   
@@ -1571,7 +1647,7 @@ function commitNewBook() {
   const formattedAuthor = processScribeNameMilitaryFormatting(rawAuthor);
 
   const newId = Math.max(...books.map(b => b.id)) + 1;
-  const obj = { id: newId, title: t, author: formattedAuthor, status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0 };
+  const obj = { id: newId, title: t, author: formattedAuthor, status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: explicitUrl || null };
   books.push(obj);
   
   const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); 
@@ -1582,6 +1658,7 @@ function commitNewBook() {
   document.getElementById('addTitle').value = '';
   document.getElementById('addAuthor').value = '';
   document.getElementById('addGenre').value = '';
+  if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
   
   closeAddBookModal(); 
   updateHomeView(); 
@@ -1653,9 +1730,21 @@ function renderBooks() {
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
     const statusClass = statusKey(b.status);
+    const resolvedIsbn = b.isbn || PRELOADED_ISBN_REGISTRY[b.title];
+    
+    let thumbnailImgTag = '';
+    if (b.coverUrl) {
+      thumbnailImgTag = `<img src="${b.coverUrl}" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="this.onerror=null; this.src='https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg';" alt="">`;
+    } else if (resolvedIsbn) {
+      thumbnailImgTag = `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width: 36px; height: 52px; object-fit: cover; border-radius: 2px; border: 1px solid var(--border-iron);" onerror="this.style.display='none'" alt="">`;
+    } else {
+      thumbnailImgTag = `<div style="width: 36px; height: 52px; display: flex; align-items: center; justify-content: center; background: #000; border: 1px dashed var(--border-iron); font-size: 10px; color: var(--text-muted); font-weight: 700;">${getTitleInitials(b.title)}</div>`;
+    }
+
     return `
       <div class="book-card status-${statusClass}" onclick="openBook(${b.id})">
-        <div class="book-info">
+        ${thumbnailImgTag}
+        <div class="book-info" style="margin-left: 4px;">
            <div class="book-title">${b.title}</div>
            <div class="book-author">${b.author}</div>
            <div class="book-meta">
@@ -1726,7 +1815,7 @@ function saveBook() {
   
   try { 
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}'); 
-    saved[currentBook.id] = { status: currentBook.status, currentPage: currentBook.currentPage || 0, myRating: currentBook.myRating, notes: currentBook.notes }; 
+    saved[currentBook.id] = { status: currentBook.status, currentPage: currentBook.currentPage || 0, myRating: currentBook.myRating, notes: currentBook.notes, coverUrl: currentBook.coverUrl || null }; 
     localStorage.setItem('barbies_library', JSON.stringify(saved)); 
   } catch(e) {}
   
@@ -1937,7 +2026,7 @@ function renderHTML5CasinoCanvasWheel() {
 
     ctx.fillStyle = spectrumColors[i % spectrumColors.length];
     if (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) {
-      ctx.fillStyle = '#141113'; // Ominous blur dimming step rules
+      ctx.fillStyle = '#141113'; // Ominous dim layout step parameters
     }
     
     ctx.beginPath();
@@ -2057,7 +2146,6 @@ function initParalysisInputListeners() {
       const dt = last.time - first.time;
       const da = last.angle - first.angle;
       
-      // Filter out high-velocity throw releases
       if (dt > 10 && Math.abs(da) > 0.05 && dragMovementDeltaThreshold > 0.05) {
         wheelCurrentVelocityValue = (da / dt) * 16; 
         if (Math.abs(wheelCurrentVelocityValue) > 0.12) {
@@ -2067,7 +2155,6 @@ function initParalysisInputListeners() {
       }
     }
 
-    // Fallback path: Execute micro tap segment picker checks if no drag vectors registered
     if (dragMovementDeltaThreshold < 0.15) {
       processWedgeTapInspection(dragAngleStartCoord);
     }
@@ -2093,7 +2180,6 @@ function processWedgeTapInspection(absoluteRadialAngle) {
     pickedWedgeIndexPointer = pickedIndex;
     paralysisWinningBookPointer = rouletteTBRPool[pickedIndex];
     
-    // Auto align physics: calculate ideal angle vector to sit slice flat horizontally at 0 radians
     const sliceCenterRadial = (pickedIndex * segmentArcSize) + (segmentArcSize / 2);
     const lockedAlignmentTarget = -sliceCenterRadial;
 
@@ -2131,7 +2217,7 @@ function executeInertialDecelerationLoop() {
 
   function processDecelerationTick() {
     wheelCurrentRotationAngle += wheelCurrentVelocityValue;
-    wheelCurrentVelocityValue *= 0.984; // Kinetic air resistance reduction parameter
+    wheelCurrentVelocityValue *= 0.984; 
 
     if (Math.abs(wheelCurrentRotationAngle - lastTickAngle) >= deltaAudioTickLimit) {
       playCasinoTickAudio(Math.max(0.6, Math.min(1.4, Math.abs(wheelCurrentVelocityValue) * 4.5)));
@@ -2147,7 +2233,6 @@ function executeInertialDecelerationLoop() {
       document.getElementById('btnSpinParalysis').disabled = false;
       document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision";
 
-      // Map stopping point coordinate back to top golden cursor peg arrow offset maps
       let finalPegOffsetAngle = (-wheelCurrentRotationAngle + (Math.PI * 1.5)) % (2 * Math.PI);
       if (finalPegOffsetAngle < 0) finalPegOffsetAngle += 2 * Math.PI;
 
@@ -2171,24 +2256,83 @@ function executeParalysisWheelSpin() {
   executeInertialDecelerationLoop();
 }
 
-function triggerTradingCardEncounterModal() {
+async function triggerTradingCardEncounterModal() {
   if (!paralysisWinningBookPointer) return;
   playCasinoJackpotChimeAudio();
   
-  // Update Gothic trading card content parameters dynamically
+  const coverImg = document.getElementById('cardBookCoverImg');
+  const fallbackIllustration = document.getElementById('cardBookGlyph');
+  
+  coverImg.style.display = "none";
+  fallbackIllustration.style.display = "block";
+
   document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
   document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
-  document.getElementById('cardBookGlyph').textContent = getTitleInitials(paralysisWinningBookPointer.title);
   
-  // Set summary descriptors using master file archives or fallback strings
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || 
     "A legendary chronicle waiting to be uncovered within the deep stacks of Barbie's framework structure.";
-  
-  // Display modal presentation mask window elements
+
   document.getElementById('casinoTradingCardOverlay').classList.add('show');
+
+  if (paralysisWinningBookPointer.coverUrl) {
+    assignImageToCardFrame(paralysisWinningBookPointer.coverUrl);
+    return;
+  }
+
+  const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
+  if (targetISBN) {
+    try {
+      const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`);
+      const gBooksData = await gBooksResponse.json();
+      if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+        let secureUrl = gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
+        assignImageToCardFrame(secureUrl);
+        return;
+      }
+    } catch(e) { console.log("Google Books fallback triggered."); }
+
+    assignImageToCardFrame(`https://covers.openlibrary.org/b/isbn/${targetISBN}-M.jpg`);
+    return;
+  }
+
+  try {
+    const encodedTitle = encodeURIComponent(paralysisWinningBookPointer.title);
+    const searchResponse = await fetch(`https://openlibrary.org/search.json?title=${encodedTitle}&limit=1`);
+    const searchData = await searchResponse.json();
+    
+    if (searchData.docs && searchData.docs[0]?.cover_i) {
+      const coverId = searchData.docs[0].cover_i;
+      assignImageToCardFrame(`https://covers.openlibrary.org/b/id/${coverId}-M.jpg`);
+    }
+  } catch(err) {
+    handleTradingCardImageError();
+  }
+}
+
+function assignImageToCardFrame(sourceUrlString) {
+  const coverImg = document.getElementById('cardBookCoverImg');
+  const fallbackIllustration = document.getElementById('cardBookGlyph');
+  
+  coverImg.src = sourceUrlString;
+  coverImg.onload = function() {
+    if (coverImg.naturalWidth > 5) {
+      coverImg.style.display = "block";
+      fallbackIllustration.style.display = "none";
+    } else {
+      handleTradingCardImageError();
+    }
+  };
+  coverImg.onerror = function() {
+    handleTradingCardImageError();
+  };
+}
+
+function handleTradingCardImageError() {
+  document.getElementById('cardBookCoverImg').style.display = "none";
+  document.getElementById('cardBookGlyph').style.display = "block";
 }
 
 function acceptParalysisDestiny() {
@@ -2199,7 +2343,7 @@ function acceptParalysisDestiny() {
   
   try {
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
-    saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes };
+    saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes, coverUrl: paralysisWinningBookPointer.coverUrl || null };
     localStorage.setItem('barbies_library', JSON.stringify(saved));
   } catch(e) {}
   
@@ -2218,7 +2362,6 @@ window.addEventListener('resize', () => {
   if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel();
 });
 
-// Fire Layout Engine after DOM finishes initialization parse sequences
 window.addEventListener('DOMContentLoaded', () => {
   updateHomeView();
 });
