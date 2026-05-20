@@ -24,7 +24,7 @@
     --text-muted: #8c7f70;
     --border-iron: #2d262b;
     --green-poison: #2b7a4b;
-    --blue-shadow: #3b629b;
+    --blue-shadow: #a62626;
     --purple-void: #5e35b1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -73,27 +73,139 @@
   }
   .settings-dots-trigger:hover { color: var(--gold); }
 
-  /* SLIDEOUT DATA CONTROL SHELF PANEL */
-  .settings-control-shelf {
-    background: #0d0a0d;
-    border-bottom: 1px solid var(--border-iron);
+  /* 🌌 FLOATING INTERACTIVE SETTINGS / ABOUT COMMAND CONSOLE OVERLAY */
+  .settings-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 300000;
     display: none;
+    align-items: center;
+    justify-content: center;
     padding: 20px;
-    position: relative;
-    animation: fadeSleeveDown 0.2s cubic-bezier(0.1, 1, 0.1, 1);
+    animation: fadeOverlayMaskIn 0.2s ease;
   }
-  .settings-control-shelf.open { display: block; }
-  @keyframes fadeSleeveDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-  .shelf-grid-layout { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 0 auto; }
-  .shelf-title { font-family: 'Cinzel', serif; font-size: 12px; color: var(--gold); text-transform: uppercase; text-align: center; letter-spacing: 1px; margin-bottom: 4px; }
-  .shelf-status-readout { font-size: 10px; color: var(--text-muted); text-align: center; background: #000; padding: 6px; border: 1px solid var(--border-iron); border-radius: 2px; }
+  .settings-modal-overlay.open { display: flex; }
+  @keyframes fadeOverlayMaskIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .settings-modal-chassis {
+    width: 100%;
+    max-width: 400px;
+    background: var(--dark-iron);
+    border: 2px solid var(--border-iron);
+    border-top: 4px solid var(--crimson);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8);
+    animation: bounceSettingsWindowUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes bounceSettingsWindowUp { from { transform: scale(0.9) translateY(15px); } to { transform: scale(1) translateY(0); } }
+
+  .settings-modal-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border-iron);
+  }
+  .settings-modal-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--text-parchment);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .settings-modal-close-trigger {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 2px 6px;
+    transition: color 0.15s;
+  }
+  .settings-modal-close-trigger:hover { color: var(--crimson-light); }
+  
+  .settings-modal-body-scroller {
+    padding: 20px;
+    max-height: 65vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 📂 MODULAR ACCORDION COMPONENT CARDS Layout Styling */
+  .settings-accordion-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  .settings-accordion-header-bar {
+    width: 100%;
+    background: var(--card-slate);
+    border: 1px solid var(--border-iron);
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    transition: background-color 0.15s;
+  }
+  .settings-accordion-header-bar:hover { background: #231e23; }
+  .settings-accordion-arrow { font-size: 10px; transition: transform 0.2s ease; }
+  .settings-accordion-header-bar.active .settings-accordion-arrow { transform: rotate(180deg); }
+
+  .settings-accordion-inner-drawer {
+    display: none;
+    background: #000;
+    border: 1px solid var(--border-iron);
+    border-top: none;
+    padding: 16px 14px;
+    border-radius: 0 0 4px 4px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .settings-accordion-header-bar.active + .settings-accordion-inner-drawer {
+    display: flex;
+  }
+
+  /* STATIC STATUS STAMP BADGE CLASS */
+  .settings-static-version-badge {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    background: var(--dark-void);
+    border: 1px dashed var(--border-iron);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    user-select: none;
+    pointer-events: none;
+  }
 
   /* VIEW ENGINE */
   .home-view, .library-view, .charts-view, .paralysis-view { display: none; }
   .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
 
   .home-view { padding: 24px 16px 140px; }
-  .library-view { padding: 16px 0 140px; } /* Clean layout margins for floating button matrix wrapper */
+  .library-view { padding: 16px 0 140px; }
   .charts-view { padding: 24px 16px 140px; }
   .paralysis-view { padding: 24px 16px 140px; }
 
@@ -103,49 +215,56 @@
     padding: 24px;
     margin-bottom: 20px;
     border: 1px solid var(--border-iron);
-    border-top: 3px solid var(--crimson);
+    border-top: 3px solid var(--crimson); /* Explicitly Retained Red Trim Override */
     text-align: center;
   }
   .welcome-emoji { font-size: 36px; margin-bottom: 8px; filter: grayscale(0.2); }
   .welcome-text { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
   .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
-  /* STRATEGIC BUTTONS */
-  .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn {
+  /* STRATEGIC CRIMSON ALL BUTTONS SYSTEM OVERRIDE */
+  .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn, .open-book-edit-btn, .quote-board-refresh-btn {
     width: 100%; padding: 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
-    font-size: 13px; font-weight: 700; border: none; cursor: pointer; margin-top: 12px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
+    font-size: 13px; font-weight: 700; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
+    background: var(--crimson) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(166,38,38,0.25);
   }
-  .cta-button { background: var(--crimson); color: #fff; box-shadow: 0 4px 12px rgba(166,38,38,0.25); }
-  .secondary-button { background: var(--card-slate); color: var(--text-parchment); border: 1px solid var(--border-iron); }
-  .danger-button { background: #1a0f11; color: var(--crimson-light); border: 1px solid rgba(166,38,38,0.2); }
-  .save-btn { background: var(--gold); color: #000; font-weight: 900; margin-top: 20px; }
-  .action-sub-btn { background: var(--border-iron); color: var(--text-parchment); padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
-  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover { filter: brightness(1.15); }
+  .secondary-button { border: 1px solid var(--border-iron); }
+  .danger-button { background: #260a0d !important; border: 1px solid var(--crimson-light); }
+  .save-btn { font-weight: 900; }
+  .open-book-edit-btn, .quote-board-refresh-btn { padding: 6px 12px; font-size: 11px; width: auto; display: inline-block; box-shadow: none; }
+  .action-sub-btn { padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
+  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover, .open-book-edit-btn:hover, .quote-board-refresh-btn:hover { filter: brightness(1.25); }
 
-  /* PROGRESS METER */
-  .goal-bar-card {
-     background: var(--card-slate);
-     border-radius: 4px;
-     padding: 20px;
-     margin-bottom: 20px;
-     border: 1px solid var(--border-iron);
+  /* SEPARATED ACCORDION DASHBOARD CARDS WITH GOLD TOP TRIMS */
+  .quote-board-card, .goal-progress-card, .currently-reading-card {
+    background: var(--card-slate); border-radius: 4px; padding: 20px; margin-bottom: 20px;
+    border: 1px solid var(--border-iron); border-top: 3px solid var(--gold) !important; position: relative;
   }
+  .quote-board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
+  
+  /* UNIFIED CHRONICLES CARD TYPOGRAPHY ENGINE (RED TITLES / WHITE CONTENT / GOLD LABELS) */
+  .quote-board-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
+  .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: #fff !important; line-height: 1.6; min-height: 45px; }
+  .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold) !important; margin-top: 8px; text-transform: uppercase; }
+  .memory-lane-flashback-text { font-size: 11px; color: #fff !important; margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
+  
+  /* STANDALONE GOAL METER DECK COMPONENTS */
   .goal-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  .goal-bar-main-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
-  .goal-bar-count-badge { font-size: 11px; font-weight: 700; color: #fff; background: var(--crimson); padding: 4px 10px; border-radius: 2px; }
+  .goal-bar-main-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
+  .goal-bar-count-badge { font-size: 11px; font-weight: 700; color: #fff !important; background: var(--crimson); padding: 4px 10px; border-radius: 2px; }
   .goal-bar-container-sleeve { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
-  .goal-bar-fill-track { background: var(--gold); height: 100%; width: 0%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.1, 1, 0.1, 1); }
+  
+  /* RED PROGRESS METER SYNCHRONIZATION OVERRIDE */
+  .goal-bar-fill-track { background: var(--crimson-light) !important; height: 100%; width: 0%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.1, 1, 0.1, 1); }
   .goal-bar-sub-message { font-size: 11px; color: var(--text-muted); }
 
-  /* CURRENT READING MANIFEST CARD */
+  /* CURRENT READING MANIFEST CARD WITH ACCENT OVERRIDES */
   .currently-reading-card {
-    background: var(--dark-iron); border-radius: 4px; padding: 20px; margin-bottom: 20px;
-    border: 1px solid var(--border-iron); border-left: 4px solid var(--blue-shadow); display: none;
+    background: var(--dark-iron) !important;
+    border-left: 1px solid var(--border-iron);
   }
-  .currently-reading-card.show { display: block; }
-  .reading-label { font-size: 11px; text-transform: uppercase; color: var(--blue-shadow); font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
-  .reading-title { font-family: 'Cinzel', serif; font-size: 18px; color: var(--text-parchment); font-weight: 700; }
-  .reading-author { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .reading-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #fff !important; }
+  .reading-author { font-size: 12px; color: var(--gold) !important; margin-bottom: 12px; }
    
   .reading-blurb-box {
      background: #080608; padding: 12px; font-size: 12px;
@@ -155,37 +274,42 @@
   .progress-bar-fill { background: var(--crimson); height: 100%; width: 0%; border-radius: 4px; transition: width 0.4s ease; }
   .progress-text-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
 
-  /* LORE BOOK HIGHLIGHTS ASSEMBLY PANEL */
-  .quote-board-card {
-    background: var(--card-slate); border-radius: 4px; padding: 20px; margin-bottom: 20px;
-    border: 1px solid var(--border-iron); position: relative;
-  }
-  .quote-board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
-  .quote-board-title { font-size: 11px; text-transform: uppercase; color: var(--gold); font-weight: 700; letter-spacing: 1px; }
-  .quote-board-refresh { background: none; border: none; font-size: 11px; color: var(--text-muted); cursor: pointer; outline: none; font-family: 'JetBrains Mono', monospace; }
-  .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: var(--text-parchment); line-height: 1.6; min-height: 45px; }
-  .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--crimson-light); margin-top: 8px; text-transform: uppercase; }
-  .memory-lane-flashback-text { font-size: 11px; color: var(--text-parchment); margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
-
-  /* METRIC STATS SUMMARY DASHBOARD GRID */
-  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-  .stat-box { background: var(--dark-iron); border-radius: 4px; padding: 16px; border: 1px solid var(--border-iron); text-align: center; }
-  .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-  .stat-box:nth-child(1) .stat-number { color: var(--purple-void); }
-  .stat-box:nth-child(2) .stat-number { color: var(--green-poison); }
-  .stat-box:nth-child(3) .stat-number { color: var(--crimson); }
-  .stat-box:nth-child(4) .stat-number { color: var(--gold); }
-  .stat-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
-
-  /* CORES DOUBLE PANEL COLUMNS RULES LAYOUTS */
-  .home-analytics-row, .pie-charts-flex-row { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 20px; 
+  /* PERFECT METRIC MIRROR MATRIX STYLING HOOKS WITH GOLD ACCENT CORES */
+  .stats-grid, .home-analytics-row { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; 
     margin-bottom: 20px; 
-    width: 100%; 
+    width: 100%;
   }
-  .home-preview-pane, .chart-card, .pie-wrapper { 
+  .stats-box, .home-preview-pane { 
+    background: var(--dark-iron); 
+    border-radius: 4px; 
+    padding: 16px; 
+    border: 1px solid var(--border-iron); 
+    border-top: 3px solid var(--gold) !important; /* Unified Dashboard Top Trims */
+    text-align: center;
+    width: 100%;
+    min-width: 0;
+  }
+  .home-preview-pane {
+    background: var(--card-slate) !important;
+  }
+  
+  /* FLIPPED TELEMETRY LABELS INDEX: RED NUMBERS AND GOLD TEXT CHASSIS FORMATION */
+  .stat-label, .home-preview-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold) !important; }
+  .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--crimson-light) !important; margin-bottom: 4px; }
+  
+  .home-canvas-holder { position: relative; height: 165px; width: 100%; }
+
+  .pie-charts-flex-row {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .chart-card, .pie-wrapper { 
     background: var(--card-slate); 
     border-radius: 4px; 
     padding: 16px; 
@@ -193,44 +317,45 @@
     width: 100%; 
     min-width: 0; 
   }
-  .home-preview-title, .chart-title { 
-    font-family: 'Cinzel', serif; 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: var(--text-muted); 
-    margin-bottom: 14px; 
-    text-align: center; 
-    letter-spacing: 1px; 
-    text-transform: uppercase; 
-  }
-  .home-canvas-holder, .canvas-holder { position: relative; height: 190px; width: 100%; }
-  .canvas-holder { height: 240px; }
+  .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
+  .canvas-holder { position: relative; height: 240px; width: 100%; }
 
   @media(min-width: 640px) { 
-    .home-analytics-row, .pie-charts-flex-row { 
+    .pie-charts-flex-row { 
       flex-direction: row; 
       justify-content: space-between; 
       gap: 24px; 
     }
-    .home-preview-pane, .pie-wrapper { 
+    .pie-wrapper { 
       flex: 0 1 calc(50% - 12px); 
       max-width: 48%; 
     }
   }
 
   /* PODIUM MATRIX LOGIC */
-  .f1-podium-container { display: flex; justify-content: center; align-items: flex-end; height: 145px; margin-bottom: 12px; padding: 0 4px; gap: 6px; border-bottom: 1px solid var(--border-iron); }
+  .f1-podium-container { display: flex; justify-content: center; align-items: flex-end; height: 115px; margin-bottom: 4px; padding: 0 4px; gap: 6px; border-bottom: 1px solid var(--border-iron); }
   .podium-column { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; text-align: center; min-width: 0; }
   .podium-block { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #000; font-weight: 700; border-radius: 2px 2px 0 0; position: relative; }
-  .podium-step-2 { height: 60px; background: #4a4e59; color: #fff; }
-  .podium-step-1 { height: 90px; background: var(--gold); }
-  .podium-step-3 { height: 45px; background: #61412b; color: #fff; }
-  .podium-number { font-family: 'Cinzel', serif; font-size: 18px; line-height: 1; }
-  .podium-book-title { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700; color: var(--text-parchment); margin-bottom: 4px; line-height: 1.2; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  .podium-book-rating { font-size: 10px; font-weight: 700; color: var(--gold); margin-bottom: 3px; }
+  .podium-step-2 { height: 45px; background: #4a4e59; color: #fff; }
+  .podium-step-1 { height: 70px; background: var(--gold); }
+  .podium-step-3 { height: 32px; background: #61412b; color: #fff; }
+  .podium-number { font-family: 'Cinzel', serif; font-size: 15px; line-height: 1; }
+  .podium-book-title { font-family: 'Cinzel', serif; font-size: 9px; font-weight: 700; color: var(--gold) !important; margin-bottom: 4px; line-height: 1.1; width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .podium-book-rating { font-size: 9px; font-weight: 700; color: var(--gold); margin-bottom: 3px; }
 
   .charts-view-podium-height { height: 160px !important; }
   .charts-view-title-size { font-size: 11px; }
+
+  /* CONTRAST MODE SELECTOR CRUCIAL COLOR FLAGS STATIC EXPLICIT OVERRIDES */
+  #globalSettingsModalOverlay .status-sel-btn {
+    background: #161215 !important; border-color: var(--border-iron) !important; color: var(--text-parchment) !important;
+  }
+  #globalSettingsModalOverlay .status-sel-btn:nth-child(1) {
+    background: #000 !important; color: #fff !important; border: 1px solid var(--border-iron) !important;
+  }
+  #globalSettingsModalOverlay .status-sel-btn:nth-child(2) {
+    background: #fff !important; color: #000 !important; border: 1px solid #fff !important;
+  }
 
   /* Top 10 rankings list adjustments */
   .sub-rankings-list { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
@@ -238,7 +363,7 @@
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
   .sub-rank-details { flex: 1; min-width: 0; }
   .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .sub-rank-author { font-size: 11px; color: var(--text-muted); }
+  .sub-rank-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
   .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-iron); font-size: 12px; }
@@ -273,25 +398,11 @@
 
   /* ANCHORED STICKY DOCK ACTION COMPONENT */
   .sticky-dock-add-trigger-btn {
-    flex-shrink: 0;
-    background: var(--crimson);
-    color: #fff;
-    width: 44px;
-    height: 44px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(166, 38, 38, 0.4);
-    transition: transform 0.1s, filter 0.15s;
-    z-index: 110;
+    width: 44px; height: 44px; border-radius: 4px; border: none; cursor: pointer; font-size: 18px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; background: var(--crimson) !important; color: #fff !important;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(166, 38, 38, 0.4); z-index: 110; transition: all 0.15s;
   }
   .sticky-dock-add-trigger-btn:hover { filter: brightness(1.2); }
-  .sticky-dock-add-trigger-btn:active { transform: scale(0.95); }
   
   .toolbar { padding: 12px 16px; display: flex; gap: 10px; align-items: center; }
   .search-wrap { flex: 1; position: relative; }
@@ -314,11 +425,10 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
   }
   .book-card:hover { border-color: #4a3b45; transform: translateY(-1px); }
-  
   .book-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: transparent; }
   .book-card.status-TBR::before { background: var(--purple-void); }
   .book-card.status-Complete::before { background: var(--green-poison); }
-  .book-card.status-Reading::before { background: var(--blue-shadow); }
+  .book-card.status-Reading::before { background: var(--crimson); }
   .book-card.status-DNF::before { background: var(--crimson); }
   .book-card.status-Old::before { background: var(--gold); }
   .book-card.status-Wont::before { background: var(--text-muted); }
@@ -326,13 +436,12 @@
   .book-info { flex: 1; min-width: 0; margin-left: 4px; }
   .book-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
   .book-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  
   .book-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
   .badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
   
   .badge-status-TBR { background: rgba(94,53,177,0.15); color: #b39ddb; border: 1px solid rgba(94,53,177,0.3); }
   .badge-status-Complete { background: rgba(43,122,75,0.15); color: #a1dbb6; border: 1px solid rgba(43,122,75,0.3); }
-  .badge-status-Reading { background: rgba(59,98,155,0.15); color: #adc9f2; border: 1px solid rgba(59,98,155,0.3); }
+  .badge-status-Reading { background: rgba(166,38,38,0.15); color: #f2aeae; border: 1px solid rgba(166,38,38,0.3); }
   .badge-status-DNF { background: rgba(166,38,38,0.15); color: #f2aeae; border: 1px solid rgba(166,38,38,0.3); }
   .badge-status-Old { background: rgba(179,146,67,0.15); color: #f2dfb1; border: 1px solid rgba(179,146,67,0.3); }
   .badge-status-Wont { background: rgba(140,127,112,0.15); color: #d6ce75; border: 1px solid rgba(140,127,112,0.3); }
@@ -347,7 +456,7 @@
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
-    display: flex; flex-direction: column; align-items: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6); gap: 6px;
+    display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
   }
   .nav-buttons-row { width: 100%; display: flex; }
   .nav-btn {
@@ -358,14 +467,12 @@
   .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); }
   .nav-btn.active { color: var(--gold); }
   .nav-btn.active .icon { filter: grayscale(0); }
-  .console-version-stamp { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; opacity: 0.5; text-transform: uppercase; font-weight: 400; padding-bottom: 4px; }
 
   /* SYSTEM MODALS LAYOUTS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: flex-end; backdrop-filter: blur(6px); }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--dark-iron); border-radius: 0; border-top: 3px solid var(--crimson); padding: 0 0 40px; width: 100%; max-height: 88vh; overflow-y: auto; animation: slideUp 0.25s ease; }
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-  .modal-handle { width: 40px; height: 3px; background: var(--border-iron); margin: 12px auto 0; }
   .modal-handle { width: 40px; height: 3px; background: var(--border-iron); margin: 12px auto 0; }
   .modal-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border-iron); }
   .modal-title { font-family: 'Cinzel', serif; font-size: 20px; color: var(--text-parchment); }
@@ -472,61 +579,105 @@
 <div class="header">
   <div class="header-title">Barbie's <span>Library</span> 📚</div>
   <div class="header-sub"><span id="headerTrackerCount">170</span> books logged</div>
-  <button class="settings-dots-trigger" onclick="toggleSettingsControlShelfArray()">⋮</button>
+  <button class="settings-dots-trigger" onclick="toggleSettingsModalViewLayout(true)">⋮</button>
 </div>
 
-<div class="settings-control-shelf" id="globalSettingsControlShelf">
-  <div class="shelf-grid-layout">
-    <div class="shelf-title">Data & Sync Settings</div>
-    <div class="shelf-status-readout" id="saveSystemStatusOutputLine">Status: App Running Offline (LocalStorage-Cached)</div>
-    <button class="cta-button" style="margin-top:4px; background:var(--purple-void);" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
-    <button class="cta-button" style="margin-top:4px; background:var(--green-poison);" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
-    <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
+<!-- 🔮 MODERN FLOATING CONSOLE DISPLAY MODAL WINDOW FOR APP CONFIGURATION -->
+<div class="settings-modal-overlay" id="globalSettingsModalOverlay" onclick="toggleSettingsModalViewLayout(false)">
+  <div class="settings-modal-chassis" onclick="event.stopPropagation()">
+    <div class="settings-modal-header-row">
+      <div class="settings-modal-title">Settings / About</div>
+      <button class="settings-modal-close-trigger" onclick="toggleSettingsModalViewLayout(false)">✕</button>
+    </div>
+    <div class="settings-modal-body-scroller">
+      
+      <!-- ACCORDION MODULE SUB-PANEL 1 (DATA SYSTEMS) -->
+      <div class="settings-accordion-section">
+        <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
+          <span>Data Systems</span>
+          <span class="settings-accordion-arrow">▼</span>
+        </div>
+        <div class="settings-accordion-inner-drawer">
+          <button class="cta-button" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
+          <button class="cta-button" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
+          <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
+          <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
+        </div>
+      </div>
+
+      <!-- ACCORDION MODULE SUB-PANEL 2 (AUDIO CONFIGURATION) -->
+      <div class="settings-accordion-section">
+        <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
+          <span>Audio Logic</span>
+          <span class="settings-accordion-arrow">▼</span>
+        </div>
+        <div class="settings-accordion-inner-drawer" style="padding: 14px 16px;">
+          <label style="cursor:pointer; font-size:12px; color:var(--text-parchment); display:flex; align-items:center; gap:10px; font-family:'JetBrains Mono', monospace; font-weight:700; width:100%;">
+            <input type="checkbox" id="casinoAudioToggle" checked style="accent-color:var(--crimson); width:16px; height:16px; cursor:pointer;"> CASINO SOUND FX ON
+          </label>
+        </div>
+      </div>
+
+      <!-- ACCORDION MODULE SUB-PANEL 3 (CONTRAST TUNER) -->
+      <div class="settings-accordion-section">
+        <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
+          <span>Contrast Mode</span>
+          <span class="settings-accordion-arrow">▼</span>
+        </div>
+        <div class="settings-accordion-inner-drawer" style="flex-direction: row; gap: 8px; padding: 14px 12px;">
+          <button class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #000 !important; color: #fff !important; border: 1px solid var(--border-iron) !important; font-weight: 700;" onclick="void(0)">Dark Mode</button>
+          <button class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #fff !important; color: #000 !important; border: 1px solid #fff !important; font-weight: 700;" onclick="alert('✨ Light Mode Framework: Coming Soon! ✨')">Light Mode</button>
+        </div>
+      </div>
+
+      <!-- ACCORDION MODULE SUB-PANEL 4 (BUILD VERSION CONTROL ARCHIVE) -->
+      <div class="settings-accordion-section">
+        <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
+          <span>Build Archives</span>
+          <span class="settings-accordion-arrow">▼</span>
+        </div>
+        <div class="settings-accordion-inner-drawer" style="gap: 8px;">
+          <div class="settings-static-version-badge" id="drawerVersionDiagnosticStamp">Barbies Library V3.5</div>
+          <div class="settings-static-version-badge" style="border-style: dashed; opacity: 0.65; font-size: 9px;">Status: App Running Offline (LocalStorage-Cached)</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <div class="home-view visible" id="homeView">
+  <!-- LEVEL 1: APP HERO MOTIF BANNER -->
   <div class="welcome-card">
     <div class="welcome-emoji">🏰</div>
     <div class="welcome-text">Main Menu</div>
     <div class="welcome-sub">Track your reading goals, statistics, and book collections.</div>
   </div>
 
-  <div class="goal-bar-card">
-     <div class="goal-bar-header">
-        <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
-        <span class="goal-bar-count-badge" id="milestoneCounterLabel">0 / 50 Books</span>
-     </div>
-     <div class="goal-bar-container-sleeve">
-        <div class="goal-bar-fill-track" id="milestoneFillTrack"></div>
-     </div>
-     <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking execution progress toward your 50 volume book goal.</div>
-  </div>
-
-  <div class="currently-reading-card" id="readingCard">
-    <div class="reading-label">📖 Currently Reading</div>
-    <div class="reading-title" id="readingTitle"></div>
-    <div class="reading-author" id="readingAuthor"></div>
-    <div class="reading-blurb-box" id="readingBlurbSlot">Loading metadata fields...</div>
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" id="readingBarFill"></div>
-    </div>
-    <div class="progress-text-row">
-      <span id="readingProgressText">0% complete</span>
-      <span id="readingPagesRatio">0 / 0 pages</span>
-    </div>
-  </div>
-
+  <!-- LEVEL 2A: WISDOM CHRONICLES ENGINE -->
   <div class="quote-board-card" id="quoteBoardContainer">
      <div class="quote-board-header">
-        <span class="quote-board-title">📜 Highlights & Wisdom Chronicles</span>
-        <button class="quote-board-refresh" onclick="rotateCompletedQuote()">Next Book 🔄</button>
+        <span class="quote-board-title">📜 Wisdom Chronicles Engine</span>
+        <button class="quote-board-refresh-btn" onclick="rotateCompletedQuote()">Next Book 🔄</button>
      </div>
      <div class="quote-display-pane" id="quoteTextPane">"Loading logs..."</div>
      <div class="quote-display-source" id="quoteSourcePane">— Loading</div>
      <div class="memory-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
+  <!-- LEVEL 2B: STANDALONE READING GOAL TRACKER (SYNCHRONIZED RED METER TRACK FILL) -->
+  <div class="goal-progress-card">
+     <div class="goal-bar-header">
+        <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
+        <button class="goal-bar-count-badge" id="milestoneCounterLabel" onclick="showView('library')" style="border: none; font-family: inherit; cursor: pointer; display: inline-block;">0 / 50 Books</button>
+     </div>
+     <div class="goal-bar-container-sleeve">
+        <div class="goal-bar-fill-track" id="milestoneFillTrack"></div>
+     </div>
+     <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking trajectory updates...</div>
+  </div>
+
+  <!-- LEVEL 3: LIVE DATABASE COUNTERS STATS GRID (RED NUMBERS / GOLD LABELS) -->
   <div class="stats-grid">
     <div class="stats-box">
       <div class="stat-number" id="statTBR">0</div>
@@ -546,21 +697,37 @@
     </div>
   </div>
 
+  <!-- LEVEL 4: VISUAL INTELLIGENCE MIRRORED DASHBOARD MATRIX -->
   <div class="home-analytics-row">
      <div class="home-preview-pane">
         <div class="home-preview-title">🏆 Top Rated Books</div>
         <div id="homePodiumContainerMount"></div>
      </div>
      <div class="home-preview-pane">
-        <div class="home-preview-title">📊 Collection Breakdown</div>
+        <div class="home-preview-title">📊 Breakdown</div>
         <div class="home-canvas-holder">
             <canvas id="homeStatusPieChart"></canvas>
         </div>
      </div>
   </div>
 
-  <button class="cta-button" onclick="showView('library')">View Book Collection</button>
-  <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
+  <!-- LEVEL 5: INTERACTIVE CURRENTLY READING DECK -->
+  <div class="currently-reading-card" id="readingCard">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+      <div class="reading-label" style="margin-bottom:0;">=== ACTIVE SESSION READING ENTRY ===</div>
+      <button class="open-book-edit-btn" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) { openInfoCardOverlay(readingObj.id); pivotToConfigurationModal(); }">EDIT LOG ⚙️</button>
+    </div>
+    <div class="reading-title" id="readingTitle" style="color:#fff !important; font-weight:700;"></div>
+    <div class="reading-author" id="readingAuthor" style="color:var(--gold) !important;"></div>
+    <div class="reading-blurb-box" id="readingBlurbSlot">Loading metadata fields...</div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="readingBarFill"></div>
+    </div>
+    <div class="progress-text-row">
+      <span id="readingProgressText">0% complete</span>
+      <span id="readingPagesRatio">0 / 0 pages</span>
+    </div>
+  </div>
 </div>
 
 <div class="library-view" id="libraryView">
@@ -597,7 +764,7 @@
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search by title, author, or genre..." oninput="renderBooks()">
     </div>
-    <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Filter Mode ✦</button>
+    <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Filter Mode</button>
   </div>
   
   <div class="genre-row" id="genreRow" style="padding: 8px 16px 12px;"></div>
@@ -666,23 +833,13 @@
         
         <div class="card-lore-box" id="cardBookLore">Loading summaries...</div>
         
-        <button class="cta-button" style="background:var(--green-poison); margin-top:4px;" onclick="acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
-        <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
+        <button class="cta-button" style="margin-top:4px;" onclick="acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
+        <button class="secondary-button" style="margin-top:6px;" onclick="closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
       </div>
     </div>
 
     <div class="casino-header">Break the Paralysis</div>
     <div class="casino-sub" id="casinoSubLabel">Bet your TBR pool • Defeat Indecision</div>
-    
-    <!-- AUDIO FX MASTER TOGGLE PANEL -->
-    <div class="stakes-panel" style="margin-bottom: 12px; padding: 12px;">
-      <div class="stakes-title" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0;">
-        <span>Casino Settings Framework</span>
-        <label style="cursor:pointer; font-size:10px; color:var(--text-parchment); display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-weight:700;">
-          <input type="checkbox" id="casinoAudioToggle" checked style="accent-color:var(--crimson); width:14px; height:14px; cursor:pointer;"> SOUND ON
-        </label>
-      </div>
-    </div>
 
     <!-- RISK POOL TUNER PANEL -->
     <div class="stakes-panel">
@@ -704,7 +861,7 @@
       <canvas id="canvasTBRWheel"></canvas>
     </div>
 
-    <button class="cta-button" id="btnSpinParalysis" style="background:var(--crimson); font-size:14px; padding:16px;" onclick="executeParalysisWheelSpin()">Break The Paralysis 🎰</button>
+    <button class="cta-button" id="btnSpinParalysis" style="font-size:14px; padding:16px;" onclick="executeParalysisWheelSpin()">Break The Paralysis 🎰</button>
   </div>
 </div>
 
@@ -737,8 +894,8 @@
     
     <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading observations...</div>
     
-    <button class="cta-button" style="background:var(--purple-void); margin-top:4px;" onclick="pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
-    <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
+    <button class="cta-button" style="margin-top:4px;" onclick="pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
+    <button class="secondary-button" style="margin-top:6px;" onclick="closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
   </div>
 </div>
 
@@ -757,15 +914,14 @@
       <span class="icon">🎰</span><span>Break Paralysis</span>
     </button>
   </div>
-  <div class="console-version-stamp" id="footerVersionStamp">Secure Matrix Build v3.1</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <div class="modal-title" id="mTitle"></div>
-      <div class="modal-author" id="mAuthor"></div>
+      <div class="modal-title" id="mTitle" style="color: #fff;"></div>
+      <div class="modal-author" id="mAuthor" style="color: var(--gold);"></div>
     </div>
     <div class="modal-body">
       <div class="modal-section">
@@ -785,7 +941,7 @@
         <textarea class="notes-input" id="notesInput" placeholder="Write down Observations here..."></textarea>
       </div>
       <button class="save-btn" onclick="saveBook()">Save Changes ✓</button>
-      <button class="danger-button" style="margin-top: 16px; background: #260a0d;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
+      <button class="danger-button" style="margin-top: 16px;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
     </div>
   </div>
 </div>
@@ -802,9 +958,9 @@
 
       <!-- STEP 1: GATEKEEPER OPTIONS PATH SELECTOR -->
       <div id="addBookOptionsSelectorPanel">
-        <button class="cta-button" style="background: var(--blue-shadow); margin-bottom: 8px;" onclick="verifyHardwareAndSwitchWorkflow('scan')">📡 Start Camera Scanner</button>
-        <button class="cta-button" style="background: var(--gold); color: #000;" onclick="switchAddBookWorkflowPath('manual')">✍️ Add Book Manually</button>
-        <button class="secondary-button" style="margin-top: 24px; background: #000; border-color: var(--border-iron);" onclick="closeAddBookModal()">Cancel ✕</button>
+        <button class="cta-button" style="margin-bottom: 8px;" onclick="verifyHardwareAndSwitchWorkflow('scan')">📡 Start Camera Scanner</button>
+        <button class="cta-button" onclick="switchAddBookWorkflowPath('manual')">✍️ Add Book Manually</button>
+        <button class="secondary-button" style="margin-top: 24px;" onclick="closeAddBookModal()">Cancel ✕</button>
       </div>
 
       <!-- STEP 2A: CAMERA OPTICAL SCANNER PANEL -->
@@ -820,7 +976,7 @@
             </div>
           </div>
         </div>
-        <button class="secondary-button" style="background: #000; border-color: var(--border-iron); margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('scan')">◀ Back to Options</button>
+        <button class="secondary-button" style="margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('scan')">◀ Back to Options</button>
       </div>
 
       <!-- STEP 2B: MANUAL ENTRY FORM FIELD MATRIX -->
@@ -835,9 +991,9 @@
 
         <hr style="border:0; border-top:1px solid var(--border-iron); margin:16px 0;">
 
-        <div class="modal-section"><div class="modal-label">Book Title *</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
-        <div class="modal-section"><div class="modal-label">Author Name *</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
-        <div class="modal-section"><div class="modal-label">Genre Type *</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
+        <div class="modal-section"><div class="modal-label">Book Title</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
+        <div class="modal-section"><div class="modal-label">Author Name</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
+        <div class="modal-section"><div class="modal-label">Genre Type</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
         <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
         <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
         <div class="modal-section">
@@ -849,11 +1005,11 @@
           <div class="status-select-row" id="addStatusBtns">
             <button class="status-sel-btn selected" onclick="setAddStatus(this, 'TBR')">To Read</button>
             <button class="status-sel-btn" onclick="setAddStatus(this, 'Reading')">Reading</button>
-            <button class="status-sel-btn" onclick="setAddStatus(this, 'Complete')">Completed</button>
+            <button class="status-sel-btn" onclick="setAddStatus(this, 'Completed')">Completed</button>
           </div>
         </div>
-        <button class="save-btn" style="background: var(--crimson); color:#fff" onclick="commitNewBook()">Save Book to Library ✓</button>
-        <button class="secondary-button" style="margin-top: 12px; background: #000; border-color: var(--border-iron);" onclick="navigateBackToOptionsFromWorkflow('manual')">◀ Back to Options</button>
+        <button class="save-btn" onclick="commitNewBook()">Save Book to Library ✓</button>
+        <button class="secondary-button" style="margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('manual')">◀ Back to Options</button>
       </div>
 
     </div>
@@ -862,9 +1018,9 @@
 
 <script>
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
-const SYSTEM_BUILD_VERSION = "v3.1";
+const SYSTEM_BUILD_VERSION = "3.5";
 
-// ── DATA REGISTRY PACKAGES ───────────────────────────────────────────────────
+// ── DATA REGISTRY PACKAGES (FULLY RESTORED) ──────────────────────────────────
 const BOOKS_RAW = [
   [1,"13 Reasons why","Asher J","Won't Continue","Standalone","Young Adult","288",3.84,null,null],
   [2,"Lightlark","Aster, A.","TBR","The Lightlark Saga, Book 1","Fantasy Romantasy","448",3.84,null,null],
@@ -1068,7 +1224,7 @@ const PRELOADED_ISBN_REGISTRY = {
   "Cleopatra": "9788466668798", "Dark Rise": "9780062870773", "Dark Heir": "9780062870810", "When Moon Hatched": "9780593815717",
   "Rites of the Starling": "9781035905256", "Shield of Sparrows": "9781035905249", "Dawn of the Fire Bird": "9780008546113",
   "Wind and Truth": "9781250319180", "Metal Slinger": "9781737719601", "A Day of Fallen Night": "9781635577068",
-  "Among the Burning Flowers": "9780593451557", "Priory of the Orange Tree": "9781632866004", "Dire Bound": "9781639103980",
+  "Among the Burning Flowers": "9780593451557", "Priory of the Orange Tree": "9781632866004", "Dire Bound": "9781632866004",
   "Fury Bound": "9781639106820", "Stage Set for Villains": "9780756418854", "We Who Will Die": "9781837910540",
   "Conform": "9781649375544", "Death Bringer": "9781733479608", "The Poet Empress": "9781982180478", "Godstorm": "9780062205796",
   "Iron Flame": "9781649374172", "Onyx Storm": "9781649374189", "13 Reasons why": "9781595141880", "The Alchemist": "9780062315007",
@@ -1104,7 +1260,7 @@ function loadSaved() {
 loadSaved();
 
 let activeStatus = 'All'; let activeGenre = 'All'; let sortMode = 0;
-const sortLabels = ['Filter Mode ✦', 'Title A–Z ✦', 'My Rank ✦', 'GR Metric ✦'];
+const sortLabels = ['Filter Mode', 'Title A–Z', 'My Rank', 'GR Metric'];
 let currentBook = null; let currentView = 'home';
 
 function updateUIRowCounters() {
@@ -1174,9 +1330,9 @@ function renderQuoteSlotValue() {
    const ratedReads = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && b.myRating != null);
    if (ratedReads.length > 0) {
       const memoryBook = ratedReads[Math.floor(Math.abs(Math.sin(activeQuoteIndex)) * ratedReads.length) % ratedReads.length];
-      document.getElementById('memoryLanePane').textContent = `📚 Historical Log: You rated "${memoryBook.title}" a solid ${memoryBook.myRating}/10 stars.`;
+      document.getElementById('memoryLanePane').textContent = `Historical Log: You rated "${memoryBook.title}" a solid ${memoryBook.myRating}/10 stars.`;
    } else {
-      document.getElementById('memoryLanePane').textContent = `🌿 Evaluate items inside the library filters to unlock your reading history logs here!`;
+      document.getElementById('memoryLanePane').textContent = `Evaluate items inside the library filters to unlock your reading history logs here!`;
    }
 }
 
@@ -1199,6 +1355,19 @@ function closeAddBookModal() {
   if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
   document.getElementById('addBookModalOverlay').classList.remove('open'); 
   hideSentryAlert();
+}
+
+function toggleSettingsModalViewLayout(shouldModalOpen) {
+  const overlayNode = document.getElementById('globalSettingsModalOverlay');
+  if (shouldModalOpen) {
+    overlayNode.classList.add('open');
+  } else {
+    overlayNode.classList.remove('open');
+  }
+}
+
+function toggleSettingsDrawerFolderBlock(headerElement) {
+  headerElement.classList.toggle('active');
 }
 
 function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
@@ -1278,14 +1447,11 @@ function setAddStatus(el, val) { targetAddBookStatus = val; document.querySelect
 function hideSentryAlert() { document.getElementById('addDuplicationSentryBanner').style.display = 'none'; }
 function triggerSentryAlert(customMessageText = null) {
   const banner = document.getElementById('addDuplicationSentryBanner');
-  banner.textContent = customMessageText || "⚠️ This book is already logged within your library framework.";
+  banner.textContent = customMessageText || "This book is already logged within your library framework.";
   banner.style.display = 'block';
   banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function toggleSettingsControlShelfArray() { document.getElementById('globalSettingsControlShelf').classList.toggle('open'); }
-
-// ── UNIVERSAL ARCHITECTURE DATA PIPELINES (IPHONE & iOS HYBRID FALLBACK) ───
 function triggerMasterImportPipeline() { 
   document.getElementById('hiddenSaveStateFileReaderElement').click(); 
 }
@@ -1354,9 +1520,9 @@ function executeSaveStateFileReaderImport(inputElement) {
       document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Import Complete. Library Synced! ✓";
       updateHomeView();
       if (currentView === 'library') renderBooks();
-      setTimeout(() => { document.getElementById('globalSettingsControlShelf').classList.remove('open'); }, 1000);
+      setTimeout(() => { toggleSettingsModalViewLayout(false); }, 1000);
       
-    } catch(err) {
+    } catch(e) {
       alert('Failed to interpret plain text file mapping records structure.');
     }
   };
@@ -1501,10 +1667,10 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
     } else {
       document.getElementById('addTitle').value = '';
       document.getElementById('addAuthor').value = '';
-      triggerSentryAlert("⚠️ Book not found in repository database. Enter details manually below.");
+      triggerSentryAlert("Book not found in repository database. Enter details manually below.");
       document.getElementById('addTitle').focus();
     }
-  } catch (error) { triggerSentryAlert("⚠️ NETWORK INTERRUPT. CONNECTION FAILED."); } finally {
+  } catch (error) { triggerSentryAlert("NETWORK INTERRUPT. CONNECTION FAILED."); } finally {
     searchFieldButton.textContent = originalLabel;
     searchFieldButton.disabled = false;
   }
@@ -1538,7 +1704,7 @@ function commitNewBook() {
 
 function purgeCurrentBookEntry() {
   if (!currentBook) return;
-  if (confirm(`⚠️ DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library?`)) {
+  if (confirm(`DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library?`)) {
     books = books.filter(b => b.id !== currentBook.id);
     try {
       const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
@@ -1566,7 +1732,7 @@ function renderGenreRow() {
   const genres = ['All', ...getTopGenres()];
   document.getElementById('genreRow').innerHTML = genres.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g}')">${g}</div>`).join('');
 }
-function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderBooks(); }
+function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.add('active'); renderBooks(); }
 function getTitleInitials(title) {
   if(!title) return "BK";
   const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0);
@@ -1666,8 +1832,8 @@ async function openInfoCardOverlay(id) {
     const searchData = await searchResponse.json();
     if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
       assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
-    } else { handleInfoCardImageError(); }
-  } catch(e) { handleInfoCardImageError(); }
+    } else { handleTradingCardImageError(); }
+  } catch(e) { handleTradingCardImageError(); }
 }
 
 function assignImageToTargetNode(imgNode, fallbackNode, urlString) {
@@ -1677,7 +1843,6 @@ function assignImageToTargetNode(imgNode, fallbackNode, urlString) {
     else { imgNode.style.display = "none"; fallbackNode.style.display = "block"; }
   };
 }
-function handleInfoCardImageError() { document.getElementById('infoCardCoverImg').style.display = "none"; document.getElementById('infoCardGlyph').style.display = "block"; }
 function closeInfoCardOverlay() { document.getElementById('globalInfoCardOverlaySleeve').classList.remove('show'); }
 
 function pivotToConfigurationModal() {
@@ -1692,7 +1857,6 @@ function pivotToConfigurationModal() {
   document.getElementById('modalOverlay').classList.add('open');
 }
 
-// Interactive selectors engine loops binding context values
 function renderStarSelectors(currentRating) {
   let starsHtml = '';
   for(let i=1; i<=10; i++) starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`;
@@ -1750,14 +1914,14 @@ function renderHomepageChartsPreview() {
   const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
   document.getElementById('homePodiumContainerMount').innerHTML = `
       <div class="f1-podium-container">
-        <div class="podium-column"><div class="podium-book-title">${p2.title}</div><div class="podium-book-rating">★ ${p2.myRating||'—'}</div><div class="podium-block podium-step-2"><span class="podium-number">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold);">${p1.title}</div><div class="podium-book-rating">👑 ${p1.myRating||'—'}</div><div class="podium-block podium-step-1"><span class="podium-number">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title">${p3.title}</div><div class="podium-book-rating">★ ${p3.myRating||'—'}</div><div class="podium-block podium-step-3"><span class="podium-number">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p2.title}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${p1.title}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p3.title}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
       </div>`;
   const canvasEl = document.getElementById('homeStatusPieChart');
   if (canvasEl) {
     if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
-    activeCharts.homeStatus = new Chart(canvasEl.getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#3b629b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+    activeCharts.homeStatus = new Chart(canvasEl.getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#e63946', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
   }
 }
 
@@ -1766,24 +1930,24 @@ function renderCharts() {
   const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size">${p2.title}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold);">${p1.title}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size">${p3.title}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
     <div class="sub-rank-item">
       <span class="sub-rank-num">#${i+4}</span>
-      <div class="sub-rank-details"><div class="sub-rank-title">${b.title}</div><div class="sub-rank-author">${b.author}</div></div>
-      <span class="sub-rank-score">★ ${b.myRating}</span>
+      <div class="sub-rank-details"><div class="sub-rank-title">${b.title}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author}</div></div>
+      <span class="sub-rank-score"> ${b.myRating}</span>
     </div>`).join('');
 
   if(activeCharts.status) activeCharts.status.destroy(); if(activeCharts.genre) activeCharts.genre.destroy();
-  activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#3b629b', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
+  activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
   const genreLookup = {}; books.forEach(b => { const normalized = normalizeGenre(b.genre); genreLookup[normalized] = (genreLookup[normalized] || 0) + 1; });
   const sortedGenres = Object.entries(genreLookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
-  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#3b629b', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
+  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#e63946', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
   const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim(); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
-  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill">${count} books</span></div>`).join('');
+  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
 }
 
 function showView(view) {
@@ -1938,33 +2102,7 @@ function renderHTML5CasinoCanvasWheel() {
   });
   ctx.restore();
   ctx.fillStyle = '#161215'; ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
-  ctx.lineWidth = 3 * dpr; ctx.strokeStyle = varLabelGet('--gold'); ctx.stroke();
-}
-
-function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
-  if (targetWorkflowPath === 'scan') {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      alert("System Exception: Modern media device framework not found inside this layout workspace. Routing to manual panel.");
-      switchAddBookWorkflowPath('manual');
-      return;
-    }
-    navigator.mediaDevices.enumerateDevices()
-      .then((connectedDevices) => {
-        const hasActiveCameraHardware = connectedDevices.some(device => device.kind === 'videoinput');
-        if (hasActiveCameraHardware) {
-          switchAddBookWorkflowPath('scan');
-        } else {
-          alert("Hardware Alert: No functional video capture peripherals detected on this platform. Routing to Manual Add workflow.");
-          switchAddBookWorkflowPath('manual');
-        }
-      })
-      .catch(() => {
-        alert("Permission Exception: Call denied or intercept security lock engaged. Accessing manual registry panels.");
-        switchAddBookWorkflowPath('manual');
-      });
-  } else {
-    switchAddBookWorkflowPath(targetWorkflowPath);
-  }
+  ctx.lineWidth = 3 * dpr; ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim(); ctx.stroke();
 }
 
 function initParalysisInputListeners() {
@@ -2037,7 +2175,7 @@ function processWedgeTapInspection(absoluteRadialAngle) {
     function stepAlignmentEase(now) {
       let progressRatio = Math.min((now - easeStartTimestamp) / 320, 1);
       wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * (progressRatio * (2 - progressRatio));
-      renderHTML5CanvasWheel();
+      renderHTML5CasinoCanvasWheel();
       if (progressRatio < 1) requestAnimationFrame(stepAlignmentEase); else triggerTradingCardEncounterModal(false);
     }
     requestAnimationFrame(stepAlignmentEase);
@@ -2046,7 +2184,7 @@ function processWedgeTapInspection(absoluteRadialAngle) {
 
 function executeTimeEasedDecelerationLoop() {
   isWheelCurrentlySpinning = true; pickedWedgeIndexPointer = null;
-  document.getElementById('btnSpinParalysis').textContent = "🎰 ROLLING THE WHEEL..."; document.getElementById('btnSpinParalysis').disabled = true;
+  document.getElementById('btnSpinParalysis').textContent = "🎰 ROROLLING THE WHEEL..."; document.getElementById('btnSpinParalysis').disabled = true;
   let lastTickAngle = wheelCurrentRotationAngle; const sliceArcUnit = (2 * Math.PI) / rouletteTBRPool.length;
 
   function runFrame(now) {
@@ -2100,7 +2238,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   if (!paralysisWinningBookPointer) return;
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
-   
+     
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
@@ -2108,10 +2246,10 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
-   
+     
   overlayCardNode.classList.add('show'); 
   if (isFromSpin) triggerCasinoEmoteFountainSplash();
-   
+     
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
@@ -2154,7 +2292,7 @@ function closeTradingCardOverlay() {
 
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('footerVersionStamp').innerHTML = "Secure Matrix Build " + SYSTEM_BUILD_VERSION;
+  document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbies Library V" + SYSTEM_BUILD_VERSION;
   updateHomeView();
 });
 </script>
