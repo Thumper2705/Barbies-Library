@@ -930,7 +930,6 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
   let cleanInput = rawAuthorString.replace(/\(.*?\)|\[.*?\]/g, "").trim();
   if (!cleanInput) return "UNKNOWN, X.";
 
-  // Check if it already contains a comma divider signaling "Surname, First"
   if (cleanInput.includes(',')) {
     let components = cleanInput.split(',');
     let surname = components[0].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase();
@@ -939,7 +938,6 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
     return `${surname}, ${initial}.`;
   }
 
-  // Handle standard "Firstname Lastname" strings
   let tokens = cleanInput.split(/\s+/).filter(t => t.length > 0);
   if (tokens.length === 1) {
     return `${tokens[0].toUpperCase()}, X.`;
@@ -950,7 +948,7 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
   return `${surname}, ${initial}.`;
 }
 
-/* OPTICAL VIEWPORTSCANNER ENGINE (OPTION A) */
+/* OPTICAL VIEWPORTSCANNER ENGINE (OPTION A) - LONG-DISTANCE EXTENSION MODS */
 function toggleOpticalScannerArray() {
   const elementWrapper = document.getElementById('scannerViewportWrapper');
   const toggleBtn = document.getElementById('toggleScannerBtn');
@@ -964,14 +962,30 @@ function toggleOpticalScannerArray() {
     html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
     html5QrCodeScannerInstance.start(
       { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 250, height: 150 } },
+      { 
+        fps: 15, // Accelerated sampling frequency rates
+        qrbox: { width: 280, height: 120 } // Concentrated processing constraint boundaries
+      },
       (decodedText) => {
         document.getElementById('addManualISBNInput').value = decodedText;
         deconstructOpticalScanner();
         executeISBNDeepIntelQuery(decodedText);
       },
       () => {} 
-    ).catch(() => {
+    ).then(() => {
+      // Hardware-assisted zoom pipeline initialization override constraints
+      try {
+        const videoTrackArray = html5QrCodeScannerInstance.getCameraCapabilities();
+        if (videoTrackArray && videoTrackArray.zoom) {
+          const pipelineTrack = html5QrCodeScannerInstance.getRunningTrack();
+          // Scale viewport to a 2.5x digital override index to prompt distance stabilization focusing
+          const customizedZoomSetting = Math.min(2.5, videoTrackArray.zoom.max);
+          pipelineTrack.applyConstraints({
+            advanced: [{ zoom: customizedZoomSetting }]
+          });
+        }
+      } catch(e) {}
+    }).catch(() => {
       toggleBtn.textContent = "⚠️ Viewfinder Error / No Permission";
     });
   }
@@ -1048,14 +1062,12 @@ function commitNewBook() {
   
   if(!t || !rawAuthor || !g) { alert('Required matrix parameters missing.'); return; } 
   
-  /* MODULE 2: AUTOMATED DUPLICATION SENTRY PROTECTION */
   const isDuplicate = books.some(b => b.title.toLowerCase().trim() === t.toLowerCase());
   if (isDuplicate) {
     triggerSentryAlert();
     return;
   }
 
-  // Force military alignment constraint formatting profiles onto author input
   const formattedAuthor = processScribeNameMilitaryFormatting(rawAuthor);
 
   const newId = Math.max(...books.map(b => b.id)) + 1;
@@ -1083,10 +1095,8 @@ function purgeCurrentBookEntry() {
   const configurationConfirmationOverride = confirm(`⚠️ SYSTEM COMMAND ACTION:\nAre you absolutely positive you wish to permanently purge "${currentBook.title}" from your chronicle logs? This asset signature cannot be recovered.`);
   
   if (configurationConfirmationOverride) {
-    // Drop target book from memory array tracker
     books = books.filter(b => b.id !== currentBook.id);
     
-    // Purge customized changes tracking profiles data if stored
     try {
       const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
       if (saved[currentBook.id]) {
@@ -1094,7 +1104,6 @@ function purgeCurrentBookEntry() {
         localStorage.setItem('barbies_library', JSON.stringify(saved));
       }
       
-      // Clean target out of customized array if custom forged asset instance
       let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
       customAdded = customAdded.filter(b => b.id !== currentBook.id);
       localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
