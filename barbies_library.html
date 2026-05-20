@@ -574,6 +574,29 @@
     transform: scale(1);
   }
 
+  /* 🎰 HIGH EFFECT STREAMER NEON WINNER LIGHTS */
+  .trading-card-overlay.winner-flash-active {
+    animation: neonWinnerPulse 0.4s ease infinite alternate;
+  }
+  @keyframes neonWinnerPulse {
+    from { border-color: var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.5); }
+    to { border-color: var(--crimson-light); box-shadow: 0 0 25px rgba(230, 57, 70, 0.9); }
+  }
+
+  /* FLOATING INDEPENDENT APP-LEVEL OVERLAY MATRIX RULES FOR LORE INTEL CARDS */
+  .global-info-card-overlay-sleeve {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    backdrop-filter: blur(6px);
+    z-index: 200000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .global-info-card-overlay-sleeve.show { display: flex; }
+
   .trading-card-chassis {
     width: 100%;
     max-width: 340px;
@@ -675,6 +698,21 @@
     line-height: 1.5;
     color: var(--text-parchment);
     min-height: 66px;
+  }
+
+  /* 🌌 FLOATING WINNER SPLASH STREAMER EMOTE CONTAINERS */
+  .casino-splash-particle {
+    position: fixed;
+    z-index: 250000;
+    font-size: 24px;
+    pointer-events: none;
+    user-select: none;
+    animation: particleFallFountain 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  @keyframes particleFallFountain {
+    0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; }
+    15% { opacity: 1; transform: translate(var(--x-vector), var(--y-vector)) scale(1.3) rotate(45deg); }
+    100% { transform: translate(var(--x-vector), calc(var(--y-vector) + 400px)) scale(0.6) rotate(270deg); opacity: 0; }
   }
 
   /* EDGE TO EDGE LAYOUT FOR ULTRA ULTRA COMPACT DISPLAY CHASSIS RULES */
@@ -790,7 +828,7 @@
     <div class="stat-pill" onclick="filterStatus(this,'TBR')">
       <span class="count" id="pillCountTBR">0</span><span class="label">To Read</span>
     </div>
-    <div class="stat-pill" onclick="filterStatus(this,'Complete')">
+    <div class="stat-pill" onclick="filterStatus(this,'Complete').label">
       <span class="count" id="pillCountComplete">0</span><span class="label">Completed</span>
     </div>
     <div class="stat-pill" onclick="filterStatus(this,'Reading')">
@@ -905,6 +943,40 @@
     </div>
 
     <button class="cta-button" id="btnSpinParalysis" style="background:var(--crimson); font-size:14px; padding:16px;" onclick="executeParalysisWheelSpin()">Break The Paralysis 🎰</button>
+  </div>
+</div>
+
+<!-- 📜 DUAL-PERSONALITY "TOME RAIDER INTEL LOG" MANUAL MODAL OVERLAY -->
+<div class="global-info-card-overlay-sleeve" id="globalInfoCardOverlaySleeve" onclick="closeInfoCardOverlay()">
+  <div class="trading-card-chassis" onclick="event.stopPropagation()">
+    <div class="card-header-bar">
+      <div class="card-title-slot" id="infoCardTitle">Loading Title</div>
+      <div class="card-genre-pill" id="infoCardGenre">GENRE</div>
+    </div>
+    
+    <div class="card-artwork-frame">
+      <img src="" id="infoCardCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleInfoCardImageError()">
+      <div id="infoCardGlyph" class="card-artwork-glyph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+          <path d="M12 13v4"></path>
+        </svg>
+      </div>
+    </div>
+    
+    <div class="card-author-line" id="infoCardAuthor">BY AUTHOR UNKNOWN</div>
+    
+    <div class="card-attributes-strip">
+      <div class="card-attr-item">MASS: <span id="infoCardMass">000</span> PGS</div>
+      <div class="card-attr-item">METRIC: <span id="infoCardMetric">0.00</span> GR</div>
+    </div>
+    
+    <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading system framework notes...</div>
+    
+    <button class="cta-button" style="background:var(--purple-void); margin-top:4px;" onclick="pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
+    <button class="secondary-button" style="margin-top:6px; background:#000; border-color:var(--border-iron);" onclick="closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
   </div>
 </div>
 
@@ -1185,7 +1257,7 @@ const BOOKS_RAW = [
   [167,"Chopstick or Fork?","Wong J.","Complete","Standalone","Non-Fiction","256",4.00,5,null],
   [168,"Fourth Wing","Yarros, R.","DNF","The Empyrean, Book 1","Fantasy Romance","517",4.57,3,null],
   [169,"Iron Flame","Yarros, R.","TBR","The Empyrean, Book 2","Romantasy","640",4.36,null,null],
-  [170,"Onyx Storm","Yarros, R.","TBR","The Empyrean, Book  üçüncü","Fantasy Romance","544",4.21,null,null],
+  [170,"Onyx Storm","Yarros, R.","TBR","The Empyrean, Book 3","Fantasy Romance","544",4.21,null,null],
 ];
 
 let books = BOOKS_RAW.map(r => ({
@@ -1466,7 +1538,7 @@ async function triggerMasterExportPipeline() {
   if (window.showSaveFilePicker) {
     try {
       const pickerOptions = {
-        suggestName: 'BarbiesLibrary_Save.json',
+        suggestedName: 'BarbiesLibrary_Save.json',
         types: [{ description: 'JSON Library Save Files', accept: { 'application/json': ['.json'] } }]
       };
       
@@ -1705,6 +1777,7 @@ function purgeCurrentBookEntry() {
     } catch (e) {}
     
     closeModal();
+    closeInfoCardOverlay();
     updateHomeView();
     if (currentView === 'library') {
       renderBooks();
@@ -1764,7 +1837,7 @@ function renderBooks() {
     }
 
     return `
-      <div class="book-card status-${statusClass}" onclick="openBook(${b.id})">
+      <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
         <div class="book-info" style="margin-left: 4px;">
            <div class="book-title">${b.title}</div>
@@ -1824,8 +1897,92 @@ function getFiltered() {
   });
 }
 
-function openBook(id) {
-  currentBook = books.find(b => b.id === id); 
+/* 📜 ASYNC CORE RENDERING PIPELINE MODULE FOR MANUAL INFO OVERLAYS */
+async function openInfoCardOverlay(id) {
+  currentBook = books.find(b => b.id === id);
+  if (!currentBook) return;
+  
+  const coverImg = document.getElementById('infoCardCoverImg');
+  const fallbackIllustration = document.getElementById('infoCardGlyph');
+  
+  coverImg.style.display = "none";
+  fallbackIllustration.style.display = "block";
+
+  // Assign Structural Text Content Parameters With Lore Book Puns
+  document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${currentBook.title}`;
+  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.toUpperCase();
+  document.getElementById('infoCardGenre').textContent = normalizeGenre(currentBook.genre);
+  document.getElementById('infoCardMass').textContent = currentBook.pages;
+  document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
+  
+  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || 
+    `SYSTEM NOTE: "${currentBook.title}" field logs are compiled and indexed cleanly within the matrix local framework.`;
+
+  document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
+
+  // Trigger Asynchronous Cascade resolution maps
+  if (currentBook.coverUrl) {
+    assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl);
+    return;
+  }
+
+  const targetISBN = currentBook.isbn || PRELOADED_ISBN_REGISTRY[currentBook.title];
+  if (targetISBN) {
+    try {
+      const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`);
+      const gBooksData = await gBooksResponse.json();
+      if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+        let secureUrl = gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
+        assignImageToTargetNode(coverImg, fallbackIllustration, secureUrl);
+        return;
+      }
+    } catch(e) {}
+  }
+
+  try {
+    const cleanT = currentBook.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
+    const cleanA = currentBook.author.split(',')[0].trim();
+    const query = encodeURIComponent(`intitle:"${cleanT}"+inauthor:"${cleanA}"`);
+    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
+    const searchData = await searchResponse.json();
+    
+    if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
+      let textSecureUrl = searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
+      assignImageToTargetNode(coverImg, fallbackIllustration, textSecureUrl);
+    } else {
+      handleInfoCardImageError();
+    }
+  } catch(e) {
+    handleInfoCardImageError();
+  }
+}
+
+function assignImageToTargetNode(imgNode, fallbackNode, urlString) {
+  imgNode.src = urlString;
+  imgNode.onload = function() {
+    if (imgNode.naturalWidth > 5) {
+      imgNode.style.display = "block";
+      fallbackNode.style.display = "none";
+    } else {
+      imgNode.style.display = "none";
+      fallbackNode.style.display = "block";
+    }
+  };
+}
+
+function handleInfoCardImageError() {
+  document.getElementById('infoCardCoverImg').style.display = "none";
+  document.getElementById('infoCardGlyph').style.display = "block";
+}
+
+function closeInfoCardOverlay() {
+  document.getElementById('globalInfoCardOverlaySleeve').classList.remove('show');
+}
+
+function pivotToConfigurationModal() {
+  closeInfoCardOverlay();
+  
+  // Map parameters into structural standard forms immediately
   document.getElementById('mTitle').textContent = currentBook.title; 
   document.getElementById('mAuthor').textContent = "By Author " + currentBook.author;
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
@@ -1852,6 +2009,47 @@ function setModalRating(val) {
     if(idx < val) btn.classList.add('active');
     else btn.classList.remove('active');
   });
+}
+
+// ── CONFETTI EMOTE FOUNTAIN SIMULATOR FOR WINNER CARDS ───────────────────
+function triggerCasinoEmoteFountainSplash() {
+  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
+  overlayCardNode.classList.add('winner-flash-active');
+
+  const emotePool = ['👑', '⚔️', '🎰', '📜', '✨', '🔥', '📚'];
+  const particleCount = 45;
+
+  // Track coordinates relative to the interactive viewport bounding window
+  const rect = overlayCardNode.getBoundingClientRect();
+  const spawnX = rect.left + (rect.width / 2);
+  const spawnY = rect.top + (rect.height / 3);
+
+  for (let i = 0; i < particleCount; i++) {
+    setTimeout(() => {
+      const particle = document.createElement('div');
+      particle.className = 'casino-splash-particle';
+      particle.textContent = emotePool[Math.floor(Math.random() * emotePool.length)];
+      
+      particle.style.left = `${spawnX}px`;
+      particle.style.top = `${spawnY}px`;
+
+      // Assign trajectory vector coordinates randomly
+      const angle = (Math.random() * Math.PI * 2);
+      const velocity = (Math.random() * 180) + 70;
+      const xVector = Math.cos(angle) * velocity;
+      const yVector = Math.sin(angle) * velocity - 120; // Bias trajectory upwards first
+
+      particle.style.setProperty('--x-vector', `${xVector}px`);
+      particle.style.setProperty('--y-vector', `${yVector}px`);
+
+      document.body.appendChild(particle);
+
+      // Garbaging lifecycle tracking
+      particle.addEventListener('animationend', () => {
+        particle.remove();
+      });
+    }, i * 15);
+  }
 }
 
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
@@ -2308,8 +2506,8 @@ function executeParalysisWheelSpin() {
 
 async function triggerTradingCardEncounterModal() {
   if (!paralysisWinningBookPointer) return;
-  playCasinoJackpotChimeAudio();
   
+  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   const coverImg = document.getElementById('cardBookCoverImg');
   const fallbackIllustration = document.getElementById('cardBookGlyph');
   
@@ -2325,15 +2523,15 @@ async function triggerTradingCardEncounterModal() {
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || 
     "A legendary chronicle waiting to be uncovered within the deep stacks of Barbie's framework structure.";
 
-  document.getElementById('casinoTradingCardOverlay').classList.add('show');
+  // Activate overlay display layer prior to running streamer effects triggers
+  overlayCardNode.classList.add('show');
+  triggerCasinoEmoteFountainSplash();
 
-  // Tier 1: User Explicit Local Link String Override
   if (paralysisWinningBookPointer.coverUrl) {
-    assignImageToCardFrame(paralysisWinningBookPointer.coverUrl);
+    assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl);
     return;
   }
 
-  // Tier 2: Static Hardcoded + Custom ISBN Direct Parameter Lookup
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
     try {
@@ -2341,13 +2539,12 @@ async function triggerTradingCardEncounterModal() {
       const gBooksData = await gBooksResponse.json();
       if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
         let secureUrl = gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-        assignImageToCardFrame(secureUrl);
+        assignImageToTargetNode(coverImg, fallbackIllustration, secureUrl);
         return;
       }
     } catch(e) {}
   }
 
-  // Tier 3: Fuzzy Metadata text sweeping algorithms (Matches alternative editions/Goodreads indexing profiles)
   try {
     const cleanTitle = paralysisWinningBookPointer.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim();
     const cleanAuthor = paralysisWinningBookPointer.author.split(',')[0].trim();
@@ -2358,12 +2555,11 @@ async function triggerTradingCardEncounterModal() {
     
     if (textSearchData.items && textSearchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
       let textSecureUrl = textSearchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-      assignImageToCardFrame(textSecureUrl);
+      assignImageToTargetNode(coverImg, fallbackIllustration, textSecureUrl);
       return;
     }
   } catch(e) {}
 
-  // Tier 4: Open Library Open Title Archive Scraping fallback
   try {
     const encodedTitle = encodeURIComponent(paralysisWinningBookPointer.title);
     const searchResponse = await fetch(`https://openlibrary.org/search.json?title=${encodedTitle}&limit=1`);
@@ -2371,30 +2567,12 @@ async function triggerTradingCardEncounterModal() {
     
     if (searchData.docs && searchData.docs[0]?.cover_i) {
       const coverId = searchData.docs[0].cover_i;
-      assignImageToCardFrame(`https://covers.openlibrary.org/b/id/${coverId}-M.jpg`);
+      assignImageToTargetNode(coverImg, fallbackIllustration, `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`);
       return;
     }
   } catch(err) {
     handleTradingCardImageError();
   }
-}
-
-function assignImageToCardFrame(sourceUrlString) {
-  const coverImg = document.getElementById('cardBookCoverImg');
-  const fallbackIllustration = document.getElementById('cardBookGlyph');
-  
-  coverImg.src = sourceUrlString;
-  coverImg.onload = function() {
-    if (coverImg.naturalWidth > 5) {
-      coverImg.style.display = "block";
-      fallbackIllustration.style.display = "none";
-    } else {
-      handleTradingCardImageError();
-    }
-  };
-  coverImg.onerror = function() {
-    handleTradingCardImageError();
-  };
 }
 
 function handleTradingCardImageError() {
@@ -2420,7 +2598,9 @@ function acceptParalysisDestiny() {
 }
 
 function closeTradingCardOverlay() {
-  document.getElementById('casinoTradingCardOverlay').classList.remove('show');
+  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
+  overlayCardNode.classList.remove('show');
+  overlayCardNode.classList.remove('winner-flash-active');
   pickedWedgeIndexPointer = null;
   renderHTML5CasinoCanvasWheel();
 }
