@@ -289,7 +289,10 @@
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
     background: #0d0a0d; border-top: 2px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
-    display: flex; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
+    display: flex; flex-direction: column; align-items: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6); gap: 6px;
+  }
+  .nav-buttons-row {
+    width: 100%; display: flex;
   }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -299,6 +302,17 @@
   .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); }
   .nav-btn.active { color: var(--gold); }
   .nav-btn.active .icon { filter: grayscale(0); }
+
+  /* CONSOLE VERSION CONTROL LABELS */
+  .console-version-stamp {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    opacity: 0.6;
+    text-transform: uppercase;
+    font-weight: 400;
+    padding-bottom: 4px;
+  }
 
   /* SYSTEM MODALS LAYOUTS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: flex-end; backdrop-filter: blur(6px); }
@@ -519,15 +533,18 @@
 </div>
 
 <div class="bottom-nav">
-  <button class="nav-btn active" id="navHome" onclick="showView('home')">
-    <span class="icon">🏰</span><span>Outpost</span>
-  </button>
-  <button class="nav-btn" id="navLib" onclick="showView('library')">
-    <span class="icon">⚔️</span><span>Manifest</span>
-  </button>
-  <button class="nav-btn" id="navCharts" onclick="showView('charts')">
-    <span class="icon">📊</span><span>Analytics</span>
-  </button>
+  <div class="nav-buttons-row">
+    <button class="nav-btn active" id="navHome" onclick="showView('home')">
+      <span class="icon">🏰</span><span>Outpost</span>
+    </button>
+    <button class="nav-btn" id="navLib" onclick="showView('library')">
+      <span class="icon">⚔️</span><span>Manifest</span>
+    </button>
+    <button class="nav-btn" id="navCharts" onclick="showView('charts')">
+      <span class="icon">📊</span><span>Analytics</span>
+    </button>
+  </div>
+  <div class="console-version-stamp">Secure Matrix Build v2.4</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
@@ -963,8 +980,8 @@ function toggleOpticalScannerArray() {
     html5QrCodeScannerInstance.start(
       { facingMode: "environment" },
       { 
-        fps: 15, // Accelerated sampling frequency rates
-        qrbox: { width: 280, height: 120 } // Concentrated processing constraint boundaries
+        fps: 15, 
+        qrbox: { width: 280, height: 120 } 
       },
       (decodedText) => {
         document.getElementById('addManualISBNInput').value = decodedText;
@@ -973,12 +990,10 @@ function toggleOpticalScannerArray() {
       },
       () => {} 
     ).then(() => {
-      // Hardware-assisted zoom pipeline initialization override constraints
       try {
         const videoTrackArray = html5QrCodeScannerInstance.getCameraCapabilities();
         if (videoTrackArray && videoTrackArray.zoom) {
           const pipelineTrack = html5QrCodeScannerInstance.getRunningTrack();
-          // Scale viewport to a 2.5x digital override index to prompt distance stabilization focusing
           const customizedZoomSetting = Math.min(2.5, videoTrackArray.zoom.max);
           pipelineTrack.applyConstraints({
             advanced: [{ zoom: customizedZoomSetting }]
