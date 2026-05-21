@@ -820,7 +820,7 @@
           <button class="cta-button" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
           <button class="cta-button" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
           <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
-          <div class="settings-system-status-log" id="saveSystemStatusOutputLine').textContent"></div>
+          <div class="settings-system-status-log" id="saveSystemStatusOutputLine"></div>
           <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
         </div>
       </div>
@@ -1129,7 +1129,7 @@
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           <circle cx="12" cy="10" r="3"></circle>
-          <path d="M12 13v4"></path>
+          <path d="M12 13v4.5"></path>
         </svg>
       </div>
     </div>
@@ -1172,7 +1172,7 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
   <div class="modal" id="modal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-header">
@@ -1208,7 +1208,7 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="addBookModalOverlay" onclick="closeAddBookModal(event)">
+<div class="modal-overlay" id="addBookModalOverlay" onclick="closeAddBookModal()">
   <div class="modal" id="addBookModal" onclick="event.stopPropagation()">
     <div class="modal-handle"></div>
     <div class="modal-header">
@@ -1454,6 +1454,7 @@ let targetAddBookStatus = 'TBR';
 let activeCharts = {};
 let html5QrCodeScannerInstance = null;
 let masterFileHandlePointerPC = null; 
+let isWheelCurrentlySpinning = false;
 
 const BOOK_BLURBS_REGISTRY = {
   "One Dark Window": "Fevered magic, ancient cards, and a deadly misty curse. Elspeth Spindle needs a monster to stay safe in her own mind—and the price of unleashing him might just destroy the kingdom.",
