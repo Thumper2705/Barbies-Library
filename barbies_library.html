@@ -583,6 +583,10 @@
     transition: all 0.2s, filter 0.2s; 
   }
   .genre-chip.active { background: var(--gold); color: #000; border-color: var(--gold); }
+  
+  /* Unique layout variations specifically for the advanced filter button */
+  .genre-chip.advanced-filter-chip { border-color: rgba(179, 146, 67, 0.4); color: var(--gold); }
+  .genre-chip.advanced-filter-chip.active { background: var(--crimson); color: #fff; border-color: var(--crimson-light); }
 
   .results-count { padding: 4px 16px 8px; font-size: 11px; color: var(--text-muted); }
 
@@ -1345,7 +1349,7 @@ const BOOKS_RAW = [
   [72,"Traitor Queen","Jensen D.","TBR","The Bridge Kingdom, Book 2","Fantasy Romance","352",4.22,null,null],
   [73,"The Inadequate Heir","Jensen D.","TBR","The Bridge Kingdom, Book 3","Fantasy Romance","608",4.10,null,null],
   [74,"Endless War","Jensen D.","TBR","The Bridge Kingdom, Book 4","Fantasy Romance","608",4.19,null,null],
-  [75,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
+  [756,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
   [76,"Glow","Kennedy R.","TBR","The Plated Prisoner, Book 4","Fantasy Romance","738",4.12,null,null],
   [77,"Glint","Kennedy R.","TBR","The Plated Prisoner, Book 2","Fantasy Romance","482",4.15,null,null],
   [78,"Gleam","Kennedy R.","TBR","The Plated Prisoner, Book 3","Fantasy","272",4.37,null,null],
@@ -1875,9 +1879,10 @@ function renderGenreRow() {
   
   const tropesBase = getTopTropes().sort((a, b) => a.localeCompare(b));
   
-  // Line 1: Isolated System Anchor button sitting entirely on its own line
+  // Line 1: Isolated System Anchor buttons sitting on their own line
   document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
-    `<div class="genre-chip ${activeGenre === 'All' ? 'active':''}" onclick="filterGenre(this,'All')">All Categories</div>`;
+    `<div class="genre-chip ${activeGenre === 'All' ? 'active':''}" onclick="filterGenre(this,'All')">All Categories</div>` +
+    `<div class="genre-chip advanced-filter-chip" onclick="void(0)">Advanced Filter</div>`;
 
   // Line 2: Comprehensive list of Core Literary Genres
   document.getElementById('coreGenresScrollerLine').innerHTML = 
