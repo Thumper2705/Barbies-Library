@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Barbie's Library">
 <title>Barbie's Library 📚</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
@@ -182,6 +182,17 @@
     display: flex;
   }
 
+  /* PIPELINE SYSTEM DIAGNOSTIC STATUS TEXT OUTPUT */
+  .settings-system-status-log {
+    font-size: 10px;
+    color: var(--gold);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 4px 0 0;
+    letter-spacing: 0.5px;
+  }
+
   /* STATIC STATUS STAMP BADGE CLASS */
   .settings-static-version-badge {
     width: 100%;
@@ -205,7 +216,7 @@
   .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
 
   .home-view { padding: 24px 16px 140px; }
-  .library-view { padding: 16px 0 140px; }
+  .library-view { padding: 24px 16px 140px; }
   .charts-view { padding: 24px 16px 140px; }
   .paralysis-view { padding: 24px 16px 140px; }
 
@@ -218,9 +229,12 @@
     border-top: 3px solid var(--crimson); /* Explicitly Retained Red Trim Override */
     text-align: center;
   }
-  .welcome-emoji { font-size: 36px; margin-bottom: 8px; filter: grayscale(0.2); }
+  .welcome-emoji { display: flex; justify-content: center; align-items: center; margin-bottom: 8px; }
+  .welcome-emoji svg, .nav-btn .icon svg { width: 42px; height: 42px; fill: var(--text-parchment); }
+  .nav-btn .icon svg { width: 20px; height: 20px; transition: fill 0.2s; }
+  .nav-btn.active .icon svg { fill: var(--gold); }
   .welcome-text { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
-  .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 
   /* STRATEGIC CRIMSON ALL BUTTONS SYSTEM OVERRIDE */
   .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn, .open-book-edit-btn, .quote-board-refresh-btn {
@@ -265,7 +279,7 @@
   }
   .reading-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: #fff !important; }
   .reading-author { font-size: 12px; color: var(--gold) !important; margin-bottom: 12px; }
-   
+    
   .reading-blurb-box {
      background: #080608; padding: 12px; font-size: 12px;
      color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
@@ -458,15 +472,16 @@
     background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
     display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
   }
-  .nav-buttons-row { width: 100%; display: flex; }
+  .nav-buttons-row { width: 100%; display: flex; align-items: center; }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
     cursor: pointer; font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
     letter-spacing: 1px; text-transform: uppercase; font-weight: 700; background: none; border: none;
   }
-  .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); }
+  .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); display: flex; align-items: center; justify-content: center; }
+  .nav-btn .icon svg { filter: grayscale(0.5); fill: var(--text-muted); }
   .nav-btn.active { color: var(--gold); }
-  .nav-btn.active .icon { filter: grayscale(0); }
+  .nav-btn.active .icon svg { filter: grayscale(0); fill: var(--gold); }
 
   /* SYSTEM MODALS LAYOUTS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: flex-end; backdrop-filter: blur(6px); }
@@ -601,6 +616,7 @@
           <button class="cta-button" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
           <button class="cta-button" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
           <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
+          <div class="settings-system-status-log" id="saveSystemStatusOutputLine"></div>
           <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
         </div>
       </div>
@@ -647,11 +663,17 @@
 </div>
 
 <div class="home-view visible" id="homeView">
-  <!-- LEVEL 1: APP HERO MOTIF BANNER -->
+  <!-- LEVEL 1: APP HERO MOTIF BANNER (HIGH RESOLUTION SVG TOP-DOWN DRAGON EMBLEM) -->
   <div class="welcome-card">
-    <div class="welcome-emoji">🏰</div>
-    <div class="welcome-text">Main Menu</div>
-    <div class="welcome-sub">Track your reading goals, statistics, and book collections.</div>
+    <div class="welcome-emoji">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50,15 C48,22 45,28 35,32 C25,36 12,32 5,42 C18,45 32,45 42,48 C44,42 46,35 48,32 C49,35 50,45 50,48 C50,45 51,35 52,32 C54,35 56,42 58,48 C68,45 82,45 95,42 C88,32 75,36 65,32 C55,28 52,22 50,15 Z" />
+        <path d="M48,52 C42,54 30,55 22,52 C15,50 8,55 5,62 C15,62 25,60 32,58 C35,62 38,72 40,82 C44,72 46,65 48,58 C49,60 50,75 50,85 C50,75 51,60 52,58 C54,65 56,72 60,82 C62,72 65,62 68,58 C75,60 85,62 95,62 C92,55 85,50 78,52 C70,55 58,54 52,52 C51,51 50,49 50,48 C50,49 49,51 48,52 Z" />
+        <path d="M48,32 L52,32 L50,48 Z" style="fill: var(--crimson-light);" />
+      </svg>
+    </div>
+    <div class="welcome-text">Command Center</div>
+    <div class="welcome-sub">Track your dragon-rider achievements, progress trajectories, and active mission logs.</div>
   </div>
 
   <!-- LEVEL 2A: WISDOM CHRONICLES ENGINE -->
@@ -679,19 +701,19 @@
 
   <!-- LEVEL 3: LIVE DATABASE COUNTERS STATS GRID (RED NUMBERS / GOLD LABELS) -->
   <div class="stats-grid">
-    <div class="stats-box">
+    <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(2)'), 'TBR'), 50);">
       <div class="stat-number" id="statTBR">0</div>
       <div class="stat-label">To Read (TBR)</div>
     </div>
-    <div class="stats-box">
+    <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(3)'), 'Complete'), 50);">
       <div class="stat-number" id="statRead">0</div>
       <div class="stat-label">Completed</div>
     </div>
-    <div class="stats-box">
+    <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(5)'), 'DNF'), 50);">
       <div class="stat-number" id="statDNF">0</div>
       <div class="stat-label">Dropped (DNF)</div>
     </div>
-    <div class="stats-box">
+    <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(6)'), 'Old'), 50);">
       <div class="stat-number" id="statOld">0</div>
       <div class="stat-label">Past Reads</div>
     </div>
@@ -699,11 +721,11 @@
 
   <!-- LEVEL 4: VISUAL INTELLIGENCE MIRRORED DASHBOARD MATRIX -->
   <div class="home-analytics-row">
-     <div class="home-preview-pane">
+     <div class="home-preview-pane" style="cursor: pointer;" onclick="showView('charts')">
         <div class="home-preview-title">🏆 Top Rated Books</div>
         <div id="homePodiumContainerMount"></div>
      </div>
-     <div class="home-preview-pane">
+     <div class="home-preview-pane" style="cursor: pointer;" onclick="showView('charts')">
         <div class="home-preview-title">📊 Breakdown</div>
         <div class="home-canvas-holder">
             <canvas id="homeStatusPieChart"></canvas>
@@ -717,10 +739,10 @@
       <div class="reading-label" style="margin-bottom:0;">=== ACTIVE SESSION READING ENTRY ===</div>
       <button class="open-book-edit-btn" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) { openInfoCardOverlay(readingObj.id); pivotToConfigurationModal(); }">EDIT LOG ⚙️</button>
     </div>
-    <div class="reading-title" id="readingTitle" style="color:#fff !important; font-weight:700;"></div>
-    <div class="reading-author" id="readingAuthor" style="color:var(--gold) !important;"></div>
-    <div class="reading-blurb-box" id="readingBlurbSlot">Loading metadata fields...</div>
-    <div class="progress-bar-container">
+    <div class="reading-title" id="readingTitle" style="color:#fff !important; font-weight:700; cursor: pointer;" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) openInfoCardOverlay(readingObj.id);"></div>
+    <div class="reading-author" id="readingAuthor" style="color:var(--gold) !important; cursor: pointer;" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) openInfoCardOverlay(readingObj.id);"></div>
+    <div class="reading-blurb-box" id="readingBlurbSlot" style="cursor: pointer;" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) openInfoCardOverlay(readingObj.id);">Loading metadata fields...</div>
+    <div class="progress-bar-container" style="cursor: pointer;" onclick="let readingObj = books.find(b => b.status === 'Reading'); if(readingObj) { openInfoCardOverlay(readingObj.id); pivotToConfigurationModal(); }">
       <div class="progress-bar-fill" id="readingBarFill"></div>
     </div>
     <div class="progress-text-row">
@@ -731,6 +753,13 @@
 </div>
 
 <div class="library-view" id="libraryView">
+  <!-- LEVEL 1: ARCHIVE DISPLAY CARD BANNER -->
+  <div class="welcome-card" style="margin: 0 16px 20px; margin-top: 16px;">
+    <div class="welcome-emoji">🏛️</div>
+    <div class="welcome-text">The Grand Hall</div>
+    <div class="welcome-sub">Browse your entire archival ledger. Filter by tracking status, query specific titles, or add fresh volumes to the shelves.</div>
+  </div>
+
   <!-- STICKY OPTION A CONTAINER FRAME BLOCK -->
   <div class="collection-sticky-header-dock">
     <div class="stats-row" id="statsRow2">
@@ -764,7 +793,7 @@
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search by title, author, or genre..." oninput="renderBooks()">
     </div>
-    <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Filter Mode</button>
+    <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Sort Mode</button>
   </div>
   
   <div class="genre-row" id="genreRow" style="padding: 8px 16px 12px;"></div>
@@ -773,6 +802,13 @@
 </div>
 
 <div class="charts-view" id="chartsView">
+  <!-- LEVEL 1: VISUAL INTELLIGENCE CARD BANNER (SCROLL ICON OVERRIDE) -->
+  <div class="welcome-card" style="margin-bottom: 20px;">
+    <div class="welcome-emoji">📜</div>
+    <div class="welcome-text">Analytics</div>
+    <div class="welcome-sub">Review deep telemetry projections. Track your status distribution matrix, genre preferences, and dominant authors.</div>
+  </div>
+
   <div class="chart-card">
     <div class="chart-title">🏆 Top Tier Library Rankings</div>
     <div id="podiumContainerMount"></div>
@@ -802,9 +838,16 @@
 
 <!-- 🎰 INDECISION CASINO ENGINE CONTROLS -->
 <div class="paralysis-view" id="paralysisView">
+  <!-- LEVEL 1: ORACLE ENGINE CARD BANNER -->
+  <div class="welcome-card" style="margin-bottom: 20px; border-top-color: var(--gold);">
+    <div class="welcome-emoji">🔮</div>
+    <div class="welcome-text">Break Paralysis</div>
+    <div class="welcome-sub">Commit your active TBR pool to the fates. Spin the mechanism or inspect random wedges to defeat indecision.</div>
+  </div>
+
   <div class="casino-container">
     
-    <!-- 🃏 TRADING CARD LAYOUT OVERLAY INTERFACE MODULE -->
+    <!-- 🃏 TRADING CARD LAYOUT OVERLAYS -->
     <div class="trading-card-overlay" id="casinoTradingCardOverlay">
       <div class="trading-card-chassis">
         <div class="card-header-bar">
@@ -902,16 +945,23 @@
 <div class="bottom-nav">
   <div class="nav-buttons-row">
     <button class="nav-btn active" id="navHome" onclick="showView('home')">
-      <span class="icon">🏰</span><span>Main Menu</span>
+      <span class="icon">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50,15 C48,22 45,28 35,32 C25,36 12,32 5,42 C18,45 32,45 42,48 C44,42 46,35 48,32 C49,35 50,45 50,48 C50,45 51,35 52,32 C54,35 56,42 58,48 C68,45 82,45 95,42 C88,32 75,36 65,32 C55,28 52,22 50,15 Z" />
+          <path d="M48,52 C42,54 30,55 22,52 C15,50 8,55 5,62 C15,62 25,60 32,58 C35,62 38,72 40,82 C44,72 46,65 48,58 C49,60 50,75 50,85 C50,75 51,60 52,58 C54,65 56,72 60,82 C62,72 65,62 68,58 C75,60 85,62 95,62 C92,55 85,50 78,52 C70,55 58,54 52,52 C51,51 50,49 50,48 C50,49 49,51 48,52 Z" />
+          <path d="M48,32 L52,32 L50,48 Z" style="fill: var(--crimson-light);" />
+        </svg>
+      </span>
+      <span>Command Center</span>
     </button>
     <button class="nav-btn" id="navLib" onclick="showView('library')">
-      <span class="icon">⚔️</span><span>Collection</span>
+      <span class="icon">🏛️</span><span>The Grand Hall</span>
     </button>
     <button class="nav-btn" id="navCharts" onclick="showView('charts')">
-      <span class="icon">📊</span><span>Analytics</span>
+      <span class="icon">📜</span><span>Analytics</span>
     </button>
     <button class="nav-btn" id="navParalysis" onclick="showView('paralysis')">
-      <span class="icon">🎰</span><span>Break Paralysis</span>
+      <span class="icon">🔮</span><span>Break Paralysis</span>
     </button>
   </div>
 </div>
@@ -1096,7 +1146,7 @@ const BOOKS_RAW = [
   [72,"Traitor Queen","Jensen D.","TBR","The Bridge Kingdom, Book 2","Fantasy Romance","352",4.22,null,null],
   [73,"The Inadequate Heir","Jensen D.","TBR","The Bridge Kingdom, Book 3","Fantasy Romance","608",4.10,null,null],
   [74,"Endless War","Jensen D.","TBR","The Bridge Kingdom, Book 4","Fantasy Romance","608",4.19,null,null],
-  [75,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
+  [756,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
   [76,"Glow","Kennedy R.","TBR","The Plated Prisoner, Book 4","Fantasy Romance","738",4.12,null,null],
   [77,"Glint","Kennedy R.","TBR","The Plated Prisoner, Book 2","Fantasy Romance","482",4.15,null,null],
   [78,"Gleam","Kennedy R.","TBR","The Plated Prisoner, Book 3","Fantasy","272",4.37,null,null],
@@ -1254,13 +1304,26 @@ function loadSaved() {
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
     const customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
     if (customAdded.length > 0) books = [...books, ...customAdded];
-    books = books.map(b => saved[b.id] ? {...b, ...saved[b.id]} : b);
+    
+    books = books.map(b => {
+      if (saved[b.id]) {
+        return {
+          ...b,
+          status: saved[b.id].status,
+          myRating: saved[b.id].myRating,
+          notes: saved[b.id].notes,
+          coverUrl: saved[b.id].coverUrl,
+          currentPage: parseInt(saved[b.id].currentPage) || 0
+        };
+      }
+      return b;
+    });
   } catch(e) {}
 }
 loadSaved();
 
 let activeStatus = 'All'; let activeGenre = 'All'; let sortMode = 0;
-const sortLabels = ['Filter Mode', 'Title A–Z', 'My Rank', 'GR Metric'];
+const sortLabels = ['Default Sort', 'Title A–Z', 'My Rating', 'Goodreads Rating'];
 let currentBook = null; let currentView = 'home';
 
 function updateUIRowCounters() {
@@ -1287,7 +1350,7 @@ function updateHomeView() {
     document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
     const currentP = parseInt(reading.currentPage) || 0;
-     
+       
     if (totalP > 0) {
        const percentage = Math.min(100, Math.max(0, Math.round((currentP / totalP) * 100)));
        document.getElementById('readingBarFill').style.width = `${percentage}%`;
@@ -1732,7 +1795,7 @@ function renderGenreRow() {
   const genres = ['All', ...getTopGenres()];
   document.getElementById('genreRow').innerHTML = genres.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g}')">${g}</div>`).join('');
 }
-function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.add('active'); renderBooks(); }
+function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderBooks(); }
 function getTitleInitials(title) {
   if(!title) return "BK";
   const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0);
@@ -1867,10 +1930,11 @@ function setModalRating(val) {
   document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => { if(idx < val) btn.classList.add('active'); else btn.classList.remove('active'); });
 }
 
+// Emote fountain tracking variables setup
 function triggerCasinoEmoteFountainSplash() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   overlayCardNode.classList.add('winner-flash-active');
-  const emotePool = ['👑', '⚔️', '🎰', '📜', '✨', '🔥', '📚'];
+  const emotePool = ['👑', '📜', '🎰', '🔮', '✨', '🔥', '📚'];
   const rect = overlayCardNode.getBoundingClientRect();
   const spawnX = rect.left + (rect.width / 2);
   const spawnY = rect.top + (rect.height / 3);
@@ -1896,11 +1960,25 @@ function saveBook() {
   if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
   currentBook.notes = document.getElementById('notesInput').value.trim();
   if(currentBook.status === 'Reading') currentBook.currentPage = parseInt(document.getElementById('inputCurrentPage').value) || 0;
+  
   try { 
     const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}'); 
-    saved[currentBook.id] = { status: currentBook.status, currentPage: currentBook.currentPage || 0, myRating: currentBook.myRating, notes: currentBook.notes, coverUrl: currentBook.coverUrl || null }; 
+    saved[currentBook.id] = { 
+      status: currentBook.status, 
+      currentPage: currentBook.currentPage || 0, 
+      myRating: currentBook.myRating, 
+      notes: currentBook.notes, 
+      coverUrl: currentBook.coverUrl || null 
+    }; 
     localStorage.setItem('barbies_library', JSON.stringify(saved)); 
+
+    if (currentBook.id > 170) {
+      let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
+      customAdded = customAdded.map(b => b.id === currentBook.id ? currentBook : b);
+      localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
+    }
   } catch(e) {}
+  
   currentBook._pendingStatus = null; currentBook._pendingRating = undefined;
   updateHomeView(); renderBooks(); document.getElementById('modalOverlay').classList.remove('open'); 
   executeAutomatedBackgroundPipelineAutosave();
@@ -2041,6 +2119,23 @@ function populateDynamicCasinoGenreChips() {
     const chipId = `stakeGenre_${genre.replace(/[^a-zA-Z0-9]/g, '')}`;
     return `<div class="stake-chip" id="${chipId}" onclick="setWheelWeightFilter('genre:${genre.replace(/'/g, "\\'")}')">${genre}</div>`;
   }).join('');
+}
+
+function setWheelWeightFilter(filterValue) {
+  wheelWeightFilter = filterValue;
+  document.querySelectorAll('.stakes-panel .stake-chip').forEach(chip => {
+    chip.classList.remove('active');
+  });
+  if (filterValue.startsWith('genre:')) {
+    const safeGenreId = `stakeGenre_${filterValue.split('genre:')[1].replace(/[^a-zA-Z0-9]/g, '')}`;
+    const targetChip = document.getElementById(safeGenreId);
+    if (targetChip) targetChip.classList.add('active');
+  } else {
+    const standardChipMap = { 'All': 'stakeWeightAll', 'short': 'stakeWeightShort', 'medium': 'stakeWeightMedium', 'long': 'stakeWeightLong' };
+    const targetChip = document.getElementById(standardChipMap[filterValue]);
+    if (targetChip) targetChip.classList.add('active');
+  }
+  configureRouletteDataPool();
 }
 
 function configureRouletteDataPool() {
@@ -2238,7 +2333,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   if (!paralysisWinningBookPointer) return;
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
-     
+         
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
@@ -2246,10 +2341,10 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
-     
+         
   overlayCardNode.classList.add('show'); 
   if (isFromSpin) triggerCasinoEmoteFountainSplash();
-     
+         
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
