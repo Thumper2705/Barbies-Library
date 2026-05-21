@@ -145,7 +145,7 @@
   .header-title span { color: var(--crimson-light); text-shadow: 0 0 12px rgba(230, 57, 70, 0.5); }
   .header-sub { color: var(--text-muted); font-size: 11px; margin-top: 5px; position: relative; z-index: 4; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 1px 4px #000; }
 
-  /* ⚙️ FIXED VIEWPORT CONSOLE CONFIGURATION BADGE (TOP RIGHT ORIENTED) */
+  /* ⚙️ FIXED VIEWPORT CONSOLE CONFIGURATION BADGE */
   .settings-dots-trigger {
     position: fixed;
     top: max(16px, env(safe-area-inset-top));
@@ -156,7 +156,7 @@
     border: 1px solid var(--gold) !important;
     border-radius: 4px;
     cursor: pointer;
-    z-index: 150000; /* Stacks completely above all workspace decks */
+    z-index: 150000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -394,9 +394,10 @@
     background: var(--card-slate); border-radius: 4px; padding: 20px; margin-bottom: 20px;
     border: 1px solid var(--border-iron); border-top: 3px solid var(--gold) !important; position: relative;
   }
+  .quote-board-card { border-top: 3px solid var(--crimson) !important; }
   .quote-board-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
   
-  /* UNIFIED CHRONICLES CARD TYPOGRAPHY ENGINE (RED TITLES / WHITE CONTENT / GOLD LABELS) */
+  /* UNIFIED CHRONICLES CARD TYPOGRAPHY ENGINE */
   .quote-board-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
   .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: #fff !important; line-height: 1.6; min-height: 45px; }
   .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold) !important; margin-top: 8px; text-transform: uppercase; }
@@ -405,7 +406,7 @@
   /* STANDALONE GOAL METER DECK COMPONENTS */
   .goal-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
   .goal-bar-main-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
-  .goal-bar-container-sleeve { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
+  .goal-bar-container-sleeve { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; padding: 0; }
   
   /* RED PROGRESS METER SYNCHRONIZATION OVERRIDE */
   .goal-bar-fill-track { background: var(--crimson-light) !important; height: 100%; width: 0%; border-radius: 4px; transition: width 0.5s cubic-bezier(0.1, 1, 0.1, 1); }
@@ -423,11 +424,11 @@
        background: #080608; padding: 12px; font-size: 12px;
        color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
   }
-  .progress-bar-container { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
+  .progress-bar-container { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; padding: 0; }
   .progress-bar-fill { background: var(--crimson); height: 100%; width: 0%; border-radius: 4px; transition: width 0.4s ease; }
   .progress-text-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
 
-  /* PERFECT METRIC MIRROR MATRIX STYLING HOOKS WITH GOLD ACCENT CORES */
+  /* PERFECT METRIC MIRROR MATRIX STYLING HOOKS */
   .stats-grid, .home-analytics-row { 
     display: grid; 
     grid-template-columns: repeat(2, 1fr); 
@@ -449,7 +450,7 @@
     background: var(--card-slate) !important;
   }
   
-  /* LABELS INDEX: RED NUMBERS AND GOLD TEXT CHASSIS FORMATION */
+  /* LABELS INDEX */
   .stat-label, .home-preview-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold) !important; }
   .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--crimson-light) !important; margin-bottom: 4px; }
   
@@ -545,11 +546,14 @@
     -webkit-overflow-scrolling: touch;
   }
   .stats-row::-webkit-scrollbar { display: none; }
-  .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 1px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 1px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s, filter 0.2s; }
   .stat-pill.active { border-color: var(--crimson); background: var(--crimson); }
   .stat-pill.active .count, .stat-pill.active .label { color: #fff; }
   .stat-pill .count { font-size: 16px; font-weight: 700; display: block; line-height: 1; color: var(--text-parchment); }
   .stat-pill .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-top: 4px; }
+  
+  /* 💎 BRIGHTNESS HOVER TRIGGER FOR PILLS & CHIPS */
+  .stat-pill:hover, .stat-pill:active, .genre-chip:hover, .genre-chip:active { filter: brightness(1.25); }
 
   /* ANCHORED STICKY DOCK ACTION COMPONENT */
   .sticky-dock-add-trigger-btn {
@@ -564,13 +568,23 @@
   .search-wrap input { width: 100%; padding: 10px 14px 10px 36px; border: 1px solid var(--border-iron); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: #000; color: var(--text-parchment); outline: none; }
   .search-wrap input:focus { border-color: var(--crimson); }
   .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
-  .sort-btn { flex-shrink: 0; padding: 10px 14px; border: 1px solid var(--border-iron); border-radius: 4px; background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
-  .sort-btn.active { border-color: var(--gold); color: var(--gold); }
   
-  .genre-row { display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 12px; scrollbar-width: none; }
-  .genre-chip { flex-shrink: 0; padding: 5px 11px; border-radius: 20px; border: 1px solid var(--border-iron); background: var(--dark-iron); font-size: 11px; cursor: pointer; color: var(--text-muted); }
-  .genre-chip.active { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
-  .results-count { padding: 0 16px 8px; font-size: 11px; color: var(--text-muted); }
+  .sort-btn { flex-shrink: 0; padding: 10px 14px; border: 1px solid var(--border-iron); border-radius: 4px; background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); font-family: 'JetBrains Mono', monospace; white-space: nowrap; transition: all 0.2s, filter 0.2s; }
+  .sort-btn.active { border-color: var(--gold); color: var(--gold); }
+  .sort-btn:hover, .sort-btn:active { filter: brightness(1.25); }
+
+  /* 🎭 TWIN DECK CHIP SEPARATOR SUB SYSTEM LAYOUT CONFIGURATION WITH TRUE MAX-WIDTH BOUNDS */
+  .master-filter-deck-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100vw; max-width: 100%; overflow-x: hidden; }
+  .genre-row { display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; }
+  .genre-chip { 
+    flex-shrink: 0; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border-iron); 
+    background: var(--dark-iron); font-family: 'JetBrains Mono', monospace; font-size: 11px; 
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; color: var(--text-muted); 
+    transition: all 0.2s, filter 0.2s; 
+  }
+  .genre-chip.active { background: var(--gold); color: #000; border-color: var(--gold); }
+
+  .results-count { padding: 4px 16px 8px; font-size: 11px; color: var(--text-muted); }
 
   /* 📚 CARD STRUCTURAL LAYOUTS */
   .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
@@ -663,6 +677,29 @@
   }
   .status-sel-btn.selected { background: var(--text-parchment); color: #000; border-color: var(--text-parchment); font-weight: 700; }
   
+  /* 💎 GENRE OVERRIDE DYNAMIC PADS */
+  .genre-override-btn {
+    padding: 6px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border-iron) !important;
+    background: #1c181c !important;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    color: var(--text-muted) !important;
+    transition: all 0.15s ease, filter 0.15s ease;
+  }
+  .genre-override-btn:hover {
+    filter: brightness(1.25);
+  }
+  .genre-override-btn.active {
+    background: var(--crimson) !important;
+    color: #ffffff !important;
+    border-color: var(--crimson-light) !important;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.355);
+  }
+
   .stars-row { display: flex; gap: 4px; }
   .star-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #231d22; transition: color 0.1s; }
   .star-btn.active { color: var(--gold); }
@@ -684,8 +721,8 @@
   .casino-container { background: #0d0a0d; border: 2px solid var(--border-iron); box-shadow: 0 0 20px rgba(230, 57, 70, 0.15); border-radius: 8px; padding: 24px 16px; text-align: center; max-width: 650px; margin: 0 auto; position: relative; width: 100%; }
   .casino-header { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 0 8px #e63946, 0 0 12px var(--gold); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
   .casino-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-  .wheel-wrapper { position: relative; width: 92vw; height: 92vw; max-width: 580px; max-height: 580px; margin: 0 auto 24px; transition: transform 0.1s ease-out; }
-  #canvasTBRWheel { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4); transform: rotate(0deg); touch-action: none; }
+  .wheel-wrapper { position: relative; width: 92vw; height: 92vw; max-width: 580px; max-height: 580px; margin: 0 auto 24px; transition: transform 0.1s ease-out; transform: rotate(0deg); touch-action: none; }
+  #canvasTBRWheel { width: 100%; height: 100%; border-radius: 50%; box-shadow: 0 0 0 6px #161215, 0 0 0 10px var(--gold), 0 0 25px rgba(179, 146, 67, 0.4); }
   .wheel-pointer { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 28px solid var(--gold); filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8)); z-index: 100; pointer-events: none; }
   .stakes-panel { background: #000; border: 1px solid var(--border-iron); padding: 12px; border-radius: 4px; margin-bottom: 16px; width: 100%; }
   .stakes-title { font-size: 10px; color: var(--gold); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; font-weight: 700; }
@@ -783,7 +820,7 @@
           <button class="cta-button" onclick="triggerMasterImportPipeline()">Import TXT 📥</button>
           <button class="cta-button" onclick="triggerMasterExportPipeline()">Export TXT 📤</button>
           <button class="danger-button" onclick="resetSandbox()">🧹 Reset App Data</button>
-          <div class="settings-system-status-log" id="saveSystemStatusOutputLine"></div>
+          <div class="settings-system-status-log" id="saveSystemStatusOutputLine').textContent"></div>
           <input type="file" id="hiddenSaveStateFileReaderElement" style="display:none;" accept=".txt" onchange="executeSaveStateFileReaderImport(this)">
         </div>
       </div>
@@ -830,7 +867,6 @@
 </div>
 
 <div class="home-view visible" id="homeView">
-  <!-- LEVEL 1: APP HERO MOTIF BANNER (HIGH RESOLUTION SVG TOP-DOWN DRAGON EMBLEM) -->
   <div class="welcome-card">
     <div class="welcome-emoji">
       <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -854,7 +890,7 @@
      <div class="magic-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
-  <!-- LEVEL 2B: STANDALONE READING GOAL TRACKER (SYNCHRONIZED RED METER TRACK FILL) -->
+  <!-- LEVEL 2B: STANDALONE READING GOAL TRACKER -->
   <div class="goal-progress-card">
      <div class="goal-bar-header">
         <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
@@ -920,7 +956,6 @@
 </div>
 
 <div class="library-view" id="libraryView">
-  <!-- LEVEL 1: ARCHIVE DISPLAY CARD BANNER -->
   <div class="welcome-card" style="margin: 0 16px 20px; margin-top: 16px;">
     <div class="welcome-emoji">🏛️</div>
     <div class="welcome-text">The Grand Hall</div>
@@ -958,18 +993,23 @@
   <div class="toolbar" style="padding: 12px 16px 4px;">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search by title, author, or genre..." oninput="renderBooks()">
+      <input type="text" id="searchInput" placeholder="Search by title, author, trope or genre..." oninput="renderBooks()">
     </div>
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Sort Mode</button>
   </div>
   
-  <div class="genre-row" id="genreRow" style="padding: 8px 16px 12px;"></div>
+  <!-- CORE FILTERS DECK -->
+  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
+    <div class="genre-row" id="systemGlobalResetScrollerLine"></div>
+    <div class="genre-row" id="coreGenresScrollerLine"></div>
+    <div class="genre-row" id="narrativeTropesScrollerLine"></div>
+  </div>
+  
   <div class="results-count" id="resultsCount">0 records populated</div>
   <div class="book-list" id="bookList"></div>
 </div>
 
 <div class="charts-view" id="chartsView">
-  <!-- LEVEL 1: VISUAL INTELLIGENCE CARD BANNER -->
   <div class="welcome-card" style="margin-bottom: 20px;">
     <div class="welcome-emoji">📜</div>
     <div class="welcome-text">Analytics</div>
@@ -1005,7 +1045,6 @@
 
 <!-- 🎰 INDECISION CASINO ENGINE CONTROLS -->
 <div class="paralysis-view" id="paralysisView">
-  <!-- LEVEL 1: ORACLE ENGINE CARD BANNER -->
   <div class="welcome-card" style="margin-bottom: 20px; border-top-color: var(--gold);">
     <div class="welcome-emoji">🔮</div>
     <div class="welcome-text">Break Paralysis</div>
@@ -1075,7 +1114,7 @@
   </div>
 </div>
 
-<!-- 📜 DUAL-PERSONALITY "TOME RAIDER INTEL LOG" MANUAL MODAL OVERLAY -->
+<!-- 📜 DUAL-PERSONALITY MANUAL MODAL OVERLAY -->
 <div class="global-info-card-overlay-sleeve" id="globalInfoCardOverlaySleeve" onclick="closeInfoCardOverlay()">
   <div class="trading-card-chassis" onclick="event.stopPropagation()">
     <div class="card-header-bar">
@@ -1145,6 +1184,12 @@
         <div class="modal-label">Reading Status</div>
         <div class="status-select-row" id="statusBtns"></div>
       </div>
+      
+      <div class="modal-section">
+        <div class="modal-label">Genre & Narrative Profile overrides</div>
+        <div class="status-select-row" id="modalGenreOverrideBtns"></div>
+      </div>
+
       <div class="modal-section" id="modalProgressWrapper" style="display:none;">
         <div class="modal-label">Current Page Tracker</div>
         <input type="number" id="inputCurrentPage" class="simple-text-input" min="0">
@@ -1170,17 +1215,12 @@
       <div class="modal-title">Add New Book to Collection</div>
     </div>
     <div class="modal-body">
-      
       <div class="sentry-alert-banner" id="addDuplicationSentryBanner">⚠️ This book is already logged within your library framework.</div>
-
-      <!-- STEP 1: GATEKEEPER OPTIONS PATH SELECTOR -->
       <div id="addBookOptionsSelectorPanel">
         <button class="cta-button" style="margin-bottom: 8px;" onclick="verifyHardwareAndSwitchWorkflow('scan')">📡 Start Camera Scanner</button>
         <button class="cta-button" onclick="switchAddBookWorkflowPath('manual')">✍️ Add Book Manually</button>
         <button class="secondary-button" style="margin-top: 24px;" onclick="closeAddBookModal()">Cancel ✕</button>
       </div>
-
-      <!-- STEP 2A: CAMERA OPTICAL SCANNER PANEL -->
       <div id="addBookScannerWorkflowPanel" style="display: none;">
         <div class="modal-section">
           <div class="modal-label">Barcode Camera Scanner</div>
@@ -1195,8 +1235,6 @@
         </div>
         <button class="secondary-button" style="margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('scan')">◀ Back to Options</button>
       </div>
-
-      <!-- STEP 2B: MANUAL ENTRY FORM FIELD MATRIX -->
       <div id="addBookManualFormWorkflowPanel" style="display: none;">
         <div class="modal-section">
           <div class="modal-label">Manual ISBN Lookup (Optional API Engine)</div>
@@ -1205,18 +1243,13 @@
             <button class="action-sub-btn" onclick="executeISBNDeepIntelQuery()">Query Database</button>
           </div>
         </div>
-
         <hr style="border:0; border-top:1px solid var(--border-iron); margin:16px 0;">
-
         <div class="modal-section"><div class="modal-label">Book Title</div><input type="text" id="addTitle" class="simple-text-input" oninput="hideSentryAlert()"></div>
         <div class="modal-section"><div class="modal-label">Author Name</div><input type="text" id="addAuthor" class="simple-text-input" placeholder="e.g. Yarros, Rebecca"></div>
         <div class="modal-section"><div class="modal-label">Genre Type</div><input type="text" id="addGenre" class="simple-text-input" placeholder="e.g. Fantasy Romance"></div>
         <div class="modal-section"><div class="modal-label">Total Page Count</div><input type="number" id="addPages" class="simple-text-input" value="300"></div>
         <div class="modal-section"><div class="modal-label">Goodreads Rating Score</div><input type="number" id="addGR" step="0.01" value="4.00" class="simple-text-input"></div>
-        <div class="modal-section">
-          <div class="modal-label">Custom Cover Image URL (Optional Override)</div>
-          <input type="text" id="addCustomCoverUrl" class="simple-text-input" placeholder="e.g. https://site.com/image.jpg">
-        </div>
+        <div class="modal-section"><div class="modal-label">Custom Cover Image URL</div><input type="text" id="addCustomCoverUrl" class="simple-text-input"></div>
         <div class="modal-section">
           <div class="modal-label">Initial Library Tracking Status</div>
           <div class="status-select-row" id="addStatusBtns">
@@ -1228,7 +1261,6 @@
         <button class="save-btn" onclick="commitNewBook()">Save Book to Library ✓</button>
         <button class="secondary-button" style="margin-top: 12px;" onclick="navigateBackToOptionsFromWorkflow('manual')">◀ Back to Options</button>
       </div>
-
     </div>
   </div>
 </div>
@@ -1313,7 +1345,7 @@ const BOOKS_RAW = [
   [72,"Traitor Queen","Jensen D.","TBR","The Bridge Kingdom, Book 2","Fantasy Romance","352",4.22,null,null],
   [73,"The Inadequate Heir","Jensen D.","TBR","The Bridge Kingdom, Book 3","Fantasy Romance","608",4.10,null,null],
   [74,"Endless War","Jensen D.","TBR","The Bridge Kingdom, Book 4","Fantasy Romance","608",4.19,null,null],
-  [756,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
+  [75,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
   [76,"Glow","Kennedy R.","TBR","The Plated Prisoner, Book 4","Fantasy Romance","738",4.12,null,null],
   [77,"Glint","Kennedy R.","TBR","The Plated Prisoner, Book 2","Fantasy Romance","482",4.15,null,null],
   [78,"Gleam","Kennedy R.","TBR","The Plated Prisoner, Book 3","Fantasy","272",4.37,null,null],
@@ -1480,6 +1512,7 @@ function loadSaved() {
           myRating: saved[b.id].myRating,
           notes: saved[b.id].notes,
           coverUrl: saved[b.id].coverUrl,
+          genre: saved[b.id].genre || b.genre, 
           currentPage: parseInt(saved[b.id].currentPage) || 0
         };
       }
@@ -1545,9 +1578,7 @@ function updateHomeView() {
   document.getElementById('milestoneFillTrack').style.width = `${targetPercentage}%`;
   document.getElementById('milestoneMessageLabel').textContent = `${targetPercentage}% progress toward your 50 volume book goal.`;
 
-  renderQuoteSlotValue(); 
-  updateUIRowCounters(); 
-  renderHomepageChartsPreview();
+  renderQuoteSlotValue(); updateUIRowCounters(); renderHomepageChartsPreview();
 }
 
 function rotateCompletedQuote() { activeQuoteIndex = (activeQuoteIndex + 1) % COMPLETED_BOOK_QUOTES.length; renderQuoteSlotValue(); }
@@ -1567,7 +1598,7 @@ function renderQuoteSlotValue() {
 }
 
 function resetSandbox() { if (confirm("Reset custom data entries and clear browser storage?")) { localStorage.clear(); window.location.reload(); } }
-function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
+function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre.split(',')[0]); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
 
 function openAddBookModal() { 
   document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
@@ -1583,68 +1614,39 @@ function closeAddBookModal() {
   document.getElementById('addAuthor').value = '';
   document.getElementById('addGenre').value = '';
   if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
-  document.getElementById('addBookModalOverlay').classList.remove('open'); 
-  hideSentryAlert();
+  document.getElementById('addBookModalOverlay').classList.remove('open'); hideSentryAlert();
 }
 
 function toggleSettingsModalViewLayout(shouldModalOpen) {
   const overlayNode = document.getElementById('globalSettingsModalOverlay');
-  if (shouldModalOpen) {
-    overlayNode.classList.add('open');
-  } else {
-    overlayNode.classList.remove('open');
-  }
+  if (shouldModalOpen) overlayNode.classList.add('open'); else overlayNode.classList.remove('open');
 }
 
-function toggleSettingsDrawerFolderBlock(headerElement) {
-  headerElement.classList.toggle('active');
-}
+function toggleSettingsDrawerFolderBlock(headerElement) { headerElement.classList.toggle('active'); }
 
 function verifyHardwareAndSwitchWorkflow(targetWorkflowPath) {
   if (targetWorkflowPath === 'scan') {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      alert("System Exception: Modern media device framework not found inside this layout workspace. Routing to manual panel.");
-      switchAddBookWorkflowPath('manual');
-      return;
+      alert("System Exception: Modern media device framework not found inside this workspace. Routing to manual panel.");
+      switchAddBookWorkflowPath('manual'); return;
     }
-    navigator.mediaDevices.enumerateDevices()
-      .then((connectedDevices) => {
-        const hasActiveCameraHardware = connectedDevices.some(device => device.kind === 'videoinput');
-        if (hasActiveCameraHardware) {
-          switchAddBookWorkflowPath('scan');
-        } else {
-          alert("Hardware Alert: No functional video capture peripherals detected on this platform. Routing to Manual Add workflow.");
-          switchAddBookWorkflowPath('manual');
-        }
-      })
-      .catch(() => {
-        alert("Permission Exception: Call denied or intercept security lock engaged. Accessing manual registry panels.");
-        switchAddBookWorkflowPath('manual');
-      });
-  } else {
-    switchAddBookWorkflowPath(targetWorkflowPath);
-  }
+    navigator.mediaDevices.enumerateDevices().then((connectedDevices) => {
+        if (connectedDevices.some(device => device.kind === 'videoinput')) switchAddBookWorkflowPath('scan');
+        else { alert("Hardware Alert: No capture peripherals detected. Routing to manual form."); switchAddBookWorkflowPath('manual'); }
+      }).catch(() => { alert("Permission Exception: Call denied. Accessing manual path."); switchAddBookWorkflowPath('manual'); });
+  } else switchAddBookWorkflowPath(targetWorkflowPath);
 }
 
 function switchAddBookWorkflowPath(workflowType) {
   document.getElementById('addBookOptionsSelectorPanel').style.display = 'none';
-  if (workflowType === 'scan') {
-    document.getElementById('addBookScannerWorkflowPanel').style.display = 'block';
-    executeScannerBootSequence();
-  } else if (workflowType === 'manual') {
-    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
-  }
+  if (workflowType === 'scan') { document.getElementById('addBookScannerWorkflowPanel').style.display = 'block'; executeScannerBootSequence(); }
+  else if (workflowType === 'manual') document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
 }
 
 function navigateBackToOptionsFromWorkflow(currentWorkflow) {
-  if (currentWorkflow === 'scan') {
-    deconstructOpticalScanner();
-    document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
-  } else if (currentWorkflow === 'manual') {
-    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
-  }
-  hideSentryAlert();
-  document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
+  if (currentWorkflow === 'scan') { deconstructOpticalScanner(); document.getElementById('addBookScannerWorkflowPanel').style.display = 'none'; }
+  else if (currentWorkflow === 'manual') document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
+  hideSentryAlert(); document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
 }
 
 function executeScannerBootSequence() {
@@ -1652,323 +1654,249 @@ function executeScannerBootSequence() {
   document.getElementById('zoomDisplayNumericLabel').textContent = "2.5x";
   html5QrCodeScannerInstance = new Html5Qrcode("interactiveReaderElement");
   html5QrCodeScannerInstance.start(
-    { facingMode: "environment" },
-    { fps: 15, qrbox: { width: 280, height: 120 }, aspectRatio: 1.0 },
+    { facingMode: "environment" }, { fps: 15, qrbox: { width: 280, height: 120 }, aspectRatio: 1.0 },
     (decodedText) => {
-      deconstructOpticalScanner();
-      document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
+      deconstructOpticalScanner(); document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
       document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
-      document.getElementById('addManualISBNInput').value = decodedText;
-      executeISBNDeepIntelQuery(decodedText);
-    },
-    () => {} 
-  ).then(() => { 
-    setTimeout(function () { executeDynamicZoomOverride(2.5); }, 1200); 
-  }).catch(() => {
-    alert("Runtime Exception: Camera feed stream context dropped instantly. Shifting cleanly to Manual Add workflow.");
-    deconstructOpticalScanner();
-    document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
-    document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
+      document.getElementById('addManualISBNInput').value = decodedText; executeISBNDeepIntelQuery(decodedText);
+    }, () => {} 
+  ).then(() => { setTimeout(function () { executeDynamicZoomOverride(2.5); }, 1200); }).catch(() => {
+    alert("Runtime Exception: Camera feed dropped. Shifting cleanly to Manual Add workflow."); deconstructOpticalScanner();
+    document.getElementById('addBookScannerWorkflowPanel').style.display = 'none'; document.getElementById('addBookManualFormWorkflowPanel').style.display = 'block';
   });
 }
 
 function setAddStatus(el, val) { targetAddBookStatus = val; document.querySelectorAll('#addStatusBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
-
 function hideSentryAlert() { document.getElementById('addDuplicationSentryBanner').style.display = 'none'; }
 function triggerSentryAlert(customMessageText = null) {
-  const banner = document.getElementById('addDuplicationSentryBanner');
-  banner.textContent = customMessageText || "This book is already logged within your library framework.";
-  banner.style.display = 'block';
-  banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  const banner = document.getElementById('addDuplicationSentryBanner'); banner.textContent = customMessageText || "This book is already logged within your library framework.";
+  banner.style.display = 'block'; banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function triggerMasterImportPipeline() { 
-  document.getElementById('hiddenSaveStateFileReaderElement').click(); 
-}
+function triggerMasterImportPipeline() { document.getElementById('hiddenSaveStateFileReaderElement').click(); }
 
 function executeSaveStateFileReaderImport(inputElement) {
-  const file = inputElement.files[0];
-  if (!file) return;
+  const file = inputElement.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = function(e) {
     try {
-      const rawTextContent = e.target.result;
-      const dataRows = rawTextContent.split('\n').map(r => r.trim()).filter(r => r.length > 0);
-      
-      if (dataRows.length < 2) {
-        alert('Invalid text structure. Missing headers or matrix records.');
-        return;
-      }
-      
-      const fieldsHeader = dataRows[0].split('\t');
-      const standardValidationFields = ['id', 'title', 'author', 'status', 'genre', 'pages'];
-      const profileHeaderCheck = standardValidationFields.every(field => fieldsHeader.includes(field));
-      
-      if (!profileHeaderCheck) {
-        alert('Invalid Text Schema: Missing structural library manifest column layouts.');
-        return;
-      }
-      
-      const reconstructedBooksArray = [];
-      const savedLocalStorageRebuild = {};
-      const customAddedRebuild = [];
+      const rawTextContent = e.target.result; const dataRows = rawTextContent.split('\n').map(r => r.trim()).filter(r => r.length > 0);
+      if (dataRows.length < 2) { alert('Invalid text structure. Missing records.'); return; }
+      const fieldsHeader = dataRows[0].split('\t'); const standardValidationFields = ['id', 'title', 'author', 'status', 'genre', 'pages'];
+      if (!standardValidationFields.every(field => fieldsHeader.includes(field))) { alert('Invalid Text Schema: Missing layout data column setups.'); return; }
+      const reconstructedBooksArray = []; const savedLocalStorageRebuild = {}; const customAddedRebuild = [];
       
       for (let i = 1; i < dataRows.length; i++) {
-        const itemValues = dataRows[i].split('\t');
-        const bookObject = {};
-        
-        fieldsHeader.forEach((headerKey, index) => {
-          let value = itemValues[index];
-          if (value === 'null' || value === undefined) value = null;
-          bookObject[headerKey] = value;
-        });
-        
-        bookObject.id = parseInt(bookObject.id);
-        bookObject.grRating = bookObject.grRating ? parseFloat(bookObject.grRating) : 4.0;
-        bookObject.myRating = bookObject.myRating ? parseFloat(bookObject.myRating) : null;
-        bookObject.currentPage = bookObject.currentPage ? parseInt(bookObject.currentPage) : 0;
-        
+        const itemValues = dataRows[i].split('\t'); const bookObject = {};
+        fieldsHeader.forEach((headerKey, index) => { let value = itemValues[index]; if (value === 'null' || value === undefined) value = null; bookObject[headerKey] = value; });
+        bookObject.id = parseInt(bookObject.id); bookObject.grRating = bookObject.grRating ? parseFloat(bookObject.grRating) : 4.0;
+        bookObject.myRating = bookObject.myRating ? parseFloat(bookObject.myRating) : null; bookObject.currentPage = bookObject.currentPage ? parseInt(bookObject.currentPage) : 0;
         reconstructedBooksArray.push(bookObject);
-        
-        savedLocalStorageRebuild[bookObject.id] = {
-          status: bookObject.status,
-          currentPage: bookObject.currentPage || 0,
-          myRating: bookObject.myRating,
-          notes: bookObject.notes,
-          coverUrl: bookObject.coverUrl || null
-        };
-        
-        if (bookObject.id > 170) {
-          customAddedRebuild.push(bookObject);
-        }
+        savedLocalStorageRebuild[bookObject.id] = { status: bookObject.status, currentPage: bookObject.currentPage || 0, myRating: bookObject.myRating, notes: bookObject.notes, coverUrl: bookObject.coverUrl || null, genre: bookObject.genre };
+        if (bookObject.id > 170) customAddedRebuild.push(bookObject);
       }
-      
-      books = reconstructedBooksArray;
-      localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild));
-      localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
-      
-      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Import Complete. Library Synced! ✓";
-      updateHomeView();
-      if (currentView === 'library') renderBooks();
-      setTimeout(() => { toggleSettingsModalViewLayout(false); }, 1000);
-      
-    } catch(e) {
-      alert('Failed to interpret plain text file mapping records structure.');
-    }
+      books = reconstructedBooksArray; localStorage.setItem('barbies_library', JSON.stringify(savedLocalStorageRebuild)); localStorage.setItem('barbies_library_added', JSON.stringify(customAddedRebuild));
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Import Complete. Library Synced! ✓"; updateHomeView();
+      if (currentView === 'library') { renderGenreRow(); renderBooks(); } setTimeout(() => { toggleSettingsModalViewLayout(false); }, 1000);
+    } catch(e) { alert('Failed to interpret text file dataset matrix mappings.'); }
   };
   reader.readAsText(file);
 }
 
 function convertLibraryArrayToTextString() {
-  if (books.length === 0) return "";
-  const trackingProperties = Object.keys(books[0]);
-  const textHeaderString = trackingProperties.join('\t');
-  
-  const compiledDataLines = books.map(book => {
-    return trackingProperties.map(key => {
-      const dataValue = book[key];
-      if (dataValue === null || dataValue === undefined) return 'null';
-      return String(dataValue).replace(/[\r\n\t]+/g, " ");
-    }).join('\t');
-  });
-  
+  if (books.length === 0) return ""; const trackingProperties = Object.keys(books[0]); const textHeaderString = trackingProperties.join('\t');
+  const compiledDataLines = books.map(book => { return trackingProperties.map(key => { const val = book[key]; if (val === null || val === undefined) return 'null'; return String(val).replace(/[\r\n\t]+/g, " "); }).join('\t'); });
   return [textHeaderString, ...compiledDataLines].join('\n');
 }
 
 async function triggerMasterExportPipeline() {
-  const plainTextLibraryContent = convertLibraryArrayToTextString();
-  const isIOSPlatformDetected = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
+  const plainTextLibraryContent = convertLibraryArrayToTextString(); const isIOSPlatformDetected = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (window.showSaveFilePicker && !isIOSPlatformDetected) {
     try {
-      const pickerOptions = {
-        suggestedName: 'BarbiesLibrary_Manifest.txt',
-        types: [{ description: 'Plain Text Book Registers (.txt)', accept: { 'text/plain': ['.txt'] } }]
-      };
-      masterFileHandlePointerPC = await window.showSaveFilePicker(pickerOptions);
-      const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
-      await outputWritableTrack.write(plainTextLibraryContent);
-      await outputWritableTrack.close();
-      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Linked. Autosave Active!";
-      alert("PC Text Save State established. Changes will overwrite this text file smoothly.");
-      return;
+      masterFileHandlePointerPC = await window.showSaveFilePicker({ suggestedName: 'BarbiesLibrary_Manifest.txt', types: [{ description: 'Plain Text Book Registers (.txt)', accept: { 'text/plain': ['.txt'] } }] });
+      const outputWritableTrack = await masterFileHandlePointerPC.createWritable(); await outputWritableTrack.write(plainTextLibraryContent); await outputWritableTrack.close();
+      document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Linked. Autosave Active!"; alert("PC Text Save State established securely."); return;
     } catch (e) {}
   }
-
   if (isIOSPlatformDetected) {
     try {
-      const rawUtf8Bytes = new TextEncoder().encode(plainTextLibraryContent);
-      let binaryByteString = "";
-      for (let i = 0; i < rawUtf8Bytes.length; i++) {
-        binaryByteString += String.fromCharCode(rawUtf8Bytes[i]);
-      }
-      const compiledBase64Token = btoa(binaryByteString);
-      
-      const link = document.createElement('a');
-      link.href = 'data:application/octet-stream;layout=tsv;base64,' + compiledBase64Token;
-      link.download = 'BarbiesLibrary_Manifest.txt';
-      link.target = '_self'; 
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
+      const bytes = new TextEncoder().encode(plainTextLibraryContent); let binary = ""; for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      const link = document.createElement('a'); link.href = 'data:application/octet-stream;layout=tsv;base64,' + btoa(binary); link.download = 'BarbiesLibrary_Manifest.txt'; link.target = '_self'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
       document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text File Sent To iOS Files Vault.";
-      alert("iPhone Export Triggered:\nSafari will prompt to download 'BarbiesLibrary_Manifest.txt'. Check your native Apple 'Files' App inside the Downloads path.");
     } catch (iOSException) {
-      const displayContainerWindow = window.open("", "_blank");
-      displayContainerWindow.document.write("<pre style='font-family:monospace; background:#000; color:#fff; padding:20px;'>" + plainTextLibraryContent + "</pre>");
-      alert("iOS Security Restriction Intercepted.\nYour records database has been printed cleanly inside a new workspace tab. Select all, copy, and paste text directly into a notepad file.");
+      const displayContainerWindow = window.open("", "_blank"); displayContainerWindow.document.write("<pre style='font-family:monospace; background:#000; color:#fff; padding:20px;'>" + plainTextLibraryContent + "</pre>");
     }
   } else {
-    const textBlobDataToken = new Blob([plainTextLibraryContent], { type: 'text/plain;charset=utf-8' });
-    const virtualDownloadElement = document.createElement('a');
-    virtualDownloadElement.download = 'BarbiesLibrary_Manifest.txt';
-    virtualDownloadElement.href = URL.createObjectURL(textBlobDataToken);
-    virtualDownloadElement.style.display = 'none';
-    document.body.appendChild(virtualDownloadElement);
-    virtualDownloadElement.click();
-    document.body.removeChild(virtualDownloadElement);
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Text Log Transferred To System Vault.";
+    const virtualDownloadElement = document.createElement('a'); virtualDownloadElement.download = 'BarbiesLibrary_Manifest.txt'; virtualDownloadElement.href = URL.createObjectURL(new Blob([plainTextLibraryContent], { type: 'text/plain;charset=utf-8' })); virtualDownloadElement.style.display = 'none'; document.body.appendChild(virtualDownloadElement); virtualDownloadElement.click(); document.body.removeChild(virtualDownloadElement);
+    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: Log Transferred cleanly.";
   }
 }
 
 async function executeAutomatedBackgroundPipelineAutosave() {
   if (!masterFileHandlePointerPC) return; 
-  try {
-    const plainTextLibraryContent = convertLibraryArrayToTextString();
-    const outputWritableTrack = await masterFileHandlePointerPC.createWritable();
-    await outputWritableTrack.write(plainTextLibraryContent);
-    await outputWritableTrack.close();
-  } catch(e) {
-    masterFileHandlePointerPC = null;
-    document.getElementById('saveSystemStatusOutputLine').textContent = "Status: File link dropped. Re-link via Export option.";
-  }
+  try { const plainTextLibraryContent = convertLibraryArrayToTextString(); const outputWritableTrack = await masterFileHandlePointerPC.createWritable(); await outputWritableTrack.write(plainTextLibraryContent); await outputWritableTrack.close(); } 
+  catch(e) { masterFileHandlePointerPC = null; document.getElementById('saveSystemStatusOutputLine').textContent = "Status: File link dropped."; }
 }
 
 function processScribeNameMilitaryFormatting(rawAuthorString) {
   if (!rawAuthorString || typeof rawAuthorString !== 'string') return "UNKNOWN, X.";
-  let cleanInput = rawAuthorString.replace(/\(.*?\)|\[.*?\]/g, "").trim();
-  if (!cleanInput) return "UNKNOWN, X.";
-  if (cleanInput.includes(',')) {
-    let components = cleanInput.split(',');
-    let surname = components[0].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase();
-    let firstName = components[1].trim();
-    return `${surname}, ${firstName.length > 0 ? firstName[0].toUpperCase() : 'X'}.`;
-  }
-  let tokens = cleanInput.split(/\s+/).filter(t => t.length > 0);
-  if (tokens.length === 1) return `${tokens[0].toUpperCase()}, X.`;
-  let surname = tokens[tokens.length - 1].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase();
-  return `${surname}, ${tokens[0][0].toUpperCase()}.`;
+  let cleanInput = rawAuthorString.replace(/\(.*?\)|\[.*?\]/g, "").trim(); if (!cleanInput) return "UNKNOWN, X.";
+  if (cleanInput.includes(',')) { let components = cleanInput.split(','); return `${components[0].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase()}, ${components[1].trim().length > 0 ? components[1].trim()[0].toUpperCase() : 'X'}.`; }
+  let tokens = cleanInput.split(/\s+/).filter(t => t.length > 0); if (tokens.length === 1) return `${tokens[0].toUpperCase()}, X.`;
+  return `${tokens[tokens.length - 1].replace(/[^a-zA-Z\s.-]/g, "").trim().toUpperCase()}, ${tokens[0][0].toUpperCase()}.`;
 }
 
-function executeDynamicZoomOverride(zoomFactorValue) {
-  if (!html5QrCodeScannerInstance) return;
-  document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x";
-  try { html5QrCodeScannerInstance.applyVideoConstraints({ advanced: [{ zoom: parseFloat(zoomFactorValue) }] }).catch(() => {}); } catch(e) {}
-}
-
-function deconstructOpticalScanner() {
-  if (html5QrCodeScannerInstance) {
-    html5QrCodeScannerInstance.stop().then(() => { html5QrCodeScannerInstance = null; }).catch(() => {});
-  }
-}
+function executeDynamicZoomOverride(zoomFactorValue) { if (!html5QrCodeScannerInstance) return; document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x"; try { html5QrCodeScannerInstance.applyVideoConstraints({ advanced: [{ zoom: parseFloat(zoomFactorValue) }] }).catch(() => {}); } catch(e) {} }
+function deconstructOpticalScanner() { if (html5QrCodeScannerInstance) { html5QrCodeScannerInstance.stop().then(() => { html5QrCodeScannerInstance = null; }).catch(() => {}); } }
 
 async function executeISBNDeepIntelQuery(forcedISBN = null) {
-  const targetISBN = forcedISBN || document.getElementById('addManualISBNInput').value.trim();
-  if (!targetISBN) { alert('Specify valid barcode coordinates.'); return; }
-  const cleanISBN = targetISBN.replace(/[^0-9X]/gi, '');
-  const searchFieldButton = document.querySelector('.action-sub-btn');
-  const originalLabel = searchFieldButton.textContent;
-  searchFieldButton.textContent = "Fetching...";
-  searchFieldButton.disabled = true;
-  hideSentryAlert();
+  const targetISBN = forcedISBN || document.getElementById('addManualISBNInput').value.trim(); if (!targetISBN) return;
+  const cleanISBN = targetISBN.replace(/[^0-9X]/gi, ''); const searchFieldButton = document.querySelector('.action-sub-btn'); const originalLabel = searchFieldButton.textContent;
+  searchFieldButton.textContent = "Fetching..."; searchFieldButton.disabled = true; hideSentryAlert();
   try {
-    const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${cleanISBN}&jscmd=data&format=json`);
-    const payload = await response.json();
-    const dataKey = `ISBN:${cleanISBN}`;
+    const response = await fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${cleanISBN}&jscmd=data&format=json`); const payload = await response.json(); const dataKey = `ISBN:${cleanISBN}`;
     if (payload && payload[dataKey]) {
-      const bookData = payload[dataKey];
-      document.getElementById('addTitle').value = bookData.title || '';
-      let fetchedAuthorString = bookData.authors ? bookData.authors.map(a => a.name).join(', ') : '';
-      document.getElementById('addAuthor').value = processScribeNameMilitaryFormatting(fetchedAuthorString);
-      document.getElementById('addPages').value = bookData.number_of_pages || 300;
-      document.getElementById('addGenre').value = (bookData.subjects && bookData.subjects.length > 0) ? bookData.subjects[0].name : 'High Fantasy';
+      const bookData = payload[dataKey]; document.getElementById('addTitle').value = bookData.title || '';
+      document.getElementById('addAuthor').value = processScribeNameMilitaryFormatting(bookData.authors ? bookData.authors.map(a => a.name).join(', ') : '');
+      document.getElementById('addPages').value = bookData.number_of_pages || 300; document.getElementById('addGenre').value = (bookData.subjects && bookData.subjects.length > 0) ? bookData.subjects[0].name : 'High Fantasy';
       if (books.some(b => b.title.toLowerCase().trim() === bookData.title.toLowerCase().trim())) triggerSentryAlert();
-    } else {
-      document.getElementById('addTitle').value = '';
-      document.getElementById('addAuthor').value = '';
-      triggerSentryAlert("Book not found in repository database. Enter details manually below.");
-      document.getElementById('addTitle').focus();
-    }
-  } catch (error) { triggerSentryAlert("NETWORK INTERRUPT. CONNECTION FAILED."); } finally {
-    searchFieldButton.textContent = originalLabel;
-    searchFieldButton.disabled = false;
-  }
+    } else { triggerSentryAlert("Book not found in OpenLibrary database. Map parameters manually."); document.getElementById('addTitle').focus(); }
+  } catch (error) { triggerSentryAlert("NETWORK INTERRUPT. REGISTRY CONNECTION FAULT."); } finally { searchFieldButton.textContent = originalLabel; searchFieldButton.disabled = false; }
 }
 
 function commitNewBook() {
-  const t = document.getElementById('addTitle').value.trim(); 
-  const rawAuthor = document.getElementById('addAuthor').value.trim(); 
-  const g = document.getElementById('addGenre').value.trim();
-  const p = document.getElementById('addPages').value.trim();
-  const gr = document.getElementById('addGR').value.trim();
-  const mIsbn = document.getElementById('addManualISBNInput').value.trim();
-  const explicitUrl = document.getElementById('addCustomCoverUrl') ? document.getElementById('addCustomCoverUrl').value.trim() : null;
-  if(!t || !rawAuthor || !g) { alert('Required name parameters missing.'); return; } 
-  if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
-  const formattedAuthor = processScribeNameMilitaryFormatting(rawAuthor);
-  const newId = Math.max(...books.map(b => b.id)) + 1;
-  const obj = { id: newId, title: t, author: formattedAuthor, status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: explicitUrl || null };
-  books.push(obj);
-  const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); 
-  arr.push(obj); 
-  localStorage.setItem('barbies_library_added', JSON.stringify(arr));
-  document.getElementById('addManualISBNInput').value = '';
-  document.getElementById('addTitle').value = '';
-  document.getElementById('addAuthor').value = '';
-  document.getElementById('addGenre').value = '';
-  if (document.getElementById('addCustomCoverUrl')) document.getElementById('addCustomCoverUrl').value = '';
-  closeAddBookModal(); updateHomeView(); showView('library');
-  executeAutomatedBackgroundPipelineAutosave();
-}
-
-function purgeCurrentBookEntry() {
-  if (!currentBook) return;
-  if (confirm(`DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}" from your library?`)) {
-    books = books.filter(b => b.id !== currentBook.id);
-    try {
-      const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
-      if (saved[currentBook.id]) { delete saved[currentBook.id]; localStorage.setItem('barbies_library', JSON.stringify(saved)); }
-      let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
-      customAdded = customAdded.filter(b => b.id !== currentBook.id);
-      localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
-    } catch (e) {}
-    closeModal(); closeInfoCardOverlay(); updateHomeView();
-    if (currentView === 'library') renderBooks(); else if (currentView === 'charts') renderCharts();
-    executeAutomatedBackgroundPipelineAutosave();
-  }
+  const t = document.getElementById('addTitle').value.trim(); const rawAuthor = document.getElementById('addAuthor').value.trim(); const g = document.getElementById('addGenre').value.trim();
+  const p = document.getElementById('addPages').value.trim(); const gr = document.getElementById('addGR').value.trim(); const mIsbn = document.getElementById('addManualISBNInput').value.trim();
+  if(!t || !rawAuthor || !g) { alert('Missing core dataset details.'); return; } if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
+  const obj = { id: Math.max(...books.map(b => b.id)) + 1, title: t, author: processScribeNameMilitaryFormatting(rawAuthor), status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: null };
+  books.push(obj); const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); arr.push(obj); localStorage.setItem('barbies_library_added', JSON.stringify(arr));
+  closeAddBookModal(); updateHomeView(); showView('library'); executeAutomatedBackgroundPipelineAutosave();
 }
 
 function normalizeGenre(g) {
   if (!g) return 'Other'; const l = g.toLowerCase();
   if (l.includes('romantasy') || l.includes('romantic fantasy')) return 'Romantasy';
-  if (l.includes('fantasy romance') || l.includes('romantic')) return 'Dark Romantasy';
-  if (l.includes('fantasy')) return 'High Fantasy'; 
-  if (l.includes('thriller') || l.includes('crime')) return 'Grim Thriller'; 
-  return 'Sci-Fi / Lore';
+  if (l.includes('fantasy romance') || l.includes('romantic') || l.includes('romance') || l.includes('dark romance')) return 'Dark Romantasy';
+  if (l.includes('high fantasy') || l.includes('epic fantasy')) return 'High Fantasy'; 
+  if (l.includes('thriller') || l.includes('crime') || l.includes('mystery') || l.includes('grim thriller')) return 'Grim Thriller'; 
+  if (l.includes('sci-fi') || l.includes('science fiction') || l.includes('lore')) return 'Sci-Fi / Lore';
+  if (l.includes('true crime') || l.includes('dossier')) return 'True Crime / Dossier';
+  if (l.includes('memoir') || l.includes('biography') || l.includes('nonfiction') || l.includes('non-fiction')) return 'Memoir / Non-Fiction';
+  if (l.includes('gothic') || l.includes('horror')) return 'Gothic / Horror';
+  if (l.includes('historical') || l.includes('classical')) return 'Historical / Classical';
+  if (l.includes('dystopian') || l.includes('litrpg')) return 'Dystopian / LitRPG';
+  if (l.includes('fantasy')) return 'High Fantasy';
+  return 'Other';
+}
+
+function inferNarrativeTropes(b) {
+  const id = parseInt(b.id);
+  const title = b.title.toLowerCase();
+  const auth = b.author.toLowerCase();
+  const tropes = [];
+
+  if (title.includes('court') || title.includes('hierarchy') || title.includes('clash') || title.includes('kings') || title.includes('thrones') || title.includes('queen') || title.includes('empress')) {
+    tropes.push('Political Intrigue');
+  }
+  if (title.includes('academic') || title.includes('wing') || title.includes('flame') || title.includes('babel') || title.includes('college') || title.includes('university')) {
+    tropes.push('Academic Settings');
+  }
+  if (auth.includes('mcfadden') || title.includes('housemaid') || title.includes('leaves') || title.includes('locked') || title.includes('island')) {
+    tropes.push('Locked Room');
+  }
+  if (auth.includes('berry') || auth.includes('douglas') || title.includes('psychopaths') || title.includes('mindhunter')) {
+    tropes.push('Morally Grey Hero');
+  }
+
+  if (id > 170) {
+    if (title.includes('lovers') || title.includes('hate')) tropes.push('Enemies to Lovers');
+    if (title.includes('mate') || title.includes('bond')) tropes.push('Fated Mates');
+    if (title.includes('family') || title.includes('crew')) tropes.push('Found Family');
+    if (title.includes('dark') || title.includes('shadow')) tropes.push('Dark Romance');
+    if (title.includes('lgbt') || title.includes('queer') || title.includes('pride') || title.includes('mm')) tropes.push('Structured LGBTQ+');
+    if (title.includes('proximity') || title.includes('room')) tropes.push('Forced Proximity');
+    return tropes;
+  }
+
+  if ([49, 67, 118, 119, 122, 136, 145].includes(id) || 
+      auth.includes('mojito') || auth.includes('reid') || auth.includes('oseman') || auth.includes('miller') ||
+      title.includes('achilles') || title.includes('rivalry') || title.includes('heartstopper') || title.includes('ennead') || title.includes('follow')) {
+    tropes.push('Structured LGBTQ+');
+  }
+
+  if ([43, 109, 110, 111, 129, 130, 156].includes(id)) {
+    tropes.push('Locked Room');
+  }
+
+  if ([2,3,4,5,6,16,17,18,50,51,52,55,56,61,62,65,71,72,73,74,76,77,78,79,97,98,99,100,121,124,125,126,127,133,144,153,157,168,169,170].includes(id) ||
+      title.includes('wing') || title.includes('plated') || title.includes('quicksilver') || title.includes('dark window') || title.includes('rise')) {
+    tropes.push('Enemies to Lovers');
+  }
+
+  if ([7,54,60,63,93,123,128,135,150,151].includes(id) || title.includes('moon hatched') || title.includes('bound') || title.includes('starside') || title.includes('fated')) {
+    tropes.push('Fated Mates');
+  }
+
+  if ([36,37,39,40,45,69,70,101,102,103,104,105,106,107,108,112,113,114,115,116,117,134,138,146,147,148,154,155,158,161,162,165].includes(id) ||
+      title.includes('throne of') || title.includes('hail mary') || title.includes('priory')) {
+    tropes.push('Found Family');
+  }
+
+  if ([41,47,48,53,64,80,81,82,86,87,88,89,90,131].includes(id) || title.includes('black thorn') || title.includes('kiss the villain') || title.includes('gone girl') || title.includes('dark places')) {
+    tropes.push('Dark Romance');
+  }
+
+  if (tropes.length === 0) {
+    if (id % 6 === 0) tropes.push('Enemies to Lovers');
+    else if (id % 6 === 1) tropes.push('Fated Mates');
+    else if (id % 6 === 2) tropes.push('Found Family');
+    else if (id % 6 === 3) tropes.push('Dark Romance');
+    else if (id % 6 === 4) tropes.push('Structured LGBTQ+');
+    else tropes.push('Forced Proximity');
+  }
+
+  return [...new Set(tropes)];
+}
+
+function getTopTropes() { 
+  return [
+    'Academic Settings', 'Dark Romance', 'Enemies to Lovers', 'Fated Mates', 
+    'Forced Proximity', 'Found Family', 'Locked Room', 'Morally Grey Hero', 
+    'Political Intrigue', 'Structured LGBTQ+'
+  ]; 
 }
 
 function renderGenreRow() {
-  const genres = ['All', ...getTopGenres()];
-  document.getElementById('genreRow').innerHTML = genres.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g}')">${g}</div>`).join('');
+  const genresBase = [
+    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
+    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
+  ].sort((a, b) => a.localeCompare(b));
+  
+  const tropesBase = getTopTropes().sort((a, b) => a.localeCompare(b));
+  
+  // Line 1: Isolated System Anchor button sitting entirely on its own line
+  document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
+    `<div class="genre-chip ${activeGenre === 'All' ? 'active':''}" onclick="filterGenre(this,'All')">All Categories</div>`;
+
+  // Line 2: Comprehensive list of Core Literary Genres
+  document.getElementById('coreGenresScrollerLine').innerHTML = 
+    genresBase.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`).join('') +
+    `<div class="genre-chip ${activeGenre === 'Other' ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
+
+  // Line 3: Comprehensive list of High-Impact Narrative Tropes
+  document.getElementById('narrativeTropesScrollerLine').innerHTML = tropesBase.map(t => {
+    return `<div class="genre-chip ${activeGenre === t ? 'active':''}" onclick="filterGenre(this,'${t.replace(/'/g, "\\'")}')">${t}</div>`;
+  }).join('');
 }
-function filterGenre(el, genre) { activeGenre = genre; document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); renderBooks(); }
-function getTitleInitials(title) {
-  if(!title) return "BK";
-  const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0);
-  if(words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
-  return title.substring(0, 2).toUpperCase();
+
+function filterGenre(el, aestheticItem) { 
+  activeGenre = aestheticItem; 
+  document.querySelectorAll('.genre-row .genre-chip').forEach(c => c.classList.remove('active')); 
+  el.classList.add('active'); 
+  renderBooks(); 
 }
+
+function getTitleInitials(title) { if(!title) return "BK"; const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0); if(words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase(); return title.substring(0, 2).toUpperCase(); }
 
 function renderBooks() {
   let list = getFiltered(); 
@@ -1977,15 +1905,14 @@ function renderBooks() {
   else if(sortMode === 3) list.sort((a,b) => (b.grRating || 0) - (a.grRating || 0));
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
-    const statusClass = statusKey(b.status);
-    const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-    const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-    const queryPlaceholderId = `mini-thumb-fallback-${b.id}`;
+    const statusClass = statusKey(b.status); const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     
     let thumbnailImgTag = b.coverUrl ? 
       `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
-      `<div id="initials-${queryPlaceholderId}" style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
+      `<div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
       
+    let visualGenreLabel = normalizeGenre(b.genre.split(',')[0]);
+
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
@@ -1994,7 +1921,7 @@ function renderBooks() {
            <div class="book-author">${cleanAuthor}</div>
            <div class="book-meta">
              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
-             <span class="badge badge-genre">${normalizeGenre(b.genre)}</span>
+             <span class="badge badge-genre">${visualGenreLabel}</span>
            </div>
         </div>
         <div class="book-ratings">
@@ -2009,99 +1936,142 @@ function getFiltered() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   return books.filter(b => { 
      if (activeStatus !== 'All' && statusKey(b.status) !== activeStatus) return false; 
-     if (activeGenre !== 'All' && normalizeGenre(b.genre) !== activeGenre) return false;
-     if (q && !b.title.toLowerCase().includes(q) && !b.author.toLowerCase().includes(q)) return false; 
+     
+     if (activeGenre !== 'All') {
+       const insideExplicitOverrideStr = b.genre.toLowerCase().includes(activeGenre.toLowerCase());
+       if (!insideExplicitOverrideStr) return false;
+     }
+     
+     if (q) {
+       const insideTitle = b.title.toLowerCase().includes(q); 
+       const insideAuthor = b.author.toLowerCase().includes(q);
+       const insideGenreStr = b.genre.toLowerCase().includes(q);
+       if (!insideTitle && !insideAuthor && !insideGenreStr) return false;
+     }
      return true; 
   });
 }
 
 async function openInfoCardOverlay(id) {
   currentBook = books.find(b => b.id === id); if (!currentBook) return;
-  const coverImg = document.getElementById('infoCardCoverImg');
-  const fallbackIllustration = document.getElementById('infoCardGlyph');
+  const coverImg = document.getElementById('infoCardCoverImg'); const fallbackIllustration = document.getElementById('infoCardGlyph');
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
-  
   const cleanTitle = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const cleanAuthor = currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
-  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + cleanAuthor.toUpperCase();
-  document.getElementById('infoCardGenre').textContent = normalizeGenre(currentBook.genre);
-  document.getElementById('infoCardMass').textContent = currentBook.pages;
-  document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
-  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly in local framework.`;
+  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
+  document.getElementById('infoCardGenre').textContent = currentBook.genre.split(',')[0];
+  document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
+  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
   
   if (currentBook.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl); return; }
   const targetISBN = currentBook.isbn || PRELOADED_ISBN_REGISTRY[currentBook.title];
   if (targetISBN) {
     try {
-      const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`);
-      const gBooksData = await gBooksResponse.json();
-      if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-        assignImageToTargetNode(coverImg, fallbackIllustration, gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
-        return;
-      }
+      const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`); const gBooksData = await gBooksResponse.json();
+      if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) { assignImageToTargetNode(coverImg, fallbackIllustration, gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://")); return; }
     } catch(e) {}
   }
   try {
     const query = encodeURIComponent(`intitle:"${currentBook.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${currentBook.author.split(',')[0].trim()}"`);
-    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
-    const searchData = await searchResponse.json();
-    if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-      assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
-    } else { handleTradingCardImageError(); }
+    const searchResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`); const searchData = await searchResponse.json();
+    if (searchData.items && searchData.items[0]?.volumeInfo?.imageLinks?.thumbnail) assignImageToTargetNode(coverImg, fallbackIllustration, searchData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://"));
+    else handleTradingCardImageError();
   } catch(e) { handleTradingCardImageError(); }
 }
 
 function assignImageToTargetNode(imgNode, fallbackNode, urlString) {
   imgNode.src = urlString;
-  imgNode.onload = function() {
-    if (imgNode.naturalWidth > 5) { imgNode.style.display = "block"; fallbackNode.style.display = "none"; } 
-    else { imgNode.style.display = "none"; fallbackNode.style.display = "block"; }
-  };
+  imgNode.onload = function() { if (imgNode.naturalWidth > 5) { imgNode.style.display = "block"; fallbackNode.style.display = "none"; } else { imgNode.style.display = "none"; fallbackNode.style.display = "block"; } };
 }
 function closeInfoCardOverlay() { document.getElementById('globalInfoCardOverlaySleeve').classList.remove('show'); }
 
 function pivotToConfigurationModal() {
-  closeInfoCardOverlay();
-  document.getElementById('mTitle').textContent = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
+  closeInfoCardOverlay(); document.getElementById('mTitle').textContent = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
   document.getElementById('mAuthor').textContent = "By Author " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
-  const w = document.getElementById('modalProgressWrapper');
-  if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
-  renderStarSelectors(currentBook.myRating);
-  document.getElementById('notesInput').value = currentBook.notes || '';
-  document.getElementById('modalOverlay').classList.add('open');
+  
+  const genresPool = [
+    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
+    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
+  ];
+  const tropesPool = getTopTropes();
+  const sortedControlAlphabeticalList = [...genresPool, ...tropesPool].sort((a, b) => a.localeCompare(b));
+  const completeOperationalAestheticsList = [...sortedControlAlphabeticalList, 'Other'];
+  
+  const rawCleanedTokens = currentBook.genre.split(',').map(item => item.trim()).filter(item => item.length > 0);
+  currentBook._stagedGenresList = [];
+  
+  rawCleanedTokens.forEach(token => {
+    if (completeOperationalAestheticsList.includes(token)) {
+      currentBook._stagedGenresList.push(token);
+    } else {
+      let matchedNormalization = normalizeGenre(token);
+      if (completeOperationalAestheticsList.includes(matchedNormalization) && !currentBook._stagedGenresList.includes(matchedNormalization)) {
+        currentBook._stagedGenresList.push(matchedNormalization);
+      }
+    }
+  });
+
+  if (currentBook.genre === "Other" || rawCleanedTokens.length === 0 || currentBook.genre === "" || !localStorage.getItem('barbies_library')) {
+    const savedMappingLogs = JSON.parse(localStorage.getItem('barbies_library') || '{}');
+    if (!savedMappingLogs[currentBook.id] || !savedMappingLogs[currentBook.id].genre) {
+      const computedInferredTropes = inferNarrativeTropes(currentBook);
+      computedInferredTropes.forEach(trope => {
+        if (completeOperationalAestheticsList.includes(trope) && !currentBook._stagedGenresList.includes(trope)) {
+          currentBook._stagedGenresList.push(trope);
+        }
+      });
+    }
+  }
+  
+  document.getElementById('modalGenreOverrideBtns').innerHTML = completeOperationalAestheticsList.map(aestheticsItem => {
+    const isTagCurrentlyActive = currentBook._stagedGenresList.includes(aestheticsItem);
+    return `<button class="genre-override-btn ${isTagCurrentlyActive ? 'active' : ''}" data-value="${aestheticsItem}" onclick="toggleGenreMultiOverrideSelection(this, '${aestheticsItem.replace(/'/g, "\\'")}')">${aestheticsItem}</button>`;
+  }).join('');
+
+  const w = document.getElementById('modalProgressWrapper'); if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
+  renderStarSelectors(currentBook.myRating); document.getElementById('notesInput').value = currentBook.notes || ''; document.getElementById('modalOverlay').classList.add('open');
 }
 
-function renderStarSelectors(currentRating) {
-  let starsHtml = '';
-  for(let i=1; i<=10; i++) starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`;
-  document.getElementById('ratingBtns').innerHTML = starsHtml;
+function toggleGenreMultiOverrideSelection(buttonDomPointer, tagLabelString) {
+  if (!currentBook._stagedGenresList) {
+    currentBook._stagedGenresList = [];
+  }
+  
+  const tagTargetIndex = currentBook._stagedGenresList.indexOf(tagLabelString);
+  if (tagTargetIndex > -1) {
+    currentBook._stagedGenresList.splice(tagTargetIndex, 1);
+    buttonDomPointer.classList.remove('active');
+  } else {
+    currentBook._stagedGenresList.push(tagLabelString);
+    buttonDomPointer.classList.add('active');
+  }
+
+  if (currentBook._stagedGenresList.length === 0) {
+    currentBook.genre = "Other";
+  } else {
+    currentBook.genre = currentBook._stagedGenresList.join(', ');
+  }
+  
+  if (currentView === 'library') {
+    renderBooks();
+  }
 }
-function setModalRating(val) {
-  currentBook._pendingRating = val;
-  document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => { if(idx < val) btn.classList.add('active'); else btn.classList.remove('active'); });
-}
+
+function renderStarSelectors(currentRating) { let starsHtml = ''; for(let i=1; i<=10; i++) starsHtml += `<button class="star-btn ${currentRating >= i ? 'active':''}" onclick="setModalRating(${i})">★</button>`; document.getElementById('ratingBtns').innerHTML = starsHtml; }
+function setModalRating(val) { currentBook._pendingRating = val; document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => { if(idx < val) btn.classList.add('active'); else btn.classList.remove('active'); }); }
 
 function triggerCasinoEmoteFountainSplash() {
-  const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
-  overlayCardNode.classList.add('winner-flash-active');
-  const emotePool = ['👑', '📜', '🎰', '🔮', '✨', '🔥', '📚'];
-  const rect = overlayCardNode.getBoundingClientRect();
-  const spawnX = rect.left + (rect.width / 2);
-  const spawnY = rect.top + (rect.height / 3);
+  const overlayCardNode = document.getElementById('casinoTradingCardOverlay'); overlayCardNode.classList.add('winner-flash-active');
+  const emotePool = ['👑', '📜', '🎰', '🔮', '✨', '🔥', '📚']; const rect = overlayCardNode.getBoundingClientRect(); const spawnX = rect.left + (rect.width / 2); const spawnY = rect.top + (rect.height / 3);
   for (let i = 0; i < 45; i++) {
     setTimeout(() => {
-      const particle = document.createElement('div');
-      particle.className = 'casino-splash-particle'; particle.textContent = emotePool[Math.floor(Math.random() * emotePool.length)];
-      particle.style.left = `${spawnX}px`; particle.style.top = `${spawnY}px`;
-      const angle = (Math.random() * Math.PI * 2); const velocity = (Math.random() * 180) + 70;
-      particle.style.setProperty('--x-vector', `${Math.cos(angle) * velocity}px`);
-      particle.style.setProperty('--y-vector', `${Math.sin(angle) * velocity - 120}px`);
-      document.body.appendChild(particle);
-      particle.addEventListener('animationend', () => particle.remove());
+      const particle = document.createElement('div'); particle.className = 'casino-splash-particle'; particle.textContent = emotePool[Math.floor(Math.random() * emotePool.length)];
+      particle.style.left = `${spawnX}px`; particle.style.top = `${spawnY}px`; const angle = (Math.random() * Math.PI * 2); const velocity = (Math.random() * 180) + 70;
+      particle.style.setProperty('--x-vector', `${Math.cos(angle) * velocity}px`); particle.style.setProperty('--y-vector', `${Math.sin(angle) * velocity - 120}px`);
+      document.body.appendChild(particle); particle.addEventListener('animationend', () => particle.remove());
     }, i * 15);
   }
 }
@@ -2112,7 +2082,16 @@ function selectStatus(el, val) { currentBook._pendingStatus = val; document.quer
 function saveBook() { 
   if(currentBook._pendingStatus) currentBook.status = currentBook._pendingStatus; 
   if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
-  currentBook.notes = document.getElementById('notesInput').value.trim();
+  
+  if(currentBook._stagedGenresList) {
+    if (currentBook._stagedGenresList.length === 0) {
+      currentBook.genre = "Other";
+    } else {
+      currentBook.genre = currentBook._stagedGenresList.join(', ');
+    }
+  }
+
+  currentBook.notes = document.getElementById('notesInput').value.trim(); 
   if(currentBook.status === 'Reading') currentBook.currentPage = parseInt(document.getElementById('inputCurrentPage').value) || 0;
   
   try { 
@@ -2122,19 +2101,26 @@ function saveBook() {
       currentPage: currentBook.currentPage || 0, 
       myRating: currentBook.myRating, 
       notes: currentBook.notes, 
-      coverUrl: currentBook.coverUrl || null 
+      coverUrl: currentBook.coverUrl || null,
+      genre: currentBook.genre
     }; 
     localStorage.setItem('barbies_library', JSON.stringify(saved)); 
-
-    if (currentBook.id > 170) {
-      let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
-      customAdded = customAdded.map(b => b.id === currentBook.id ? currentBook : b);
-      localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
+    if (currentBook.id > 170) { 
+      let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); 
+      customAdded = customAdded.map(b => b.id === currentBook.id ? currentBook : b); 
+      localStorage.setItem('barbies_library_added', JSON.stringify(customAdded)); 
     }
   } catch(e) {}
   
-  currentBook._pendingStatus = null; currentBook._pendingRating = undefined;
-  updateHomeView(); renderBooks(); document.getElementById('modalOverlay').classList.remove('open'); 
+  currentBook._pendingStatus = null; 
+  currentBook._pendingRating = undefined; 
+  
+  updateHomeView(); 
+  renderGenreRow(); 
+  renderBooks(); 
+  
+  document.getElementById('modalOverlay').classList.remove('open'); 
+  document.getElementById('saveSystemStatusOutputLine').textContent = "Changes saved to offline matrix storage deck framework. ✓";
   executeAutomatedBackgroundPipelineAutosave();
 }
 
@@ -2142,18 +2128,12 @@ function filterStatus(el, val) { activeStatus = val; document.querySelectorAll('
 function cycleSort() { sortMode = (sortMode + 1) % 4; document.getElementById('sortBtn').textContent = sortLabels[sortMode]; document.getElementById('sortBtn').className = sortMode > 0 ? 'sort-btn active' : 'sort-btn'; renderBooks(); }
 
 function renderHomepageChartsPreview() {
-  const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating);
-  const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
-  
-  const cleanP1 = p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const cleanP2 = p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const cleanP3 = p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-
+  const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating); const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
   document.getElementById('homePodiumContainerMount').innerHTML = `
       <div class="f1-podium-container">
-        <div class="podium-column"><div class="podium-book-title">${cleanP2}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${cleanP1}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title">${cleanP3}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
       </div>`;
   const canvasEl = document.getElementById('homeStatusPieChart');
   if (canvasEl) {
@@ -2163,76 +2143,112 @@ function renderHomepageChartsPreview() {
 }
 
 function renderCharts() {
-  const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating);
-  const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
-  
-  const cleanP1 = p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const cleanP2 = p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const cleanP3 = p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-
+  const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating); const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${cleanP2}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${cleanP1}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${cleanP3}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
-    <div class="sub-rank-item">
-      <span class="sub-rank-num">#${i+4}</span>
-      <div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div>
-      <span class="sub-rank-score"> ${b.myRating}</span>
-    </div>`).join('');
+    <div class="sub-rank-item"><span class="sub-rank-num">#${i+4}</span><div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div><span class="sub-rank-score"> ${b.myRating}</span></div>`).join('');
 
   if(activeCharts.status) activeCharts.status.destroy(); if(activeCharts.genre) activeCharts.genre.destroy();
   activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-  const genreLookup = {}; books.forEach(b => { const normalized = normalizeGenre(b.genre); genreLookup[normalized] = (genreLookup[normalized] || 0) + 1; });
-  const sortedGenres = Object.entries(genreLookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
-  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#e63946', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-  const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
-  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
+  const lookup = {}; books.forEach(b => { const n = normalizeGenre(b.genre.split(',')[0]); lookup[n] = (lookup[n] || 0) + 1; }); const sorted = Object.entries(lookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
+  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#e63946', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
+  const authLookup = {}; books.forEach(b => { if(b.author) { const c = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authLookup[c] = (authLookup[c] || 0) + 1; } });
+  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
 }
 
-function showView(view) {
-  currentView = view;
-  document.getElementById('homeView').className = 'home-view' + (view === 'home'?' visible':'');
-  document.getElementById('libraryView').className = 'library-view' + (view === 'library'?' visible':'');
-  document.getElementById('chartsView').className = 'charts-view' + (view === 'charts'?' visible':'');
-  document.getElementById('paralysisView').className = 'paralysis-view' + (view === 'paralysis'?' visible':'');
-  document.getElementById('navHome').className = 'nav-btn' + (view === 'home'?' active':'');
-  document.getElementById('navLib').className = 'nav-btn' + (view === 'library'?' active':'');
-  document.getElementById('navCharts').className = 'nav-btn' + (view === 'charts'?' active':'');
-  document.getElementById('navParalysis').className = 'nav-btn' + (view === 'paralysis'?' active':'');
+function handleTradingCardImageError() { document.getElementById('cardBookCoverImg').style.display = "none"; document.getElementById('cardBookGlyph').style.display = "block"; }
+function handleInfoCardImageError() { document.getElementById('infoCardCoverImg').style.display = "none"; document.getElementById('infoCardGlyph').style.display = "block"; }
+
+function acceptParalysisDestiny() {
+  if (!paralysisWinningBookPointer) return; paralysisWinningBookPointer.status = 'Reading'; paralysisWinningBookPointer.currentPage = 0;
+  try {
+    const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}'); saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes, coverUrl: paralysisWinningBookPointer.coverUrl || null, genre: paralysisWinningBookPointer.genre }; localStorage.setItem('barbies_library', JSON.stringify(saved));
+  } catch(e) {}
+  closeTradingCardOverlay(); updateHomeView(); showView('home');
+}
+
+function statusKey(rawStatus) {
+  if (!rawStatus) return "TBR";
+  const normalized = rawStatus.toLowerCase().trim();
+  if (normalized === "to read" || normalized === "tbr") return "TBR";
+  if (normalized === "reading") return "Reading";
+  if (normalized === "completed" || normalized === "complete") return "Complete";
+  if (normalized === "dropped" || normalized === "dnf") return "DNF";
+  if (normalized === "past reads" || normalized === "old") return "Old";
+  return "Wont";
+}
+
+function statusLabel(key) {
+  const mapped = statusKey(key);
+  if (mapped === "TBR") return "To Read";
+  if (mapped === "Reading") return "Reading";
+  if (mapped === "Complete") return "Completed";
+  if (mapped === "DNF") return "Dropped (DNF)";
+  if (mapped === "Old") return "Past Reads";
+  return "Won't Continue";
+}
+
+function showView(viewName) {
+  currentView = viewName;
+  document.querySelectorAll('[class*="-view"]').forEach(el => el.classList.remove('visible'));
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => btn.classList.remove('active'));
   
-  if (view === 'home') {
+  if (viewName === 'home') {
+    document.getElementById('homeView').classList.add('visible');
+    document.getElementById('navHome').classList.add('active');
     updateHomeView();
-  } else if (view === 'library') { 
-    renderGenreRow(); 
-    renderBooks(); 
-    updateUIRowCounters(); 
-  } else if (view === 'charts') {
+  } else if (viewName === 'library') {
+    document.getElementById('libraryView').classList.add('visible');
+    document.getElementById('navLib').classList.add('active');
+    renderGenreRow();
+    renderBooks();
+  } else if (viewName === 'charts') {
+    document.getElementById('chartsView').classList.add('visible');
+    document.getElementById('navCharts').classList.add('active');
     renderCharts();
-  } else if (view === 'paralysis') { 
-    configureRouletteDataPool(); 
-    populateDynamicCasinoGenreChips(); 
-    initParalysisInputListeners(); 
+  } else if (viewName === 'paralysis') {
+    document.getElementById('paralysisView').classList.add('visible');
+    document.getElementById('navParalysis').classList.add('active');
+    initCasinoWheelChips();
+    initParalysisInputListeners();
+    setTimeout(() => { renderHTML5CasinoCanvasWheel(); }, 60);
   }
 }
 
-function statusKey(s) { return (s === "Won't Continue" || s === "Wont") ? "Wont" : s; }
-function statusLabel(s) {
-  if (s === "TBR") return "To Read"; if (s === "Reading") return "Reading"; if (s === "Complete") return "Completed";
-  if (s === "DNF") return "Dropped"; if (s === "Old") return "Past Reads"; if (s === "Won't Continue" || s === "Wont") return "Won't Continue";
-  return s; 
+function purgeCurrentBookEntry() {
+  if (!currentBook) return;
+  if (confirm(`Are you absolutely sure you want to remove "${currentBook.title}" from your library archives?`)) {
+    books = books.filter(b => b.id !== currentBook.id);
+    try {
+      const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
+      delete saved[currentBook.id];
+      localStorage.setItem('barbies_library', JSON.stringify(saved));
+      
+      let customAdded = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
+      customAdded = customAdded.filter(b => b.id !== currentBook.id);
+      localStorage.setItem('barbies_library_added', JSON.stringify(customAdded));
+    } catch(e) {}
+    
+    closeModal();
+    updateHomeView();
+    if (currentView === 'library') { renderGenreRow(); renderBooks(); }
+    executeAutomatedBackgroundPipelineAutosave();
+  }
 }
 
-// ── 🎰 THE "BREAK THE PARALYSIS" CASINO ENGINE SCRIPTS ──────────────────────
+// ── 🎰 THE INTERACTIVE KINETIC CASINO WHEEL SYSTEM ─────────────────────────
 let rouletteTBRPool = [];
-let wheelWeightFilter = 'All';
-let isWheelCurrentlySpinning = false;
+let pickedWedgeIndexPointer = null;
 let paralysisWinningBookPointer = null;
+let currentWheelWeightFilter = 'All';
+let activeCasinoGenreFilter = 'All';
 
 let wheelCurrentRotationAngle = 0; 
-let pickedWedgeIndexPointer = null; 
 let isUserDraggingWheelTimeline = false; 
 let dragAngleStartCoord = 0; 
 let dragAngleBaseOffset = 0; 
@@ -2280,107 +2296,129 @@ function playCasinoJackpotChimeAudio() {
   } catch(e) {}
 }
 
-function populateDynamicCasinoGenreChips() {
-  const tbrBooks = books.filter(b => b.status === 'TBR');
-  const distinctGenres = [...new Set(tbrBooks.map(b => normalizeGenre(b.genre)))].sort();
-  const tray = document.getElementById('casinoDynamicGenreChips');
-  if (!tray) return;
-  if (distinctGenres.length === 0) {
-    tray.innerHTML = `<span style="font-size:10px; color:var(--text-muted)">No genres logged in TBR pool</span>`;
-    return;
-  }
-  tray.innerHTML = distinctGenres.map(genre => {
-    const chipId = `stakeGenre_${genre.replace(/[^a-zA-Z0-9]/g, '')}`;
-    return `<div class="stake-chip" id="${chipId}" onclick="setWheelWeightFilter('genre:${genre.replace(/'/g, "\\'")}')">${genre}</div>`;
-  }).join('');
-}
-
-function setWheelWeightFilter(filterValue) {
-  wheelWeightFilter = filterValue;
-  document.querySelectorAll('.stakes-panel .stake-chip').forEach(chip => {
-    chip.classList.remove('active');
-  });
-  if (filterValue.startsWith('genre:')) {
-    const safeGenreId = `stakeGenre_${filterValue.split('genre:')[1].replace(/[^a-zA-Z0-9]/g, '')}`;
-    const targetChip = document.getElementById(safeGenreId);
-    if (targetChip) targetChip.classList.add('active');
-  } else {
-    const standardChipMap = { 'All': 'stakeWeightAll', 'short': 'stakeWeightShort', 'medium': 'stakeWeightMedium', 'long': 'stakeWeightLong' };
-    const targetChip = document.getElementById(standardChipMap[filterValue]);
-    if (targetChip) targetChip.classList.add('active');
-  }
+function initCasinoWheelChips() {
+  const genresPool = [
+    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
+    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
+  ].sort((a,b) => a.localeCompare(b));
+  
+  document.getElementById('casinoDynamicGenreChips').innerHTML = 
+    `<div class="stake-chip ${activeCasinoGenreFilter === 'All' ? 'active':''}" onclick="setCasinoGenreFilter(this,'All')">All Narratives</div>` +
+    genresPool.map(g => `<div class="stake-chip ${activeCasinoGenreFilter === g ? 'active':''}" onclick="setCasinoGenreFilter(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`).join('');
+    
   configureRouletteDataPool();
 }
 
+function setCasinoGenreFilter(elementDomPointer, filterValue) {
+  activeCasinoGenreFilter = filterValue;
+  document.querySelectorAll('#casinoDynamicGenreChips .stake-chip').forEach(c => c.classList.remove('active'));
+  elementDomPointer.classList.add('active');
+  configureRouletteDataPool();
+}
+
+function setWheelWeightFilter(filterValue) {
+  currentWheelWeightFilter = filterValue;
+  document.querySelectorAll('#casinoStructuralPageChips .stake-chip').forEach(c => c.classList.remove('active'));
+  const nodeMapping = { 'All': 'stakeWeightAll', 'short': 'stakeWeightShort', 'medium': 'stakeWeightMedium', 'long': 'stakeWeightLong' };
+  if (nodeMapping[filterValue]) document.getElementById(nodeMapping[filterValue]).classList.add('active');
+  configureRouletteDataPool();
+}
+
+function getCasinoPoolBooks() {
+  return books.filter(b => {
+    if (statusKey(b.status) !== 'TBR') return false;
+    
+    const pCount = parseInt(b.pages) || 0;
+    if (currentWheelWeightFilter === 'short' && pCount >= 350) return false;
+    if (currentWheelWeightFilter === 'medium' && (pCount < 350 || pCount > 550)) return false;
+    if (currentWheelWeightFilter === 'long' && pCount <= 550) return false;
+    
+    if (activeCasinoGenreFilter !== 'All') {
+      if (!b.genre.toLowerCase().includes(activeCasinoGenreFilter.toLowerCase())) return false;
+    }
+    
+    return true;
+  });
+}
+
 function configureRouletteDataPool() {
-  let list = books.filter(b => b.status === 'TBR');
-  if (wheelWeightFilter === 'short') list = list.filter(b => parseInt(b.pages) < 350);
-  else if (wheelWeightFilter === 'medium') list = list.filter(b => parseInt(b.pages) >= 350 && parseInt(b.pages) <= 550);
-  else if (wheelWeightFilter === 'long') list = list.filter(b => parseInt(b.pages) > 550);
-  else if (wheelWeightFilter.startsWith('genre:')) {
-    list = list.filter(b => normalizeGenre(b.genre) === wheelWeightFilter.split('genre:')[1]);
-  }
+  let list = getCasinoPoolBooks();
   
+  // Scramble and isolate up to 16 books to build the clean wedge geometry arrays
   for (let i = list.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [list[i], list[j]] = [list[j], list[i]];
   }
   
-  rouletteTBRPool = list.slice(0, 16); pickedWedgeIndexPointer = null;
+  rouletteTBRPool = list.slice(0, 16); 
+  pickedWedgeIndexPointer = null;
   renderHTML5CasinoCanvasWheel();
 }
 
 function renderHTML5CasinoCanvasWheel() {
   const canvas = document.getElementById('canvasTBRWheel'); if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  const renderBounds = canvas.getBoundingClientRect(); const dpr = window.devicePixelRatio || 1;
-  canvas.width = renderBounds.width * dpr; canvas.height = renderBounds.height * dpr;
-  const w = canvas.width; const h = canvas.height; const cx = w / 2; const cy = h / 2; const r = cx - (35 * dpr); 
-  ctx.clearRect(0, 0, w, h);
+  
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) return;
+  
+  canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+  const w = canvas.width; const h = canvas.height; const cx = w / 2; const cy = h / 2; 
+  const r = Math.min(cx, cy) - (15 * dpr);
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, rect.width, rect.height);
 
   if (rouletteTBRPool.length === 0) {
-    ctx.fillStyle = '#1c181c'; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI); ctx.fill();
-    ctx.fillStyle = '#8c7f70'; ctx.font = `bold ${14 * dpr}px 'JetBrains Mono', monospace`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("NO TBR ENTRIES MATCH CRITERIA", cx, cy);
+    ctx.fillStyle = '#1c181c'; ctx.beginPath(); ctx.arc(rect.width / 2, rect.height / 2, r / dpr, 0, 2 * Math.PI); ctx.fill();
+    ctx.fillStyle = '#8c7f70'; ctx.font = "12px 'JetBrains Mono'"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText("NO APPLICABLE BOOKS FOUND", rect.width / 2, rect.height / 2);
     return;
   }
 
   const arcSize = (2 * Math.PI) / rouletteTBRPool.length;
   const spectrumColors = ['#e63946', '#f4a261', '#e9c46a', '#2a9d8f', '#457b9d', '#a2d2ff', '#b5e2fa', '#c8b6ff', '#ffc6ff', '#e07a5f'];
 
-  ctx.save(); ctx.translate(cx, cy); ctx.rotate(wheelCurrentRotationAngle);
+  ctx.save(); ctx.translate(rect.width / 2, rect.height / 2); ctx.rotate(wheelCurrentRotationAngle);
+  
   rouletteTBRPool.forEach((book, i) => {
     const angleStart = i * arcSize; const angleEnd = angleStart + arcSize;
     ctx.save();
+    
     if (pickedWedgeIndexPointer === i) {
-      const shiftDistanceScalar = 26 * dpr; const bisectAngleVector = angleStart + arcSize / 2;
+      const shiftDistanceScalar = 12; const bisectAngleVector = angleStart + arcSize / 2;
       ctx.translate(Math.cos(bisectAngleVector) * shiftDistanceScalar, Math.sin(bisectAngleVector) * shiftDistanceScalar);
     }
+    
     ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#141113' : spectrumColors[i % spectrumColors.length];
-    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r, angleStart, angleEnd); ctx.closePath(); ctx.fill();
-    ctx.lineWidth = 1 * dpr; ctx.strokeStyle = '#0a0709'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, r / dpr, angleStart, angleEnd); ctx.closePath(); ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = '#0a0709'; ctx.stroke();
 
     ctx.save(); ctx.rotate(angleStart + arcSize / 2);
     ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#383036' : '#000';
-    ctx.font = `bold ${(renderBounds.width < 340 ? 11 : 14) * dpr}px 'JetBrains Mono', monospace`;
+    ctx.font = "bold 10px 'JetBrains Mono'";
     ctx.textAlign = "right"; ctx.textBaseline = "middle";
-    let label = book.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); let maxChar = renderBounds.width < 340 ? 12 : 24;
-    if (label.length > maxChar) label = label.substring(0, maxChar - 2) + "...";
-    ctx.fillText(label, r - (16 * dpr), 0);
+    let label = book.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
+    if (label.length > 18) label = label.substring(0, 16) + "...";
+    ctx.fillText(label, (r / dpr) - 12, 0);
     ctx.restore(); ctx.restore();
   });
+  
   ctx.restore();
-  ctx.fillStyle = '#161215'; ctx.beginPath(); ctx.arc(cx, cy, 28 * dpr, 0, 2 * Math.PI); ctx.fill();
-  ctx.lineWidth = 3 * dpr; ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim(); ctx.stroke();
+  ctx.fillStyle = '#161215'; ctx.beginPath(); ctx.arc(rect.width / 2, rect.height / 2, 20, 0, 2 * Math.PI); ctx.fill();
+  ctx.lineWidth = 2; ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--gold').trim(); ctx.stroke();
 }
 
 function initParalysisInputListeners() {
   const canvas = document.getElementById('canvasTBRWheel'); if (!canvas || canvas.dataset.listenersHooked === "true") return;
+  
   function calculateTouchAngle(e) {
     const rect = canvas.getBoundingClientRect();
     const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY;
     return Math.atan2(clientY - rect.top - rect.height / 2, clientX - rect.left - rect.width / 2);
   }
+  
   canvas.addEventListener('mousedown', initiateKineticDragSequence);
   canvas.addEventListener('touchstart', initiateKineticDragSequence, { passive: true });
 
@@ -2434,6 +2472,7 @@ function processWedgeTapInspection(absoluteRadialAngle) {
   if (transformedAngle < 0) transformedAngle += 2 * Math.PI;
   const segmentArcSize = (2 * Math.PI) / rouletteTBRPool.length;
   const pickedIndex = Math.floor(transformedAngle / segmentArcSize) % rouletteTBRPool.length;
+  
   if (pickedWedgeIndexPointer === pickedIndex) {
     pickedWedgeIndexPointer = null; document.getElementById('casinoSubLabel').textContent = "Bet your TBR pool • Defeat Indecision"; renderHTML5CasinoCanvasWheel();
   } else {
@@ -2441,6 +2480,7 @@ function processWedgeTapInspection(absoluteRadialAngle) {
     document.getElementById('casinoSubLabel').textContent = "INSPECTING SELECTED TOME ENTRY...";
     let easeStartTimestamp = performance.now(); let initialRotationVector = wheelCurrentRotationAngle;
     const lockedAlignmentTarget = -((pickedIndex * segmentArcSize) + (segmentArcSize / 2));
+    
     function stepAlignmentEase(now) {
       let progressRatio = Math.min((now - easeStartTimestamp) / 320, 1);
       wheelCurrentRotationAngle = initialRotationVector + (lockedAlignmentTarget - initialRotationVector) * (progressRatio * (2 - progressRatio));
@@ -2491,6 +2531,8 @@ function executeParalysisWheelSpin() {
   executeTimeEasedDecelerationLoop();
 }
 
+function runTimeEasedCasinoDecelerationLoop() { executeTimeEasedDecelerationLoop(); }
+
 function triggerGrandVictorySequence() {
   if (!paralysisWinningBookPointer) return;
   const bannerNode = document.getElementById('casinoWinnerBanner');
@@ -2499,7 +2541,7 @@ function triggerGrandVictorySequence() {
   playCasinoJackpotChimeAudio();
   setTimeout(() => {
     bannerNode.classList.remove('pop-active');
-    triggerTradingCardEncounterModal(true);   
+    triggerTradingCardEncounterModal(true);    
   }, 2200);
 }
 
@@ -2510,7 +2552,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   
   const cleanTitle = paralysisWinningBookPointer.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   const cleanAuthor = paralysisWinningBookPointer.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-         
+             
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = cleanTitle;
   document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + cleanAuthor.toUpperCase();
@@ -2518,10 +2560,10 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
-         
+             
   overlayCardNode.classList.add('show'); 
   if (isFromSpin) triggerCasinoEmoteFountainSplash();
-         
+             
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
@@ -2544,19 +2586,6 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   } catch(e) { handleTradingCardImageError(); }
 }
 
-function handleTradingCardImageError() { document.getElementById('cardBookCoverImg').style.display = "none"; document.getElementById('cardBookGlyph').style.display = "block"; }
-function handleInfoCardImageError() { document.getElementById('infoCardCoverImg').style.display = "none"; document.getElementById('infoCardGlyph').style.display = "block"; }
-
-function acceptParalysisDestiny() {
-  if (!paralysisWinningBookPointer) return;
-  paralysisWinningBookPointer.status = 'Reading'; paralysisWinningBookPointer.currentPage = 0;
-  try {
-    const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
-    saved[paralysisWinningBookPointer.id] = { status: 'Reading', currentPage: 0, myRating: paralysisWinningBookPointer.myRating, notes: paralysisWinningBookPointer.notes, coverUrl: paralysisWinningBookPointer.coverUrl || null };
-    localStorage.setItem('barbies_library', JSON.stringify(saved));
-  } catch(e) {}
-  closeTradingCardOverlay(); updateHomeView(); showView('home');
-}
 function closeTradingCardOverlay() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   document.getElementById('casinoWinnerBanner').classList.remove('pop-active');
@@ -2564,16 +2593,12 @@ function closeTradingCardOverlay() {
   pickedWedgeIndexPointer = null; renderHTML5CasinoCanvasWheel();
 }
 
+function closeTradingCardOverlayWindow() { closeTradingCardOverlay(); }
+
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbies Library V" + SYSTEM_BUILD_VERSION;
-  
-  // Initialize and populate all tracking structures globally on startup
-  renderGenreRow(); 
-  renderBooks(); 
-  
-  // Fire primary view state parsing assignments
-  showView('home');
+  document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbie's Library V" + SYSTEM_BUILD_VERSION;
+  renderGenreRow(); renderBooks(); showView('home');
 });
 </script>
 </body>
