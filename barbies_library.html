@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Barbie's Library">
 <title>Barbie's Library 📚</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght=500;700;900&family=JetBrains+Mono:wght=400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
@@ -30,50 +30,189 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: 'JetBrains Mono', monospace; background: var(--dark-void); color: var(--text-parchment); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-  /* HEADER STYLE - MODERN TOP APP BAR */
+  /* 🏛️ ATHENS MARBLE MONUMENT APEX APPARATUS HEADER AREA */
   .header {
-    background: linear-gradient(180deg, #000 0%, var(--dark-iron) 100%);
-    padding: 48px 20px 24px;
+    background: linear-gradient(180deg, #000 0%, #050405 40%, var(--dark-iron) 100%);
+    padding: 75px 20px 24px;
     text-align: center;
     position: relative;
-    overflow: hidden;
-    border-bottom: 1px solid var(--border-iron);
+    overflow: visible;
+    border-bottom: 2px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
   }
   .header::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, rgba(166, 38, 38, 0.12) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(166, 38, 38, 0.15) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 1;
   }
+
+  /* NEOCLASSICAL GEOMETRIC ROOF SYSTEM (THE PEDIMENT) */
+  .temple-pediment {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 580px;
+    height: 38px;
+    background: var(--dark-iron);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    border-bottom: 3px solid var(--gold);
+    z-index: 2;
+  }
+  .temple-pediment::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    background: var(--card-slate);
+    border-bottom: 2px solid var(--border-iron);
+  }
+
+  /* HORIZONTAL SUPPORT ARCHITRAVE BEAM FLOOR SLAB */
+  .temple-architrave {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 580px;
+    height: 6px;
+    background: var(--gold);
+    border-bottom: 1px solid #000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    z-index: 3;
+  }
+
+  /* FLUTED ATHENIAN MARBLE COLUMNS CORE CHASSIS DESIGN MAP */
+  .marble-pillar {
+    position: absolute;
+    top: 56px;
+    bottom: 0;
+    width: 14px;
+    background: linear-gradient(90deg, #0f0c0e 0%, var(--card-slate) 25%, #2d262b 50%, var(--card-slate) 75%, #0f0c0e 100%);
+    border-left: 1px solid rgba(179, 146, 67, 0.3);
+    border-right: 1px solid rgba(179, 146, 67, 0.3);
+    box-shadow: inset 0 0 4px #000, 3px 0 10px rgba(0,0,0,0.6);
+    z-index: 2;
+  }
+  .marble-pillar::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -2px; right: -2px; height: 5px;
+    background: var(--gold);
+    border-radius: 1px;
+    box-shadow: 0 1px 2px #000;
+  }
+  .marble-pillar::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: -2px; right: -2px; height: 6px;
+    background: var(--gold);
+    border-radius: 1px;
+  }
+  
+  /* COLUMN SYMMETRY PLATFORM COORDINATES */
+  .pillar-left-outer { left: 8px; }
+  .pillar-left-inner { left: 30px; }
+  .pillar-right-inner { right: 30px; }
+  .pillar-right-outer { right: 8px; }
+
+  @media (min-width: 630px) {
+    .pillar-left-outer { left: calc(50% - 280px); }
+    .pillar-left-inner { left: calc(50% - 250px); }
+    .pillar-right-inner { right: calc(50% - 250px); }
+    .pillar-right-outer { right: calc(50% - 280px); }
+  }
+
+  /* REPOSITIONED TYPOGRAPHY TO SIT OVER RECESS LAYER */
   .header-title {
     font-family: 'Cinzel', serif;
-    font-size: 26px;
+    font-size: 25px;
     font-weight: 900;
     color: var(--text-parchment);
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     position: relative;
-    z-index: 1;
+    z-index: 4;
     text-transform: uppercase;
+    text-shadow: 0 2px 8px #000;
+    margin-top: 4px;
+    padding-right: 90px;
+    padding-left: 90px;
   }
-  .header-title span { color: var(--crimson); text-shadow: 0 0 10px rgba(166, 38, 38, 0.4); }
-  .header-sub { color: var(--text-muted); font-size: 11px; margin-top: 6px; position: relative; z-index: 1; letter-spacing: 2px; text-transform: uppercase; }
+  .header-title span { color: var(--crimson-light); text-shadow: 0 0 12px rgba(230, 57, 70, 0.5); }
+  .header-sub { color: var(--text-muted); font-size: 11px; margin-top: 5px; position: relative; z-index: 4; letter-spacing: 2px; text-transform: uppercase; text-shadow: 0 1px 4px #000; }
 
-  /* THREE-DOTS MENU TRIGGER AT UPPER PERIMETER */
+  /* ⚙️ FIXED VIEWPORT CONSOLE CONFIGURATION BADGE (TOP RIGHT ORIENTED) */
   .settings-dots-trigger {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    font-size: 22px;
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    width: 44px;
+    height: 40px;
+    background: var(--crimson) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 4px;
     cursor: pointer;
-    z-index: 10;
-    padding: 4px 8px;
-    transition: color 0.15s;
+    z-index: 150000; /* Stacks completely above all workspace decks */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   }
-  .settings-dots-trigger:hover { color: var(--gold); }
+  
+  /* THREE DASHES ELEMENT PLATFORM */
+  .trigger-dashes-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20px;
+    height: 12px;
+    transition: opacity 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .trigger-dash-line {
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 1px;
+  }
+  
+  /* HIDDEN TEXT LABEL PRE-EXPANSION */
+  .trigger-label-text {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-parchment);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    white-space: nowrap;
+  }
 
-  /* 🌌 FLOATING INTERACTIVE SETTINGS / ABOUT COMMAND CONSOLE OVERLAY */
+  /* HOVER AND INTERACTIVE EXPANSION ANIMATION TRAJECTORIES */
+  .settings-dots-trigger:hover, .settings-dots-trigger:active {
+    width: 105px;
+    box-shadow: 0 0 14px rgba(230, 57, 70, 0.6), 0 4px 12px #000;
+    filter: brightness(1.1);
+  }
+  .settings-dots-trigger:hover .trigger-dashes-wrapper, .settings-dots-trigger:active .trigger-dashes-wrapper {
+    opacity: 0;
+    transform: scale(0.6) rotate(-90deg);
+  }
+  .settings-dots-trigger:hover .trigger-label-text, .settings-dots-trigger:active .trigger-label-text {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* 🌌 FLOATING INTERACTIVE SETTINGS / ABOUT OVERLAY */
   .settings-modal-overlay {
     position: fixed;
     inset: 0;
@@ -226,18 +365,19 @@
     padding: 24px;
     margin-bottom: 20px;
     border: 1px solid var(--border-iron);
-    border-top: 3px solid var(--crimson); /* Explicitly Retained Red Trim Override */
+    border-top: 3px solid var(--crimson); 
     text-align: center;
+    position: relative;
   }
   .welcome-emoji { display: flex; justify-content: center; align-items: center; margin-bottom: 8px; }
   .welcome-emoji svg, .nav-btn .icon svg { width: 42px; height: 42px; fill: var(--text-parchment); }
-  .nav-btn .icon svg { width: 20px; height: 20px; transition: fill 0.2s; }
-  .nav-btn.active .icon svg { fill: var(--gold); }
+  .nav-btn .icon svg { width: 22px; height: 22px; transition: fill 0.2s; }
+  .nav-btn.active .icon svg { fill: #ffffff !important; filter: none !important; }
   .welcome-text { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
-  .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+  .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; text-align: center; }
 
   /* STRATEGIC CRIMSON ALL BUTTONS SYSTEM OVERRIDE */
-  .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn, .open-book-edit-btn, .quote-board-refresh-btn {
+  .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn, .open-book-edit-btn, .quote-board-refresh-btn, .goal-bar-count-badge {
     width: 100%; padding: 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
     font-size: 13px; font-weight: 700; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
     background: var(--crimson) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(166,38,38,0.25);
@@ -245,9 +385,9 @@
   .secondary-button { border: 1px solid var(--border-iron); }
   .danger-button { background: #260a0d !important; border: 1px solid var(--crimson-light); }
   .save-btn { font-weight: 900; }
-  .open-book-edit-btn, .quote-board-refresh-btn { padding: 6px 12px; font-size: 11px; width: auto; display: inline-block; box-shadow: none; }
+  .open-book-edit-btn, .quote-board-refresh-btn, .goal-bar-count-badge { padding: 6px 12px; font-size: 11px; width: auto; display: inline-block; box-shadow: none; }
   .action-sub-btn { padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
-  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover, .open-book-edit-btn:hover, .quote-board-refresh-btn:hover { filter: brightness(1.25); }
+  .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover, .open-book-edit-btn:hover, .quote-board-refresh-btn:hover, .goal-bar-count-badge:hover { filter: brightness(1.25); }
 
   /* SEPARATED ACCORDION DASHBOARD CARDS WITH GOLD TOP TRIMS */
   .quote-board-card, .goal-progress-card, .currently-reading-card {
@@ -260,12 +400,11 @@
   .quote-board-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
   .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: #fff !important; line-height: 1.6; min-height: 45px; }
   .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold) !important; margin-top: 8px; text-transform: uppercase; }
-  .memory-lane-flashback-text { font-size: 11px; color: #fff !important; margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
+  .magic-lane-flashback-text { font-size: 11px; color: #fff !important; margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
   
   /* STANDALONE GOAL METER DECK COMPONENTS */
-  .goal-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .goal-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed var(--border-iron); padding-bottom: 8px; }
   .goal-bar-main-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
-  .goal-bar-count-badge { font-size: 11px; font-weight: 700; color: #fff !important; background: var(--crimson); padding: 4px 10px; border-radius: 2px; }
   .goal-bar-container-sleeve { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
   
   /* RED PROGRESS METER SYNCHRONIZATION OVERRIDE */
@@ -281,8 +420,8 @@
   .reading-author { font-size: 12px; color: var(--gold) !important; margin-bottom: 12px; }
     
   .reading-blurb-box {
-     background: #080608; padding: 12px; font-size: 12px;
-     color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
+       background: #080608; padding: 12px; font-size: 12px;
+       color: var(--text-parchment); line-height: 1.5; margin-bottom: 16px; border: 1px solid var(--border-iron); border-left: 2px solid var(--text-muted);
   }
   .progress-bar-container { background: #000; height: 8px; width: 100%; overflow: hidden; margin-bottom: 8px; border-radius: 4px; }
   .progress-bar-fill { background: var(--crimson); height: 100%; width: 0%; border-radius: 4px; transition: width 0.4s ease; }
@@ -301,7 +440,7 @@
     border-radius: 4px; 
     padding: 16px; 
     border: 1px solid var(--border-iron); 
-    border-top: 3px solid var(--gold) !important; /* Unified Dashboard Top Trims */
+    border-top: 3px solid var(--gold) !important; 
     text-align: center;
     width: 100%;
     min-width: 0;
@@ -310,7 +449,7 @@
     background: var(--card-slate) !important;
   }
   
-  /* FLIPPED TELEMETRY LABELS INDEX: RED NUMBERS AND GOLD TEXT CHASSIS FORMATION */
+  /* LABELS INDEX: RED NUMBERS AND GOLD TEXT CHASSIS FORMATION */
   .stat-label, .home-preview-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold) !important; }
   .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--crimson-light) !important; margin-bottom: 4px; }
   
@@ -360,7 +499,6 @@
   .charts-view-podium-height { height: 160px !important; }
   .charts-view-title-size { font-size: 11px; }
 
-  /* CONTRAST MODE SELECTOR CRUCIAL COLOR FLAGS STATIC EXPLICIT OVERRIDES */
   #globalSettingsModalOverlay .status-sel-btn {
     background: #161215 !important; border-color: var(--border-iron) !important; color: var(--text-parchment) !important;
   }
@@ -391,9 +529,11 @@
     border-bottom: 1px solid var(--border-iron);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
     padding: 0 12px 0 0;
     width: 100%;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
   .stats-row { 
     flex: 1; 
@@ -402,6 +542,7 @@
     overflow-x: auto; 
     padding: 16px 12px; 
     scrollbar-width: none; 
+    -webkit-overflow-scrolling: touch;
   }
   .stats-row::-webkit-scrollbar { display: none; }
   .stat-pill { flex-shrink: 0; background: var(--dark-iron); border: 1px solid var(--border-iron); border-radius: 2px; padding: 8px 14px; text-align: center; cursor: pointer; transition: all 0.2s; }
@@ -466,22 +607,31 @@
   .rating-row-value span { color: var(--gold); }
   .rating-gr-subtext { font-size: 10px; color: var(--text-muted); }
 
-  /* SYSTEM STICKY FOOTER NAV BAR */
+  /* SYSTEM STICKY FOOTER NAV BAR WITH ENLARGED TACTILE GOLD & CRIMSON STATES */
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 0 max(12px, env(safe-area-inset-bottom));
+    background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 12px max(12px, env(safe-area-inset-bottom));
     display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
   }
-  .nav-buttons-row { width: 100%; display: flex; align-items: center; }
+  .nav-buttons-row { width: 100%; display: flex; align-items: center; gap: 8px; }
   .nav-btn {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 1px; text-transform: uppercase; font-weight: 700; background: none; border: none;
+    cursor: pointer; font-size: 14px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px; text-transform: uppercase; font-weight: 700; background: none; 
+    border: 1px solid var(--gold) !important; border-radius: 4px; padding: 8px 4px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s, color 0.2s, box-shadow 0.2s;
   }
   .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); display: flex; align-items: center; justify-content: center; }
   .nav-btn .icon svg { filter: grayscale(0.5); fill: var(--text-muted); }
-  .nav-btn.active { color: var(--gold); }
-  .nav-btn.active .icon svg { filter: grayscale(0); fill: var(--gold); }
+  
+  /* ACTIVE PAGE NAVIGATION STATE ENHANCEMENTS */
+  .nav-btn.active { 
+    color: #ffffff !important; 
+    background-color: var(--crimson) !important;
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 4px 15px rgba(166, 38, 38, 0.4);
+    z-index: 2;
+  }
 
   /* SYSTEM MODALS LAYOUTS */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100000; display: none; align-items: flex-end; backdrop-filter: blur(6px); }
@@ -547,7 +697,7 @@
   .trading-card-overlay { position: absolute; inset: 12px; background: rgba(10, 7, 9, 0.96); border: 2px solid var(--gold); border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 16px; opacity: 0; pointer-events: none; transform: scale(0.9); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 200; }
   .trading-card-overlay.show { opacity: 1; pointer-events: auto; transform: scale(1); }
 
-  /* 🎰 GLOBAL SEPARATE FLOATING CELEBRATION WINNER BANNER STYLE */
+  /* 🎰 GLOBAL WINNER BANNER STYLE */
   .global-winner-banner {
     position: fixed; top: 35%; left: 50%; transform: translate(-50%, -50%) scale(0.6);
     background: linear-gradient(180deg, #260a0d 0%, #0d0a0d 100%);
@@ -591,10 +741,27 @@
   <div class="winner-banner-subtitle" id="winnerBannerBookName">LOADING ARCHIVES...</div>
 </div>
 
+<!-- ⚙️ TACTILE SLIDER MENU CONSOLE FIXED POSITION WORKSPACE BADGE -->
+<button class="settings-dots-trigger" onclick="toggleSettingsModalViewLayout(true)">
+  <div class="trigger-dashes-wrapper">
+    <div class="trigger-dash-line"></div>
+    <div class="trigger-dash-line"></div>
+    <div class="trigger-dash-line"></div>
+  </div>
+  <span class="trigger-label-text">Settings</span>
+</button>
+
+<!-- 🏛️ GREEK TEMPLE ARCHITECTURAL PORTICO BINDING APEX AREA -->
 <div class="header">
-  <div class="header-title">Barbie's <span>Library</span> 📚</div>
-  <div class="header-sub"><span id="headerTrackerCount">170</span> books logged</div>
-  <button class="settings-dots-trigger" onclick="toggleSettingsModalViewLayout(true)">⋮</button>
+  <div class="temple-pediment"></div>
+  <div class="temple-architrave"></div>
+  <div class="marble-pillar pillar-left-outer"></div>
+  <div class="marble-pillar pillar-left-inner"></div>
+  <div class="marble-pillar pillar-right-inner"></div>
+  <div class="marble-pillar pillar-right-outer"></div>
+  
+  <h1 class="header-title">Barbie's <span>Library</span></h1>
+  <div class="header-sub"><span id="headerTrackerCount">170</span> volumes indexed</div>
 </div>
 
 <!-- 🔮 MODERN FLOATING CONSOLE DISPLAY MODAL WINDOW FOR APP CONFIGURATION -->
@@ -653,7 +820,7 @@
           <span class="settings-accordion-arrow">▼</span>
         </div>
         <div class="settings-accordion-inner-drawer" style="gap: 8px;">
-          <div class="settings-static-version-badge" id="drawerVersionDiagnosticStamp">Barbies Library V3.5</div>
+          <div class="settings-static-version-badge" id="drawerVersionDiagnosticStamp">Barbies Library V4.0</div>
           <div class="settings-static-version-badge" style="border-style: dashed; opacity: 0.65; font-size: 9px;">Status: App Running Offline (LocalStorage-Cached)</div>
         </div>
       </div>
@@ -684,14 +851,14 @@
      </div>
      <div class="quote-display-pane" id="quoteTextPane">"Loading logs..."</div>
      <div class="quote-display-source" id="quoteSourcePane">— Loading</div>
-     <div class="memory-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
+     <div class="magic-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
   <!-- LEVEL 2B: STANDALONE READING GOAL TRACKER (SYNCHRONIZED RED METER TRACK FILL) -->
   <div class="goal-progress-card">
      <div class="goal-bar-header">
         <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
-        <button class="goal-bar-count-badge" id="milestoneCounterLabel" onclick="showView('library')" style="border: none; font-family: inherit; cursor: pointer; display: inline-block;">0 / 50 Books</button>
+        <button class="goal-bar-count-badge" id="milestoneCounterLabel" onclick="showView('library')">0 / 50 Books</button>
      </div>
      <div class="goal-bar-container-sleeve">
         <div class="goal-bar-fill-track" id="milestoneFillTrack"></div>
@@ -699,7 +866,7 @@
      <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking trajectory updates...</div>
   </div>
 
-  <!-- LEVEL 3: LIVE DATABASE COUNTERS STATS GRID (RED NUMBERS / GOLD LABELS) -->
+  <!-- LEVEL 3: LIVE DATABASE COUNTERS STATS GRID -->
   <div class="stats-grid">
     <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(2)'), 'TBR'), 50);">
       <div class="stat-number" id="statTBR">0</div>
@@ -797,12 +964,12 @@
   </div>
   
   <div class="genre-row" id="genreRow" style="padding: 8px 16px 12px;"></div>
-  <div class="results-count" id="resultsCount"></div>
+  <div class="results-count" id="resultsCount">0 records populated</div>
   <div class="book-list" id="bookList"></div>
 </div>
 
 <div class="charts-view" id="chartsView">
-  <!-- LEVEL 1: VISUAL INTELLIGENCE CARD BANNER (SCROLL ICON OVERRIDE) -->
+  <!-- LEVEL 1: VISUAL INTELLIGENCE CARD BANNER -->
   <div class="welcome-card" style="margin-bottom: 20px;">
     <div class="welcome-emoji">📜</div>
     <div class="welcome-text">Analytics</div>
@@ -1068,9 +1235,9 @@
 
 <script>
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
-const SYSTEM_BUILD_VERSION = "3.5";
+const SYSTEM_BUILD_VERSION = "4.0";
 
-// ── DATA REGISTRY PACKAGES (FULLY RESTORED) ──────────────────────────────────
+// ── DATA REGISTRY PACKAGES ──────────────────────────────────
 const BOOKS_RAW = [
   [1,"13 Reasons why","Asher J","Won't Continue","Standalone","Young Adult","288",3.84,null,null],
   [2,"Lightlark","Aster, A.","TBR","The Lightlark Saga, Book 1","Fantasy Romantasy","448",3.84,null,null],
@@ -1345,8 +1512,8 @@ function updateHomeView() {
   const card = document.getElementById('readingCard');
   if (reading) {
     card.classList.add('show'); 
-    document.getElementById('readingTitle').textContent = reading.title; 
-    document.getElementById('readingAuthor').textContent = reading.author;
+    document.getElementById('readingTitle').textContent = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
+    document.getElementById('readingAuthor').textContent = reading.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
     const currentP = parseInt(reading.currentPage) || 0;
@@ -1393,7 +1560,7 @@ function renderQuoteSlotValue() {
    const ratedReads = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && b.myRating != null);
    if (ratedReads.length > 0) {
       const memoryBook = ratedReads[Math.floor(Math.abs(Math.sin(activeQuoteIndex)) * ratedReads.length) % ratedReads.length];
-      document.getElementById('memoryLanePane').textContent = `Historical Log: You rated "${memoryBook.title}" a solid ${memoryBook.myRating}/10 stars.`;
+      document.getElementById('memoryLanePane').textContent = `Historical Log: You rated "${memoryBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}" a solid ${memoryBook.myRating}/10 stars.`;
    } else {
       document.getElementById('memoryLanePane').textContent = `Evaluate items inside the library filters to unlock your reading history logs here!`;
    }
@@ -1767,7 +1934,7 @@ function commitNewBook() {
 
 function purgeCurrentBookEntry() {
   if (!currentBook) return;
-  if (confirm(`DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title}" from your library?`)) {
+  if (confirm(`DELETE BOOK OVERRIDE:\nAre you sure you want to permanently remove "${currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}" from your library?`)) {
     books = books.filter(b => b.id !== currentBook.id);
     try {
       const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
@@ -1811,20 +1978,20 @@ function renderBooks() {
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
     const statusClass = statusKey(b.status);
-    const resolvedIsbn = b.isbn || PRELOADED_ISBN_REGISTRY[b.title];
+    const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+    const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     const queryPlaceholderId = `mini-thumb-fallback-${b.id}`;
+    
     let thumbnailImgTag = b.coverUrl ? 
-      `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" onerror="this.onerror=null; this.src='https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg';" alt="">` :
-      (resolvedIsbn ? 
-        `<img src="https://covers.openlibrary.org/b/isbn/${resolvedIsbn}-S.jpg" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" onerror="executeInlineTextCoverFallback(this, '${b.title.replace(/'/g, "\\'")}', '${b.author.replace(/'/g, "\\'")}', '${queryPlaceholderId}')" alt="">` :
-        `<img id="${queryPlaceholderId}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron); display:none;" alt=""><div id="initials-${queryPlaceholderId}" style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700;">${getTitleInitials(b.title)}</div>`
-      );
+      `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
+      `<div id="initials-${queryPlaceholderId}" style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
+      
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
         <div class="book-info">
-           <div class="book-title">${b.title}</div>
-           <div class="book-author">${b.author}</div>
+           <div class="book-title">${cleanTitle}</div>
+           <div class="book-author">${cleanAuthor}</div>
            <div class="book-meta">
              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
              <span class="badge badge-genre">${normalizeGenre(b.genre)}</span>
@@ -1836,23 +2003,6 @@ function renderBooks() {
         </div>
       </div>`;
   }).join('');
-}
-
-async function executeInlineTextCoverFallback(imgElement, titleString, authorString, elementIdFallback) {
-  try {
-    const query = encodeURIComponent(`intitle:"${titleString.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${authorString.split(',')[0].trim()}"`);
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
-    const data = await response.json();
-    if (data.items && data.items[0]?.volumeInfo?.imageLinks?.thumbnail) {
-      const targetUrl = data.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://");
-      if (imgElement) { imgElement.onerror = null; imgElement.src = targetUrl; }
-      if (elementIdFallback) {
-        const targetNode = document.getElementById(elementIdFallback);
-        const initialsNode = document.getElementById(`initials-${elementIdFallback}`);
-        if (targetNode) { targetNode.src = targetUrl; targetNode.style.display = "block"; if (initialsNode) initialsNode.style.display = "none"; }
-      }
-    }
-  } catch(e) {}
 }
 
 function getFiltered() {
@@ -1870,13 +2020,18 @@ async function openInfoCardOverlay(id) {
   const coverImg = document.getElementById('infoCardCoverImg');
   const fallbackIllustration = document.getElementById('infoCardGlyph');
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
-  document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${currentBook.title}`;
-  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.toUpperCase();
+  
+  const cleanTitle = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanAuthor = currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  
+  document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
+  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + cleanAuthor.toUpperCase();
   document.getElementById('infoCardGenre').textContent = normalizeGenre(currentBook.genre);
   document.getElementById('infoCardMass').textContent = currentBook.pages;
   document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
-  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${currentBook.title}" indexed cleanly in local framework.`;
+  document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly in local framework.`;
   document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
+  
   if (currentBook.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl); return; }
   const targetISBN = currentBook.isbn || PRELOADED_ISBN_REGISTRY[currentBook.title];
   if (targetISBN) {
@@ -1910,8 +2065,8 @@ function closeInfoCardOverlay() { document.getElementById('globalInfoCardOverlay
 
 function pivotToConfigurationModal() {
   closeInfoCardOverlay();
-  document.getElementById('mTitle').textContent = currentBook.title; 
-  document.getElementById('mAuthor').textContent = "By Author " + currentBook.author;
+  document.getElementById('mTitle').textContent = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
+  document.getElementById('mAuthor').textContent = "By Author " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
   const w = document.getElementById('modalProgressWrapper');
   if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
@@ -1930,7 +2085,6 @@ function setModalRating(val) {
   document.querySelectorAll('#ratingBtns .star-btn').forEach((btn, idx) => { if(idx < val) btn.classList.add('active'); else btn.classList.remove('active'); });
 }
 
-// Emote fountain tracking variables setup
 function triggerCasinoEmoteFountainSplash() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   overlayCardNode.classList.add('winner-flash-active');
@@ -1990,11 +2144,16 @@ function cycleSort() { sortMode = (sortMode + 1) % 4; document.getElementById('s
 function renderHomepageChartsPreview() {
   const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating);
   const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
+  
+  const cleanP1 = p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanP2 = p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanP3 = p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+
   document.getElementById('homePodiumContainerMount').innerHTML = `
       <div class="f1-podium-container">
-        <div class="podium-column"><div class="podium-book-title">${p2.title}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${p1.title}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title">${p3.title}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${cleanP2}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${cleanP1}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${cleanP3}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
       </div>`;
   const canvasEl = document.getElementById('homeStatusPieChart');
   if (canvasEl) {
@@ -2006,16 +2165,21 @@ function renderHomepageChartsPreview() {
 function renderCharts() {
   const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating);
   const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
+  
+  const cleanP1 = p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanP2 = p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanP3 = p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${cleanP2}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${cleanP1}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${cleanP3}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
     <div class="sub-rank-item">
       <span class="sub-rank-num">#${i+4}</span>
-      <div class="sub-rank-details"><div class="sub-rank-title">${b.title}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author}</div></div>
+      <div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div>
       <span class="sub-rank-score"> ${b.myRating}</span>
     </div>`).join('');
 
@@ -2024,7 +2188,7 @@ function renderCharts() {
   const genreLookup = {}; books.forEach(b => { const normalized = normalizeGenre(b.genre); genreLookup[normalized] = (genreLookup[normalized] || 0) + 1; });
   const sortedGenres = Object.entries(genreLookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
   activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sortedGenres.map(x=>x[0]), datasets: [{ data: sortedGenres.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#e63946', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-  const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim(); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
+  const authorLookup = {}; books.forEach(b => { if(b.author) { const clean = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authorLookup[clean] = (authorLookup[clean] || 0) + 1; } });
   document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authorLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
 }
 
@@ -2038,10 +2202,20 @@ function showView(view) {
   document.getElementById('navLib').className = 'nav-btn' + (view === 'library'?' active':'');
   document.getElementById('navCharts').className = 'nav-btn' + (view === 'charts'?' active':'');
   document.getElementById('navParalysis').className = 'nav-btn' + (view === 'paralysis'?' active':'');
-  if (view === 'home') updateHomeView();
-  else if (view === 'library') { renderGenreRow(); renderBooks(); updateUIRowCounters(); }
-  else if (view === 'charts') renderCharts();
-  else if (view === 'paralysis') { configureRouletteDataPool(); populateDynamicCasinoGenreChips(); initParalysisInputListeners(); }
+  
+  if (view === 'home') {
+    updateHomeView();
+  } else if (view === 'library') { 
+    renderGenreRow(); 
+    renderBooks(); 
+    updateUIRowCounters(); 
+  } else if (view === 'charts') {
+    renderCharts();
+  } else if (view === 'paralysis') { 
+    configureRouletteDataPool(); 
+    populateDynamicCasinoGenreChips(); 
+    initParalysisInputListeners(); 
+  }
 }
 
 function statusKey(s) { return (s === "Won't Continue" || s === "Wont") ? "Wont" : s; }
@@ -2188,9 +2362,9 @@ function renderHTML5CasinoCanvasWheel() {
 
     ctx.save(); ctx.rotate(angleStart + arcSize / 2);
     ctx.fillStyle = (pickedWedgeIndexPointer !== null && pickedWedgeIndexPointer !== i) ? '#383036' : '#000';
-    ctx.font = `bold ${(renderBounds.width < 340 ? 9 : 12) * dpr}px 'JetBrains Mono', monospace`;
+    ctx.font = `bold ${(renderBounds.width < 340 ? 11 : 14) * dpr}px 'JetBrains Mono', monospace`;
     ctx.textAlign = "right"; ctx.textBaseline = "middle";
-    let label = book.title; let maxChar = renderBounds.width < 340 ? 12 : 24;
+    let label = book.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); let maxChar = renderBounds.width < 340 ? 12 : 24;
     if (label.length > maxChar) label = label.substring(0, maxChar - 2) + "...";
     ctx.fillText(label, r - (16 * dpr), 0);
     ctx.restore(); ctx.restore();
@@ -2320,7 +2494,7 @@ function executeParalysisWheelSpin() {
 function triggerGrandVictorySequence() {
   if (!paralysisWinningBookPointer) return;
   const bannerNode = document.getElementById('casinoWinnerBanner');
-  document.getElementById('winnerBannerBookName').textContent = paralysisWinningBookPointer.title.toUpperCase();
+  document.getElementById('winnerBannerBookName').textContent = paralysisWinningBookPointer.title.toUpperCase().replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   bannerNode.classList.add('pop-active');
   playCasinoJackpotChimeAudio();
   setTimeout(() => {
@@ -2333,10 +2507,13 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   if (!paralysisWinningBookPointer) return;
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
+  
+  const cleanTitle = paralysisWinningBookPointer.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const cleanAuthor = paralysisWinningBookPointer.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
          
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
-  document.getElementById('cardBookTitle').textContent = paralysisWinningBookPointer.title;
-  document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + paralysisWinningBookPointer.author.toUpperCase();
+  document.getElementById('cardBookTitle').textContent = cleanTitle;
+  document.getElementById('cardBookAuthor').textContent = "BY SCRIBE " + cleanAuthor.toUpperCase();
   document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
@@ -2368,6 +2545,8 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
 }
 
 function handleTradingCardImageError() { document.getElementById('cardBookCoverImg').style.display = "none"; document.getElementById('cardBookGlyph').style.display = "block"; }
+function handleInfoCardImageError() { document.getElementById('infoCardCoverImg').style.display = "none"; document.getElementById('infoCardGlyph').style.display = "block"; }
+
 function acceptParalysisDestiny() {
   if (!paralysisWinningBookPointer) return;
   paralysisWinningBookPointer.status = 'Reading'; paralysisWinningBookPointer.currentPage = 0;
@@ -2388,7 +2567,13 @@ function closeTradingCardOverlay() {
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbies Library V" + SYSTEM_BUILD_VERSION;
-  updateHomeView();
+  
+  // Initialize and populate all tracking structures globally on startup
+  renderGenreRow(); 
+  renderBooks(); 
+  
+  // Fire primary view state parsing assignments
+  showView('home');
 });
 </script>
 </body>
