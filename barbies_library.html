@@ -147,16 +147,16 @@
 
   /* ⚙️ FIXED VIEWPORT CONSOLE CONFIGURATION BADGE */
   .settings-dots-trigger {
-    position: fixed;
-    top: max(16px, env(safe-area-inset-top));
-    right: max(16px, env(safe-area-inset-right));
+    position: absolute; /* Changed from fixed to absolute */
+    top: 16px; /* Positioned relative to the header's top */
+    right: 16px; /* Positioned relative to the header's right */
     width: 44px;
     height: 40px;
     background: var(--crimson) !important;
     border: 1px solid var(--gold) !important;
     border-radius: 4px;
     cursor: pointer;
-    z-index: 150000;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,6 +165,29 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
   }
   
+  /* 🏆 TOP-LEFT TROPHIES TRACKER BADGE */
+  .trophies-trigger {
+    position: absolute; /* Changed from fixed to absolute */
+    top: 16px; /* Positioned relative to the header's top */
+    left: 16px; /* Positioned relative to the header's left */
+    width: 44px;
+    height: 40px;
+    background: var(--crimson) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  }
+  .trophies-trigger:hover, .trophies-trigger:active {
+    box-shadow: 0 0 14px rgba(230, 57, 70, 0.6), 0 4px 12px #000;
+    filter: brightness(1.1);
+  }
   /* THREE DASHES ELEMENT PLATFORM */
   .trigger-dashes-wrapper {
     display: flex;
@@ -212,6 +235,39 @@
     transform: translateX(0);
   }
 
+  /* TROPHIES ICON STYLING */
+  .trophies-icon-wrapper {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* Set color to white for currentColor inheritance for SVG children */
+    justify-content: center;
+  }
+  .trophies-icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    /* fill: #ffffff; This is now handled by currentColor on the path and color on wrapper */
+  }
+  .trophies-icon-wrapper .person-icon {
+    fill: currentColor; /* Inherit color from parent */
+    transition: fill 0.3s;
+  }
+  .trophies-icon-wrapper .progress-ring-bg {
+    stroke: rgba(255, 255, 255, 0.15); /* Subtle white/grey for the track */
+  }
+  .trophies-icon-wrapper .progress-ring-fill {
+    stroke: var(--gold); /* Gold fill for progress */
+    transition: stroke 0.3s, stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s;
+    filter: drop-shadow(0 0 3px rgba(179, 146, 67, 0.8));
+  }
+  .trophies-trigger:hover .trophies-icon-wrapper .progress-ring-fill,
+  .trophies-trigger:active .trophies-icon-wrapper .progress-ring-fill {
+    stroke: var(--crimson-light); /* Highlight on hover */
+    filter: drop-shadow(0 0 5px var(--crimson-light));
+  }
+
   /* 🌌 FLOATING INTERACTIVE SETTINGS / ABOUT OVERLAY */
   .settings-modal-overlay {
     position: fixed;
@@ -242,6 +298,37 @@
     animation: bounceSettingsWindowUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @keyframes bounceSettingsWindowUp { from { transform: scale(0.9) translateY(15px); } to { transform: scale(1) translateY(0); } }
+
+  /* 🏆 FLOATING INTERACTIVE TROPHIES / GOALS OVERLAY */
+  .trophies-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 300000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeOverlayMaskIn 0.2s ease;
+  }
+  .trophies-modal-overlay.open { display: flex; }
+
+  .trophies-modal-chassis {
+    width: 100%;
+    max-width: 400px;
+    background: var(--dark-iron);
+    border: 2px solid var(--border-iron);
+    border-top: 4px solid var(--gold); /* Gold top border for trophies */
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.8);
+    animation: bounceSettingsWindowUp 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .trophies-modal-title { color: var(--gold); }
+  .trophies-modal-close-trigger:hover { color: var(--gold); }
 
   .settings-modal-header-row {
     display: flex;
@@ -353,11 +440,14 @@
   /* VIEW ENGINE */
   .home-view, .library-view, .charts-view, .paralysis-view { display: none; }
   .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
+  .home-view, .library-view, .charts-view, .paralysis-view, .goals-view { display: none; }
+  .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible, .goals-view.visible { display: block; }
 
   .home-view { padding: 24px 16px 140px; }
   .library-view { padding: 24px 16px 140px; }
   .charts-view { padding: 24px 16px 140px; }
   .paralysis-view { padding: 24px 16px 140px; }
+  .goals-view { padding: 24px 16px 140px; }
 
   .welcome-card {
     background: var(--dark-iron);
@@ -376,6 +466,7 @@
   .welcome-text { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--text-parchment); letter-spacing: 1px; }
   .welcome-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; text-align: center; }
 
+  /* ⚙️ ICON SIZING FOR NAV BUTTONS */
   /* STRATEGIC CRIMSON ALL BUTTONS SYSTEM OVERRIDE */
   .cta-button, .secondary-button, .danger-button, .save-btn, .action-sub-btn, .open-book-edit-btn, .quote-board-refresh-btn, .goal-bar-count-badge {
     width: 100%; padding: 14px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;
@@ -569,7 +660,14 @@
   .search-wrap input:focus { border-color: var(--crimson); }
   .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; pointer-events: none; }
   
-  .sort-btn { flex-shrink: 0; padding: 10px 14px; border: 1px solid var(--border-iron); border-radius: 4px; background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); font-family: 'JetBrains Mono', monospace; white-space: nowrap; transition: all 0.2s, filter 0.2s; }
+  .sort-btn { 
+    flex-shrink: 0; padding: 10px 28px 10px 14px; border: 1px solid var(--border-iron); border-radius: 4px; 
+    background: var(--card-slate); cursor: pointer; font-size: 12px; color: var(--text-parchment); 
+    font-family: 'JetBrains Mono', monospace; white-space: nowrap; transition: all 0.2s, filter 0.2s;
+    outline: none; appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%238c7f70' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
   .sort-btn.active { border-color: var(--gold); color: var(--gold); }
   .sort-btn:hover, .sort-btn:active { filter: brightness(1.25); }
 
@@ -589,6 +687,35 @@
   .genre-chip.advanced-filter-chip.active { background: var(--crimson); color: #fff; border-color: var(--crimson-light); }
 
   .results-count { padding: 4px 16px 8px; font-size: 11px; color: var(--text-muted); }
+
+  /* ADVANCED FILTER DROPDOWN PANEL */
+  .advanced-filter-dropdown {
+    display: none; /* Hidden by default */
+    height: 0;
+    overflow-y: hidden;
+    transition: height 0.3s ease-out, opacity 0.3s ease-out;
+    background: #0d0a0d;
+    border: 1px solid var(--border-iron);
+    border-top: none; /* Visually connect to the button */
+    border-radius: 0 0 4px 4px;
+    margin: -4px 16px 8px; /* Adjust margin to sit below the chip row */
+    position: relative;
+    z-index: 999;
+    opacity: 0;
+  }
+  .advanced-filter-dropdown.active {
+    display: block;
+    height: 150px; /* Desired height */
+    opacity: 1;
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+  }
+  .dropdown-chip-grid {
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+  }
 
   /* 📚 CARD STRUCTURAL LAYOUTS */
   .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
@@ -628,25 +755,26 @@
   /* SYSTEM STICKY FOOTER NAV BAR WITH ENLARGED TACTILE GOLD & CRIMSON STATES */
   .bottom-nav {
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: #0d0a0d; border-top: 1px solid var(--border-iron); padding: 12px 12px max(12px, env(safe-area-inset-bottom));
+    background: #0d0a0d; border-top: 1px solid var(--border-iron); 
+    padding: 8px 8px max(12px, env(safe-area-inset-bottom));
     display: flex; align-items: center; justify-content: center; z-index: 99999; box-shadow: 0 -8px 24px rgba(0,0,0,0.6);
   }
-  .nav-buttons-row { width: 100%; display: flex; align-items: center; gap: 8px; }
+  .nav-buttons-row { width: 100%; display: flex; align-items: stretch; gap: 6px; }
   .nav-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer; font-size: 14px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 1px; text-transform: uppercase; font-weight: 700; background: none; 
-    border: 1px solid var(--gold) !important; border-radius: 4px; padding: 8px 4px;
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    cursor: pointer; font-size: 13px; color: var(--text-parchment); font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px; text-transform: uppercase; font-weight: 900; background: none; 
+    border: 1px solid var(--gold) !important; border-radius: 4px; padding: 10px 2px;
     transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s, color 0.2s, box-shadow 0.2s;
+    min-width: 0; text-align: center;
   }
-  .nav-btn .icon { font-size: 18px; line-height: 1; filter: grayscale(0.5); display: flex; align-items: center; justify-content: center; }
   .nav-btn .icon svg { filter: grayscale(0.5); fill: var(--text-muted); }
   
   /* ACTIVE PAGE NAVIGATION STATE ENHANCEMENTS */
   .nav-btn.active { 
     color: #ffffff !important; 
-    background-color: var(--crimson) !important;
-    transform: scale(1.08) translateY(-4px);
+    background-color: var(--crimson-light) !important;
+    transform: scale(1.05) translateY(-2px);
     box-shadow: 0 4px 15px rgba(166, 38, 38, 0.4);
     z-index: 2;
   }
@@ -723,6 +851,7 @@
 
   /* 🎰 BREAK THE PARALYSIS CASINO STYLING */
   .casino-container { background: #0d0a0d; border: 2px solid var(--border-iron); box-shadow: 0 0 20px rgba(230, 57, 70, 0.15); border-radius: 8px; padding: 24px 16px; text-align: center; max-width: 650px; margin: 0 auto; position: relative; width: 100%; }
+  .casino-container { background: #0d0a0d; border: 2px solid var(--border-iron); box-shadow: 0 0 20px rgba(230, 57, 70, 0.15); border-radius: 8px; padding: 24px 16px; text-align: center; max-width: 650px; margin: 0 auto; position: relative; width: 100%; }
   .casino-header { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 0 8px #e63946, 0 0 12px var(--gold); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
   .casino-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
   .wheel-wrapper { position: relative; width: 92vw; height: 92vw; max-width: 580px; max-height: 580px; margin: 0 auto 24px; transition: transform 0.1s ease-out; transform: rotate(0deg); touch-action: none; }
@@ -735,7 +864,7 @@
   .stake-chip.active { border-color: #e63946; color: #fff; box-shadow: 0 0 8px rgba(230, 57, 70, 0.4); background: rgba(230, 57, 70, 0.1); }
 
   /* 🃏 TRADING CARD LAYOUT OVERLAYS */
-  .trading-card-overlay { position: absolute; inset: 12px; background: rgba(10, 7, 9, 0.96); border: 2px solid var(--gold); border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 16px; opacity: 0; pointer-events: none; transform: scale(0.9); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 200; }
+  .trading-card-overlay { position: absolute; inset: 12px; background: rgba(10, 7, 9, 0.96); border: 2px solid var(--gold); border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px 16px; opacity: 0; pointer-events: none; transform: scale(0.9); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 200; perspective: 1000px; }
   .trading-card-overlay.show { opacity: 1; pointer-events: auto; transform: scale(1); }
 
   /* 🎰 GLOBAL WINNER BANNER STYLE */
@@ -751,12 +880,24 @@
   .winner-banner-title { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 3px; text-shadow: 0 0 10px rgba(179, 146, 67, 0.6); text-transform: uppercase; }
   .winner-banner-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--text-parchment); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; overflow: hidden; text-overflow: ellipsis; width: 100%; }
 
-  .trading-card-overlay.winner-flash-active { animation: neonWinnerPulse 0.4s ease infinite alternate; }
+  /* 🃏 TRADING CARD FLIP SYSTEM */
+  .trading-card-perspective { perspective: 1000px; width: 100%; max-width: 340px; margin: auto; }
+  .trading-card-inner { position: relative; width: 100%; transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; cursor: pointer; }
+  .trading-card-inner.is-flipped { transform: rotateY(180deg); }
+  .card-front, .card-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .card-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotateY(180deg); background: #0d0a0d !important; border-color: var(--crimson) !important; display: flex; flex-direction: column; z-index: 1; }
+
+  .trading-card-overlay.winner-flash-active .trading-card-chassis { animation: neonWinnerPulse 0.4s ease infinite alternate; }
   @keyframes neonWinnerPulse { from { border-color: var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.5); } to { border-color: var(--crimson-light); box-shadow: 0 0 25px rgba(230, 57, 70, 0.9); } }
 
   .global-info-card-overlay-sleeve { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(6px); z-index: 200000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .global-info-card-overlay-sleeve.show { display: flex; }
-  .trading-card-chassis { width: 100%; max-width: 340px; background: #110e11; border: 2px solid var(--gold); box-shadow: 0 0 15px rgba(179, 146, 67, 0.3); padding: 14px; display: flex; flex-direction: column; gap: 12px; border-radius: 4px; text-align: left; }
+  .trading-card-chassis { 
+    width: 100%; max-width: 340px; background: #110e11; border: 2px solid var(--gold); 
+    box-shadow: 0 0 15px rgba(179, 146, 67, 0.3); padding: 14px; display: flex; 
+    flex-direction: column; gap: 12px; border-radius: 4px; text-align: left; 
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
   .card-header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-iron); padding-bottom: 6px; }
   .card-title-slot { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 900; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
   .card-genre-pill { background: var(--dark-void); border: 1px solid var(--crimson); color: var(--crimson-light); font-size: 8px; font-weight: 700; padding: 2px 6px; text-transform: uppercase; border-radius: 2px; letter-spacing: 0.5px; }
@@ -768,6 +909,35 @@
   .card-attr-item span { color: var(--gold); }
   .card-lore-box { background: #090709; border: 1px dashed var(--border-iron); padding: 10px; font-size: 11px; line-height: 1.5; color: var(--text-parchment); min-height: 66px; }
 
+  /* 🔝 KINETIC SCROLL-TO-TOP FLOATING APPARATUS */
+  .scroll-up-btn {
+    position: fixed;
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + 80px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    background: var(--crimson) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 99998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.3s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    padding: 0;
+  }
+  .scroll-up-btn:hover, .scroll-up-btn:active { width: 125px; border-radius: 4px; gap: 8px; }
+  .scroll-up-arrow { font-size: 16px; color: #ffffff; flex-shrink: 0; }
+  .scroll-up-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--text-parchment);
+    text-transform: uppercase; opacity: 0; width: 0; transition: opacity 0.2s, width 0.3s; white-space: nowrap; overflow: hidden;
+  }
+  .scroll-up-btn:hover .scroll-up-text, .scroll-up-btn:active .scroll-up-text { opacity: 1; width: auto; }
+
   .casino-splash-particle { position: fixed; z-index: 250000; font-size: 24px; pointer-events: none; user-select: none; animation: particleFallFountain 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
   @keyframes particleFallFountain { 0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 1; } 15% { opacity: 1; transform: translate(var(--x-vector), var(--y-vector)) scale(1.3) rotate(45deg); } 100% { transform: translate(var(--x-vector), calc(var(--y-vector) + 400px)) scale(0.6) rotate(270deg); opacity: 0; } }
 
@@ -776,13 +946,11 @@
 </head>
 <body>
 
-<!-- 🎰 SEPARATE INDEPENDENT VICTORY BANNER DOM MATRIX BLOCK -->
 <div class="global-winner-banner" id="casinoWinnerBanner">
   <div class="winner-banner-title">⚔️ Fate Manifested ⚔️</div>
   <div class="winner-banner-subtitle" id="winnerBannerBookName">LOADING ARCHIVES...</div>
 </div>
 
-<!-- ⚙️ TACTILE SLIDER MENU CONSOLE FIXED POSITION WORKSPACE BADGE -->
 <button class="settings-dots-trigger" onclick="toggleSettingsModalViewLayout(true)">
   <div class="trigger-dashes-wrapper">
     <div class="trigger-dash-line"></div>
@@ -792,7 +960,6 @@
   <span class="trigger-label-text">Settings</span>
 </button>
 
-<!-- 🏛️ GREEK TEMPLE ARCHITECTURAL PORTICO BINDING APEX AREA -->
 <div class="header">
   <div class="temple-pediment"></div>
   <div class="temple-architrave"></div>
@@ -805,7 +972,34 @@
   <div class="header-sub"><span id="headerTrackerCount">170</span> volumes indexed</div>
 </div>
 
-<!-- 🔮 MODERN FLOATING CONSOLE DISPLAY MODAL WINDOW FOR APP CONFIGURATION -->
+<button class="trophies-trigger" onclick="toggleTrophiesModalViewLayout(true)">
+  <div class="trophies-icon-wrapper">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Progress Ring Background Track -->
+      <circle class="progress-ring-bg" cx="12" cy="12" r="9.5" stroke-width="4" fill="none" />
+      <!-- Torso Silhouette -->
+      <path class="person-icon" d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C7.81 14 4.41 16.18 4 20H20C19.59 16.18 16.19 14 12 14Z" fill="currentColor"/>
+      <!-- Progress Ring Fill -->
+      <circle class="progress-ring-fill" cx="12" cy="12" r="9.5" stroke-width="4" stroke-linecap="round" fill="none"
+              stroke-dasharray="60" transform="rotate(-90 12 12)"
+              style="stroke-dashoffset: calc(60 - (var(--progress, 0) * 60 / 100)); --progress: 75;"/>
+    </svg>
+  </div>
+</button>
+
+<div class="trophies-modal-overlay" id="globalTrophiesModalOverlay" onclick="toggleTrophiesModalViewLayout(false)">
+  <div class="trophies-modal-chassis" onclick="event.stopPropagation()">
+    <div class="settings-modal-header-row">
+      <div class="settings-modal-title trophies-modal-title">Goals Tracker and Trophies</div>
+      <button class="settings-modal-close-trigger trophies-modal-close-trigger" onclick="toggleTrophiesModalViewLayout(false)">✕</button>
+    </div>
+    <div class="settings-modal-body-scroller" style="text-align: center; padding: 40px 20px;">
+      <p style="font-family: 'Cinzel', serif; font-size: 16px; color: var(--gold);">✨ Coming Soon ✨</p>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">The Archival Scribes are diligently working to bring this feature online.</p>
+    </div>
+  </div>
+</div>
+
 <div class="settings-modal-overlay" id="globalSettingsModalOverlay" onclick="toggleSettingsModalViewLayout(false)">
   <div class="settings-modal-chassis" onclick="event.stopPropagation()">
     <div class="settings-modal-header-row">
@@ -814,7 +1008,6 @@
     </div>
     <div class="settings-modal-body-scroller">
       
-      <!-- ACCORDION MODULE SUB-PANEL 1 (DATA SYSTEMS) -->
       <div class="settings-accordion-section">
         <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
           <span>Data Systems</span>
@@ -829,7 +1022,6 @@
         </div>
       </div>
 
-      <!-- ACCORDION MODULE SUB-PANEL 2 (AUDIO CONFIGURATION) -->
       <div class="settings-accordion-section">
         <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
           <span>Audio Logic</span>
@@ -842,7 +1034,6 @@
         </div>
       </div>
 
-      <!-- ACCORDION MODULE SUB-PANEL 3 (CONTRAST TUNER) -->
       <div class="settings-accordion-section">
         <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
           <span>Contrast Mode</span>
@@ -854,7 +1045,6 @@
         </div>
       </div>
 
-      <!-- ACCORDION MODULE SUB-PANEL 4 (BUILD VERSION CONTROL ARCHIVE) -->
       <div class="settings-accordion-section">
         <div class="settings-accordion-header-bar" onclick="toggleSettingsDrawerFolderBlock(this)">
           <span>Build Archives</span>
@@ -883,7 +1073,6 @@
     <div class="welcome-sub">Track your dragon-rider achievements, progress trajectories, and active mission logs.</div>
   </div>
 
-  <!-- LEVEL 2A: WISDOM CHRONICLES ENGINE -->
   <div class="quote-board-card" id="quoteBoardContainer">
      <div class="quote-board-header">
         <span class="quote-board-title">📜 Wisdom Chronicles Engine</span>
@@ -894,7 +1083,6 @@
      <div class="magic-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
-  <!-- LEVEL 2B: STANDALONE READING GOAL TRACKER -->
   <div class="goal-progress-card">
      <div class="goal-bar-header">
         <span class="goal-bar-main-title">🎯 Reading Progress Goal</span>
@@ -906,7 +1094,6 @@
      <div class="goal-bar-sub-message" id="milestoneMessageLabel">Tracking trajectory updates...</div>
   </div>
 
-  <!-- LEVEL 3: LIVE DATABASE COUNTERS STATS GRID -->
   <div class="stats-grid">
     <div class="stats-box" style="cursor: pointer;" onclick="showView('library'); setTimeout(() => filterStatus(document.querySelector('.stat-pill:nth-child(2)'), 'TBR'), 50);">
       <div class="stat-number" id="statTBR">0</div>
@@ -926,7 +1113,6 @@
     </div>
   </div>
 
-  <!-- LEVEL 4: VISUAL INTELLIGENCE MIRRORED DASHBOARD MATRIX -->
   <div class="home-analytics-row">
      <div class="home-preview-pane" style="cursor: pointer;" onclick="showView('charts')">
         <div class="home-preview-title">🏆 Top Rated Books</div>
@@ -940,7 +1126,6 @@
      </div>
   </div>
 
-  <!-- LEVEL 5: INTERACTIVE CURRENTLY READING DECK -->
   <div class="currently-reading-card" id="readingCard">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <div class="reading-label" style="margin-bottom:0;">=== ACTIVE SESSION READING ENTRY ===</div>
@@ -966,7 +1151,6 @@
     <div class="welcome-sub">Browse your entire archival ledger. Filter by tracking status, query specific titles, or add fresh volumes to the shelves.</div>
   </div>
 
-  <!-- STICKY OPTION A CONTAINER FRAME BLOCK -->
   <div class="collection-sticky-header-dock">
     <div class="stats-row" id="statsRow2">
       <div class="stat-pill active" id="filterPillAll" onclick="filterStatus(this,'All')">
@@ -994,21 +1178,25 @@
     <button class="sticky-dock-add-trigger-btn" onclick="openAddBookModal()">➕</button>
   </div>
   
+  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
+    <div class="genre-row" id="systemGlobalResetScrollerLine"></div>
+    <div id="advancedFilterDropdown" class="advanced-filter-dropdown"></div>
+  </div>
+
   <div class="toolbar" style="padding: 12px 16px 4px;">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search by title, author, trope or genre..." oninput="renderBooks()">
+      <input type="text" id="searchInput" placeholder="Search by title, author, trope or genre..." oninput="processSearch()">
     </div>
     <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Sort Mode</button>
+    <select class="sort-btn" id="sortSelect" onchange="applySort(this.value)">
+      <option value="0">Default Sort</option>
+      <option value="1">Title A–Z</option>
+      <option value="2">My Rating</option>
+      <option value="3">Goodreads Rating</option>
+    </select>
   </div>
-  
-  <!-- CORE FILTERS DECK -->
-  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
-    <div class="genre-row" id="systemGlobalResetScrollerLine"></div>
-    <div class="genre-row" id="coreGenresScrollerLine"></div>
-    <div class="genre-row" id="narrativeTropesScrollerLine"></div>
-  </div>
-  
+
   <div class="results-count" id="resultsCount">0 records populated</div>
   <div class="book-list" id="bookList"></div>
 </div>
@@ -1047,7 +1235,6 @@
   </div>
 </div>
 
-<!-- 🎰 INDECISION CASINO ENGINE CONTROLS -->
 <div class="paralysis-view" id="paralysisView">
   <div class="welcome-card" style="margin-bottom: 20px; border-top-color: var(--gold);">
     <div class="welcome-emoji">🔮</div>
@@ -1057,44 +1244,56 @@
 
   <div class="casino-container">
     
-    <!-- 🃏 TRADING CARD LAYOUT OVERLAYS -->
     <div class="trading-card-overlay" id="casinoTradingCardOverlay">
-      <div class="trading-card-chassis">
-        <div class="card-header-bar">
-          <div class="card-title-slot" id="cardBookTitle">Loading Title</div>
-          <div class="card-genre-pill" id="cardBookGenre">GENRE</div>
-        </div>
-        
-        <div class="card-artwork-frame">
-          <img src="" id="cardBookCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleTradingCardImageError()">
-          <div id="cardBookGlyph" class="card-artwork-glyph">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-              <path d="M12 6v6"></path>
-              <path d="M9 9h6"></path>
-            </svg>
+      <div class="trading-card-perspective">
+        <div class="trading-card-inner" id="casinoCardInner" onclick="toggleCardFlip(this)">
+          <!-- FRONT -->
+          <div class="trading-card-chassis card-front">
+            <div class="card-header-bar">
+              <div class="card-title-slot" id="cardBookTitle">Loading Title</div>
+              <div class="card-genre-pill" id="cardBookGenre">GENRE</div>
+            </div>
+            
+            <div class="card-artwork-frame">
+              <img src="" id="cardBookCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleTradingCardImageError()">
+              <div id="cardBookGlyph" class="card-artwork-glyph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  <path d="M12 6v6"></path>
+                  <path d="M9 9h6"></path>
+                </svg>
+              </div>
+            </div>
+            
+            <div class="card-author-line" id="cardBookAuthor">BY AUTHOR UNKNOWN</div>
+            
+            <div class="card-attributes-strip">
+              <div class="card-attr-item">HP: <span id="cardBookHp">000</span> PGS</div>
+              <div class="card-attr-item">POWER: <span id="cardBookPower">0.00</span> GR</div>
+            </div>
+            
+            <div class="card-lore-box" id="cardBookLore">Loading summaries...</div>
+            
+            <button class="cta-button" style="margin-top:4px;" onclick="event.stopPropagation(); acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
+            <button class="secondary-button" style="margin-top:6px;" onclick="event.stopPropagation(); closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
+          </div>
+          <!-- BACK -->
+          <div class="trading-card-chassis card-back">
+            <div class="card-header-bar">
+              <div class="card-title-slot">Internal Observations</div>
+            </div>
+            <div class="card-lore-box" id="cardBookNotesBack" style="flex: 1; border-color: var(--crimson); overflow-y: auto;">No field notes recorded.</div>
+            <button class="cta-button" style="margin-top:4px;" onclick="event.stopPropagation(); acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
+            <button class="secondary-button" style="margin-top:6px;" onclick="event.stopPropagation(); closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
           </div>
         </div>
-        
-        <div class="card-author-line" id="cardBookAuthor">BY AUTHOR UNKNOWN</div>
-        
-        <div class="card-attributes-strip">
-          <div class="card-attr-item">HP: <span id="cardBookHp">000</span> PGS</div>
-          <div class="card-attr-item">POWER: <span id="cardBookPower">0.00</span> GR</div>
-        </div>
-        
-        <div class="card-lore-box" id="cardBookLore">Loading summaries...</div>
-        
-        <button class="cta-button" style="margin-top:4px;" onclick="acceptParalysisDestiny()">[ MANIFEST DESTINY ⚔️ ]</button>
-        <button class="secondary-button" style="margin-top:6px;" onclick="closeTradingCardOverlay()">[ RETURN TO DECK 🔄 ]</button>
       </div>
     </div>
 
     <div class="casino-header">Break the Paralysis</div>
     <div class="casino-sub" id="casinoSubLabel">Bet your TBR pool • Defeat Indecision</div>
 
-    <!-- RISK POOL TUNER PANEL -->
     <div class="stakes-panel">
       <div class="stakes-title">Configure Wheel Risk Pool</div>
       <div class="stakes-row-chips" id="casinoStructuralPageChips">
@@ -1118,39 +1317,71 @@
   </div>
 </div>
 
-<!-- 📜 DUAL-PERSONALITY MANUAL MODAL OVERLAY -->
 <div class="global-info-card-overlay-sleeve" id="globalInfoCardOverlaySleeve" onclick="closeInfoCardOverlay()">
-  <div class="trading-card-chassis" onclick="event.stopPropagation()">
-    <div class="card-header-bar">
-      <div class="card-title-slot" id="infoCardTitle">Loading Title</div>
-      <div class="card-genre-pill" id="infoCardGenre">GENRE</div>
-    </div>
-    
-    <div class="card-artwork-frame">
-      <img src="" id="infoCardCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleInfoCardImageError()">
-      <div id="infoCardGlyph" class="card-artwork-glyph">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-          <circle cx="12" cy="10" r="3"></circle>
-          <path d="M12 13v4.5"></path>
-        </svg>
+  <div class="trading-card-perspective" onclick="event.stopPropagation()">
+    <div class="trading-card-inner" id="infoCardInner" onclick="toggleCardFlip(this)">
+      <!-- FRONT -->
+      <div class="trading-card-chassis card-front">
+        <div class="card-header-bar">
+          <div class="card-title-slot" id="infoCardTitle">Loading Title</div>
+          <div class="card-genre-pill" id="infoCardGenre">GENRE</div>
+        </div>
+        
+        <div class="card-artwork-frame">
+          <img src="" id="infoCardCoverImg" class="card-artwork-img" alt="Book Cover" onerror="handleInfoCardImageError()">
+          <div id="infoCardGlyph" class="card-artwork-glyph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:100%; height:100%;">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+              <path d="M12 13v4.5"></path>
+            </svg>
+          </div>
+        </div>
+        
+        <div class="card-author-line" id="infoCardAuthor">BY AUTHOR UNKNOWN</div>
+        
+        <div class="card-attributes-strip">
+          <div class="card-attr-item">MASS: <span id="infoCardMass">000</span> PGS</div>
+          <div class="card-attr-item">METRIC: <span id="infoCardMetric">0.00</span> GR</div>
+        </div>
+        
+        <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading observations...</div>
+        
+        <button class="cta-button" style="margin-top:4px;" onclick="event.stopPropagation(); pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
+        <button class="secondary-button" style="margin-top:6px;" onclick="event.stopPropagation(); closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
+      </div>
+      <!-- BACK -->
+      <div class="trading-card-chassis card-back">
+        <div class="card-header-bar">
+          <div class="card-title-slot">Internal Observations</div>
+        </div>
+        <div class="card-lore-box" id="infoCardNotesBack" style="flex: 1; border-color: var(--crimson); overflow-y: auto;">No field notes recorded.</div>
+        <button class="cta-button" style="margin-top:4px;" onclick="event.stopPropagation(); pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
+        <button class="secondary-button" style="margin-top:6px;" onclick="event.stopPropagation(); closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
       </div>
     </div>
-    
-    <div class="card-author-line" id="infoCardAuthor">BY AUTHOR UNKNOWN</div>
-    
-    <div class="card-attributes-strip">
-      <div class="card-attr-item">MASS: <span id="infoCardMass">000</span> PGS</div>
-      <div class="card-attr-item">METRIC: <span id="infoCardMetric">0.00</span> GR</div>
-    </div>
-    
-    <div class="card-lore-box" style="border-color: var(--gold);" id="infoCardLore">Loading observations...</div>
-    
-    <button class="cta-button" style="margin-top:4px;" onclick="pivotToConfigurationModal()">[ INTERACT WITH LORE SYSTEM ⚙️ ]</button>
-    <button class="secondary-button" style="margin-top:6px;" onclick="closeInfoCardOverlay()">[ SHELVE ARCHIVE 📜 ]</button>
   </div>
 </div>
+
+<div class="goals-view" id="goalsView">
+  <div class="welcome-card" style="margin-bottom: 20px;">
+    <div class="welcome-emoji">🏆</div>
+    <div class="welcome-text">Goals Tracker and Trophies</div>
+    <div class="welcome-sub">Track your reading goals and unlock achievements.</div>
+  </div>
+  <!-- Placeholder content for the new page -->
+  <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+    <p>This page is under construction. Your goals and trophies will appear here!</p>
+    <p style="margin-top: 10px;">The Archival Scribes are diligently working to bring this feature online.</p>
+  </div>
+</div>
+
+
+<button class="scroll-up-btn" id="scrollUpBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+  <span class="scroll-up-arrow">▲</span>
+  <span class="scroll-up-text">Scroll Up</span>
+</button>
 
 <div class="bottom-nav">
   <div class="nav-buttons-row">
@@ -1172,6 +1403,9 @@
     </button>
     <button class="nav-btn" id="navParalysis" onclick="showView('paralysis')">
       <span class="icon">🔮</span><span>Break Paralysis</span>
+    </button>
+    <button class="nav-btn" id="navGoals" onclick="showView('goals')">
+      <span class="icon">🏆</span><span>Goals Tracker and Trophies</span>
     </button>
   </div>
 </div>
@@ -1447,12 +1681,30 @@ const BOOKS_RAW = [
   [170,"Onyx Storm","Yarros, R.","TBR","The Empyrean, Book 3","Fantasy Romance","544",4.21,null,null],
 ];
 
-let books = BOOKS_RAW.map(r => ({
-  id: r[0], title: r[1], author: r[2], status: r[3],
-  series: r[4], genre: r[5], pages: r[6], grRating: r[7],
-  myRating: r[8], notes: r[9], currentPage: r[0] === 55 ? 120 : 0,
-  coverUrl: null
-}));
+let books = BOOKS_RAW.map(r => {
+  let b = {
+    id: r[0], title: r[1], author: r[2], status: r[3],
+    series: r[4], genre: r[5] || "", pages: r[6], grRating: r[7],
+    myRating: r[8], notes: r[9], currentPage: r[0] === 55 ? 120 : 0,
+    coverUrl: null
+  };
+  
+  // AUTO-REPAIR: Ensure each book starts with at least 4 categorical tags (World-Class Archival Standard)
+  let tokens = b.genre?.split(',').map(t => t.trim()).filter(t => t.length > 0) || [];
+  if (tokens.length < 4) {
+    const inferred = inferNarrativeTropes(b);
+    inferred.forEach(t => { if (!tokens.includes(t)) tokens.push(t); });
+    
+    const masterList = getTopTropes();
+    let i = 0;
+    while (tokens.length < 4 && i < masterList.length) {
+      if (!tokens.includes(masterList[i])) tokens.push(masterList[i]);
+      i++;
+    }
+    b.genre = tokens.join(', ');
+  }
+  return b;
+});
 
 let targetAddBookStatus = 'TBR';
 let activeCharts = {};
@@ -1536,12 +1788,12 @@ function updateUIRowCounters() {
   document.getElementById('headerTrackerCount').textContent = countAll;
   if(document.getElementById('pillCountAll')) {
     document.getElementById('pillCountAll').textContent = countAll;
-    document.getElementById('pillCountTBR').textContent = books.filter(b => b.status === 'TBR').length;
-    document.getElementById('pillCountComplete').textContent = books.filter(b => b.status === 'Complete').length;
-    document.getElementById('pillCountReading').textContent = books.filter(b => b.status === 'Reading').length;
-    document.getElementById('pillCountDNF').textContent = books.filter(b => b.status === 'DNF').length;
-    document.getElementById('pillCountOld').textContent = books.filter(b => b.status === 'Old').length;
-    document.getElementById('pillCountWont').textContent = books.filter(b => b.status === "Won't Continue" || b.status === 'Wont').length;
+    document.getElementById('pillCountTBR').textContent = books.filter(b => statusKey(b.status) === 'TBR').length;
+    document.getElementById('pillCountComplete').textContent = books.filter(b => statusKey(b.status) === 'Complete').length;
+    document.getElementById('pillCountReading').textContent = books.filter(b => statusKey(b.status) === 'Reading').length;
+    document.getElementById('pillCountDNF').textContent = books.filter(b => statusKey(b.status) === 'DNF').length;
+    document.getElementById('pillCountOld').textContent = books.filter(b => statusKey(b.status) === 'Old').length;
+    document.getElementById('pillCountWont').textContent = books.filter(b => statusKey(b.status) === 'Wont').length;
   }
 }
 
@@ -1571,11 +1823,11 @@ function updateHomeView() {
     }
   } else { card.classList.remove('show'); }
   
-  const countComplete = books.filter(b => b.status === 'Complete').length;
-  document.getElementById('statTBR').textContent = books.filter(b => b.status === 'TBR').length;
+  const countComplete = books.filter(b => statusKey(b.status) === 'Complete').length;
+  document.getElementById('statTBR').textContent = books.filter(b => statusKey(b.status) === 'TBR').length;
   document.getElementById('statRead').textContent = countComplete;
-  document.getElementById('statDNF').textContent = books.filter(b => b.status === 'DNF').length;
-  document.getElementById('statOld').textContent = books.filter(b => b.status === 'Old').length;
+  document.getElementById('statDNF').textContent = books.filter(b => statusKey(b.status) === 'DNF').length;
+  document.getElementById('statOld').textContent = books.filter(b => statusKey(b.status) === 'Old').length;
 
   const targetThreshold = 50; 
   const targetPercentage = Math.min(100, Math.round((countComplete / targetThreshold) * 100));
@@ -1624,6 +1876,11 @@ function closeAddBookModal() {
 
 function toggleSettingsModalViewLayout(shouldModalOpen) {
   const overlayNode = document.getElementById('globalSettingsModalOverlay');
+  if (shouldModalOpen) overlayNode.classList.add('open'); else overlayNode.classList.remove('open');
+}
+
+function toggleTrophiesModalViewLayout(shouldModalOpen) {
+  const overlayNode = document.getElementById('globalTrophiesModalOverlay');
   if (shouldModalOpen) overlayNode.classList.add('open'); else overlayNode.classList.remove('open');
 }
 
@@ -1858,6 +2115,12 @@ function inferNarrativeTropes(b) {
     else if (id % 6 === 3) tropes.push('Dark Romance');
     else if (id % 6 === 4) tropes.push('Structured LGBTQ+');
     else tropes.push('Forced Proximity');
+    // Improved fallback: provide 4 distinct tropes if none match keywords
+    const master = getTopTropes();
+    for(let i=0; i<4; i++) {
+      let selection = master[(id + i) % master.length];
+      if (!tropes.includes(selection)) tropes.push(selection);
+    }
   }
 
   return [...new Set(tropes)];
@@ -1871,6 +2134,8 @@ function getTopTropes() {
   ]; 
 }
 
+let isAdvancedFilterOpenState = false; // State-machine tracker for dynamic accordion layout
+
 function renderGenreRow() {
   const genresBase = [
     'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
@@ -1879,30 +2144,77 @@ function renderGenreRow() {
   
   const tropesBase = getTopTropes().sort((a, b) => a.localeCompare(b));
   
-  // Line 1: Isolated System Anchor buttons sitting on their own line
+  // Strict State-Machine: Toggle between All and Advanced Filter highlighting styles
   document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
-    `<div class="genre-chip ${activeGenre === 'All' ? 'active':''}" onclick="filterGenre(this,'All')">All Categories</div>` +
-    `<div class="genre-chip advanced-filter-chip" onclick="void(0)">Advanced Filter</div>`;
+    `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenre === 'All') ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
+    `<div class="genre-chip advanced-filter-chip ${isAdvancedFilterOpenState ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
 
-  // Line 2: Comprehensive list of Core Literary Genres
-  document.getElementById('coreGenresScrollerLine').innerHTML = 
-    genresBase.map(g => `<div class="genre-chip ${activeGenre === g ? 'active':''}" onclick="filterGenre(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`).join('') +
-    `<div class="genre-chip ${activeGenre === 'Other' ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
+  // Populate the Advanced Filter Dropdown with Genres and Tropes
+  const dropdownNode = document.getElementById('advancedFilterDropdown');
+  if (dropdownNode) {
+    const genresHtml = genresBase.map(g => 
+      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === g) ? 'active':''}" onclick="filterGenre(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`
+    ).join('') + `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === 'Other') ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
 
-  // Line 3: Comprehensive list of High-Impact Narrative Tropes
-  document.getElementById('narrativeTropesScrollerLine').innerHTML = tropesBase.map(t => {
-    return `<div class="genre-chip ${activeGenre === t ? 'active':''}" onclick="filterGenre(this,'${t.replace(/'/g, "\\'")}')">${t}</div>`;
-  }).join('');
+    const tropesHtml = tropesBase.map(t => 
+      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === t) ? 'active':''}" onclick="filterGenre(this,'${t.replace(/'/g, "\\'")}')">${t}</div>`
+    ).join('');
+
+    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${genresHtml}${tropesHtml}</div>`;
+  }
+}
+
+function switchAdvancedFilterWorkflowToggle(triggerElement) {
+  const dropdown = document.getElementById('advancedFilterDropdown');
+  
+  // Lock mode behavior: Force state-machine transition into granular mode
+  isAdvancedFilterOpenState = true; 
+  
+  // Apply synchronization configurations to accordion panel
+  triggerElement.classList.add('active');
+  dropdown.classList.add('active');
+  
+  // Re-render scroller strip to switch active classes seamlessly
+  renderGenreRow();
+}
+
+function clearAdvancedFilterMode(allCategoriesElement) {
+  const dropdown = document.getElementById('advancedFilterDropdown');
+  
+  // Terminate internal pipeline advanced lock state completely
+  isAdvancedFilterOpenState = false; 
+  activeGenre = 'All'; // Clear targeted categorical records
+  
+  dropdown.classList.remove('active');
+  
+  renderGenreRow();
+  renderBooks();
 }
 
 function filterGenre(el, aestheticItem) { 
   activeGenre = aestheticItem; 
-  document.querySelectorAll('.genre-row .genre-chip').forEach(c => c.classList.remove('active')); 
+  
+  // Target only active states inside advanced matrix to prevent killing dashboard container
+  document.querySelectorAll('#advancedFilterDropdown .genre-chip').forEach(c => c.classList.remove('active')); 
   el.classList.add('active'); 
-  renderBooks(); 
+  
+  renderBooks();
 }
 
 function getTitleInitials(title) { if(!title) return "BK"; const words = title.replace(/[^a-zA-Z0-9 ]/g, "").split(" ").filter(w => w.length > 0); if(words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase(); return title.substring(0, 2).toUpperCase(); }
+
+/**
+ * Debounce utility to prevent excessive re-renders during search
+ */
+function debounce(func, timeout = 300) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
+
+const processSearch = debounce(() => renderBooks());
 
 function renderBooks() {
   let list = getFiltered(); 
@@ -1917,7 +2229,7 @@ function renderBooks() {
       `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
       `<div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
       
-    let visualGenreLabel = normalizeGenre(b.genre.split(',')[0]);
+    const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
 
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
@@ -1942,17 +2254,22 @@ function getFiltered() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   return books.filter(b => { 
      if (activeStatus !== 'All' && statusKey(b.status) !== activeStatus) return false; 
+
      
-     if (activeGenre !== 'All') {
-       const insideExplicitOverrideStr = b.genre.toLowerCase().includes(activeGenre.toLowerCase());
-       if (!insideExplicitOverrideStr) return false;
+     // HIGH-PRECISION FILTERING: Exact match within categorical array
+     if (isAdvancedFilterOpenState && activeGenre !== 'All') {
+       const bookTags = b.genre?.split(',').map(t => t.trim().toLowerCase()) || [];
+       const targetTag = activeGenre.toLowerCase();
+       if (!bookTags.includes(targetTag)) return false;
      }
      
      if (q) {
        const insideTitle = b.title.toLowerCase().includes(q); 
        const insideAuthor = b.author.toLowerCase().includes(q);
-       const insideGenreStr = b.genre.toLowerCase().includes(q);
-       if (!insideTitle && !insideAuthor && !insideGenreStr) return false;
+       const insideGenreStr = b.genre?.toLowerCase().includes(q);
+       const insideNotes = b.notes?.toLowerCase().includes(q);
+       const insideSeries = b.series?.toLowerCase().includes(q);
+       if (!insideTitle && !insideAuthor && !insideGenreStr && !insideNotes && !insideSeries) return false;
      }
      return true; 
   });
@@ -1966,9 +2283,16 @@ async function openInfoCardOverlay(id) {
   
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
-  document.getElementById('infoCardGenre').textContent = currentBook.genre.split(',')[0];
+  document.getElementById('infoCardGenre').textContent = currentBook.genre?.split(',')[0]?.trim() || 'Other';
   document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
   document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
+  
+  const backNotes = document.getElementById('infoCardNotesBack');
+  if (backNotes) backNotes.textContent = currentBook.notes || "No internal observations recorded for this archive.";
+
+  const inner = document.getElementById('infoCardInner');
+  if (inner) inner.classList.remove('is-flipped');
+
   document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
   
   if (currentBook.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl); return; }
@@ -2006,7 +2330,7 @@ function pivotToConfigurationModal() {
   const sortedControlAlphabeticalList = [...genresPool, ...tropesPool].sort((a, b) => a.localeCompare(b));
   const completeOperationalAestheticsList = [...sortedControlAlphabeticalList, 'Other'];
   
-  const rawCleanedTokens = currentBook.genre.split(',').map(item => item.trim()).filter(item => item.length > 0);
+  const rawCleanedTokens = currentBook.genre?.split(',')?.map(item => item.trim())?.filter(item => item.length > 0) || [];
   currentBook._stagedGenresList = [];
   
   rawCleanedTokens.forEach(token => {
@@ -2086,6 +2410,12 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 function selectStatus(el, val) { currentBook._pendingStatus = val; document.querySelectorAll('#statusBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); const w = document.getElementById('modalProgressWrapper'); if(val === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; } }
 
 function saveBook() { 
+  // VALIDATION: Enforce minimum 4 genres/tropes before allowing save
+  if (!currentBook._stagedGenresList || currentBook._stagedGenresList.length < 4) {
+    alert("ARCHIVAL ERROR: Every volume must be indexed with at least 4 Narrative Profiles or Genres.");
+    return;
+  }
+
   if(currentBook._pendingStatus) currentBook.status = currentBook._pendingStatus; 
   if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
   
@@ -2131,7 +2461,7 @@ function saveBook() {
 }
 
 function filterStatus(el, val) { activeStatus = val; document.querySelectorAll('#statsRow2 .stat-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderBooks(); }
-function cycleSort() { sortMode = (sortMode + 1) % 4; document.getElementById('sortBtn').textContent = sortLabels[sortMode]; document.getElementById('sortBtn').className = sortMode > 0 ? 'sort-btn active' : 'sort-btn'; renderBooks(); }
+function applySort(val) { sortMode = parseInt(val); const el = document.getElementById('sortSelect'); if (sortMode > 0) el.classList.add('active'); else el.classList.remove('active'); renderBooks(); }
 
 function renderHomepageChartsPreview() {
   const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating); const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
@@ -2181,11 +2511,11 @@ function acceptParalysisDestiny() {
 function statusKey(rawStatus) {
   if (!rawStatus) return "TBR";
   const normalized = rawStatus.toLowerCase().trim();
-  if (normalized === "to read" || normalized === "tbr") return "TBR";
+  if (normalized === "to read" || normalized === "tbr" || normalized === "tread") return "TBR";
   if (normalized === "reading") return "Reading";
   if (normalized === "completed" || normalized === "complete") return "Complete";
   if (normalized === "dropped" || normalized === "dnf") return "DNF";
-  if (normalized === "past reads" || normalized === "old") return "Old";
+  if (normalized === "past reads" || normalized === "old" || normalized === "past") return "Old";
   return "Wont";
 }
 
@@ -2204,6 +2534,9 @@ function showView(viewName) {
   document.querySelectorAll('[class*="-view"]').forEach(el => el.classList.remove('visible'));
   document.querySelectorAll('.bottom-nav .nav-btn').forEach(btn => btn.classList.remove('active'));
   
+  const scrollBtn = document.getElementById('scrollUpBtn');
+  if (scrollBtn) scrollBtn.style.display = (viewName === 'home' || viewName === 'paralysis' || viewName === 'goals') ? 'none' : 'flex';
+
   if (viewName === 'home') {
     document.getElementById('homeView').classList.add('visible');
     document.getElementById('navHome').classList.add('active');
@@ -2223,6 +2556,10 @@ function showView(viewName) {
     initCasinoWheelChips();
     initParalysisInputListeners();
     setTimeout(() => { renderHTML5CasinoCanvasWheel(); }, 60);
+  } else if (viewName === 'goals') {
+    document.getElementById('goalsView').classList.add('visible');
+    document.getElementById('navGoals').classList.add('active');
+    // No specific rendering needed for an empty page yet
   }
 }
 
@@ -2341,6 +2678,9 @@ function getCasinoPoolBooks() {
     
     if (activeCasinoGenreFilter !== 'All') {
       if (!b.genre.toLowerCase().includes(activeCasinoGenreFilter.toLowerCase())) return false;
+      const bookTags = b.genre?.split(',').map(t => t.trim().toLowerCase()) || [];
+      const targetTag = activeCasinoGenreFilter.toLowerCase();
+      if (!bookTags.includes(targetTag)) return false;
     }
     
     return true;
@@ -2566,10 +2906,16 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
-             
+               
+  const backNotes = document.getElementById('cardBookNotesBack');
+  if (backNotes) backNotes.textContent = paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered.";
+
+  const inner = document.getElementById('casinoCardInner');
+  if (inner) inner.classList.remove('is-flipped');
+
   overlayCardNode.classList.add('show'); 
   if (isFromSpin) triggerCasinoEmoteFountainSplash();
-             
+               
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
   if (targetISBN) {
@@ -2601,11 +2947,13 @@ function closeTradingCardOverlay() {
 
 function closeTradingCardOverlayWindow() { closeTradingCardOverlay(); }
 
+function toggleCardFlip(el) {
+  el.classList.toggle('is-flipped');
+}
+
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbie's Library V" + SYSTEM_BUILD_VERSION;
   renderGenreRow(); renderBooks(); showView('home');
 });
 </script>
-</body>
-</html>
