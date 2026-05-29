@@ -16,6 +16,7 @@
     --crimson-light: #e63946;
     --blood-pale: #1f1114;
     --gold: #b39243;
+    --gold: #d4af37;
     --silver: #8e9aaf;
     --dark-void: #0a0709;
     --dark-iron: #161215;
@@ -34,6 +35,7 @@
   .header {
     background: linear-gradient(180deg, #000 0%, #050405 40%, var(--dark-iron) 100%);
     padding: 75px 20px 24px;
+    padding: 140px 20px 24px;
     text-align: center;
     position: relative;
     overflow: visible;
@@ -52,6 +54,7 @@
   .temple-pediment {
     position: absolute;
     top: 15px;
+    top: 80px;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 32px);
@@ -75,6 +78,7 @@
   .temple-architrave {
     position: absolute;
     top: 50px;
+    top: 115px;
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 32px);
@@ -90,6 +94,7 @@
   .marble-pillar {
     position: absolute;
     top: 56px;
+    top: 121px;
     bottom: 0;
     width: 14px;
     background: linear-gradient(90deg, #0f0c0e 0%, var(--card-slate) 25%, #2d262b 50%, var(--card-slate) 75%, #0f0c0e 100%);
@@ -170,8 +175,8 @@
     position: absolute; /* Changed from fixed to absolute */
     top: 16px; /* Positioned relative to the header's top */
     left: 16px; /* Positioned relative to the header's left */
-    width: 44px;
-    height: 40px;
+    width: 48px;
+    height: 44px;
     background: var(--crimson) !important;
     border: 1px solid var(--gold) !important;
     border-radius: 4px;
@@ -238,8 +243,8 @@
   /* TROPHIES ICON STYLING */
   .trophies-icon-wrapper {
     position: relative;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     color: #ffffff; /* Set color to white for currentColor inheritance for SVG children */
@@ -253,14 +258,19 @@
   .trophies-icon-wrapper .person-icon {
     fill: currentColor; /* Inherit color from parent */
     transition: fill 0.3s;
+    transform: scale(0.6); /* Creates padding between the icon and the ring */
+    transform-origin: 12px 12px;
   }
   .trophies-icon-wrapper .progress-ring-bg {
-    stroke: rgba(255, 255, 255, 0.15); /* Subtle white/grey for the track */
+    stroke: var(--border-iron); /* Grey track from the theme */
+    opacity: 0.5;
   }
   .trophies-icon-wrapper .progress-ring-fill {
     stroke: var(--gold); /* Gold fill for progress */
+    stroke: url(#gold-shine); /* Shiny metallic gradient */
     transition: stroke 0.3s, stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s;
-    filter: drop-shadow(0 0 3px rgba(179, 146, 67, 0.8));
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
   }
   .trophies-trigger:hover .trophies-icon-wrapper .progress-ring-fill,
   .trophies-trigger:active .trophies-icon-wrapper .progress-ring-fill {
@@ -622,7 +632,7 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 0 12px 0 0;
+    padding: 0;
     width: 100%;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -632,7 +642,7 @@
     display: flex; 
     gap: 8px; 
     overflow-x: auto; 
-    padding: 16px 12px; 
+    padding: 16px 0; 
     scrollbar-width: none; 
     -webkit-overflow-scrolling: touch;
   }
@@ -654,7 +664,7 @@
   }
   .sticky-dock-add-trigger-btn:hover { filter: brightness(1.2); }
   
-  .toolbar { padding: 12px 16px; display: flex; gap: 10px; align-items: center; }
+  .toolbar { padding: 12px 0 4px; display: flex; gap: 10px; align-items: center; }
   .search-wrap { flex: 1; position: relative; }
   .search-wrap input { width: 100%; padding: 10px 14px 10px 36px; border: 1px solid var(--border-iron); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: #000; color: var(--text-parchment); outline: none; }
   .search-wrap input:focus { border-color: var(--crimson); }
@@ -673,7 +683,7 @@
 
   /* 🎭 TWIN DECK CHIP SEPARATOR SUB SYSTEM LAYOUT CONFIGURATION WITH TRUE MAX-WIDTH BOUNDS */
   .master-filter-deck-wrapper { display: flex; flex-direction: column; gap: 8px; width: 100vw; max-width: 100%; overflow-x: hidden; }
-  .genre-row { display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; }
+  .genre-row { display: flex; gap: 6px; overflow-x: auto; padding: 0 0 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%; }
   .genre-chip { 
     flex-shrink: 0; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border-iron); 
     background: var(--dark-iron); font-family: 'JetBrains Mono', monospace; font-size: 11px; 
@@ -686,7 +696,7 @@
   .genre-chip.advanced-filter-chip { border-color: rgba(179, 146, 67, 0.4); color: var(--gold); }
   .genre-chip.advanced-filter-chip.active { background: var(--crimson); color: #fff; border-color: var(--crimson-light); }
 
-  .results-count { padding: 4px 16px 8px; font-size: 11px; color: var(--text-muted); }
+  .results-count { padding: 4px 0 8px; font-size: 11px; color: var(--text-muted); }
 
   /* ADVANCED FILTER DROPDOWN PANEL */
   .advanced-filter-dropdown {
@@ -698,7 +708,7 @@
     border: 1px solid var(--border-iron);
     border-top: none; /* Visually connect to the button */
     border-radius: 0 0 4px 4px;
-    margin: -4px 16px 8px; /* Adjust margin to sit below the chip row */
+    margin: -4px 0 8px; /* Adjust margin to sit below the chip row */
     position: relative;
     z-index: 999;
     opacity: 0;
@@ -718,7 +728,7 @@
   }
 
   /* 📚 CARD STRUCTURAL LAYOUTS */
-  .book-list { padding: 4px 12px 100px; display: flex; flex-direction: column; gap: 12px; }
+  .book-list { padding: 4px 0 100px; display: flex; flex-direction: column; gap: 12px; }
   .book-card { 
     background: var(--card-slate); border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border-iron); 
     display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.15s ease, border-color 0.15s;
@@ -777,6 +787,17 @@
     transform: scale(1.05) translateY(-2px);
     box-shadow: 0 4px 15px rgba(166, 38, 38, 0.4);
     z-index: 2;
+  }
+
+  /* 📱 MOBILE ACTIVE-ONLY LABEL LOGIC */
+  @media (max-width: 480px) {
+    .nav-buttons-row { gap: 4px; }
+    .nav-btn { padding: 8px 2px; transition: flex 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s; }
+    /* Hide labels by default on small screens */
+    .nav-btn span:not(.icon) { display: none; }
+    /* Expand the active button and reveal its specific label */
+    .nav-btn.active { flex: 4; }
+    .nav-btn.active span:not(.icon) { display: block; font-size: 9px; margin-top: 2px; line-height: 1.1; }
   }
 
   /* SYSTEM MODALS LAYOUTS */
@@ -975,14 +996,23 @@
 <button class="trophies-trigger" onclick="toggleTrophiesModalViewLayout(true)">
   <div class="trophies-icon-wrapper">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gold-shine" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#b39243"/>
+          <stop offset="50%" stop-color="#fff2cc"/>
+          <stop offset="100%" stop-color="#b39243"/>
+        </linearGradient>
+      </defs>
+      <!-- Black Outline Background -->
+      <circle cx="12" cy="12" r="9" stroke="#000" stroke-width="6" fill="none" />
       <!-- Progress Ring Background Track -->
-      <circle class="progress-ring-bg" cx="12" cy="12" r="9.5" stroke-width="4" fill="none" />
+      <circle class="progress-ring-bg" cx="12" cy="12" r="9" stroke-width="4" fill="none" />
       <!-- Torso Silhouette -->
       <path class="person-icon" d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C7.81 14 4.41 16.18 4 20H20C19.59 16.18 16.19 14 12 14Z" fill="currentColor"/>
       <!-- Progress Ring Fill -->
-      <circle class="progress-ring-fill" cx="12" cy="12" r="9.5" stroke-width="4" stroke-linecap="round" fill="none"
-              stroke-dasharray="60" transform="rotate(-90 12 12)"
-              style="stroke-dashoffset: calc(60 - (var(--progress, 0) * 60 / 100)); --progress: 75;"/>
+      <circle class="progress-ring-fill" cx="12" cy="12" r="9" stroke-width="4" stroke-linecap="round" fill="none"
+              stroke-dasharray="57" transform="rotate(-90 12 12)"
+              style="stroke-dashoffset: calc(57 - (var(--progress, 0) * 57 / 100)); --progress: 75;"/>
     </svg>
   </div>
 </button>
@@ -1145,7 +1175,7 @@
 </div>
 
 <div class="library-view" id="libraryView">
-  <div class="welcome-card" style="margin: 0 16px 20px; margin-top: 16px;">
+  <div class="welcome-card">
     <div class="welcome-emoji">🏛️</div>
     <div class="welcome-text">The Grand Hall</div>
     <div class="welcome-sub">Browse your entire archival ledger. Filter by tracking status, query specific titles, or add fresh volumes to the shelves.</div>
@@ -1236,7 +1266,7 @@
 </div>
 
 <div class="paralysis-view" id="paralysisView">
-  <div class="welcome-card" style="margin-bottom: 20px; border-top-color: var(--gold);">
+  <div class="welcome-card" style="margin-bottom: 20px; border-top-color: var(--crimson);">
     <div class="welcome-emoji">🔮</div>
     <div class="welcome-text">Break Paralysis</div>
     <div class="welcome-sub">Commit your active TBR pool to the fates. Spin the mechanism or inspect random wedges to defeat indecision.</div>
@@ -1583,7 +1613,7 @@ const BOOKS_RAW = [
   [72,"Traitor Queen","Jensen D.","TBR","The Bridge Kingdom, Book 2","Fantasy Romance","352",4.22,null,null],
   [73,"The Inadequate Heir","Jensen D.","TBR","The Bridge Kingdom, Book 3","Fantasy Romance","608",4.10,null,null],
   [74,"Endless War","Jensen D.","TBR","The Bridge Kingdom, Book 4","Fantasy Romance","608",4.19,null,null],
-  [756,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
+  [75,"Starwars: Ahsoka","Johnston E","Won't Continue","Standalone","Young Adult","356",4.07,null,null],
   [76,"Glow","Kennedy R.","TBR","The Plated Prisoner, Book 4","Fantasy Romance","738",4.12,null,null],
   [77,"Glint","Kennedy R.","TBR","The Plated Prisoner, Book 2","Fantasy Romance","482",4.15,null,null],
   [78,"Gleam","Kennedy R.","TBR","The Plated Prisoner, Book 3","Fantasy","272",4.37,null,null],
