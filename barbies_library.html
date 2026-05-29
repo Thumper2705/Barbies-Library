@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 <style>
   :root {
+    /* ARCHIVAL THEME: DARK MODE (DEFAULT) */
     --crimson: #a62626;
     --crimson-light: #e63946;
     --blood-pale: #1f1114;
@@ -25,16 +26,29 @@
     --text-muted: #8c7f70;
     --border-iron: #2d262b;
     --green-poison: #2b7a4b;
-    --blue-shadow: #a62626;
+    --blue-shadow: #a62626; /* Using user-provided red hex for blue name */
     --purple-void: #5e35b1;
   }
+
+  /* ARCHIVAL THEME: LIGHT MODE (OVERRIDE FRAMEWORK) */
+  [data-theme="light"] {
+    /* Note: Light Mode palette is currently a functional placeholder */
+    --dark-void: #f5f2f0;
+    --dark-iron: #ffffff;
+    --card-slate: #fdfdfd;
+    --text-parchment: #1a1a1a;
+    --text-muted: #666666;
+    --border-iron: #dcdcdc;
+    --blood-pale: #f0e6e6;
+    /* Crimson and Gold remain constant Athenian accents */
+  }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   body { font-family: 'JetBrains Mono', monospace; background: var(--dark-void); color: var(--text-parchment); min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
   /* 🏛️ ATHENS MARBLE MONUMENT APEX APPARATUS HEADER AREA */
   .header {
     background: linear-gradient(180deg, #000 0%, #050405 40%, var(--dark-iron) 100%);
-    padding: 75px 20px 24px;
     padding: 140px 20px 24px;
     text-align: center;
     position: relative;
@@ -53,7 +67,6 @@
   /* NEOCLASSICAL GEOMETRIC ROOF SYSTEM (THE PEDIMENT) */
   .temple-pediment {
     position: absolute;
-    top: 15px;
     top: 80px;
     left: 50%;
     transform: translateX(-50%);
@@ -77,7 +90,6 @@
   /* HORIZONTAL SUPPORT ARCHITRAVE BEAM FLOOR SLAB */
   .temple-architrave {
     position: absolute;
-    top: 50px;
     top: 115px;
     left: 50%;
     transform: translateX(-50%);
@@ -93,7 +105,6 @@
   /* FLUTED ATHENIAN MARBLE COLUMNS CORE CHASSIS DESIGN MAP */
   .marble-pillar {
     position: absolute;
-    top: 56px;
     top: 121px;
     bottom: 0;
     width: 14px;
@@ -564,7 +575,8 @@
     margin-bottom: 20px;
     width: 100%;
   }
-  .chart-card, .pie-wrapper { 
+  .chart-card { margin-bottom: 20px; }
+  .chart-card { 
     background: var(--card-slate); 
     border-radius: 4px; 
     padding: 16px; 
@@ -573,17 +585,14 @@
     min-width: 0; 
   }
   .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
-  .canvas-holder { position: relative; height: 240px; width: 100%; }
+  .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
+  .canvas-holder { position: relative; height: 240px; width: 100%; flex: 1; min-width: 0; }
 
   @media(min-width: 640px) { 
     .pie-charts-flex-row { 
       flex-direction: row; 
       justify-content: space-between; 
       gap: 24px; 
-    }
-    .pie-wrapper { 
-      flex: 0 1 calc(50% - 12px); 
-      max-width: 48%; 
     }
   }
 
@@ -1070,8 +1079,8 @@
           <span class="settings-accordion-arrow">▼</span>
         </div>
         <div class="settings-accordion-inner-drawer" style="flex-direction: row; gap: 8px; padding: 14px 12px;">
-          <button class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #000 !important; color: #fff !important; border: 1px solid var(--border-iron) !important; font-weight: 700;" onclick="void(0)">Dark Mode</button>
-          <button class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #fff !important; color: #000 !important; border: 1px solid #fff !important; font-weight: 700;" onclick="alert('✨ Light Mode Framework: Coming Soon! ✨')">Light Mode</button>
+          <button id="themeBtnDark" class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #000 !important; color: #fff !important; border: 1px solid var(--border-iron) !important; font-weight: 700;" onclick="executeThemeSwitch('dark')">Dark Mode</button>
+          <button id="themeBtnLight" class="status-sel-btn" style="flex: 1; margin-top: 0; height: 38px; background: #fff !important; color: #000 !important; border: 1px solid #fff !important; font-weight: 700;" onclick="executeThemeSwitch('light')">Light Mode</button>
         </div>
       </div>
 
@@ -1244,15 +1253,13 @@
     <div class="sub-rankings-list" id="subRankingsMount"></div>
   </div>
 
-  <div class="pie-charts-flex-row">
-    <div class="pie-wrapper">
-      <div class="chart-title">📊 Status Breakdown</div>
+  <div class="chart-card">
+    <div class="chart-title">📊 Visual Intelligence Analytics</div>
+    <div class="chart-brief">Categorical distribution mapping archival status and narrative preference telemetry.</div>
+    <div class="pie-charts-flex-row" style="margin-bottom: 0;">
       <div class="canvas-holder">
         <canvas id="statusPieChart"></canvas>
       </div>
-    </div>
-    <div class="pie-wrapper">
-      <div class="chart-title">🎭 Favorite Genres</div>
       <div class="canvas-holder">
         <canvas id="genrePieChart"></canvas>
       </div>
@@ -2040,6 +2047,26 @@ function processScribeNameMilitaryFormatting(rawAuthorString) {
 
 function executeDynamicZoomOverride(zoomFactorValue) { if (!html5QrCodeScannerInstance) return; document.getElementById('zoomDisplayNumericLabel').textContent = zoomFactorValue + "x"; try { html5QrCodeScannerInstance.applyVideoConstraints({ advanced: [{ zoom: parseFloat(zoomFactorValue) }] }).catch(() => {}); } catch(e) {} }
 function deconstructOpticalScanner() { if (html5QrCodeScannerInstance) { html5QrCodeScannerInstance.stop().then(() => { html5QrCodeScannerInstance = null; }).catch(() => {}); } }
+
+/**
+ * THEME ENGINE: Synchronizes the UI with the selected categorical color palette
+ */
+function executeThemeSwitch(themeName) {
+  document.documentElement.setAttribute('data-theme', themeName);
+  localStorage.setItem('barbies_library_theme', themeName);
+  
+  const darkBtn = document.getElementById('themeBtnDark');
+  const lightBtn = document.getElementById('themeBtnLight');
+  if (darkBtn && lightBtn) {
+    if (themeName === 'dark') {
+      darkBtn.style.borderColor = 'var(--gold)';
+      lightBtn.style.borderColor = 'transparent';
+    } else {
+      darkBtn.style.borderColor = 'transparent';
+      lightBtn.style.borderColor = 'var(--gold)';
+    }
+  }
+}
 
 async function executeISBNDeepIntelQuery(forcedISBN = null) {
   const targetISBN = forcedISBN || document.getElementById('addManualISBNInput').value.trim(); if (!targetISBN) return;
@@ -2984,6 +3011,8 @@ function toggleCardFlip(el) {
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbie's Library V" + SYSTEM_BUILD_VERSION;
+  const savedTheme = localStorage.getItem('barbies_library_theme') || 'dark';
+  executeThemeSwitch(savedTheme);
   renderGenreRow(); renderBooks(); showView('home');
 });
 </script>
