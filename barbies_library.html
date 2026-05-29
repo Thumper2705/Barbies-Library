@@ -1422,11 +1422,11 @@
 
 <div class="bottom-nav">
   <div class="nav-buttons-row">
+    <button class="nav-btn" id="navGoals" onclick="showView('goals')">
+      <span class="icon">🏆</span><span>Goals Tracker</span>
+    </button>
     <button class="nav-btn" id="navLib" onclick="showView('library')">
       <span class="icon">🏛️</span><span>The Grand Hall</span>
-    </button>
-    <button class="nav-btn" id="navCharts" onclick="showView('charts')">
-      <span class="icon">📜</span><span>Analytics</span>
     </button>
     <button class="nav-btn active" id="navHome" onclick="showView('home')">
       <span class="icon">
@@ -1438,11 +1438,11 @@
       </span>
       <span>Command Center</span>
     </button>
-    <button class="nav-btn" id="navParalysis" onclick="showView('paralysis')">
-      <span class="icon">🔮</span><span>Break Paralysis</span>
+    <button class="nav-btn" id="navCharts" onclick="showView('charts')">
+      <span class="icon">📜</span><span>Analytics</span>
     </button>
-    <button class="nav-btn" id="navGoals" onclick="showView('goals')">
-      <span class="icon">🏆</span><span>Goals Tracker and Trophies</span>
+    <button class="nav-btn" id="navParalysis" onclick="showView('paralysis')">
+      <span class="icon">🔮</span><span>Paralysis</span>
     </button>
   </div>
 </div>
@@ -1543,6 +1543,13 @@
 <script>
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
 const SYSTEM_BUILD_VERSION = "4.0";
+const MASTER_GENRE_LIST = [
+  'Academic Settings', 'Dark Romantasy', 'Dystopian / LitRPG', 'Enemies to Lovers',
+  'Fated Mates', 'Forced Proximity', 'Found Family', 'Gothic / Horror',
+  'Grim Thriller', 'High Fantasy', 'Historical / Classical', 'LGBTQ+',
+  'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
+  'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier'
+];
 
 // ── DATA REGISTRY PACKAGES ──────────────────────────────────
 const BOOKS_RAW = [
@@ -2094,9 +2101,14 @@ function commitNewBook() {
 
 function normalizeGenre(g) {
   if (!g) return 'Other'; const l = g.toLowerCase();
+  // LGBTQ+
+  if (l.includes('lgbtq') || l.includes('queer') || l.includes('pride') || l.includes('mm') || l.includes('bl') || l.includes('structured lgbtq+')) return 'LGBTQ+';
+  // Dark Romantasy
+  if (l.includes('dark romance') || l.includes('dark romantasy') || l.includes('fark romance') || l.includes('dark romanticy')) return 'Dark Romantasy';
+  // Main Genres
   if (l.includes('romantasy') || l.includes('romantic fantasy')) return 'Romantasy';
-  if (l.includes('fantasy romance') || l.includes('romantic') || l.includes('romance') || l.includes('dark romance')) return 'Dark Romantasy';
-  if (l.includes('high fantasy') || l.includes('epic fantasy')) return 'High Fantasy'; 
+  if (l.includes('fantasy romance') || l.includes('romantic') || l.includes('romance')) return 'Romance';
+  if (l.includes('high fantasy') || l.includes('epic fantasy')) return 'High Fantasy';
   if (l.includes('thriller') || l.includes('crime') || l.includes('mystery') || l.includes('grim thriller')) return 'Grim Thriller'; 
   if (l.includes('sci-fi') || l.includes('science fiction') || l.includes('lore')) return 'Sci-Fi / Lore';
   if (l.includes('true crime') || l.includes('dossier')) return 'True Crime / Dossier';
@@ -2104,6 +2116,16 @@ function normalizeGenre(g) {
   if (l.includes('gothic') || l.includes('horror')) return 'Gothic / Horror';
   if (l.includes('historical') || l.includes('classical')) return 'Historical / Classical';
   if (l.includes('dystopian') || l.includes('litrpg')) return 'Dystopian / LitRPG';
+  // Tropes
+  if (l.includes('academic settings') || l.includes('academic')) return 'Academic Settings';
+  if (l.includes('enemies to lovers')) return 'Enemies to Lovers';
+  if (l.includes('fated mates')) return 'Fated Mates';
+  if (l.includes('forced proximity')) return 'Forced Proximity';
+  if (l.includes('found family')) return 'Found Family';
+  if (l.includes('locked room')) return 'Locked Room';
+  if (l.includes('morally grey hero') || l.includes('morally grey')) return 'Morally Grey Hero';
+  if (l.includes('political intrigue')) return 'Political Intrigue';
+  // Fallback
   if (l.includes('fantasy')) return 'High Fantasy';
   return 'Other';
 }
@@ -2185,21 +2207,33 @@ function inferNarrativeTropes(b) {
 
 function getTopTropes() { 
   return [
-    'Academic Settings', 'Dark Romance', 'Enemies to Lovers', 'Fated Mates', 
+    'Academic Settings', 'Enemies to Lovers', 'Fated Mates', 
     'Forced Proximity', 'Found Family', 'Locked Room', 'Morally Grey Hero', 
-    'Political Intrigue', 'Structured LGBTQ+'
+    'Political Intrigue'
   ]; 
 }
 
 let isAdvancedFilterOpenState = false; // State-machine tracker for dynamic accordion layout
 
 function renderGenreRow() {
-  const genresBase = [
-    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
-    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
-  ].sort((a, b) => a.localeCompare(b));
+  const uniqueButtonsSet = new Set();
   
-  const tropesBase = getTopTropes().sort((a, b) => a.localeCompare(b));
+  const baseCategories = [
+    'Academic Settings', 'Dark Romantasy', 'Dystopian / LitRPG', 'Enemies to Lovers',
+    'Fated Mates', 'Forced Proximity', 'Found Family', 'Gothic / Horror',
+    'Grim Thriller', 'High Fantasy', 'Historical / Classical', 'LGBTQ+',
+    'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
+    'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier'
+  ];
+  
+  baseCategories.forEach(cat => uniqueButtonsSet.add(cat));
+  
+  books.forEach(b => {
+    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())).filter(t => t && t !== 'Other') || [];
+    bookTags.forEach(t => uniqueButtonsSet.add(t));
+  });
+  
+  const allButtons = Array.from(uniqueButtonsSet).sort((a, b) => a.localeCompare(b));
   
   // Strict State-Machine: Toggle between All and Advanced Filter highlighting styles
   document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
@@ -2209,16 +2243,16 @@ function renderGenreRow() {
   // Populate the Advanced Filter Dropdown with Genres and Tropes
   const dropdownNode = document.getElementById('advancedFilterDropdown');
   if (dropdownNode) {
-    const genresHtml = genresBase.map(g => 
-      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === g) ? 'active':''}" onclick="filterGenre(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`
+    const buttonsHtml = allButtons.map(btn => 
+      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === btn) ? 'active':''}" onclick="filterGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn}</div>`
     ).join('') + `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === 'Other') ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
 
-    const tropesHtml = tropesBase.map(t => 
-      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === t) ? 'active':''}" onclick="filterGenre(this,'${t.replace(/'/g, "\\'")}')">${t}</div>`
-    ).join('');
-
-    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${genresHtml}${tropesHtml}</div>`;
+    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${buttonsHtml}</div>`;
   }
+
+  document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
+    `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenre === 'All') ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
+    `<div class="genre-chip advanced-filter-chip ${isAdvancedFilterOpenState ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
 }
 
 function switchAdvancedFilterWorkflowToggle(triggerElement) {
@@ -2315,9 +2349,8 @@ function getFiltered() {
      
      // HIGH-PRECISION FILTERING: Exact match within categorical array
      if (isAdvancedFilterOpenState && activeGenre !== 'All') {
-       const bookTags = b.genre?.split(',').map(t => t.trim().toLowerCase()) || [];
-       const targetTag = activeGenre.toLowerCase();
-       if (!bookTags.includes(targetTag)) return false;
+       const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+       if (!bookTags.includes(activeGenre)) return false;
      }
      
      if (q) {
@@ -2379,13 +2412,7 @@ function pivotToConfigurationModal() {
   document.getElementById('mAuthor').textContent = "By Author " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
   
-  const genresPool = [
-    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
-    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
-  ];
-  const tropesPool = getTopTropes();
-  const sortedControlAlphabeticalList = [...genresPool, ...tropesPool].sort((a, b) => a.localeCompare(b));
-  const completeOperationalAestheticsList = [...sortedControlAlphabeticalList, 'Other'];
+  const completeOperationalAestheticsList = [...MASTER_GENRE_LIST, 'Other'].sort((a, b) => a.localeCompare(b));
   
   const rawCleanedTokens = currentBook.genre?.split(',')?.map(item => item.trim())?.filter(item => item.length > 0) || [];
   currentBook._stagedGenresList = [];
