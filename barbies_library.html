@@ -657,7 +657,19 @@
   .sub-rank-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
+  .author-expand-container { margin-bottom: 4px; }
+  .author-expand-container { margin-bottom: 12px; }
+  .author-expand-container { margin-bottom: 16px; }
+  .author-expand-container { margin-bottom: 24px; }
   .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-iron); font-size: 12px; }
+  .author-books-dropdown { 
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.3s ease-out, padding 0.3s; 
+    background: #000; 
+    border-radius: 0 0 4px 4px; 
+  }
+  .author-books-dropdown.active { padding: 32px 20px 100px; max-height: 10000px; border-bottom: 1px solid var(--border-iron); margin-bottom: 32px; }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
 
   /* STICKY COLLECTION STABILIZER ANCHOR FRAME WITH EXTENDED MARGIN FLEX SYSTEM */
@@ -1304,6 +1316,12 @@
   <div class="chart-card">
     <div class="chart-title">✍️ Most Read Authors</div>
     <div id="topAuthorsListMount"></div>
+  </div>
+
+  <div class="chart-card">
+    <div class="chart-title">📚 Full Author Directory</div>
+    <div class="chart-brief">Alphabetical register of all archival scribes</div>
+    <div id="fullAuthorDirectoryMount"></div>
   </div>
 </div>
 
@@ -2679,6 +2697,47 @@ function renderHomepageChartsPreview() {
 let selectedStatusIndex = -1;
 let selectedGenreIndex = -1;
 
+function toggleAuthorBooks(el, authorName) {
+  const dropdown = el.nextElementSibling;
+  const isActive = dropdown.classList.contains('active');
+  
+  // Close others for a clean accordion effect
+  document.querySelectorAll('.author-books-dropdown').forEach(d => {
+    d.classList.remove('active');
+    d.style.maxHeight = null;
+  });
+
+  if (!isActive) {
+    const authorBooks = books.filter(b => b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").trim() === authorName);
+    dropdown.innerHTML = authorBooks.map(b => {
+      const statusClass = statusKey(b.status);
+      const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+      const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
+
+      let thumbnail = b.coverUrl ?
+        `<img src="${b.coverUrl}" style="width:28px; height:40px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
+        `<div style="width:28px; height:40px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:8px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
+
+      return `
+        <div class="book-card status-${statusClass}" style="margin-bottom:16px; padding:12px; border-width: 1px 1px 1px 4px;" onclick="openInfoCardOverlay(${b.id})">
+          ${thumbnail}
+          <div class="book-info">
+            <div class="book-title" style="font-size:13px;">${cleanTitle}</div>
+            <div class="book-meta">
+              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
+              <span class="badge badge-genre">${visualGenreLabel}</span>
+            </div>
+          </div>
+          <div class="rating-row-value" style="font-size:11px;">
+            ${b.myRating != null ? `<span>★</span>${b.myRating}` : '<div style="color:var(--border-iron);">–</div>'}
+          </div>
+        </div>`;
+    }).join('');
+    dropdown.classList.add('active');
+    dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+  }
+}
+
 function renderCharts() {
   const rated = books.filter(b => b.myRating != null).sort((a, b) => (b.myRating || 0) - (a.myRating || 0));
   const p1 = rated[0] || { title: "Empty", myRating: "—" };
@@ -2697,7 +2756,7 @@ function renderCharts() {
         <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
 
-  document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
+  document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 20).map((b, i) => `
     <div class="sub-rank-item"><span class="sub-rank-num">#${i+4}</span><div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div><span class="sub-rank-score"> ${b.myRating}</span></div>`).join('');
 
   if(activeCharts.status) activeCharts.status.destroy();
@@ -2814,7 +2873,11 @@ function renderCharts() {
     type: 'doughnut',
     data: {
       labels: genreEntries.map(e => e.label),
-      datasets: [{ data: genreEntries.map(e => e.val), backgroundColor: genreEntries.map(e => e.color) }]
+      datasets: [{ 
+        data: genreEntries.map(e => e.val), 
+        backgroundColor: genreEntries.map(e => e.color),
+        offset: genreEntries.map(() => 0)
+      }]
     },
     options: {
       rotation: 0,
@@ -2858,7 +2921,24 @@ function renderCharts() {
   });
 
   const authLookup = {}; books.forEach(b => { if(b.author) { const c = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authLookup[c] = (authLookup[c] || 0) + 1; } });
-  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
+  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `
+    <div class="author-expand-container">
+      <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
+        <span>${idx + 1}. ${name}</span>
+        <span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span>
+      </div>
+      <div class="author-books-dropdown"></div>
+    </div>`).join('');
+
+  const allAuthors = Object.keys(authLookup).sort();
+  document.getElementById('fullAuthorDirectoryMount').innerHTML = allAuthors.map((name) => `
+    <div class="author-expand-container">
+      <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
+        <span>${name}</span>
+        <span class="author-book-pill" style="color:var(--gold); font-weight:700;">${authLookup[name]} volumes</span>
+      </div>
+      <div class="author-books-dropdown"></div>
+    </div>`).join('');
 }
 
 function handleTradingCardImageError() { document.getElementById('cardBookCoverImg').style.display = "none"; document.getElementById('cardBookGlyph').style.display = "block"; }
