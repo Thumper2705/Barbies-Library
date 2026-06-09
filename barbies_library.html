@@ -840,6 +840,10 @@
     height: 0;
     overflow-y: hidden;
     transition: height 0.3s ease-out, opacity 0.3s ease-out;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), opacity 0.3s ease;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
     background: #0d0a0d;
     border: 1px solid var(--border-iron);
     border-top: none; /* Visually connect to the button */
@@ -848,12 +852,16 @@
     position: relative;
     z-index: 999;
     opacity: 0;
+    pointer-events: none;
   }
   .advanced-filter-dropdown.active {
     display: block;
-    height: 150px; /* Desired height */
+    height: auto !important;
+    max-height: 2000px;
+    transition: max-height 0.6s ease-in-out, opacity 0.3s ease;
     opacity: 1;
-    overflow-y: auto; /* Allow scrolling if content exceeds height */
+    overflow-y: visible !important;
+    pointer-events: auto;
   }
   .dropdown-chip-grid {
     padding: 12px;
@@ -2314,31 +2322,36 @@ async function fetchAndProcessBookQuotes(book) {
 
   let snippets = [];
   try {
-    // Optimized query to target verbatim text/dialogue
-    const query = encodeURIComponent(`intitle:"${book.title}" ${book.author.split(',')[0]} "book quotes"`);
-    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
-    const data = await response.json();
-    const item = data.items?.[0];
-    
-    // Pool description and search snippet to find actual lines from the book
-    const pool = (item?.volumeInfo?.description || "") + " " + (item?.searchInfo?.textSnippet || "");
-    const cleanPool = pool.replace(/<[^>]*>/g, '');
-    
-    // Logic: Look for text inside quotation marks (Proper Quote Detection)
-    const quoteRegex = /"([^"]{30,280})"/g;
-    let match;
-    while ((match = quoteRegex.exec(cleanPool)) !== null) {
-      snippets.push(match[1].trim());
-    }
+    let searchUrl = `https://www.googleapis.com/books/v1/volumes?q=intitle:"${book.title}"+inauthor:"${book.author.split(',')[0]}"&maxResults=1`;
+    let response = await fetch(searchUrl);
+    let data = await response.json();
+    let item = data.items?.[0];
 
-    // Fallback: If no verbatim quotes found, extract the most descriptive sentences
-    if (snippets.length === 0) {
-      const sentences = cleanPool.match(/[^.!?]+[.!?]+/g) || [cleanPool];
-      snippets = sentences.map(s => s.trim()).filter(s => s.length > 40 && s.length < 220).slice(0, 2);
+    if (item) {
+      const pool = (item.volumeInfo?.description || "") + " " + (item.searchInfo?.textSnippet || "");
+      const cleanPool = pool.replace(/<[^>]*>/g, '').trim();
+      
+      // Strategy 1: Look for text inside quotes
+      const quoteRegex = /"([^"]{40,300})"/g;
+      let match;
+      while ((match = quoteRegex.exec(cleanPool)) !== null) {
+        snippets.push(match[1].trim());
+      }
+
+      // Strategy 2: Extract descriptive sentences if no quotes found
+      if (snippets.length === 0) {
+        const sentences = cleanPool.match(/[^.!?]+[.!?]+/g) || [cleanPool];
+        snippets = sentences.map(s => s.trim()).filter(s => s.length > 60 && s.length < 300).slice(0, 2);
+      }
     }
   } catch (e) { console.warn("Quote Engine Error:", e); }
 
-  if (snippets.length === 0) snippets = ["In the silence of the library, a new story waits to be told."];
+  if (snippets.length === 0) {
+    snippets = [
+      `Archival logs for "${book.title}" indicate a ${book.genre?.split(',')[0] || 'literary'} chronicle by scribe ${book.author}.`,
+      `A legendary archive of ${book.title} waiting to be uncovered in the deep stacks.`
+    ];
+  }
 
   const newEntries = snippets.slice(0, 2).map(text => ({
     source: book.title,
@@ -2426,32 +2439,27 @@ async function enchantMissingLore(missingBooks) {
       }
       const data = await response.json();
       
-      let description = "";
-      if (data.items && data.items[0]?.volumeInfo?.description) {
-        description = data.items[0].volumeInfo.description;
-      }
-
+      const item = data.items?.[0];
       let snippets = [];
-      if (description) {
-        // Strip HTML tags and split into sentences
-        const cleanDesc = description.replace(/<[^>]*>/g, '');
-        const sentences = cleanDesc.match(/[^.!?]+[.!?]+/g) || [cleanDesc];
+      if (item) {
+        const pool = (item.volumeInfo?.description || "") + " " + (item.searchInfo?.textSnippet || "");
+        const cleanPool = pool.replace(/<[^>]*>/g, '').trim();
+        const sentences = cleanPool.match(/[^.!?]+[.!?]+/g) || [cleanPool];
         
-        // Extract two distinct snippets (sentences between 35 and 250 characters)
-        const candidates = sentences.map(s => s.trim()).filter(s => s.length > 35 && s.length < 250);
+        const candidates = sentences.map(s => s.trim()).filter(s => s.length > 45 && s.length < 250);
         
         if (candidates.length >= 2) {
           snippets = [candidates[0], candidates[Math.floor(candidates.length / 2)]];
         } else if (candidates.length === 1) {
-          snippets = [candidates[0], "A legendary chronicle waiting to be uncovered."];
+          snippets = [candidates[0], `A legendary chronicle of ${book.title} waiting to be uncovered.`];
         }
       }
 
       // Robust Fallback (Step 5)
       if (snippets.length === 0) {
         snippets = [
-          `In the heart of ${book.genre.split(',')[0] || 'the story'}, a new destiny unfolds.`,
-          "A legendary chronicle waiting to be uncovered."
+          `Archival logs for "${book.title}" indicate a tale of ${book.genre?.split(',')[0] || 'the ages'}.`,
+          `A legendary chronicle by ${book.author} waiting to be uncovered.`
         ];
       }
 
