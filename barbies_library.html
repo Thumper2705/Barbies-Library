@@ -584,7 +584,7 @@
   }
   .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
   .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
-  .canvas-holder { position: relative; height: 240px; width: 100%; flex: 1; min-width: 0; }
+  .canvas-holder { position: relative; height: 480px; width: 100%; flex: 1; min-width: 0; }
   .chart-center-text {
     position: absolute;
     top: 50%;
@@ -593,20 +593,21 @@
     text-align: center;
     pointer-events: none;
     width: 60%;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @media(min-width: 640px) {
-    .canvas-holder { height: 360px; } /* 50% larger for PC format */
+    .canvas-holder { height: 720px; } /* 50% larger for PC format */
   }
   .chart-center-text .main-val {
     font-family: 'Cinzel', serif;
-    font-size: 16px;
+    font-size: 32px;
     font-weight: 700;
     color: var(--text-parchment);
     display: block;
     line-height: 1.1;
   }
   .chart-center-text .sub-val {
-    font-size: 9px;
+    font-size: 14px;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -2240,13 +2241,19 @@ function inferNarrativeTropes(b) {
 // Custom Chart.js Plugin for Doughnut Borders
 const doughnutBorderPlugin = {
   id: 'doughnutBorder',
-  afterDraw(chart) {
+  beforeDatasetsDraw(chart) {
     const { ctx } = chart;
     const options = chart.options.plugins.doughnutBorder;
 
-    const outerBorderColor = options.outerBorderColor ? getComputedStyle(document.documentElement).getPropertyValue(options.outerBorderColor).trim() : null;
+    const resolveColor = (val) => {
+      if (!val) return null;
+      if (val.startsWith('--')) return getComputedStyle(document.documentElement).getPropertyValue(val).trim();
+      return val;
+    };
+
+    const outerBorderColor = resolveColor(options.outerBorderColor);
     const outerBorderWidth = options.outerBorderWidth || 0;
-    const innerBorderColor = options.innerBorderColor ? getComputedStyle(document.documentElement).getPropertyValue(options.innerBorderColor).trim() : null;
+    const innerBorderColor = resolveColor(options.innerBorderColor);
     const innerBorderWidth = options.innerBorderWidth || 0;
 
     if (!outerBorderWidth && !innerBorderWidth) return;
@@ -2669,11 +2676,19 @@ function renderHomepageChartsPreview() {
   }
 }
 
+let selectedStatusIndex = -1;
+let selectedGenreIndex = -1;
+
 function renderCharts() {
   const rated = books.filter(b => b.myRating != null).sort((a, b) => (b.myRating || 0) - (a.myRating || 0));
   const p1 = rated[0] || { title: "Empty", myRating: "—" };
   const p2 = rated[1] || { title: "Empty", myRating: "—" };
   const p3 = rated[2] || { title: "Empty", myRating: "—" };
+
+  selectedStatusIndex = -1;
+  selectedGenreIndex = -1;
+  document.getElementById('statusChartCenterText').style.transform = "translate(-50%, -50%) scale(1)";
+  document.getElementById('genreChartCenterText').style.transform = "translate(-50%, -50%) scale(1)";
 
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
@@ -2696,23 +2711,64 @@ function renderCharts() {
   const sWont = books.filter(b => statusKey(b.status) === 'Wont').length;
 
   document.getElementById('statusChartCenterText').innerHTML = `
-    <span class="main-val">${sRead} / ${sTBR}</span>
+    <span class="main-val" style="color:var(--gold);">${sRead} / ${sTBR}</span>
     <span class="sub-val">Finished / TBR</span>
   `;
+
+  const statusEntries = [
+    { label: 'To Read', val: sTBR, color: '#5e35b1' },
+    { label: 'Reading', val: sCurr, color: '#e63946' },
+    { label: 'Completed', val: sRead, color: '#2b7a4b' },
+    { label: 'Dropped', val: sDNF, color: '#a62626' },
+    { label: 'Past Reads', val: sOld, color: '#b39243' },
+    { label: 'Won\'t Continue', val: sWont, color: '#8c7f70' }
+  ].sort((a, b) => a.val - b.val);
 
   // Status Pie Chart
   activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads', 'Won\'t Continue'],
-      datasets: [{
-        data: [sTBR, sCurr, sRead, sDNF, sOld, sWont],
-        backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243', '#8c7f70'],
+      labels: statusEntries.map(e => e.label),
+      datasets: [{ 
+        data: statusEntries.map(e => e.val), 
+        backgroundColor: statusEntries.map(e => e.color),
+        offset: statusEntries.map(() => 0)
       }]
     },
     options: {
+      rotation: 0,
       responsive: true, maintainAspectRatio: false, cutout: '50%',
-      layout: { padding: 10 },
+      layout: { padding: 50 },
+      onClick: (evt, elements, chart) => {
+        const centerTextNode = document.getElementById('statusChartCenterText');
+        const defaultOuterColor = '--crimson-light';
+
+        if (elements.length > 0) {
+          const index = elements[0].index;
+          if (selectedStatusIndex === index) {
+            const label = chart.data.labels[index];
+            const key = statusKey(label);
+            const pill = Array.from(document.querySelectorAll('#statsRow2 .stat-pill')).find(p => p.getAttribute('onclick')?.includes(`'${key}'`));
+            filterStatus(pill || document.getElementById('filterPillAll'), key);
+            showView('library');
+          } else {
+            selectedStatusIndex = index;
+            const entry = statusEntries[index];
+            chart.data.datasets[0].offset = chart.data.labels.map((_, i) => i === selectedStatusIndex ? 50 : 0);
+            chart.options.plugins.doughnutBorder.outerBorderColor = entry.color;
+            centerTextNode.innerHTML = `<span class="main-val" style="color:${entry.color};">${entry.val}</span><span class="sub-val">${entry.label}</span>`;
+            centerTextNode.style.transform = "translate(-50%, -50%) scale(1.15)";
+            chart.update();
+          }
+        } else {
+          selectedStatusIndex = -1;
+          chart.data.datasets[0].offset = chart.data.labels.map(() => 0);
+          chart.options.plugins.doughnutBorder.outerBorderColor = defaultOuterColor;
+          centerTextNode.innerHTML = `<span class="main-val" style="color:var(--gold);">${sRead} / ${sTBR}</span><span class="sub-val">Finished / TBR</span>`;
+          centerTextNode.style.transform = "translate(-50%, -50%) scale(1)";
+          chart.update();
+        }
+      },
       elements: { arc: { borderWidth: 0 } },
       plugins: { 
         legend: { display: false },
@@ -2742,25 +2798,56 @@ function renderCharts() {
   });
   const gPerc = books.length > 0 ? Math.round((maxG / books.length) * 100) : 0;
   document.getElementById('genreChartCenterText').innerHTML = `
-    <span class="main-val" style="color:var(--gold); font-size:14px;">${topG}</span>
+    <span class="main-val" style="color:var(--gold); font-size:24px;">${topG}</span>
     <span class="sub-val">${gPerc}% Dominance</span>
-    <span class="sub-val" style="font-size:7px; opacity:0.6;">Total ${MASTER_GENRE_LIST.length} Profiles</span>
+    <span class="sub-val" style="font-size:12px; opacity:0.6;">Total ${MASTER_GENRE_LIST.length} Profiles</span>
   `;
 
-  const chartLabels = [...MASTER_GENRE_LIST, 'Other'].sort();
-  const chartData = chartLabels.map(l => genreLookup[l]);
   const spectrum = ['#a62626', '#d4af37', '#5e35b1', '#2b7a4b', '#e63946', '#b39243', '#8e9aaf', '#8c7f70', '#ffadad', '#ffd670', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#fab1a0', '#ff7675', '#fd79a8', '#636e72', '#00b894', '#00cec9', '#0984e3', '#6c5ce7', '#ffeaa7'];
+  const genreEntries = [...MASTER_GENRE_LIST, 'Other'].sort().map((l, i) => ({
+    label: l,
+    val: genreLookup[l] || 0,
+    color: spectrum[i % spectrum.length]
+  })).sort((a, b) => a.val - b.val);
 
   activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: chartLabels,
-      datasets: [{ data: chartData, backgroundColor: spectrum.slice(0, chartLabels.length) }]
+      labels: genreEntries.map(e => e.label),
+      datasets: [{ data: genreEntries.map(e => e.val), backgroundColor: genreEntries.map(e => e.color) }]
     },
     options: {
+      rotation: 0,
       responsive: true, maintainAspectRatio: false,
       cutout: '50%',
-      layout: { padding: 10 },
+      layout: { padding: 50 },
+      onClick: (evt, elements, chart) => {
+        const centerTextNode = document.getElementById('genreChartCenterText');
+        const defaultOuterColor = '--crimson-light';
+
+        if (elements.length > 0) {
+          const index = elements[0].index;
+          if (selectedGenreIndex === index) {
+            activeGenres = [chart.data.labels[index]];
+            showView('library');
+          } else {
+            selectedGenreIndex = index;
+            const entry = genreEntries[index];
+            chart.data.datasets[0].offset = chart.data.labels.map((_, i) => i === selectedGenreIndex ? 50 : 0);
+            chart.options.plugins.doughnutBorder.outerBorderColor = entry.color;
+            centerTextNode.innerHTML = `<span class="main-val" style="color:${entry.color}; font-size:24px;">${entry.label}</span><span class="sub-val">${entry.val} Volumes</span>`;
+            centerTextNode.style.transform = "translate(-50%, -50%) scale(1.15)";
+            chart.update();
+          }
+        } else {
+          selectedGenreIndex = -1;
+          chart.data.datasets[0].offset = chart.data.labels.map(() => 0);
+          chart.options.plugins.doughnutBorder.outerBorderColor = defaultOuterColor;
+          centerTextNode.innerHTML = `<span class="main-val" style="color:var(--gold); font-size:24px;">${topG}</span><span class="sub-val">${gPerc}% Dominance</span><span class="sub-val" style="font-size:12px; opacity:0.6;">Total ${MASTER_GENRE_LIST.length} Profiles</span>`;
+          centerTextNode.style.transform = "translate(-50%, -50%) scale(1)";
+          chart.update();
+        }
+      },
       elements: { arc: { borderWidth: 0 } },
       plugins: {
         legend: { display: false },
