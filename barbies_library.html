@@ -2328,9 +2328,9 @@ async function initializeLoreEngine() {
     const quotesBeforeEnchantmentCount = COMPLETED_BOOK_QUOTES.length;
 
     // COMPARISON LOGIC: Check active library against normalized quote archive
-    const currentQuotesIndex = new Set(COMPLETED_BOOK_QUOTES.map(q => q.normalizedSource));
-    const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !currentQuotesIndex.has(normalizeTitle(b.title)));
-    
+    const booksWithQuotes = new Set(COMPLETED_BOOK_QUOTES.map(q => q.normalizedSource));
+    const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !booksWithQuotes.has(normalizeTitle(b.title)));
+
     if (missingLore.length > 0) {
       // The status text is already set to "Enchanting Quotes ✨" at the start.
       // It will be updated per book inside enchantMissingLore.
@@ -2494,8 +2494,7 @@ function shuffleCurrentBookQuote() {
   const currentQ = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
   if (!currentQ) return;
   const currentNorm = normalizeTitle(currentQ.source);
-  const sameBookIndices = COMPLETED_BOOK_QUOTES
-    .map((q, idx) => q.normalizedSource === currentQ.normalizedSource ? idx : -1)
+  const sameBookIndices = COMPLETED_BOOK_QUOTES 
     .map((q, idx) => q.normalizedSource === currentNorm ? idx : -1)
     .filter(idx => idx !== -1);
   if (sameBookIndices.length <= 1) return;
@@ -3084,8 +3083,9 @@ async function openInfoCardOverlay(id) {
   document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
   document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   
+  const normTitle = normalizeTitle(currentBook.title);
   const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
-  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === currentBook.title);
+  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
   if (bookQuotes.length > 0) {
     loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
@@ -3399,6 +3399,9 @@ function renderCharts() {
       responsive: true, maintainAspectRatio: false, cutout: '70%',
       layout: { padding: 50 },
       responsive: true, maintainAspectRatio: false, cutout: '80%',
+      responsive: true, 
+      maintainAspectRatio: false, 
+      cutout: '80%',
       layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('statusChartCenterText');
@@ -3487,6 +3490,8 @@ function renderCharts() {
       cutout: '50%',
       cutout: '70%',
       layout: { padding: 50 },
+      responsive: true, 
+      maintainAspectRatio: false, 
       cutout: '80%',
       layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
       onClick: (evt, elements, chart) => {
