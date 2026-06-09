@@ -1543,12 +1543,12 @@
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
 const SYSTEM_BUILD_VERSION = "4.0";
 const MASTER_GENRE_LIST = [
-  'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
-  'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family',
+  'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama', // Corrected list
+  'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family', // Corrected list
   'Graphic Novel', 'Grim Thriller', 'High Fantasy', 'Historical',
-  'horror', 'LGBTQ+', 'Literary Fiction', 'LitRPG',
+  'Horror', 'LGBTQ+', 'Literary Fiction', 'LitRPG',
   'Locked Room', 'Morally Grey', 'Non-Fiction', 'Political Intrigue',
-  'Romance', 'Romantasy', 'SCI-FI', 'True Crime / Dossier', 'Urban Fantasy',
+  'Romance', 'Romantasy', 'Sci-Fi', 'True Crime / Dossier', 'Urban Fantasy',
   'Young Adult'
 ];
 
@@ -2102,32 +2102,32 @@ function commitNewBook() {
 
 function normalizeGenre(g) {
   if (!g) return 'Other'; const l = g.toLowerCase();
-  // LGBTQ+
-  if (l.includes('lgbtq') || l.includes('queer') || l.includes('pride') || l.includes('mm') || l.includes('bl') || l.includes('structured lgbtq+')) return 'LGBTQ+';
-  // Dark Romantasy
-  if (l.includes('dark romance') || l.includes('dark romantasy') || l.includes('fark romance') || l.includes('dark romanticy')) return 'Dark Romantasy';
-  // Main Genres
-  if (l.includes('romantasy') || l.includes('romantic fantasy')) return 'Romantasy';
-  if (l.includes('fantasy romance') || l.includes('romantic') || l.includes('romance')) return 'Romance';
-  if (l.includes('high fantasy') || l.includes('epic fantasy')) return 'High Fantasy';
-  if (l.includes('thriller') || l.includes('crime') || l.includes('mystery') || l.includes('grim thriller')) return 'Grim Thriller'; 
-  if (l.includes('sci-fi') || l.includes('science fiction') || l.includes('lore')) return 'Sci-Fi / Lore';
-  if (l.includes('true crime') || l.includes('dossier')) return 'True Crime / Dossier';
-  if (l.includes('memoir') || l.includes('biography') || l.includes('nonfiction') || l.includes('non-fiction')) return 'Memoir / Non-Fiction';
-  if (l.includes('gothic') || l.includes('horror')) return 'Gothic / Horror';
-  if (l.includes('historical') || l.includes('classical')) return 'Historical / Classical';
-  if (l.includes('dystopian') || l.includes('litrpg')) return 'Dystopian / LitRPG';
-  // Tropes
   if (l.includes('academic settings') || l.includes('academic')) return 'Academic Settings';
+  if (l.includes('allegorical fiction') || l.includes('allegorical')) return 'Allegorical Fiction';
+  if (l.includes('dark romantasy') || l.includes('dark romance') || l === 'dark') return 'Dark Romantasy';
+  if (l.includes('drama')) return 'Drama';
   if (l.includes('enemies to lovers')) return 'Enemies to Lovers';
   if (l.includes('fated mates')) return 'Fated Mates';
   if (l.includes('forced proximity')) return 'Forced Proximity';
   if (l.includes('found family')) return 'Found Family';
+  if (l.includes('graphic novel') || l.includes('manga')) return 'Graphic Novel';
+  if (l.includes('grim thriller') || l.includes('thriller') || l.includes('crime') || l.includes('mystery')) return 'Grim Thriller';
+  if (l.includes('high fantasy') || l.includes('epic fantasy')) return 'High Fantasy';
+  if (l.includes('historical') || l.includes('classical')) return 'Historical';
+  if (l.includes('horror') || l.includes('gothic')) return 'Horror';
+  if (l.includes('lgbtq') || l.includes('queer') || l.includes('pride') || l.includes('mm') || l.includes('bl')) return 'LGBTQ+';
+  if (l.includes('literary fiction')) return 'Literary Fiction';
+  if (l.includes('litrpg')) return 'LitRPG';
   if (l.includes('locked room')) return 'Locked Room';
-  if (l.includes('morally grey hero') || l.includes('morally grey')) return 'Morally Grey Hero';
-  if (l.includes('morally grey hero') || l.includes('morally grey')) return 'Morally Grey';
+  if (l.includes('morally grey')) return 'Morally Grey';
+  if (l.includes('non-fiction') || l.includes('memoir') || l.includes('biography') || l.includes('nonfiction')) return 'Non-Fiction';
   if (l.includes('political intrigue')) return 'Political Intrigue';
-  // Fallback
+  if (l.includes('romantasy') || l.includes('romantic fantasy')) return 'Romantasy';
+  if (l.includes('romance') || l.includes('romantic')) return 'Romance';
+  if (l.includes('sci-fi') || l.includes('science fiction') || l.includes('lore')) return 'Sci-Fi';
+  if (l.includes('true crime') || l.includes('dossier')) return 'True Crime / Dossier';
+  if (l.includes('urban fantasy')) return 'Urban Fantasy';
+  if (l.includes('young adult') || l.includes('ya') || l.includes('dystopian')) return 'Young Adult';
   if (l.includes('fantasy')) return 'High Fantasy';
   return 'Other';
 }
@@ -2148,23 +2148,20 @@ function inferNarrativeTropes(b) {
     tropes.push('Locked Room');
   }
   if (auth.includes('berry') || auth.includes('douglas') || title.includes('psychopaths') || title.includes('mindhunter')) {
-    tropes.push('Morally Grey Hero');
   }
 
   if (id > 170) {
     if (title.includes('lovers') || title.includes('hate')) tropes.push('Enemies to Lovers');
     if (title.includes('mate') || title.includes('bond')) tropes.push('Fated Mates');
     if (title.includes('family') || title.includes('crew')) tropes.push('Found Family');
-    if (title.includes('dark') || title.includes('shadow')) tropes.push('Dark Romance');
-    if (title.includes('lgbt') || title.includes('queer') || title.includes('pride') || title.includes('mm')) tropes.push('Structured LGBTQ+');
-    if (title.includes('proximity') || title.includes('room')) tropes.push('Forced Proximity');
+    if (title.includes('dark') || title.includes('shadow')) tropes.push('Dark Romantasy');
+    if (title.includes('lgbt') || title.includes('queer') || title.includes('pride') || title.includes('mm')) tropes.push('LGBTQ+');
     return tropes;
   }
 
   if ([49, 67, 118, 119, 122, 136, 145].includes(id) || 
       auth.includes('mojito') || auth.includes('reid') || auth.includes('oseman') || auth.includes('miller') ||
       title.includes('achilles') || title.includes('rivalry') || title.includes('heartstopper') || title.includes('ennead') || title.includes('follow')) {
-    tropes.push('Structured LGBTQ+');
   }
 
   if ([43, 109, 110, 111, 129, 130, 156].includes(id)) {
@@ -2186,33 +2183,26 @@ function inferNarrativeTropes(b) {
   }
 
   if ([41,47,48,53,64,80,81,82,86,87,88,89,90,131].includes(id) || title.includes('black thorn') || title.includes('kiss the villain') || title.includes('gone girl') || title.includes('dark places')) {
-    tropes.push('Dark Romance');
+    tropes.push('Dark Romantasy');
   }
 
   if (tropes.length === 0) {
     if (id % 6 === 0) tropes.push('Enemies to Lovers');
     else if (id % 6 === 1) tropes.push('Fated Mates');
     else if (id % 6 === 2) tropes.push('Found Family');
-    else if (id % 6 === 3) tropes.push('Dark Romance');
-    else if (id % 6 === 4) tropes.push('Structured LGBTQ+');
+    else if (id % 6 === 3) tropes.push('Dark Romantasy');
+    else if (id % 6 === 4) tropes.push('LGBTQ+');
     else tropes.push('Forced Proximity');
-    // Improved fallback: provide 4 distinct tropes if none match keywords
     const master = getTopTropes();
-    for(let i=0; i<4; i++) {
-      let selection = master[(id + i) % master.length];
-      if (!tropes.includes(selection)) tropes.push(selection);
-    }
+    // The original fallback logic was adding too many duplicates or non-canonical names.
+    // The primary inference logic should be sufficient, and the `MASTER_GENRE_LIST` ensures all are available.
   }
 
   return [...new Set(tropes)];
 }
 
 function getTopTropes() { 
-  return [
-    'Academic Settings', 'Enemies to Lovers', 'Fated Mates', 
-    'Forced Proximity', 'Found Family', 'Locked Room', 'Morally Grey Hero', 
-    'Political Intrigue'
-  ]; 
+  return ['Academic Settings', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family', 'Locked Room', 'Morally Grey', 'Political Intrigue']; // Canonical names
 }
 
 let isAdvancedFilterOpenState = false; // State-machine tracker for dynamic accordion layout
@@ -2653,14 +2643,14 @@ function renderCharts() {
     else genreLookup['Other']++;
   });
 
-  const chartLabels = Object.keys(genreLookup).filter(l => genreLookup[l] > 0).sort();
+  const chartLabels = [...MASTER_GENRE_LIST, 'Other'].sort();
   const chartData = chartLabels.map(l => genreLookup[l]);
   const spectrum = ['#a62626', '#d4af37', '#5e35b1', '#2b7a4b', '#e63946', '#b39243', '#8e9aaf', '#8c7f70', '#ffadad', '#ffd670', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#fab1a0', '#ff7675', '#fd79a8', '#636e72', '#00b894', '#00cec9', '#0984e3', '#6c5ce7', '#ffeaa7'];
 
   activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), {
     type: 'pie',
     data: {
-      labels: chartLabels,
+      labels: chartLabels, // Use the full list of labels
       datasets: [{ data: chartData, backgroundColor: spectrum.slice(0, chartLabels.length), borderWidth: 2, borderColor: '#1c181c' }]
     },
     options: {
