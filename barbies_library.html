@@ -1544,11 +1544,11 @@
 const SYSTEM_BUILD_VERSION = "4.0";
 const MASTER_GENRE_LIST = [
   'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
-  'Dystopian / LitRPG', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity',
-  'Found Family', 'Gothic / Horror', 'Graphic Novel', 'Grim Thriller',
-  'High Fantasy', 'Historical / Classical', 'LGBTQ+', 'Literary Fiction',
-  'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
-  'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier', 'Urban Fantasy',
+  'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family',
+  'Graphic Novel', 'Grim Thriller', 'High Fantasy', 'Historical',
+  'horror', 'LGBTQ+', 'Literary Fiction', 'LitRPG',
+  'Locked Room', 'Morally Grey', 'Non-Fiction', 'Political Intrigue',
+  'Romance', 'Romantasy', 'SCI-FI', 'True Crime / Dossier', 'Urban Fantasy',
   'Young Adult'
 ];
 
@@ -2125,6 +2125,7 @@ function normalizeGenre(g) {
   if (l.includes('found family')) return 'Found Family';
   if (l.includes('locked room')) return 'Locked Room';
   if (l.includes('morally grey hero') || l.includes('morally grey')) return 'Morally Grey Hero';
+  if (l.includes('morally grey hero') || l.includes('morally grey')) return 'Morally Grey';
   if (l.includes('political intrigue')) return 'Political Intrigue';
   // Fallback
   if (l.includes('fantasy')) return 'High Fantasy';
@@ -2218,23 +2219,20 @@ let isAdvancedFilterOpenState = false; // State-machine tracker for dynamic acco
 
 function renderGenreRow() {
   const uniqueButtonsSet = new Set();
+  const genreCounts = {};
   
-  // Use the expanded MASTER_GENRE_LIST directly
-  const baseCategories = [ 
-    'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
-    'Dystopian / LitRPG', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity',
-    'Found Family', 'Gothic / Horror', 'Graphic Novel', 'Grim Thriller',
-    'High Fantasy', 'Historical / Classical', 'LGBTQ+', 'Literary Fiction',
-    'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
-    'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier', 'Urban Fantasy',
-    'Young Adult'
-  ];
-  
-  baseCategories.forEach(cat => uniqueButtonsSet.add(cat));
+  MASTER_GENRE_LIST.forEach(cat => uniqueButtonsSet.add(cat));
+  // Context Books: Determine which books to count based on the active status filter
+  const booksToCount = activeStatus === 'All' ? books : books.filter(b => statusKey(b.status) === activeStatus);
   
   books.forEach(b => {
-    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())).filter(t => t && t !== 'Other') || [];
-    bookTags.forEach(t => uniqueButtonsSet.add(t));
+    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+    bookTags.forEach(t => { if (t && t !== 'Other') uniqueButtonsSet.add(t); });
+  });
+
+  booksToCount.forEach(b => {
+    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+    [...new Set(bookTags)].forEach(t => { genreCounts[t] = (genreCounts[t] || 0) + 1; });
   });
   
   const allButtons = Array.from(uniqueButtonsSet).sort((a, b) => a.localeCompare(b));
@@ -2242,40 +2240,79 @@ function renderGenreRow() {
   const scrollerLine = document.getElementById('systemGlobalResetScrollerLine');
   scrollerLine.innerHTML = 
     `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenres.length === 0) ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
-    `<div class="genre-chip advanced-filter-chip ${isAdvancedFilterOpenState ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
+    `<div class="genre-chip advanced-filter-chip ${(isAdvancedFilterOpenState || activeGenres.length > 0) ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
 
   const dropdownNode = document.getElementById('advancedFilterDropdown');
   if (dropdownNode) {
-    const buttonsHtml = allButtons.map(btn => 
-      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenres.includes(btn)) ? 'active':''}" onclick="filterGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn}</div>`
-    ).join('') + `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenres.includes('Other')) ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
-    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${buttonsHtml}</div>`;
+    const clearBtnHtml = `<div class="genre-chip" style="border-color: var(--crimson); color: var(--crimson-light); font-weight: 700;" onclick="resetGenreFilters()">Clear Selections</div>`;
+    const buttonsHtml = allButtons.map(btn => {
+      const count = genreCounts[btn] || 0;
+      return `<div class="genre-chip ${activeGenres.includes(btn) ? 'active':''}" onclick="filterGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn} (${count})</div>`;
+    }).join('') + `<div class="genre-chip ${activeGenres.includes('Other') ? 'active':''}" onclick="filterGenre(this,'Other')">Other (${genreCounts['Other'] || 0})</div>`;
+
+    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${clearBtnHtml}${buttonsHtml}</div>`;
   }
 }
 
 function switchAdvancedFilterWorkflowToggle(triggerElement) {
   const dropdown = document.getElementById('advancedFilterDropdown');
   
-  // Lock mode behavior: Force state-machine transition into granular mode
-  isAdvancedFilterOpenState = true; 
-  
-  // Apply synchronization configurations to accordion panel
-  triggerElement.classList.add('active');
-  dropdown.classList.add('active');
-  
-  // Re-render scroller strip to switch active classes seamlessly
-  renderGenreRow();
+  // Prevent immediate closing by the document listener
+  event.stopPropagation();
+
+  if (isAdvancedFilterOpenState) {
+    // If already open, close it without clearing filters
+    closeAdvancedFilterUI();
+  } else {
+    // If closed, open it
+    isAdvancedFilterOpenState = true; 
+    triggerElement.classList.add('active');
+    dropdown.classList.add('active');
+
+    // Add a global listener to close the dropdown if a click occurs outside
+    // Using mousedown for better responsiveness than click
+    document.addEventListener('mousedown', handleOutsideClick);
+    
+    // Re-render scroller strip to switch active classes seamlessly
+    renderGenreRow();
+  }
 }
 
 function clearAdvancedFilterMode(allCategoriesElement) {
-  const dropdown = document.getElementById('advancedFilterDropdown');
-  
-  // Terminate internal pipeline advanced lock state completely
-  isAdvancedFilterOpenState = false;
+  // This function is specifically for the "All Categories" button
+  // It clears filters AND closes the dropdown
   activeGenres = []; // Clear targeted categorical records
-  
-  dropdown.classList.remove('active');
-  
+  closeAdvancedFilterUI(); // Close the UI, which also re-renders
+}
+
+// New function to only close the Advanced Filter UI without clearing filters
+function closeAdvancedFilterUI() {
+  const dropdown = document.getElementById('advancedFilterDropdown');
+  const trigger = document.getElementById('advancedFilterTrigger');
+
+  isAdvancedFilterOpenState = false; // Update state tracker
+  dropdown.classList.remove('active'); // Hide dropdown
+  trigger.classList.remove('active'); // Deactivate trigger button
+
+  // Remove the global listener when the dropdown is closed
+  document.removeEventListener('mousedown', handleOutsideClick);
+
+  renderGenreRow(); // Re-render genre row to update 'All Categories' chip state
+  renderBooks();    // Re-render books with currently applied filters
+}
+
+function handleOutsideClick(event) {
+  const dropdown = document.getElementById('advancedFilterDropdown');
+  const trigger = document.getElementById('advancedFilterTrigger');
+
+  // If the dropdown is open and the click is outside both the dropdown and its trigger
+  if (isAdvancedFilterOpenState && dropdown && trigger && !dropdown.contains(event.target) && !trigger.contains(event.target)) {
+    closeAdvancedFilterUI(); // Call the new function to just close the UI
+  }
+}
+
+function resetGenreFilters() {
+  activeGenres = [];
   renderGenreRow();
   renderBooks();
 }
@@ -2351,8 +2388,8 @@ function getFiltered() {
   return books.filter(b => { 
      if (activeStatus !== 'All' && statusKey(b.status) !== activeStatus) return false; 
 
-     // HIGH-PRECISION FILTERING: Multi-genre match (OR logic)
-     if (isAdvancedFilterOpenState && activeGenres.length > 0) {
+     // HIGH-PRECISION FILTERING: Multi-genre match (OR logic) - Persists when minimized
+     if (activeGenres.length > 0) {
        const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
        const hasMatch = activeGenres.some(g => bookTags.includes(g));
        if (!hasMatch) return false;
@@ -2548,7 +2585,7 @@ function saveBook() {
   executeAutomatedBackgroundPipelineAutosave();
 }
 
-function filterStatus(el, val) { activeStatus = val; document.querySelectorAll('#statsRow2 .stat-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderBooks(); }
+function filterStatus(el, val) { activeStatus = val; document.querySelectorAll('#statsRow2 .stat-pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderGenreRow(); renderBooks(); }
 function applySort(val) { sortMode = parseInt(val); const el = document.getElementById('sortSelect'); if (sortMode > 0) el.classList.add('active'); else el.classList.remove('active'); renderBooks(); }
 
 function renderHomepageChartsPreview() {
