@@ -585,6 +585,7 @@
   .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
   .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
   .canvas-holder { position: relative; height: 480px; width: 100%; flex: 1; min-width: 0; }
+  .canvas-holder { position: relative; height: 600px; width: 100%; flex: 1; min-width: 0; }
   .chart-center-text {
     position: absolute;
     top: 50%;
@@ -593,14 +594,17 @@
     text-align: center;
     pointer-events: none;
     width: 60%;
+    width: 50%;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @media(min-width: 640px) {
     .canvas-holder { height: 720px; } /* 50% larger for PC format */
+    .chart-center-text .main-val { font-size: 32px !important; }
   }
   .chart-center-text .main-val {
     font-family: 'Cinzel', serif;
     font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--text-parchment);
     display: block;
@@ -1316,12 +1320,6 @@
   <div class="chart-card">
     <div class="chart-title">✍️ Most Read Authors</div>
     <div id="topAuthorsListMount"></div>
-  </div>
-
-  <div class="chart-card">
-    <div class="chart-title">📚 Full Author Directory</div>
-    <div class="chart-brief">Alphabetical register of all archival scribes</div>
-    <div id="fullAuthorDirectoryMount"></div>
   </div>
 </div>
 
@@ -2797,6 +2795,7 @@ function renderCharts() {
     options: {
       rotation: 0,
       responsive: true, maintainAspectRatio: false, cutout: '50%',
+      responsive: true, maintainAspectRatio: false, cutout: '70%',
       layout: { padding: 50 },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('statusChartCenterText');
@@ -2883,6 +2882,7 @@ function renderCharts() {
       rotation: 0,
       responsive: true, maintainAspectRatio: false,
       cutout: '50%',
+      cutout: '70%',
       layout: { padding: 50 },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('genreChartCenterText');
@@ -2926,16 +2926,6 @@ function renderCharts() {
       <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
         <span>${idx + 1}. ${name}</span>
         <span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span>
-      </div>
-      <div class="author-books-dropdown"></div>
-    </div>`).join('');
-
-  const allAuthors = Object.keys(authLookup).sort();
-  document.getElementById('fullAuthorDirectoryMount').innerHTML = allAuthors.map((name) => `
-    <div class="author-expand-container">
-      <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
-        <span>${name}</span>
-        <span class="author-book-pill" style="color:var(--gold); font-weight:700;">${authLookup[name]} volumes</span>
       </div>
       <div class="author-books-dropdown"></div>
     </div>`).join('');
