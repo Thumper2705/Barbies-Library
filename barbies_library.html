@@ -585,6 +585,35 @@
   .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
   .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
   .canvas-holder { position: relative; height: 240px; width: 100%; flex: 1; min-width: 0; }
+  .chart-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    width: 60%;
+  }
+  @media(min-width: 640px) {
+    .canvas-holder { height: 360px; } /* 50% larger for PC format */
+  }
+  .chart-center-text .main-val {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-parchment);
+    display: block;
+    line-height: 1.1;
+  }
+  .chart-center-text .sub-val {
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+    display: block;
+    line-height: 1.3;
+  }
 
   @media(min-width: 640px) { 
     .pie-charts-flex-row { 
@@ -1253,14 +1282,20 @@
   </div>
 
   <div class="chart-card">
-    <div class="chart-title">📊 Visual Intelligence Analytics</div>
-    <div class="chart-brief">Categorical distribution mapping archival status and narrative preference telemetry.</div>
     <div class="pie-charts-flex-row" style="margin-bottom: 0;">
-      <div class="canvas-holder">
-        <canvas id="statusPieChart"></canvas>
+      <div class="chart-card">
+        <div class="chart-title">Status Distribution</div>
+        <div class="canvas-holder">
+          <canvas id="statusPieChart"></canvas>
+          <div id="statusChartCenterText" class="chart-center-text"></div>
+        </div>
       </div>
-      <div class="canvas-holder">
-        <canvas id="genrePieChart"></canvas>
+      <div class="chart-card">
+        <div class="chart-title">Genre Distribution</div>
+        <div class="canvas-holder">
+          <canvas id="genrePieChart"></canvas>
+          <div id="genreChartCenterText" class="chart-center-text"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1541,10 +1576,8 @@
 
 <script>
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
-const SYSTEM_BUILD_VERSION = "4.0";
+const SYSTEM_BUILD_VERSION = "5.0";
 const MASTER_GENRE_LIST = [
-  'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama', // Corrected list
-  'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family', // Corrected list
   'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
   'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family',
   'Graphic Novel', 'Grim Thriller', 'High Fantasy', 'Historical',
@@ -2127,10 +2160,9 @@ function normalizeGenre(g) {
   if (l.includes('romantasy') || l.includes('romantic fantasy')) return 'Romantasy';
   if (l.includes('romance') || l.includes('romantic')) return 'Romance';
   if (l.includes('sci-fi') || l.includes('science fiction') || l.includes('lore')) return 'Sci-Fi';
-  if (l.includes('true crime') || l.includes('dossier')) return 'True Crime / Dossier';
+  if (l.includes('true crime') || l.includes('dossier') || l === 'true crime') return 'True Crime / Dossier';
   if (l.includes('urban fantasy')) return 'Urban Fantasy';
   if (l.includes('young adult') || l.includes('ya') || l.includes('dystopian')) return 'Young Adult';
-  if (l.includes('fantasy')) return 'High Fantasy';
   return 'Other';
 }
 
@@ -2204,6 +2236,46 @@ function inferNarrativeTropes(b) {
 
   return [...new Set(tropes)];
 }
+
+// Custom Chart.js Plugin for Doughnut Borders
+const doughnutBorderPlugin = {
+  id: 'doughnutBorder',
+  afterDraw(chart) {
+    const { ctx } = chart;
+    const options = chart.options.plugins.doughnutBorder;
+
+    const outerBorderColor = options.outerBorderColor ? getComputedStyle(document.documentElement).getPropertyValue(options.outerBorderColor).trim() : null;
+    const outerBorderWidth = options.outerBorderWidth || 0;
+    const innerBorderColor = options.innerBorderColor ? getComputedStyle(document.documentElement).getPropertyValue(options.innerBorderColor).trim() : null;
+    const innerBorderWidth = options.innerBorderWidth || 0;
+
+    if (!outerBorderWidth && !innerBorderWidth) return;
+
+    ctx.save();
+
+    const meta = chart.getDatasetMeta(0);
+    if (meta.data.length === 0) return;
+
+    const firstArc = meta.data[0];
+    const centerX = firstArc.x;
+    const centerY = firstArc.y;
+    const outerRadius = firstArc.outerRadius;
+    const innerRadius = firstArc.innerRadius;
+
+    // Draw outer border
+    if (outerBorderWidth > 0 && outerBorderColor) {
+      ctx.beginPath(); ctx.arc(centerX, centerY, outerRadius + (outerBorderWidth / 2), 0, 2 * Math.PI); ctx.lineWidth = outerBorderWidth; ctx.strokeStyle = outerBorderColor; ctx.stroke();
+    }
+
+    // Draw inner border
+    if (innerBorderWidth > 0 && innerBorderColor) {
+      ctx.beginPath(); ctx.arc(centerX, centerY, innerRadius - (innerBorderWidth / 2), 0, 2 * Math.PI); ctx.lineWidth = innerBorderWidth; ctx.strokeStyle = innerBorderColor; ctx.stroke();
+    }
+    ctx.restore();
+  }
+};
+// Register the plugin
+Chart.register(doughnutBorderPlugin);
 
 function getTopTropes() { 
   return ['Academic Settings', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family', 'Locked Room', 'Morally Grey', 'Political Intrigue']; // Canonical names
@@ -2616,24 +2688,37 @@ function renderCharts() {
   if(activeCharts.status) activeCharts.status.destroy();
   if(activeCharts.genre) activeCharts.genre.destroy();
 
+  const sTBR = books.filter(b => statusKey(b.status) === 'TBR').length;
+  const sRead = books.filter(b => statusKey(b.status) === 'Complete').length;
+  const sCurr = books.filter(b => statusKey(b.status) === 'Reading').length;
+  const sDNF = books.filter(b => statusKey(b.status) === 'DNF').length;
+  const sOld = books.filter(b => statusKey(b.status) === 'Old').length;
+  const sWont = books.filter(b => statusKey(b.status) === 'Wont').length;
+
+  document.getElementById('statusChartCenterText').innerHTML = `
+    <span class="main-val">${sRead} / ${sTBR}</span>
+    <span class="sub-val">Finished / TBR</span>
+  `;
+
   // Status Pie Chart
   activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), {
-    type: 'pie',
+    type: 'doughnut',
     data: {
-      labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'],
+      labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads', 'Won\'t Continue'],
       datasets: [{
-        data: [
-          books.filter(b => statusKey(b.status) === 'TBR').length,
-          books.filter(b => statusKey(b.status) === 'Reading').length,
-          books.filter(b => statusKey(b.status) === 'Complete').length,
-          books.filter(b => statusKey(b.status) === 'DNF').length,
-          books.filter(b => statusKey(b.status) === 'Old').length
-        ],
-        backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243'],
-        borderWidth: 2, borderColor: '#1c181c'
+        data: [sTBR, sCurr, sRead, sDNF, sOld, sWont],
+        backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243', '#8c7f70'],
       }]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } }
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '50%',
+      layout: { padding: 10 },
+      elements: { arc: { borderWidth: 0 } },
+      plugins: { 
+        legend: { display: false },
+        doughnutBorder: { outerBorderColor: '--crimson-light', outerBorderWidth: 3, innerBorderColor: '--gold', innerBorderWidth: 3 }
+      }
+    }
   });
 
   // Comprehensive Genre Chart
@@ -2647,21 +2732,40 @@ function renderCharts() {
     else genreLookup['Other']++;
   });
 
+  let topG = "None";
+  let maxG = 0;
+  Object.keys(genreLookup).forEach(g => {
+    if (genreLookup[g] > maxG && g !== 'Other') {
+      maxG = genreLookup[g];
+      topG = g;
+    }
+  });
+  const gPerc = books.length > 0 ? Math.round((maxG / books.length) * 100) : 0;
+  document.getElementById('genreChartCenterText').innerHTML = `
+    <span class="main-val" style="color:var(--gold); font-size:14px;">${topG}</span>
+    <span class="sub-val">${gPerc}% Dominance</span>
+    <span class="sub-val" style="font-size:7px; opacity:0.6;">Total ${MASTER_GENRE_LIST.length} Profiles</span>
+  `;
+
   const chartLabels = [...MASTER_GENRE_LIST, 'Other'].sort();
   const chartData = chartLabels.map(l => genreLookup[l]);
   const spectrum = ['#a62626', '#d4af37', '#5e35b1', '#2b7a4b', '#e63946', '#b39243', '#8e9aaf', '#8c7f70', '#ffadad', '#ffd670', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#fab1a0', '#ff7675', '#fd79a8', '#636e72', '#00b894', '#00cec9', '#0984e3', '#6c5ce7', '#ffeaa7'];
 
   activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), {
-    type: 'pie',
+    type: 'doughnut',
     data: {
-      labels: chartLabels, // Use the full list of labels
-      datasets: [{ data: chartData, backgroundColor: spectrum.slice(0, chartLabels.length), borderWidth: 2, borderColor: '#1c181c' }]
+      labels: chartLabels,
+      datasets: [{ data: chartData, backgroundColor: spectrum.slice(0, chartLabels.length) }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
+      cutout: '50%',
+      layout: { padding: 10 },
+      elements: { arc: { borderWidth: 0 } },
       plugins: {
-        legend: { display: false }, // Keep it clean; hover to see category names
-        tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} volumes` } }
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} volumes` } },
+        doughnutBorder: { outerBorderColor: '--crimson-light', outerBorderWidth: 3, innerBorderColor: '--gold', innerBorderWidth: 3 }
       }
     }
   });
