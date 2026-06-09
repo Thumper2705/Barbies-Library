@@ -586,6 +586,15 @@
   .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
   .canvas-holder { position: relative; height: 480px; width: 100%; flex: 1; min-width: 0; }
   .canvas-holder { position: relative; height: 600px; width: 100%; flex: 1; min-width: 0; }
+  .canvas-holder { 
+    position: relative; 
+    height: 450px; 
+    width: calc(100% + 32px); 
+    margin-left: -16px; 
+    margin-right: -16px; 
+    flex: 1; 
+    min-width: 0; 
+  }
   .chart-center-text {
     position: absolute;
     top: 50%;
@@ -595,11 +604,14 @@
     pointer-events: none;
     width: 60%;
     width: 50%;
+    width: 75%;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @media(min-width: 640px) {
     .canvas-holder { height: 720px; } /* 50% larger for PC format */
+    .canvas-holder { height: 720px; width: 100%; margin: 0; } 
     .chart-center-text .main-val { font-size: 32px !important; }
+    .chart-center-text { width: 60%; }
   }
   .chart-center-text .main-val {
     font-family: 'Cinzel', serif;
@@ -665,6 +677,7 @@
   .author-expand-container { margin-bottom: 12px; }
   .author-expand-container { margin-bottom: 16px; }
   .author-expand-container { margin-bottom: 24px; }
+  .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 8px; border-bottom: 1px solid var(--border-iron); font-size: 13px; cursor: pointer; -webkit-tap-highlight-color: rgba(230, 57, 70, 0.2); }
   .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-iron); font-size: 12px; }
   .author-books-dropdown { 
     max-height: 0; 
@@ -673,6 +686,7 @@
     background: #000; 
     border-radius: 0 0 4px 4px; 
   }
+  .author-books-dropdown.active { padding: 24px 16px 80px; border-bottom: 1px solid var(--border-iron); margin-bottom: 24px; }
   .author-books-dropdown.active { padding: 32px 20px 100px; max-height: 10000px; border-bottom: 1px solid var(--border-iron); margin-bottom: 32px; }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
 
@@ -2732,6 +2746,10 @@ function toggleAuthorBooks(el, authorName) {
         </div>`;
     }).join('');
     dropdown.classList.add('active');
+    // Ensure content is painted so scrollHeight measurement is accurate
+    requestAnimationFrame(() => {
+      dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+    });
     dropdown.style.maxHeight = dropdown.scrollHeight + "px";
   }
 }
@@ -2797,6 +2815,8 @@ function renderCharts() {
       responsive: true, maintainAspectRatio: false, cutout: '50%',
       responsive: true, maintainAspectRatio: false, cutout: '70%',
       layout: { padding: 50 },
+      responsive: true, maintainAspectRatio: false, cutout: '80%',
+      layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('statusChartCenterText');
         const defaultOuterColor = '--crimson-light';
@@ -2884,6 +2904,8 @@ function renderCharts() {
       cutout: '50%',
       cutout: '70%',
       layout: { padding: 50 },
+      cutout: '80%',
+      layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('genreChartCenterText');
         const defaultOuterColor = '--crimson-light';
