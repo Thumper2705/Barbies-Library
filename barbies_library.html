@@ -2298,15 +2298,27 @@ let COMPLETED_BOOK_QUOTES = [
 let activeQuoteIndex = 0;
 let dynamicLoreSources = new Set();
 
+// Helper to ensure comparisons ignore casing and punctuation
+function normalizeTitle(t) {
+  return t ? t.toLowerCase().replace(/['"\u2018\u2019\u201C\u201D]/g, "").replace(/[^a-z0-9]/g, "").trim() : "";
+}
+
 async function initializeLoreEngine() {
   // Step 1: Merge static quotes with dynamically discovered ones from localStorage
   const statusText = document.getElementById('loadingStatusText');
   if (statusText) statusText.textContent = "Enchanting Quotes ✨";
 
   try {
+    // Pre-normalize the static quotes for faster lookup
+    COMPLETED_BOOK_QUOTES.forEach(q => q.normalizedSource = normalizeTitle(q.source));
+
     const dynamicQuotes = JSON.parse(localStorage.getItem('barbies_dynamic_quotes') || '[]');
     if (dynamicQuotes.length > 0) {
-      dynamicQuotes.forEach(q => dynamicLoreSources.add(q.source));
+      dynamicQuotes.forEach(q => {
+        const norm = normalizeTitle(q.source);
+        q.normalizedSource = norm;
+        dynamicLoreSources.add(norm);
+      });
       console.log(`Lore Engine: Loading ${dynamicQuotes.length} dynamic quotes from archive.`);
       COMPLETED_BOOK_QUOTES = [...COMPLETED_BOOK_QUOTES, ...dynamicQuotes];
     }
@@ -2315,9 +2327,9 @@ async function initializeLoreEngine() {
     // This allows us to identify newly added quotes for persistence.
     const quotesBeforeEnchantmentCount = COMPLETED_BOOK_QUOTES.length;
 
-    // Check if we need to source new lore (Step 2 Audit)
-    const booksWithQuotes = new Set(COMPLETED_BOOK_QUOTES.map(q => q.source));
-    const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !booksWithQuotes.has(b.title));
+    // COMPARISON LOGIC: Check active library against normalized quote archive
+    const currentQuotesIndex = new Set(COMPLETED_BOOK_QUOTES.map(q => q.normalizedSource));
+    const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !currentQuotesIndex.has(normalizeTitle(b.title)));
     
     if (missingLore.length > 0) {
       // The status text is already set to "Enchanting Quotes ✨" at the start.
@@ -2382,8 +2394,9 @@ async function enchantMissingLore(missingBooks) {
       }
 
       snippets.forEach(text => {
-        COMPLETED_BOOK_QUOTES.push({ source: book.title, text: text });
-        dynamicLoreSources.add(book.title);
+        const norm = normalizeTitle(book.title);
+        COMPLETED_BOOK_QUOTES.push({ source: book.title, normalizedSource: norm, text: text });
+        dynamicLoreSources.add(norm);
       });
     } catch (err) {
       console.warn(`Lore Engine: Could not enchant ${book.title}`, err);
@@ -2437,8 +2450,9 @@ function updateHomeView() {
   const reading = books.find(b => b.status === 'Reading'); 
   const card = document.getElementById('readingCard');
   if (reading) {
-    card.classList.add('show'); 
-    document.getElementById('readingTitle').innerHTML = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "") + (dynamicLoreSources.has(reading.title) ? '<span style="color:var(--gold); margin-left:6px; font-size:14px;">✨</span>' : ''); 
+    card.classList.add('show');
+    const readingTitleKey = normalizeTitle(reading.title);
+    document.getElementById('readingTitle').innerHTML = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "") + (dynamicLoreSources.has(readingTitleKey) ? '<span style="color:var(--gold); margin-left:6px; font-size:14px;">✨</span>' : '');
     document.getElementById('readingAuthor').textContent = reading.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
@@ -2479,8 +2493,10 @@ function rotateCompletedQuote() { activeQuoteIndex = (activeQuoteIndex + 1) % CO
 function shuffleCurrentBookQuote() {
   const currentQ = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
   if (!currentQ) return;
+  const currentNorm = normalizeTitle(currentQ.source);
   const sameBookIndices = COMPLETED_BOOK_QUOTES
-    .map((q, idx) => q.source === currentQ.source ? idx : -1)
+    .map((q, idx) => q.normalizedSource === currentQ.normalizedSource ? idx : -1)
+    .map((q, idx) => q.normalizedSource === currentNorm ? idx : -1)
     .filter(idx => idx !== -1);
   if (sameBookIndices.length <= 1) return;
   let nextIdx;
@@ -3012,12 +3028,13 @@ function renderBooks() {
       `<div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
       
     const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
+    const isEnchanted = dynamicLoreSources.has(normalizeTitle(b.title));
 
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
         <div class="book-info">
-           <div class="book-title">${cleanTitle}${dynamicLoreSources.has(b.title) ? '<span style="color:var(--gold); margin-left:4px; font-size:10px;" title="Enchanted Lore">✨</span>' : ''}</div>
+           <div class="book-title">${cleanTitle}${isEnchanted ? '<span style="color:var(--gold); margin-left:4px; font-size:10px;" title="Enchanted Lore">✨</span>' : ''}</div>
            <div class="book-author">${cleanAuthor}</div>
            <div class="book-meta">
              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
@@ -3294,11 +3311,12 @@ function toggleAuthorBooks(el, authorName) {
         `<img src="${b.coverUrl}" style="width:28px; height:40px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
         `<div style="width:28px; height:40px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:8px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
 
+      const isEnchanted = dynamicLoreSources.has(normalizeTitle(b.title));
       return `
         <div class="book-card status-${statusClass}" style="margin-bottom:16px; padding:12px; border-width: 1px 1px 1px 4px;" onclick="openInfoCardOverlay(${b.id})">
           ${thumbnail}
           <div class="book-info">
-            <div class="book-title" style="font-size:13px;">${cleanTitle}${dynamicLoreSources.has(b.title) ? ' ✨' : ''}</div>
+            <div class="book-title" style="font-size:13px;">${cleanTitle}${isEnchanted ? ' ✨' : ''}</div>
             <div class="book-meta">
               <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
               <span class="badge badge-genre">${visualGenreLabel}</span>
@@ -3332,9 +3350,9 @@ function renderCharts() {
 
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column" ${p2.id ? `onclick="openInfoCardOverlay(${p2.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p2.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column" ${p1.id ? `onclick="openInfoCardOverlay(${p1.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p1.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p3.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column" ${p2.id ? `onclick="openInfoCardOverlay(${p2.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(normalizeTitle(p2.title)) ? ' ✨' : ''}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column" ${p1.id ? `onclick="openInfoCardOverlay(${p1.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(normalizeTitle(p1.title)) ? ' ✨' : ''}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(normalizeTitle(p3.title)) ? ' ✨' : ''}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
 
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 20).map((b, i) => `
@@ -3918,6 +3936,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   const coverImg = document.getElementById('cardBookCoverImg'); const fallbackIllustration = document.getElementById('cardBookGlyph');
   
   const cleanTitle = paralysisWinningBookPointer.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+  const normTitle = normalizeTitle(paralysisWinningBookPointer.title);
   const cleanAuthor = paralysisWinningBookPointer.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
              
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
@@ -3929,7 +3948,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
   
   const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
-  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === paralysisWinningBookPointer.title);
+  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
   if (bookQuotes.length > 0) {
     loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
@@ -3980,7 +3999,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
 function closeTradingCardOverlay() {
   const overlayCardNode = document.getElementById('casinoTradingCardOverlay');
   document.getElementById('casinoWinnerBanner').classList.remove('pop-active');
-  overlayCardNode.classList.remove('show'); overlayCardNode.classList.remove('winner-flash-active');a
+  overlayCardNode.classList.remove('show'); overlayCardNode.classList.remove('winner-flash-active');
   pickedWedgeIndexPointer = null; renderHTML5CasinoCanvasWheel();
 }
 
