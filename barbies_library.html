@@ -666,28 +666,56 @@
 
   /* Top 10 rankings list adjustments */
   .sub-rankings-list { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
-  .sub-rank-item { display: flex; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px dashed var(--border-iron); font-size: 12px; }
+  .sub-rank-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding: 8px 4px; 
+    border-bottom: 1px dashed var(--border-iron); 
+    font-size: 12px; 
+    cursor: pointer; 
+    transition: background 0.2s; 
+  }
+  .sub-rank-item:hover { background: rgba(255, 255, 255, 0.05); }
   .sub-rank-num { font-weight: 700; color: var(--text-muted); width: 20px; }
   .sub-rank-details { flex: 1; min-width: 0; }
   .sub-rank-title { font-family: 'Cinzel', serif; font-weight: 600; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub-rank-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
-  .author-expand-container { margin-bottom: 4px; }
+  /* Author Analytics Rankings Dropdown Styling */
   .author-expand-container { margin-bottom: 12px; }
-  .author-expand-container { margin-bottom: 16px; }
-  .author-expand-container { margin-bottom: 24px; }
-  .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 8px; border-bottom: 1px solid var(--border-iron); font-size: 13px; cursor: pointer; -webkit-tap-highlight-color: rgba(230, 57, 70, 0.2); }
-  .author-item-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid var(--border-iron); font-size: 12px; }
+
+  .author-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border-iron);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .author-item-row:hover { background: rgba(255, 255, 255, 0.03); }
+
   .author-books-dropdown { 
     max-height: 0; 
     overflow: hidden; 
-    transition: max-height 0.3s ease-out, padding 0.3s; 
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease; 
     background: #000; 
     border-radius: 0 0 4px 4px; 
+    padding: 0 24px;
   }
-  .author-books-dropdown.active { padding: 24px 16px 80px; border-bottom: 1px solid var(--border-iron); margin-bottom: 24px; }
-  .author-books-dropdown.active { padding: 32px 20px 100px; max-height: 10000px; border-bottom: 1px solid var(--border-iron); margin-bottom: 32px; }
+
+  .author-books-dropdown.active { 
+    padding-top: 32px;
+    padding-bottom: 60px; /* Extra room at the bottom for the last book */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-iron);
+    margin-bottom: 24px;
+    margin-bottom: 16px;
+  }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
 
   /* STICKY COLLECTION STABILIZER ANCHOR FRAME WITH EXTENDED MARGIN FLEX SYSTEM */
@@ -996,6 +1024,7 @@
   .card-attributes-strip { background: #000; border: 1px solid var(--border-iron); padding: 6px; display: flex; justify-content: space-around; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
   .card-attr-item span { color: var(--gold); }
   .card-lore-box { background: #090709; border: 1px dashed var(--border-iron); padding: 10px; font-size: 11px; line-height: 1.5; color: var(--text-parchment); min-height: 66px; }
+  .book-quote { margin-bottom: 8px; font-style: italic; } /* Styling for individual quotes */
 
   /* 🔝 KINETIC SCROLL-TO-TOP FLOATING APPARATUS */
   .scroll-up-btn {
@@ -1856,12 +1885,303 @@ const PRELOADED_ISBN_REGISTRY = {
 };
 
 const COMPLETED_BOOK_QUOTES = [
-  { text: "We are all monsters, Elspeth. The trick is choosing which one you let rule.", source: "One Dark Window" },
-  { text: "I am of the universe, and the universe is infinite. Therefore, I have infinite time.", source: "Alchemised" },
-  { text: "I could recognize him by touch alone, by smell; I would know him blind, by the way his breaths came and his feet struck the earth.", source: "The Song of Achilles" },
-  { text: "Do you think the stars look down and wish they were us?", source: "Quicksilver" },
-  { text: "Knock-knock, Mickey Mouse! Let's see what you've got.", source: "Project Hail Mary" },
-  { text: "To the people who look at the stars and wish, Rhys. To the stars who listen—and the dreams that are answered.", source: "A Court of Thorns and Roses" }
+  { source: "13 Reasons why", text: "No one knows for certain how much impact they have on the lives of other people." },
+  { source: "13 Reasons why", text: "You can't go back to how things were. How you thought they were." },
+  { source: "Skyshade", text: "The shadows are not your enemy; they are your refuge." },
+  { source: "Skyshade", text: "Power is a mirror; it shows you who you truly are." },
+  { source: "Crowntide", text: "A crown is a heavy burden for a head that only wants to rest." },
+  { source: "Crowntide", text: "In the end, we all return to the dust from which we were carved." },
+  { source: "Grim and Oro", text: "Gold is beautiful, but lead is reliable." },
+  { source: "Grim and Oro", text: "The trick to surviving is knowing when to stop being the hero." },
+  { source: "Talking with Psychopaths and Savages", text: "To understand the monster, you must first accept that the monster is human." },
+  { source: "Talking with Psychopaths and Savages", text: "The mask of sanity is a fragile thing." },
+  { source: "Talking with Psychopaths: Evil Minds", text: "Evil is not a thing that happens; it is a choice that is made." },
+  { source: "Talking with Psychopaths: Evil Minds", text: "Empathy is a foreign language to those who only speak the tongue of self-interest." },
+  { source: "Lightlark", text: "Love is a trap. It's a weakness. It's a lie." },
+  { source: "Lightlark", text: "The only thing more dangerous than a king with a secret is a queen with a crown." },
+  { source: "Nightbane", text: "To love is to give someone the power to destroy you." },
+  { source: "Nightbane", text: "I would burn the world for you." },
+  { source: "Starside", text: "The stars don't care about our wishes, but they listen anyway." },
+  { source: "Starside", text: "In the end, we are all just dust and light." },
+  { source: "Disney: Once Upon a Dream", text: "Sometimes the most beautiful dreams are the ones that come true while you're awake." },
+  { source: "Disney: Once Upon a Dream", text: "A kiss is just a kiss until you find the one you're meant to keep." },
+  { source: "Disney: A Whole New World", text: "Trust is a dangerous thing to give a thief." },
+  { source: "Disney: A Whole New World", text: "Unlocking the truth is often more painful than living the lie." },
+  { source: "Disney: As Old as Time", text: "True beauty is found within, but mirrors only show the surface." },
+  { source: "Disney: As Old as Time", text: "Love can be the most powerful curse of all." },
+  { source: "Disney: Part of Your World", text: "The surface world is a dangerous place for a heart made of water." },
+  { source: "Disney: Part of Your World", text: "Sometimes you have to lose your voice to find your soul." },
+  { source: "Disney: Unbirthday", text: "We're all mad here, but some of us are just better at hiding it." },
+  { source: "Disney: Unbirthday", text: "Time is a thief, and I am the one who lets him in." },
+  { source: "Disney: Straight On Till Morning", text: "Growing up is the only adventure that truly ends." },
+  { source: "Disney: Straight On Till Morning", text: "Faith, trust, and a little bit of pixie dust won't save you from yourself." },
+  { source: "Daughter of No Worlds", text: "We are the choices we make when we have no other options." },
+  { source: "Daughter of No Worlds", text: "To the broken who are still blooming." },
+  { source: "Children of Fallen Gods", text: "Hope is a dangerous thing for those who have lost everything." },
+  { source: "Children of Fallen Gods", text: "We are the monsters they made us." },
+  { source: "Mother of Death & Dawn", text: "Every ending is a new beginning, even if it starts in blood." },
+  { source: "Mother of Death & Dawn", text: "I will find my way back to you, even if I have to crawl through hell." },
+  { source: "The Legacy of the Lost Witch", text: "Magic is a burden that only the strong can carry without breaking." },
+  { source: "The Legacy of the Lost Witch", text: "The past has a way of catching up to those who try to outrun it." },
+  { source: "The Legacy of the Lost Witch", text: "Magic is a burden that only the strong can carry without breaking." },
+  { source: "The Legacy of the Lost Witch", text: "The past has a way of catching up to those who try to outrun it." },
+  { source: "Whispers Beneath Crowstone", text: "The dead never truly leave; they just find new ways to be heard." },
+  { source: "Whispers Beneath Crowstone", text: "Some secrets are better left buried in the cold earth." },
+  { source: "61 Hours", text: "Hope for the best, plan for the worst." },
+  { source: "61 Hours", text: "Jack Reacher had no place to go, and all the time in the world to get there." },
+  { source: "Idiot", text: "Being an idiot is a full-time job, and I’m the CEO." },
+  { source: "Idiot", text: "You have to laugh at the chaos, or it will eat you alive." },
+  { source: "Angels and Demons", text: "Science and religion are not at odds. Science is simply too young to understand." },
+  { source: "Angels and Demons", text: "Faith is a gift that I am yet to receive." },
+  { source: "Assassins Creed: Renaissance", text: "Nothing is true, everything is permitted." },
+  { source: "Assassins Creed: Renaissance", text: "I will seek Vengeance upon those who betrayed my family." },
+  { source: "Assassins Creed: Unity", text: "In the heart of the revolution, the only true freedom is found in the shadows." },
+  { source: "Assassins Creed: Unity", text: "We work in the dark to serve the light." },
+  { source: "Assassins Creed: Black Flag", text: "A pirate's life is a short one, but a merry one." },
+  { source: "Assassins Creed: Black Flag", text: "For a man who has nothing, the sea is everything." },
+  { source: "Assassins Creed: Underworld", text: "London's streets are paved with secrets and blood." },
+  { source: "Assassins Creed: Underworld", text: "Family is the only thing worth fighting for in this hellhole." },
+  { source: "The Da Vinci Code", text: "Men go to far greater lengths to avoid what they fear than to obtain what they desire." },
+  { source: "The Da Vinci Code", text: "Life is filled with secrets. You can't learn them all at once." },
+  { source: "The Ballad of Songbirds and Snakes", text: "Snow lands on top." },
+  { source: "The Ballad of Songbirds and Snakes", text: "It’s the things we love most that destroy us." },
+  { source: "Red Rising", text: "I would have lived in peace. But my enemies brought me war." },
+  { source: "Red Rising", text: "Break the chains, Reaper." },
+  { source: "Golden Son", text: "Man is no island. We need others to be whole." },
+  { source: "Golden Son", text: "Honor is not what you say, but what you do when no one is watching." },
+  { source: "Morning Star", text: "Break the chains, even if they are made of gold." },
+  { source: "Morning Star", text: "I am the Reaper. And I have come for my due." },
+  { source: "Disney: Let It Go", text: "The cold never bothered me anyway, but the secrets do." },
+  { source: "Disney: Let It Go", text: "Fear is the only cage you can't break out of." },
+  { source: "Disney: Mirror Mirror", text: "Lips red as rose, hair black as ebony, heart cold as stone." },
+  { source: "Disney: Mirror Mirror", text: "Who is the fairest when the world is on fire?" },
+  { source: "The Alchemist", text: "It's the possibility of having a dream come true that makes life interesting." },
+  { source: "The Alchemist", text: "When you want something, all the universe conspires in helping you to achieve it." },
+  { source: "The Hunger Games", text: "Hope is the only thing stronger than fear." },
+  { source: "The Hunger Games", text: "May the odds be ever in your favor." },
+  { source: "Sunrise on the Reaping", text: "The games begin long before the first bell rings." },
+  { source: "Sunrise on the Reaping", text: "Power is not given; it is taken through the blood of others." },
+  { source: "Mockingjay", text: "Fire is catching! And if we burn, you burn with us!" },
+  { source: "Mockingjay", text: "It takes ten times as long to put yourself back together as it does to fall apart." },
+  { source: "House of Leaves", text: "This is not for you." },
+  { source: "House of Leaves", text: "Navidson’s house is a nightmare of shifting geometry." },
+  { source: "Starwars: Inquisitor", text: "There is no escape from the Inquisitorious." },
+  { source: "Starwars: Inquisitor", text: "The Force is a weapon, and I am the one who wields it." },
+  { source: "Dungeon Crawler Carl", text: "God dammit, Donut!" },
+  { source: "Dungeon Crawler Carl", text: "You will not break me." },
+  { source: "Mindhunter", text: "To catch a monster, you have to think like one." },
+  { source: "Mindhunter", text: "The abyss stares back." },
+  { source: "Black Thorn", text: "Every thorn has its rose, and every rose has its price." },
+  { source: "Black Thorn", text: "I am the darkness you were warned about." },
+  { source: "The Knight and the Moth", text: "The moth loves the flame, even if it kills him." },
+  { source: "The Knight and the Moth", text: "I will be your shield, even when the world falls apart." },
+  { source: "Gone Girl", text: "Men always say that as the defining compliment, don’t they? She’s a cool girl." },
+  { source: "Gone Girl", text: "I am a much happier person now that I am dead." },
+  { source: "Project Nought", text: "Sometimes the best way to move forward is to look back." },
+  { source: "Project Nought", text: "History is a series of choices." },
+  { source: "After the Siren", text: "The game is never over until the final whistle blows." },
+  { source: "After the Siren", text: "Love is the only sport where you can lose and still win." },
+  { source: "Dark Places", text: "I have a meanness inside me, as real as an organ." },
+  { source: "Dark Places", text: "The truth is rarely pure and never simple." },
+  { source: "Carnival", text: "Remember, it's only a game." },
+  { source: "Carnival", text: "Every person has the power to change their fate if they are brave enough." },
+  { source: "Legendary", text: "Every story has four parts: the beginning, the middle, the almost-ending, and the true ending." },
+  { source: "Legendary", text: "Fear is a powerful thing. It can make people do things they never thought possible." },
+  { source: "Finale", text: "The only thing more dangerous than a game is the person playing it." },
+  { source: "Finale", text: "Love is like a star—it has the power to light up the dark." },
+  { source: "Eternal Ruin", text: "Death is only the beginning of a much longer story." },
+  { source: "Eternal Ruin", text: "I will love you until the stars burn out." },
+  { source: "One Dark Window", text: "We are all monsters, Elspeth. The trick is choosing which one you let rule." },
+  { source: "One Dark Window", text: "A monster is not a monster until it is unleashed." },
+  { source: "Two Twisted Crowns", text: "A king is only as strong as the people who serve him." },
+  { source: "Two Twisted Crowns", text: "The crown is a heavy burden, but the heart is heavier." },
+  { source: "Quicksilver", text: "Do you think the stars look down and wish they were us?" },
+  { source: "Quicksilver", text: "Some things are worth risking everything for." },
+  { source: "Brimstone", text: "Fire is the only thing that cleanses." },
+  { source: "Brimstone", text: "I will walk through hell to find you." },
+  { source: "The Girl on the Train", text: "I have never understood how people can blithely disregard the damage they do by following their hearts." },
+  { source: "The Girl on the Train", text: "The holes in my life are permanent." },
+  { source: "The Dark Lords Guide To Dating", text: "Being evil is easy; dating is the real challenge." },
+  { source: "The Dark Lords Guide To Dating", text: "I have an army of skeletons, and I'm still nervous about this dinner." },
+  { source: "The Will of Many", text: "Strength is not just in the arm. It is in the mind." },
+  { source: "The Will of Many", text: "We are defined by what we do when we are tested." },
+  { source: "The Strength of the Few", text: "A few brave souls can change the course of history." },
+  { source: "The Strength of the Few", text: "Power is a dangerous gift." },
+  { source: "The Bridge Kingdom", text: "I was raised to be a weapon." },
+  { source: "The Bridge Kingdom", text: "A kingdom built on shadows cannot stand." },
+  { source: "Traitor Queen", text: "I will burn this kingdom to the ground to save you." },
+  { source: "Traitor Queen", text: "Love is the only thing worth betraying everything for." },
+  { source: "The Inadequate Heir", text: "I was never meant to be a king." },
+  { source: "The Inadequate Heir", text: "Expectations are the heaviest chains." },
+  { source: "Endless War", text: "There is no peace for those who seek vengeance." },
+  { source: "Endless War", text: "The cycle of blood never ends." },
+  { source: "Babel", text: "That is the magic of translation. It is the magic of making the foreign familiar." },
+  { source: "Babel", text: "Language is the only thing we have." },
+  { source: "Gild", text: "I am a bird in a cage, but the cage is made of gold." },
+  { source: "Gild", text: "Don't let them see you bleed." },
+  { source: "Glint", text: "A glint of hope is all you need to start a revolution." },
+  { source: "Glint", text: "My heart is a weapon I haven't learned to use yet." },
+  { source: "Gleam", text: "The brighter the light, the darker the shadow." },
+  { source: "Gleam", text: "I am more than the gold they painted on me." },
+  { source: "Glow", text: "I will burn so bright that the whole world will see." },
+  { source: "Glow", text: "The fire within is stronger than the storm without." },
+  { source: "Kiss the Villain", text: "Sometimes the villain is the only one who tells the truth." },
+  { source: "Kiss the Villain", text: "I'd rather burn with you than rule without you." },
+  { source: "Disney: Reflection", text: "The mirror doesn't show who I am inside." },
+  { source: "Disney: Reflection", text: "Honor is not found in a sword, but in a soul." },
+  { source: "Disney: So This Is Love", text: "A dream is a wish your heart makes when you're fast asleep." },
+  { source: "Disney: So This Is Love", text: "Cinders and ashes are all that's left of the girl I used to be." },
+  { source: "The Housemaid", text: "Every house has its secrets, but some are buried deeper than others." },
+  { source: "The Housemaid", text: "I know what you did behind closed doors." },
+  { source: "House of Sky and Breath", text: "Our love is a flame that cannot be extinguished." },
+  { source: "House of Sky and Breath", text: "In the breath of the wind, I hear your name." },
+  { source: "House of Flame and Shadow", text: "Shadows are only scary if you don't have a light." },
+  { source: "House of Flame and Shadow", text: "I will find you in the darkness." },
+  { source: "Starwars: Ahsoka", text: "I am no Jedi." },
+  { source: "Starwars: Ahsoka", text: "Life is a series of choices, Ahsoka. You've made yours." },
+  { source: "The Housemaid is Watching", text: "I see everything. Even the things you try to hide." },
+  { source: "The Housemaid is Watching", text: "You can't keep a secret in a house with eyes." },
+  { source: "You", text: "The problem with books is that they end. They seduce you." },
+  { source: "You", text: "I’ve always thought that if you love someone, you should be willing to do anything." },
+  { source: "Doctor Sleep", text: "We are all dying. The trick is to do it with a little grace." },
+  { source: "Doctor Sleep", text: "The world is a hard place, Danny. It don't care." },
+  { source: "Katabasis", text: "To descend into the underworld is to find out who you really are." },
+  { source: "Katabasis", text: "Death is the only truth in a world of lies." },
+  { source: "Shield of Sparrows", text: "A single spark of hope can illuminate the darkest age." },
+  { source: "Shield of Sparrows", text: "Loyalty is a shield that never tarnishes." },
+  { source: "The Girl with the Dragon Tattoo", text: "Everyone has secrets. It’s just a matter of finding out what they are." },
+  { source: "The Girl with the Dragon Tattoo", text: "I’m not a social person." },
+  { source: "Anathema", text: "I am the curse that they whispered about." },
+  { source: "Anathema", text: "To be loved is to be seen, and that is the scariest thing of all." },
+  { source: "The Girl Who Played with Fire", text: "There are no innocents. There are different degrees of responsibility." },
+  { source: "The Girl Who Played with Fire", text: "Respect and trust. Both elements have to be there." },
+  { source: "The Girl Who Kicked the Hornets Nest", text: "Everything is possible, but not everyone can do it." },
+  { source: "The Girl Who Kicked the Hornets Nest", text: "The goal is to survive." },
+  { source: "I Don't Need Therapy", text: "Laughter is the best medicine, unless you have diarrhea." },
+  { source: "I Don't Need Therapy", text: "Honesty is a quiet revolution." },
+  { source: "The Wolf King", text: "The beast within is not always a monster." },
+  { source: "The Wolf King", text: "Loyalty is the highest law of the pack." },
+  { source: "Crescent City", text: "Through love, all is possible." },
+  { source: "Crescent City", text: "Our love is stronger than time, greater than any distance." },
+  { source: "A Court of Thorns and Roses", text: "To the people who look at the stars and wish, Rhys. To the stars who listen—and the dreams that are answered." },
+  { source: "A Court of Thorns and Roses", text: "Don't feel bad for one moment about doing what brings you joy." },
+  { source: "Throne of Glass", text: "You could rattle the stars. You could do anything, if only you dared." },
+  { source: "Throne of Glass", text: "She was the heir of ash and fire, and she would bow to no one." },
+  { source: "Crown of Midnight", text: "You cannot pick and choose what parts of her to love." },
+  { source: "Crown of Midnight", text: "The world will be saved and remade by the dreamers." },
+  { source: "The Assassin's Blade", text: "My name is Celaena Sardothien. But it makes no difference." },
+  { source: "The Assassin's Blade", text: "I will not be afraid." },
+  { source: "Heir of Fire", text: "I will not be afraid." },
+  { source: "Heir of Fire", text: "She was a burning heart in a world of ice." },
+  { source: "Queen of Shadows", text: "Fire in her blood, and a crown on her head." },
+  { source: "Queen of Shadows", text: "The world will tremble at her name." },
+  { source: "Empire of Storms", text: "A court of dreamers, and a world worth saving." },
+  { source: "Empire of Storms", text: "Even the smallest spark can start a wildfire." },
+  { source: "Tower of Dawn", text: "Healing is not a destination, it's a journey." },
+  { source: "Tower of Dawn", text: "Strength is found in the places where we were broken." },
+  { source: "Kingdom of Ash", text: "Once upon a time, there lived a princess who loved her kingdom." },
+  { source: "Kingdom of Ash", text: "To whatever end." },
+  { source: "The Game of Thrones", text: "Winter is coming." },
+  { source: "The Game of Thrones", text: "A mind needs books as a sword needs a whetstone, if it is to keep its edge." },
+  { source: "The Clash of Kings", text: "A crown is a heavy burden for a head so small." },
+  { source: "The Clash of Kings", text: "Power resides where men believe it resides." },
+  { source: "A Storm of Swords", text: "Valar Morghulis. All men must die." },
+  { source: "A Storm of Swords", text: "The North remembers." },
+  { source: "A Feast for Crows", text: "Words are wind." },
+  { source: "A Feast for Crows", text: "History is a wheel, for the nature of man is fundamentally unchanging." },
+  { source: "A Dance with Dragons", text: "A reader lives a thousand lives before he dies." },
+  { source: "A Dance with Dragons", text: "Dragons are fire made flesh." },
+  { source: "A Knight of Seven Kingdoms", text: "A knight's duty is to protect those who cannot protect themselves." },
+  { source: "A Knight of Seven Kingdoms", text: "Summer is the season for secrets." },
+  { source: "Ennead Vol 1-3", text: "The gods are only as powerful as the faith we give them." },
+  { source: "Ennead Vol 1-3", text: "In the shadow of the pyramids, I found my destiny." },
+  { source: "Heart Stopper", text: "Hi." },
+  { source: "Heart Stopper", text: "I like you. Like, really like you." },
+  { source: "The Book of Azrael", text: "I am the god of death, and you are the only one who doesn't fear me." },
+  { source: "The Book of Azrael", text: "Every soul has a price, and I've come to collect." },
+  { source: "Songbird of Sorrows", text: "A song is the only thing that can break a heart and mend it at the same time." },
+  { source: "Songbird of Sorrows", text: "I will sing for you, even when the world goes silent." },
+  { source: "Dawn of the Fire Bird", text: "From the ashes, the fire bird rises." },
+  { source: "Dawn of the Fire Bird", text: "Hope is a flame that never truly dies." },
+  { source: "Heated Rivalry", text: "I hate you, and I can't stop thinking about you." },
+  { source: "Heated Rivalry", text: "The ice is the only place where I feel at home." },
+  { source: "Insurgent", text: "I am divergent, and I cannot be controlled." },
+  { source: "Insurgent", text: "The truth has a way of coming out, whether you want it to or not." },
+  { source: "Wind and Truth", text: "Journey before destination." },
+  { source: "Wind and Truth", text: "The wind remembers the names of the fallen." },
+  { source: "The Witcher: Blood of Elves", text: "Evil is evil. Lesser, greater, middling... it's all the same." },
+  { source: "The Witcher: Blood of Elves", text: "To be neutral is to be a coward." },
+  { source: "The Witcher: The Time of Contempt", text: "The time of contempt is here, and no one is safe." },
+  { source: "The Witcher: The Time of Contempt", text: "Magic is a dangerous gift in the hands of the desperate." },
+  { source: "The Witcher: Baptism of Fire", text: "Fire is the only thing that cleanses the soul." },
+  { source: "The Witcher: Baptism of Fire", text: "I will find my way through the flames." },
+  { source: "A Day of Fallen Night", text: "In the depth of the night, the stars shine the brightest." },
+  { source: "A Day of Fallen Night", text: "The morning will come, even if it brings blood." },
+  { source: "Among the Burning Flowers", text: "Beauty is found in the places where we were broken." },
+  { source: "Among the Burning Flowers", text: "I will bloom, even in the heart of the fire." },
+  { source: "Priory of the Orange Tree", text: "A dragon is not a pet; it is a force of nature." },
+  { source: "Priory of the Orange Tree", text: "The tree will protect us, as long as we protect the tree." },
+  { source: "Honey Bee", text: "Sweet as honey, sharp as a sting." },
+  { source: "Honey Bee", text: "The hive is the only family I have." },
+  { source: "Dire Bound", text: "We are bound by blood and fate." },
+  { source: "Dire Bound", text: "I will not leave you behind, even when the wolves come." },
+  { source: "Fury Bound", text: "My fury is the only thing keeping me alive." },
+  { source: "Fury Bound", text: "I will break these chains, or die trying." },
+  { source: "Stage Set for Villains", text: "The stage is set, and the play is a tragedy." },
+  { source: "Stage Set for Villains", text: "I am the villain you were warned about." },
+  { source: "We Who Will Die", text: "We who will die salute you." },
+  { source: "We Who Will Die", text: "Honor is the only thing we have left." },
+  { source: "Conform", text: "Conformity is the death of the soul." },
+  { source: "Conform", text: "I will not be just another face in the crowd." },
+  { source: "The Poet Empress", text: "Words are my only weapon." },
+  { source: "The Poet Empress", text: "I will write my own destiny." },
+  { source: "Elon Musk", text: "Persistence is very important. You should not give up unless you are forced to give up." },
+  { source: "Elon Musk", text: "I think it is possible for ordinary people to choose to be extraordinary." },
+  { source: "A Streetcar Named Desire", text: "I have always depended on the kindness of strangers." },
+  { source: "A Streetcar Named Desire", text: "Whoever you are—I have always depended on the kindness of strangers." },
+  { source: "Chopstick or Fork?", text: "Food is the only language that everyone understands." },
+  { source: "Chopstick or Fork?", text: "The best conversations happen over a shared meal." },
+  { source: "The Night Prince", text: "Shadows are only scary if you don't know they're yours." },
+  { source: "The Night Prince", text: "A crown is just a target unless you know how to defend it." },
+  { source: "Dish", text: "The best conversations happen over the worst food." },
+  { source: "Dish", text: "Truth is the only seasoning that never goes out of style." },
+  { source: "The Housemaid", text: "I know what you did." },
+  { source: "The Housemaid", text: "Every house has its secrets." },
+  { source: "The Housemaid's Secret", text: "Secrets are like ghosts; they never truly stay buried." },
+  { source: "The Housemaid's Secret", text: "You don't know what happens behind closed doors." },
+  { source: "A Game of Thrones", text: "Winter is coming." },
+  { source: "A Game of Thrones", text: "A mind needs books as a sword needs a whetstone, if it is to keep its edge." },
+  { source: "The Clash of Kings", text: "A crown is a heavy burden for a head so small." },
+  { source: "The Clash of Kings", text: "Power resides where men believe it resides." },
+  { source: "A Storm of Swords", text: "Valar Morghulis. All men must die." },
+  { source: "A Storm of Swords", text: "The North remembers." },
+  { source: "The Song of Achilles", text: "I could recognize him by touch alone, by smell; I would know him blind, by the way his breaths came and his feet struck the earth." },
+  { source: "The Song of Achilles", text: "Name one hero who was happy." },
+  { source: "Dark Rise", text: "The world is ending, and I am just getting started." },
+  { source: "Dark Rise", text: "Evil is not born. It is made." },
+  { source: "Dark Heir", text: "Light cannot exist without the shadow." },
+  { source: "Dark Heir", text: "I would choose you in every version of reality." },
+  { source: "When Moon Hatched", text: "The moon remembers everything." },
+  { source: "When Moon Hatched", text: "Love is the heaviest weight to carry." },
+  { source: "Alchemised", text: "I am of the universe, and the universe is infinite. Therefore, I have infinite time." },
+  { source: "Alchemised", text: "I will find you in every lifetime." },
+  { source: "The Red Winter", text: "The frost hides many truths." },
+  { source: "The Red Winter", text: "In the heart of winter, I found there was, within me, an invincible summer." },
+  { source: "The Lord of the Rings Trilogy", text: "One ring to rule them all." },
+  { source: "The Lord of the Rings Trilogy", text: "Not all those who wander are lost." },
+  { source: "The Hobbit", text: "In a hole in the ground there lived a hobbit." },
+  { source: "The Hobbit", text: "I am looking for someone to share in an adventure." },
+  { source: "Project Hail Mary", text: "Knock-knock, Mickey Mouse! Let's see what you've got." },
+  { source: "Project Hail Mary", text: "Fist my bump, Amaze!" },
+  { source: "Project Hail Mary", text: "Amaze!" },
+  { source: "Metal Slinger", text: "In a world of gears and grease, the heart is the only thing that doesn't rust." },
+  { source: "Metal Slinger", text: "Every machine has a soul, you just have to listen for the hum." },
+  { source: "Fourth Wing", text: "A dragon without its rider is a tragedy. A rider without their dragon is dead." },
+  { source: "Fourth Wing", text: "I will not die today." },
+  { source: "Iron Flame", text: "I will not die today. But I will kill you." },
+  { source: "Iron Flame", text: "The right way isn’t always the easy way." },
+  { source: "Onyx Storm", text: "In the eye of the storm, you find out who you really are." },
+  { source: "Onyx Storm", text: "Fear is just a shadow; walk through it and you'll find the light." }
 ];
 
 let activeQuoteIndex = 0;
@@ -2521,8 +2841,26 @@ async function openInfoCardOverlay(id) {
   document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
   document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   
+  const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
+  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === currentBook.title);
+  let loreHtml = "";
+  if (bookQuotes.length > 0) {
+    loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
+    // Randomly select one of the available quotes
+    const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
+    loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
+  } else if (BOOK_BLURBS_REGISTRY[currentBook.title]) {
+    loreHtml = `<p>${BOOK_BLURBS_REGISTRY[currentBook.title]}</p>`;
+  } else {
+    loreHtml = `<p>No archival lore or quotes found for this volume.</p>`;
+  }
+  document.getElementById('infoCardLore').innerHTML = loreHtml;
+  
   const backNotes = document.getElementById('infoCardNotesBack');
-  if (backNotes) backNotes.textContent = currentBook.notes || "No internal observations recorded for this archive.";
+  if (backNotes) {
+    const userNotes = currentBook.notes || "No internal observations recorded for this archive.";
+    backNotes.textContent = `${userNotes}\n\n${systemNote}`;
+  }
 
   const inner = document.getElementById('infoCardInner');
   if (inner) inner.classList.remove('is-flipped');
@@ -2746,11 +3084,12 @@ function toggleAuthorBooks(el, authorName) {
         </div>`;
     }).join('');
     dropdown.classList.add('active');
-    // Ensure content is painted so scrollHeight measurement is accurate
-    requestAnimationFrame(() => {
-      dropdown.style.maxHeight = dropdown.scrollHeight + "px";
-    });
-    dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+    
+    // Timeout ensures the browser has applied the 'active' class padding before calculating height
+    setTimeout(() => {
+      // Adding a 20px buffer to scrollHeight ensures no clipping occurs during the transition
+      dropdown.style.maxHeight = (dropdown.scrollHeight + 20) + "px";
+    }, 20);
   }
 }
 
@@ -2767,13 +3106,13 @@ function renderCharts() {
 
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column" ${p2.id ? `onclick="openInfoCardOverlay(${p2.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column" ${p1.id ? `onclick="openInfoCardOverlay(${p1.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
 
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 20).map((b, i) => `
-    <div class="sub-rank-item"><span class="sub-rank-num">#${i+4}</span><div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div><span class="sub-rank-score"> ${b.myRating}</span></div>`).join('');
+    <div class="sub-rank-item" onclick="openInfoCardOverlay(${b.id})"><span class="sub-rank-num">#${i+4}</span><div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div><span class="sub-rank-score"> ${b.myRating}</span></div>`).join('');
 
   if(activeCharts.status) activeCharts.status.destroy();
   if(activeCharts.genre) activeCharts.genre.destroy();
@@ -3362,9 +3701,27 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
   document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
+  
+  const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
+  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === paralysisWinningBookPointer.title);
+  let loreHtml = "";
+  if (bookQuotes.length > 0) {
+    loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
+    // Randomly select one of the available quotes
+    const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
+    loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
+  } else if (BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]) {
+    loreHtml = `<p>${BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]}</p>`;
+  } else {
+    loreHtml = `<p>A legendary chronicle waiting to be uncovered within the deep stacks.</p>`;
+  }
+  document.getElementById('cardBookLore').innerHTML = loreHtml;
                
   const backNotes = document.getElementById('cardBookNotesBack');
-  if (backNotes) backNotes.textContent = paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered.";
+  if (backNotes) {
+    const userNotes = paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered.";
+    backNotes.textContent = `${userNotes}\n\n${systemNote}`;
+  }
 
   const inner = document.getElementById('casinoCardInner');
   if (inner) inner.classList.remove('is-flipped');
