@@ -30,6 +30,46 @@
     --purple-void: #5e35b1;
   }
 
+  /* ⏳ LOADING OVERLAY SYSTEM */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--dark-void); /* Use existing theme variable */
+    z-index: 999999; /* Ensure it's on top of everything */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+  }
+
+  .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none; /* Allow interaction with elements underneath once hidden */
+  }
+
+  .loading-header {
+    /* Override specific .header styles for the loading screen */
+    background: transparent; /* Use the overlay's background */
+    border-bottom: none;
+    box-shadow: none;
+    padding: 140px 20px 24px; /* Keep original padding for visual consistency */
+    text-align: center;
+    position: relative; /* Needed for its children (pediment, architrave, pillars) */
+    overflow: visible;
+  }
+
+  .loading-bar-container {
+    width: 80%; max-width: 300px; height: 8px; background: var(--border-iron);
+    border-radius: 4px; overflow: hidden; margin-top: 40px; position: relative;
+  }
+  .loading-bar-fill {
+    height: 100%; width: 100%; background: linear-gradient(90deg, var(--crimson) 0%, var(--gold) 50%, var(--crimson) 100%);
+    background-size: 200% 100%; border-radius: 4px; animation: pulseLoadBar 1.5s infinite ease-in-out;
+  }
+  @keyframes pulseLoadBar { 0% { background-position: 100% 0; } 50% { background-position: 0% 0; } 100% { background-position: 100% 0; } }
+
   /* ARCHIVAL THEME: LIGHT MODE (OVERRIDE FRAMEWORK) */
   [data-theme="light"] {
     /* Note: Light Mode palette is currently a functional placeholder */
@@ -511,7 +551,8 @@
   
   /* UNIFIED CHRONICLES CARD TYPOGRAPHY ENGINE */
   .quote-board-title, .goal-bar-main-title, .reading-main-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; }
-  .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: #fff !important; line-height: 1.6; min-height: 45px; }
+  .quote-display-pane { font-family: 'Cinzel', serif; font-size: 14px; font-style: italic; color: #fff !important; line-height: 1.6; min-height: 45px; transition: opacity 0.3s ease, transform 0.3s ease; }
+  .quote-display-pane.fade-out { opacity: 0; transform: translateY(5px); }
   .quote-display-source { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--gold) !important; margin-top: 8px; text-transform: uppercase; }
   .magic-lane-flashback-text { font-size: 11px; color: #fff !important; margin-top: 8px; display: block; background: #000; padding: 8px 10px; border: 1px solid var(--border-iron); border-left: 2px solid var(--gold); }
   
@@ -1068,6 +1109,22 @@
   <div class="winner-banner-subtitle" id="winnerBannerBookName">LOADING ARCHIVES...</div>
 </div>
 
+<!-- ⏳ LOADING OVERLAY SYSTEM -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="header loading-header">
+    <div class="temple-pediment"></div>
+    <div class="temple-architrave"></div>
+    <div class="marble-pillar pillar-left-outer"></div>
+    <div class="marble-pillar pillar-left-inner"></div>
+    <div class="marble-pillar pillar-right-inner"></div>
+    <div class="marble-pillar pillar-right-outer"></div>
+    
+    <h1 class="header-title">Barbie's <span>Library</span></h1>
+  </div>
+  <div class="loading-bar-container"><div class="loading-bar-fill"></div></div>
+  <div class="header-sub" id="loadingStatusText" style="margin-top: 20px;">Initializing Systems...</div>
+</div>
+
 <button class="settings-dots-trigger" onclick="toggleSettingsModalViewLayout(true)">
   <div class="trigger-dashes-wrapper">
     <div class="trigger-dash-line"></div>
@@ -1262,7 +1319,10 @@
   <div class="quote-board-card" id="quoteBoardContainer">
      <div class="quote-board-header">
         <span class="quote-board-title">📜 Wisdom Chronicles Engine</span>
-        <button class="quote-board-refresh-btn" onclick="rotateCompletedQuote()">Next Book 🔄</button>
+        <div style="display: flex; gap: 8px;">
+          <button class="quote-board-refresh-btn" onclick="shuffleCurrentBookQuote()">Shuffle Quote 🎲</button>
+          <button class="quote-board-refresh-btn" onclick="rotateCompletedQuote()">Next Book 🔄</button>
+        </div>
      </div>
      <div class="quote-display-pane" id="quoteTextPane">"Loading logs..."</div>
      <div class="quote-display-source" id="quoteSourcePane">— Loading</div>
@@ -1877,6 +1937,7 @@ const PRELOADED_ISBN_REGISTRY = {
   "The Hunger Games": "9780439023481", "Mockingjay": "9780439023511", "Gone Girl": "9780307588371", "The Girl on the Train": "9781594634024",
   "Crescent City": "9781635574050", "House of Sky and Breath": "9781635574074", "House of Flame and Shadow": "9781635574104",
   "A Court of Thorns and Roses": "9781619634480", "Throne of Glass": "9781619630345", "Crown of Midnight": "9781619630628",
+  "A Court of Thorns and Roses": "9781619634480", "Throne of Glass": "9781619630345", "Crown of Midnight": "9781619630628", 
   "The Assassin's Blade": "9781101934739", "Heir of Fire": "9781619636064", "Queen of Shadows": "9781101934784",
   "Empire of Storms": "9781619636071", "Tower of Dawn": "9781681195773", "Kingdom of Ash": "9781619636101",
   "The Game of Thrones": "9780553103540", "The Clash of Kings": "9780553108033", "A Storm of Swords": "9780553106633",
@@ -1884,7 +1945,8 @@ const PRELOADED_ISBN_REGISTRY = {
   "Project Hail Mary": "9780593135204"
 };
 
-const COMPLETED_BOOK_QUOTES = [
+// Each quote object will now store a `normalizedSource` alongside the original `source` title.
+let COMPLETED_BOOK_QUOTES = [
   { source: "13 Reasons why", text: "No one knows for certain how much impact they have on the lives of other people." },
   { source: "13 Reasons why", text: "You can't go back to how things were. How you thought they were." },
   { source: "Skyshade", text: "The shadows are not your enemy; they are your refuge." },
@@ -2151,6 +2213,8 @@ const COMPLETED_BOOK_QUOTES = [
   { source: "The Housemaid's Secret", text: "You don't know what happens behind closed doors." },
   { source: "A Game of Thrones", text: "Winter is coming." },
   { source: "A Game of Thrones", text: "A mind needs books as a sword needs a whetstone, if it is to keep its edge." },
+  { source: "The Game of Thrones", text: "Winter is coming." },
+  { source: "The Game of Thrones", text: "A mind needs books as a sword needs a whetstone, if it is to keep its edge." },
   { source: "The Clash of Kings", text: "A crown is a heavy burden for a head so small." },
   { source: "The Clash of Kings", text: "Power resides where men believe it resides." },
   { source: "A Storm of Swords", text: "Valar Morghulis. All men must die." },
@@ -2169,10 +2233,7 @@ const COMPLETED_BOOK_QUOTES = [
   { source: "The Red Winter", text: "In the heart of winter, I found there was, within me, an invincible summer." },
   { source: "The Lord of the Rings Trilogy", text: "One ring to rule them all." },
   { source: "The Lord of the Rings Trilogy", text: "Not all those who wander are lost." },
-  { source: "The Hobbit", text: "In a hole in the ground there lived a hobbit." },
   { source: "The Hobbit", text: "I am looking for someone to share in an adventure." },
-  { source: "Project Hail Mary", text: "Knock-knock, Mickey Mouse! Let's see what you've got." },
-  { source: "Project Hail Mary", text: "Fist my bump, Amaze!" },
   { source: "Project Hail Mary", text: "Amaze!" },
   { source: "Metal Slinger", text: "In a world of gears and grease, the heart is the only thing that doesn't rust." },
   { source: "Metal Slinger", text: "Every machine has a soul, you just have to listen for the hum." },
@@ -2181,10 +2242,182 @@ const COMPLETED_BOOK_QUOTES = [
   { source: "Iron Flame", text: "I will not die today. But I will kill you." },
   { source: "Iron Flame", text: "The right way isn’t always the easy way." },
   { source: "Onyx Storm", text: "In the eye of the storm, you find out who you really are." },
-  { source: "Onyx Storm", text: "Fear is just a shadow; walk through it and you'll find the light." }
+  { source: "Onyx Storm", text: "Fear is just a shadow; walk through it and you'll find the light." },
+  { source: "Assassins Creed: Brotherhood", text: "Where other men blindly follow the truth, remember, nothing is true." },
+  { source: "Assassins Creed: Brotherhood", text: "My family is gone. I am the only one left." },
+  { source: "Assassins Creed: Forsaken", text: "I am an expert at hiding. But I am even better at finding." },
+  { source: "Assassins Creed: Forsaken", text: "The world is not as it seems." },
+  { source: "Assassins Creed: Revelation", text: "My story is one of many thousands, and the world will not suffer if it ends too soon." },
+  { source: "Assassins Creed: Revelation", text: "The library is more than just books; it is the key to the future." },
+  { source: "Assassins Creed: The Secret Crusade", text: "I have lived my life as best I could, not knowing its purpose, but drawn forward like a moth to a distant moon." },
+  { source: "Assassins Creed: The Secret Crusade", text: "To know the truth, you must first survive the lies." },
+  { source: "Blood & Roses", text: "Some roses are meant to be watered with blood." },
+  { source: "Blood & Roses", text: "In the garden of thorns, love is the sharpest blade." },
+  { source: "Cleopatra", text: "I will not be triumphed over." },
+  { source: "Cleopatra", text: "A queen must be more than a woman; she must be a legend." },
+  { source: "Death Bringer", text: "I didn't choose this life. It chose me." },
+  { source: "Death Bringer", text: "Death is not the end; it's just the beginning of a different kind of pain." },
+  { source: "Death of a Black Widow", text: "She was beautiful, and she was deadly." },
+  { source: "Death of a Black Widow", text: "The web is woven with secrets and lies." },
+  { source: "Follow", text: "Don't look back. Just follow the light." },
+  { source: "Follow", text: "The path is narrow, and the shadows are deep." },
+  { source: "Godstorm", text: "When the gods go to war, the world trembles." },
+  { source: "Godstorm", text: "A storm is coming, and not even the heavens can stop it." },
+  { source: "Hawk", text: "I was born to fly, but I was raised to fight." },
+  { source: "Hawk", text: "The sky is my only home." },
+  { source: "Immersed", text: "The virtual world is more real than the one I left behind." },
+  { source: "Immersed", text: "Lose yourself in the data." },
+  { source: "Murder Island", text: "On this island, everyone has a motive." },
+  { source: "Murder Island", text: "The tide washes away the evidence, but not the guilt." },
+  { source: "Orphan X", text: "The man who isn't there is the one you should fear most." },
+  { source: "Orphan X", text: "I am the Nowhere Man." },
+  { source: "Rules for a Perfect Murder", text: "Rule number one: Never get caught." },
+  { source: "Rules for a Perfect Murder", text: "A perfect murder requires a perfect plan." },
+  { source: "Starwars: Dark Disciple", text: "The dark side is a path to many abilities some consider to be... unnatural." },
+  { source: "Starwars: Dark Disciple", text: "To save the light, sometimes you must walk in the dark." },
+  { source: "Starwars: The Edge of Balance", text: "Balance is not a destination; it's a journey." },
+  { source: "Starwars: The Edge of Balance", text: "In the high republic, the light shines brightest." },
+  { source: "The Crow Girl", text: "The past is a monster that never stops hunting you." },
+  { source: "The Crow Girl", text: "Crows see everything, and they never forget." },
+  { source: "The Girl in the Eagles Talons", text: "The mountains have eyes, and the eagles have memories." },
+  { source: "The Girl in the Eagles Talons", text: "Survival is the only law that matters." },
+  { source: "The Girl in the Spiders Web", text: "The web is vast, and the spider is patient." },
+  { source: "The Girl in the Spiders Web", text: "Secrets are the currency of the digital age." },
+  { source: "The Girl Who Lived Twice", text: "A second life is a second chance to settle old scores." },
+  { source: "The Girl Who Lived Twice", text: "I am the girl who came back from the dead." },
+  { source: "The Girl Who Takes an Eye for an Eye", text: "Justice is a cold dish, best served with a sharp edge." },
+  { source: "The Girl Who Takes an Eye for an Eye", text: "An eye for an eye makes the whole world blind, but at least I'm not the only one." },
+  { source: "The Hazard of Bad Dreams", text: "Bad dreams are just the truth trying to wake you up." },
+  { source: "The Hazard of Bad Dreams", text: "Fear is the only dream that never ends." },
+  { source: "The Policeman", text: "The law is a thin line between order and chaos." },
+  { source: "The Policeman", text: "To protect and serve, even when the world doesn't want to be protected." },
+  { source: "The Witcher Omnibus", text: "Toss a coin to your witcher, oh valley of plenty." },
+  { source: "The Witcher Omnibus", text: "Destiny is a funny thing. You can't run from it, and you can't hide from it." },
+  { source: "Vagabond", text: "The sword is my only companion on this long road." },
+  { source: "Vagabond", text: "To be a vagabond is to belong to no one, and to everyone." }
 ];
+// Helper function to normalize titles for consistent comparison
+function normalizeTitle(title) {
+  if (!title) return "";
+  // Remove common series/volume indicators, punctuation, and extra whitespace, then convert to lowercase
+  return title.replace(/(\s*\(.*?\)\s*|\s*\[.*?\]\s*|\s*Vol\s?\d+|\s*Book\s?\d+|\s*#\d+)/gi, '') // Remove series/volume info
+              .replace(/['"\u2018\u2019\u201C\u201D.,!?;:]/g, '') // Remove common punctuation
+              .toLowerCase()
+              .trim();
+}
+
+// Add normalizedSource to initial static quotes
+COMPLETED_BOOK_QUOTES = COMPLETED_BOOK_QUOTES.map(q => ({
+  ...q,
+  normalizedSource: normalizeTitle(q.source)
+}));
 
 let activeQuoteIndex = 0;
+let dynamicLoreSources = new Set();
+
+async function initializeLoreEngine() {
+  // Step 1: Merge static quotes with dynamically discovered ones from localStorage
+  const statusText = document.getElementById('loadingStatusText');
+  if (statusText) statusText.textContent = "Enchanting Quotes ✨";
+  
+  try {
+    const dynamicQuotes = JSON.parse(localStorage.getItem('barbies_dynamic_quotes') || '[]');
+    if (dynamicQuotes.length > 0) {
+      dynamicQuotes.forEach(q => {
+        if (!q.normalizedSource) { // Ensure older dynamic quotes are normalized
+          q.normalizedSource = normalizeTitle(q.source);
+        }
+        dynamicLoreSources.add(q.normalizedSource);
+      });
+      console.log(`Lore Engine: Loading ${dynamicQuotes.length} dynamic quotes from archive.`);
+      COMPLETED_BOOK_QUOTES = [...COMPLETED_BOOK_QUOTES, ...dynamicQuotes];
+    }
+    
+    // Store the current length of COMPLETED_BOOK_QUOTES before adding new ones.
+    // This allows us to identify newly added quotes for persistence.
+    const quotesBeforeEnchantmentCount = COMPLETED_BOOK_QUOTES.length;
+
+    // Check if we need to source new lore (Step 2 Audit)
+    // Use normalized titles for comparison
+    const booksWithQuotes = new Set(COMPLETED_BOOK_QUOTES.map(q => q.normalizedSource));
+    const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !booksWithQuotes.has(normalizeTitle(b.title)));
+    
+    if (missingLore.length > 0) {
+      // The status text is already set to "Enchanting Quotes ✨" at the start.
+      // It will be updated per book inside enchantMissingLore.
+      await enchantMissingLore(missingLore);
+      // Ensure newly enchanted quotes have normalizedSource before saving
+      COMPLETED_BOOK_QUOTES.slice(quotesBeforeEnchantmentCount).forEach(q => {
+        if (!q.normalizedSource) q.normalizedSource = normalizeTitle(q.source);
+      });
+
+      // Step 3: Persistent Learning - Save newly found quotes to localStorage
+      const newlyEnchantedQuotes = COMPLETED_BOOK_QUOTES.slice(quotesBeforeEnchantmentCount);
+      if (newlyEnchantedQuotes.length > 0) {
+        const updatedDynamicQuotes = [...dynamicQuotes, ...newlyEnchantedQuotes];
+        localStorage.setItem('barbies_dynamic_quotes', JSON.stringify(updatedDynamicQuotes));
+        console.log(`Lore Engine: Saved ${newlyEnchantedQuotes.length} new dynamic quotes to localStorage.`);
+      }
+    }
+  } catch (e) {
+    console.warn("Lore Engine: Failed to load dynamic quote archive.", e);
+  }
+}
+
+async function enchantMissingLore(missingBooks) {
+  const statusText = document.getElementById('loadingStatusText');
+
+  for (const book of missingBooks) {
+    try {
+      if (statusText) statusText.textContent = `Enchanting ${book.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")} ✨`;
+      
+      // Query Google Books API for intelligent lore sourcing
+      const query = encodeURIComponent(`intitle:"${book.title}"+inauthor:"${book.author.split(',')[0]}"`);
+      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
+      if (!response.ok) {
+        throw new Error(`Google Books API returned status ${response.status}`);
+      }
+      const data = await response.json();
+      
+      let description = "";
+      if (data.items && data.items[0]?.volumeInfo?.description) {
+        description = data.items[0].volumeInfo.description;
+      }
+
+      let snippets = [];
+      if (description) {
+        // Strip HTML tags and split into sentences
+        const cleanDesc = description.replace(/<[^>]*>/g, '');
+        const sentences = cleanDesc.match(/[^.!?]+[.!?]+/g) || [cleanDesc];
+        
+        // Extract two distinct snippets (sentences between 35 and 250 characters)
+        const candidates = sentences.map(s => s.trim()).filter(s => s.length > 35 && s.length < 250);
+        
+        if (candidates.length >= 2) {
+          snippets = [candidates[0], candidates[Math.floor(candidates.length / 2)]];
+        } else if (candidates.length === 1) {
+          snippets = [candidates[0], "A legendary chronicle waiting to be uncovered."];
+        }
+      }
+
+      // Robust Fallback (Step 5)
+      if (snippets.length === 0) {
+        snippets = [
+          `In the heart of ${book.genre.split(',')[0] || 'the story'}, a new destiny unfolds.`,
+          "A legendary chronicle waiting to be uncovered."
+        ];
+      }
+
+      snippets.forEach(text => {
+        const normalizedBookTitle = normalizeTitle(book.title);
+        COMPLETED_BOOK_QUOTES.push({ source: book.title, normalizedSource: normalizedBookTitle, text: text });
+        dynamicLoreSources.add(normalizedBookTitle);
+      });
+    } catch (err) {
+      console.warn(`Lore Engine: Could not enchant ${book.title}`, err);
+    }
+  }
+}
 
 function loadSaved() {
   try {
@@ -2233,7 +2466,9 @@ function updateHomeView() {
   const card = document.getElementById('readingCard');
   if (reading) {
     card.classList.add('show'); 
-    document.getElementById('readingTitle').textContent = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
+    document.getElementById('readingTitle').innerHTML = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "") + (dynamicLoreSources.has(reading.title) ? '<span style="color:var(--gold); margin-left:6px; font-size:14px;">✨</span>' : ''); 
+    card.classList.add('show');
+    document.getElementById('readingTitle').innerHTML = reading.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "") + (dynamicLoreSources.has(normalizeTitle(reading.title)) ? '<span style="color:var(--gold); margin-left:6px; font-size:14px;">✨</span>' : '');
     document.getElementById('readingAuthor').textContent = reading.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     document.getElementById('readingBlurbSlot').textContent = BOOK_BLURBS_REGISTRY[reading.title] || "Notes and review parameters are customizable inside book settings.";
     const totalP = parseInt(reading.pages) || 0; 
@@ -2271,18 +2506,42 @@ function updateHomeView() {
 
 function rotateCompletedQuote() { activeQuoteIndex = (activeQuoteIndex + 1) % COMPLETED_BOOK_QUOTES.length; renderQuoteSlotValue(); }
 
+// Shuffle quotes from the same book using normalizedSource for comparison
+function shuffleCurrentBookQuote() {
+  const currentQ = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
+  if (!currentQ) return;
+  const sameBookIndices = COMPLETED_BOOK_QUOTES
+    .map((q, idx) => q.source === currentQ.source ? idx : -1)
+  const sameBookIndices = COMPLETED_BOOK_QUOTES // Use normalizedSource for comparison
+    .map((q, idx) => q.normalizedSource === currentQ.normalizedSource ? idx : -1)
+    .filter(idx => idx !== -1);
+  if (sameBookIndices.length <= 1) return;
+  let nextIdx;
+  do {
+    nextIdx = sameBookIndices[Math.floor(Math.random() * sameBookIndices.length)];
+  } while (nextIdx === activeQuoteIndex);
+  activeQuoteIndex = nextIdx;
+  renderQuoteSlotValue();
+}
+
 function renderQuoteSlotValue() {
-   const q = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
-   document.getElementById('quoteTextPane').textContent = `"${q.text}"`;
-   document.getElementById('quoteSourcePane').textContent = `— ${q.source}`;
-   
-   const ratedReads = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && b.myRating != null);
-   if (ratedReads.length > 0) {
-      const memoryBook = ratedReads[Math.floor(Math.abs(Math.sin(activeQuoteIndex)) * ratedReads.length) % ratedReads.length];
-      document.getElementById('memoryLanePane').textContent = `Historical Log: You rated "${memoryBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}" a solid ${memoryBook.myRating}/10 stars.`;
-   } else {
-      document.getElementById('memoryLanePane').textContent = `Evaluate items inside the library filters to unlock your reading history logs here!`;
-   }
+  const pane = document.getElementById('quoteTextPane');
+  pane.classList.add('fade-out');
+  
+  setTimeout(() => {
+    const q = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
+    pane.textContent = `"${q.text}"`;
+    document.getElementById('quoteSourcePane').textContent = `— ${q.source}`;
+    
+    const ratedReads = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && b.myRating != null);
+    if (ratedReads.length > 0) {
+       const memoryBook = ratedReads[Math.floor(Math.abs(Math.sin(activeQuoteIndex)) * ratedReads.length) % ratedReads.length];
+       document.getElementById('memoryLanePane').textContent = `Historical Log: You rated "${memoryBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}" a solid ${memoryBook.myRating}/10 stars.`;
+    } else {
+       document.getElementById('memoryLanePane').textContent = `Evaluate items inside the library filters to unlock your reading history logs here!`;
+    }
+    pane.classList.remove('fade-out');
+  }, 300);
 }
 
 function resetSandbox() { if (confirm("Reset custom data entries and clear browser storage?")) { localStorage.clear(); window.location.reload(); } }
@@ -2785,14 +3044,15 @@ function renderBooks() {
       `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
       `<div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
       
+    
     const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
 
     return `
       <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
         ${thumbnailImgTag}
         <div class="book-info">
-           <div class="book-title">${cleanTitle}</div>
-           <div class="book-author">${cleanAuthor}</div>
+           <div class="book-title">${cleanTitle}${dynamicLoreSources.has(b.title) ? '<span style="color:var(--gold); margin-left:4px; font-size:10px;" title="Enchanted Lore">✨</span>' : ''}</div>
+           <div class="book-author">${cleanAuthor}</div> 
            <div class="book-meta">
              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
              <span class="badge badge-genre">${visualGenreLabel}</span>
@@ -2809,6 +3069,7 @@ function renderBooks() {
 function getFiltered() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   return books.filter(b => { 
+  return books.filter(b => {
      if (activeStatus !== 'All' && statusKey(b.status) !== activeStatus) return false; 
 
      // HIGH-PRECISION FILTERING: Multi-genre match (OR logic) - Persists when minimized
@@ -2837,9 +3098,11 @@ async function openInfoCardOverlay(id) {
   
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
+  document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
   document.getElementById('infoCardGenre').textContent = currentBook.genre?.split(',')[0]?.trim() || 'Other';
   document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
   document.getElementById('infoCardLore').textContent = BOOK_BLURBS_REGISTRY[currentBook.title] || `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
+  
   
   const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === currentBook.title);
@@ -2848,6 +3111,7 @@ async function openInfoCardOverlay(id) {
     loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
     // Randomly select one of the available quotes
     const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
+    const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)]; 
     loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
   } else if (BOOK_BLURBS_REGISTRY[currentBook.title]) {
     loreHtml = `<p>${BOOK_BLURBS_REGISTRY[currentBook.title]}</p>`;
@@ -2874,6 +3138,7 @@ async function openInfoCardOverlay(id) {
       const gBooksResponse = await fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${targetISBN}`); const gBooksData = await gBooksResponse.json();
       if (gBooksData.items && gBooksData.items[0]?.volumeInfo?.imageLinks?.thumbnail) { assignImageToTargetNode(coverImg, fallbackIllustration, gBooksData.items[0].volumeInfo.imageLinks.thumbnail.replace("http://", "https://")); return; }
     } catch(e) {}
+    } catch(e) {} 
   }
   try {
     const query = encodeURIComponent(`intitle:"${currentBook.title.replace(/Vol\s?\d+|Book\s?\d+|#\d+/gi, '').trim()}"+inauthor:"${currentBook.author.split(',')[0].trim()}"`);
@@ -3033,9 +3298,9 @@ function renderHomepageChartsPreview() {
   const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating); const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
   document.getElementById('homePodiumContainerMount').innerHTML = `
       <div class="f1-podium-container">
-        <div class="podium-column"><div class="podium-book-title">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
-        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
-        <div class="podium-column"><div class="podium-book-title">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p2.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-2"><span class="podium-number" style="color:#fff;">II</span></div></div>
+        <div class="podium-column"><div class="podium-book-title" style="font-weight:700;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p1.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-1"><span class="podium-number" style="color:#000;">I</span></div></div>
+        <div class="podium-column"><div class="podium-book-title">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p3.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
       </div>`;
   const canvasEl = document.getElementById('homeStatusPieChart');
   if (canvasEl) {
@@ -3068,14 +3333,16 @@ function toggleAuthorBooks(el, authorName) {
         `<img src="${b.coverUrl}" style="width:28px; height:40px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
         `<div style="width:28px; height:40px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:8px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
 
+      
       return `
         <div class="book-card status-${statusClass}" style="margin-bottom:16px; padding:12px; border-width: 1px 1px 1px 4px;" onclick="openInfoCardOverlay(${b.id})">
           ${thumbnail}
           <div class="book-info">
-            <div class="book-title" style="font-size:13px;">${cleanTitle}</div>
+            <div class="book-title" style="font-size:13px;">${cleanTitle}${dynamicLoreSources.has(b.title) ? ' ✨' : ''}</div>
             <div class="book-meta">
               <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
               <span class="badge badge-genre">${visualGenreLabel}</span>
+              <span class="badge badge-genre">${visualGenreLabel}</span> 
             </div>
           </div>
           <div class="rating-row-value" style="font-size:11px;">
@@ -3106,9 +3373,10 @@ function renderCharts() {
 
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
-        <div class="podium-column" ${p2.id ? `onclick="openInfoCardOverlay(${p2.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
-        <div class="podium-column" ${p1.id ? `onclick="openInfoCardOverlay(${p1.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
-        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column" ${p2.id ? `onclick="openInfoCardOverlay(${p2.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p2.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
+        <div class="podium-column" ${p1.id ? `onclick="openInfoCardOverlay(${p1.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p1.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
+        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p3.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
+        <div class="podium-column" ${p3.id ? `onclick="openInfoCardOverlay(${p3.id})" style="cursor: pointer;"` : ''}><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(normalizeTitle(p3.title)) ? ' ✨' : ''}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
 
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 20).map((b, i) => `
@@ -3681,6 +3949,7 @@ function triggerGrandVictorySequence() {
   bannerNode.classList.add('pop-active');
   playCasinoJackpotChimeAudio();
   setTimeout(() => {
+  setTimeout(() => { 
     bannerNode.classList.remove('pop-active');
     triggerTradingCardEncounterModal(true);    
   }, 2200);
@@ -3705,6 +3974,7 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
   const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.source === cleanTitle || q.source === paralysisWinningBookPointer.title);
   let loreHtml = "";
+  let loreHtml = ""; 
   if (bookQuotes.length > 0) {
     loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
     // Randomly select one of the available quotes
@@ -3765,10 +4035,21 @@ function toggleCardFlip(el) {
 }
 
 window.addEventListener('resize', () => { if (currentView === 'paralysis') renderHTML5CasinoCanvasWheel(); });
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.remove('hidden'); 
+
   document.getElementById('drawerVersionDiagnosticStamp').innerHTML = "Barbie's Library V" + SYSTEM_BUILD_VERSION;
   const savedTheme = localStorage.getItem('barbies_library_theme') || 'dark';
   executeThemeSwitch(savedTheme);
-  renderGenreRow(); renderBooks(); showView('home');
+  
+  await initializeLoreEngine();
+
+  setTimeout(() => { 
+    renderGenreRow(); 
+    renderBooks(); 
+    showView('home'); 
+    overlay.classList.add('hidden'); 
+  }, 1800); 
 });
 </script>
