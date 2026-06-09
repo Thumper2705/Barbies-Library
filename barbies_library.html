@@ -1545,6 +1545,8 @@ const SYSTEM_BUILD_VERSION = "4.0";
 const MASTER_GENRE_LIST = [
   'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama', // Corrected list
   'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family', // Corrected list
+  'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
+  'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family',
   'Graphic Novel', 'Grim Thriller', 'High Fantasy', 'Historical',
   'Horror', 'LGBTQ+', 'Literary Fiction', 'LitRPG',
   'Locked Room', 'Morally Grey', 'Non-Fiction', 'Political Intrigue',
@@ -2148,6 +2150,7 @@ function inferNarrativeTropes(b) {
     tropes.push('Locked Room');
   }
   if (auth.includes('berry') || auth.includes('douglas') || title.includes('psychopaths') || title.includes('mindhunter')) {
+    tropes.push('Morally Grey');
   }
 
   if (id > 170) {
@@ -2162,6 +2165,7 @@ function inferNarrativeTropes(b) {
   if ([49, 67, 118, 119, 122, 136, 145].includes(id) || 
       auth.includes('mojito') || auth.includes('reid') || auth.includes('oseman') || auth.includes('miller') ||
       title.includes('achilles') || title.includes('rivalry') || title.includes('heartstopper') || title.includes('ennead') || title.includes('follow')) {
+    tropes.push('LGBTQ+');
   }
 
   if ([43, 109, 110, 111, 129, 130, 156].includes(id)) {
