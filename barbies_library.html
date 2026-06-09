@@ -535,8 +535,31 @@
     background: var(--crimson) !important; color: #fff !important; box-shadow: 0 4px 12px rgba(166,38,38,0.25);
   }
   .secondary-button { border: 1px solid var(--border-iron); }
+  .quote-board-refresh-btn.animating {
+    animation: buttonPulse 0.6s infinite alternate;
+  }
+  @keyframes buttonPulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.03); opacity: 0.7; }
+  }
   .danger-button { background: #260a0d !important; border: 1px solid var(--crimson-light); }
   .save-btn { font-weight: 900; }
+  
+  /* 🏛️ GLOBAL ARCHIVAL FOOTER */
+  .global-footer {
+    text-align: center;
+    padding: 60px 20px 20px;
+    margin-top: 40px;
+    border-top: 1px solid var(--border-iron);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.8;
+  }
+  .global-footer span { color: var(--gold); }
+
   .open-book-edit-btn, .quote-board-refresh-btn, .goal-bar-count-badge { padding: 6px 12px; font-size: 11px; width: auto; display: inline-block; box-shadow: none; }
   .action-sub-btn { padding: 8px 12px; width: auto; font-size: 11px; margin-top: 0; border: 1px solid rgba(255,255,255,0.05); }
   .cta-button:hover, .secondary-button:hover, .save-btn:hover, .action-sub-btn:hover, .open-book-edit-btn:hover, .quote-board-refresh-btn:hover, .goal-bar-count-badge:hover { filter: brightness(1.25); }
@@ -1181,7 +1204,7 @@
 <div class="trophies-modal-overlay" id="globalTrophiesModalOverlay" onclick="toggleTrophiesModalViewLayout(false)">
   <div class="trophies-modal-chassis" onclick="event.stopPropagation()">
     <div class="settings-modal-header-row">
-      <div class="settings-modal-title trophies-modal-title">Goals Tracker and Trophies</div>
+      <div class="settings-modal-title trophies-modal-title">Trophies</div>
       <button class="settings-modal-close-trigger trophies-modal-close-trigger" onclick="toggleTrophiesModalViewLayout(false)">✕</button>
     </div>
     <div class="settings-modal-body-scroller" style="text-align: center; padding: 40px 20px;">
@@ -1242,7 +1265,7 @@
           <span class="settings-accordion-arrow">▼</span>
         </div>
         <div class="settings-accordion-inner-drawer" style="gap: 8px;">
-          <div class="settings-static-version-badge" id="drawerVersionDiagnosticStamp">Barbies Library V4.0</div>
+          <div class="settings-static-version-badge" id="drawerVersionDiagnosticStamp">Barbies Library V6.0</div>
           <div class="settings-static-version-badge" style="border-style: dashed; opacity: 0.65; font-size: 9px;">Status: App Running Offline (LocalStorage-Cached)</div>
         </div>
       </div>
@@ -1320,6 +1343,7 @@
         <div class="home-preview-title">📊 Breakdown</div>
         <div class="home-canvas-holder">
             <canvas id="homeStatusPieChart"></canvas>
+            <div id="homeStatusChartCenterText" class="chart-center-text"></div>
         </div>
      </div>
   </div>
@@ -1394,6 +1418,12 @@
 
   <div class="results-count" id="resultsCount">0 records populated</div>
   <div class="book-list" id="bookList"></div>
+
+  <div class="global-footer">
+    <div>— Established MMXXIV —</div>
+    <div>Barbie's <span>Private Library</span> • Archival Division</div>
+    <div style="opacity: 0.5; margin-top: 4px;">System Build v6.0 • Powered by Scribe Engine</div>
+  </div>
 </div>
 
 <div class="charts-view" id="chartsView">
@@ -1425,12 +1455,25 @@
           <div id="genreChartCenterText" class="chart-center-text"></div>
         </div>
       </div>
+      <div class="chart-card">
+        <div class="chart-title">Rating Distribution</div>
+        <div class="canvas-holder">
+          <canvas id="ratingPieChart"></canvas>
+          <div id="ratingChartCenterText" class="chart-center-text"></div>
+        </div>
+      </div>
     </div>
   </div>
   
   <div class="chart-card">
     <div class="chart-title">✍️ Most Read Authors</div>
     <div id="topAuthorsListMount"></div>
+  </div>
+
+  <div class="global-footer">
+    <div>— Established MMXXIV —</div>
+    <div>Barbie's <span>Private Library</span> • Archival Division</div>
+    <div style="opacity: 0.5; margin-top: 4px;">System Build v6.0 • Powered by Scribe Engine</div>
   </div>
 </div>
 
@@ -1514,6 +1557,12 @@
 
     <button class="cta-button" id="btnSpinParalysis" style="font-size:14px; padding:16px;" onclick="executeParalysisWheelSpin()">Break The Paralysis 🎰</button>
   </div>
+
+  <div class="global-footer">
+    <div>— Established MMXXIV —</div>
+    <div>Barbie's <span>Private Library</span> • Archival Division</div>
+    <div style="opacity: 0.5; margin-top: 4px;">System Build v6.0 • Powered by Scribe Engine</div>
+  </div>
 </div>
 
 <div class="global-info-card-overlay-sleeve" id="globalInfoCardOverlaySleeve" onclick="closeInfoCardOverlay()">
@@ -1565,14 +1614,42 @@
 
 <div class="goals-view" id="goalsView">
   <div class="welcome-card" style="margin-bottom: 20px;">
-    <div class="welcome-emoji">🏆</div>
-    <div class="welcome-text">Goals Tracker and Trophies</div>
-    <div class="welcome-sub">Track your reading goals and unlock achievements.</div>
+    <div class="welcome-emoji">🔭</div>
+    <div class="welcome-text">Future Prospects</div>
+    <div class="welcome-sub">Manage your wishlist of future acquisitions and gaze into the horizon of your upcoming reading journey.</div>
   </div>
-  <!-- Placeholder content for the new page -->
-  <div style="padding: 20px; text-align: center; color: var(--text-muted);">
-    <p>This page is under construction. Your goals and trophies will appear here!</p>
-    <p style="margin-top: 10px;">The Archival Scribes are diligently working to bring this feature online.</p>
+  <div class="collection-sticky-header-dock">
+    <div class="stats-row" id="prospectStatsRow">
+      <div class="stat-pill active" id="prospectFilterAll" onclick="renderProspects()">
+        <span class="count" id="prospectPillCountAll">0</span><span class="label">Total Wishlist</span>
+      </div>
+    </div>
+    <button class="sticky-dock-add-trigger-btn" onclick="addNewProspect()">➕</button>
+  </div>
+  
+  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
+    <div class="genre-row" id="prospectGenreScroller"></div>
+  </div>
+
+  <div class="toolbar" style="padding: 12px 16px 4px;">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="prospectSearchInput" placeholder="Search wishlist..." oninput="renderProspects()">
+    </div>
+    <select class="sort-btn" id="prospectSortSelect" onchange="renderProspects()">
+      <option value="0">Recently Added</option>
+      <option value="1">Title A–Z</option>
+      <option value="4">Author A–Z</option>
+    </select>
+  </div>
+
+  <div class="results-count" id="prospectResultsCount">0 prospects indexed</div>
+  <div class="book-list" id="prospectList"></div>
+
+  <div class="global-footer">
+    <div>— Established MMXXIV —</div>
+    <div>Barbie's <span>Private Library</span> • Archival Division</div>
+    <div style="opacity: 0.5; margin-top: 4px;">System Build v6.0 • Powered by Scribe Engine</div>
   </div>
 </div>
 
@@ -1585,7 +1662,7 @@
 <div class="bottom-nav">
   <div class="nav-buttons-row">
     <button class="nav-btn" id="navGoals" onclick="showView('goals')">
-      <span class="icon">🏆</span><span>Goals Tracker</span>
+      <span class="icon">🔭</span><span>Future Prospects</span>
     </button>
     <button class="nav-btn" id="navLib" onclick="showView('library')">
       <span class="icon">🏛️</span><span>The Grand Hall</span>
@@ -1704,7 +1781,7 @@
 
 <script>
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
-const SYSTEM_BUILD_VERSION = "5.0";
+const SYSTEM_BUILD_VERSION = "6.0";
 const MASTER_GENRE_LIST = [
   'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
   'Enemies to Lovers', 'Fated Mates', 'Forced Proximity', 'Found Family',
@@ -2558,30 +2635,82 @@ function updateHomeView() {
   renderQuoteSlotValue(); updateUIRowCounters(); renderHomepageChartsPreview();
 }
 
-function rotateCompletedQuote() { activeQuoteIndex = (activeQuoteIndex + 1) % COMPLETED_BOOK_QUOTES.length; renderQuoteSlotValue(); }
+let isShuffleQuoteActive = false; // Flag to prevent rapid-fire taps on shuffle
+let isRotateQuoteActive = false;  // Flag to prevent rapid-fire taps on rotate
 
 function shuffleCurrentBookQuote() {
+  if (isShuffleQuoteActive || COMPLETED_BOOK_QUOTES.length === 0) return;
+
   const currentQ = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
-  if (!currentQ) return;
+  if (!currentQ) return; // Should not happen if COMPLETED_BOOK_QUOTES is not empty
+
   const currentNorm = normalizeTitle(currentQ.source);
   const sameBookIndices = COMPLETED_BOOK_QUOTES 
     .map((q, idx) => q.normalizedSource === currentNorm ? idx : -1)
     .filter(idx => idx !== -1);
-  if (sameBookIndices.length <= 1) return;
+
+  if (sameBookIndices.length <= 1) return; // No other quotes for this book to shuffle
+
+  isShuffleQuoteActive = true;
+  const shuffleButton = document.querySelector('.quote-board-refresh-btn[onclick="shuffleCurrentBookQuote()"]');
+  if (shuffleButton) {
+    shuffleButton.classList.add('animating'); // Add animation class
+    shuffleButton.disabled = true;
+    shuffleButton.style.opacity = '0.5'; // Visual feedback for disabled state
+  }
+
   let nextIdx;
   do {
     nextIdx = sameBookIndices[Math.floor(Math.random() * sameBookIndices.length)];
   } while (nextIdx === activeQuoteIndex);
   activeQuoteIndex = nextIdx;
-  renderQuoteSlotValue();
+
+  renderQuoteSlotValue(() => {
+    isShuffleQuoteActive = false;
+    if (shuffleButton) {
+      shuffleButton.classList.remove('animating'); // Remove animation class
+      shuffleButton.disabled = false;
+      shuffleButton.style.opacity = '1';
+    }
+  });
 }
 
-function renderQuoteSlotValue() {
+function rotateCompletedQuote() {
+  if (isRotateQuoteActive || COMPLETED_BOOK_QUOTES.length === 0) return;
+
+  isRotateQuoteActive = true;
+  const rotateButton = document.querySelector('.quote-board-refresh-btn[onclick="rotateCompletedQuote()"]');
+  if (rotateButton) {
+    rotateButton.classList.add('animating'); // Add animation class
+    rotateButton.disabled = true;
+    rotateButton.style.opacity = '0.5'; // Visual feedback for disabled state
+  }
+
+  activeQuoteIndex = (activeQuoteIndex + 1) % COMPLETED_BOOK_QUOTES.length;
+  renderQuoteSlotValue(() => {
+    isRotateQuoteActive = false;
+    if (rotateButton) {
+      rotateButton.classList.remove('animating'); // Remove animation class
+      rotateButton.disabled = false;
+      rotateButton.style.opacity = '1';
+    }
+  });
+}
+
+function renderQuoteSlotValue(callback = () => {}) { // Accept a callback function
   const pane = document.getElementById('quoteTextPane');
   pane.classList.add('fade-out');
   
   setTimeout(() => {
     const q = COMPLETED_BOOK_QUOTES[activeQuoteIndex];
+    if (!q) { // Handle case where COMPLETED_BOOK_QUOTES might be empty (e.g., during initial load or if all books are removed)
+      pane.textContent = "No quotes available yet. Enchanting archives...";
+      document.getElementById('quoteSourcePane').textContent = "";
+      document.getElementById('memoryLanePane').textContent = "";
+      pane.classList.remove('fade-out');
+      callback(); // Ensure callback is called even if no quote
+      return;
+    }
     pane.textContent = `"${q.text}"`;
     document.getElementById('quoteSourcePane').textContent = `— ${q.source}`;
     
@@ -2593,6 +2722,7 @@ function renderQuoteSlotValue() {
        document.getElementById('memoryLanePane').textContent = `Evaluate items inside the library filters to unlock your reading history logs here!`;
     }
     pane.classList.remove('fade-out');
+    callback(); // Execute callback after the animation completes
   }, 300);
 }
 
@@ -2800,6 +2930,7 @@ function commitNewBook() {
 
 function normalizeGenre(g) {
   if (!g) return 'Other'; const l = g.toLowerCase();
+  if (l.includes('lgbtq') || l.includes('queer') || l.includes('pride') || l.includes('sapphic') || l.includes('gay') || l.includes('lesbian') || l.includes('transgender') || /\b(mm|bl|gl|wl)\b/.test(l)) return 'LGBTQ+';
   if (l.includes('academic settings') || l.includes('academic')) return 'Academic Settings';
   if (l.includes('allegorical fiction') || l.includes('allegorical')) return 'Allegorical Fiction';
   if (l.includes('dark romantasy') || l.includes('dark romance') || l === 'dark') return 'Dark Romantasy';
@@ -2831,10 +2962,11 @@ function normalizeGenre(g) {
 
 function inferNarrativeTropes(b) {
   const id = parseInt(b.id);
-  const title = b.title.toLowerCase();
+  const title = b.title.toLowerCase().replace(/\s+/g, '');
   const auth = b.author.toLowerCase();
   const tropes = [];
 
+  // Priority Checks
   if (title.includes('court') || title.includes('hierarchy') || title.includes('clash') || title.includes('kings') || title.includes('thrones') || title.includes('queen') || title.includes('empress')) {
     tropes.push('Political Intrigue');
   }
@@ -3364,18 +3496,67 @@ function renderHomepageChartsPreview() {
         <div class="podium-column"><div class="podium-book-title">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}${dynamicLoreSources.has(p3.title) ? ' ✨' : ''}</div><div class="podium-block podium-step-3"><span class="podium-number" style="color:#fff;">III</span></div></div>
       </div>`;
   const canvasEl = document.getElementById('homeStatusPieChart');
+  const centerTextNode = document.getElementById('homeStatusChartCenterText');
   if (canvasEl) {
     if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
-    activeCharts.homeStatus = new Chart(canvasEl.getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Completed', 'Reading', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#2b7a4b', '#e63946', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+    const sTBR = books.filter(b => statusKey(b.status) === 'TBR').length;
+    const sRead = books.filter(b => statusKey(b.status) === 'Complete').length;
+    const sCurr = books.filter(b => statusKey(b.status) === 'Reading').length;
+    const sDNF = books.filter(b => statusKey(b.status) === 'DNF').length;
+    const sOld = books.filter(b => statusKey(b.status) === 'Old').length;
+    const sWont = books.filter(b => statusKey(b.status) === 'Wont').length;
+
+    const statusEntries = [
+      { label: 'To Read', val: sTBR, color: '#5e35b1' },
+      { label: 'Reading', val: sCurr, color: '#e63946' },
+      { label: 'Completed', val: sRead, color: '#2b7a4b' },
+      { label: 'Dropped', val: sDNF, color: '#a62626' },
+      { label: 'Past Reads', val: sOld, color: '#b39243' },
+      { label: 'Won\'t Continue', val: sWont, color: '#8c7f70' }
+    ].sort((a, b) => a.val - b.val);
+
+    if (centerTextNode) {
+      centerTextNode.innerHTML = `
+        <span class="main-val" style="color:var(--gold); font-size: 20px;">${sRead} / ${sTBR}</span>
+        <span class="sub-val" style="font-size: 8px;">Finished / TBR</span>
+      `;
+    }
+
+    activeCharts.homeStatus = new Chart(canvasEl.getContext('2d'), { 
+      type: 'doughnut', 
+      data: { 
+        labels: statusEntries.map(e => e.label), 
+        datasets: [{ 
+          data: statusEntries.map(e => e.val), 
+          backgroundColor: statusEntries.map(e => e.color), 
+          borderWidth: 0, 
+        }] 
+      }, 
+      options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        cutout: '80%',
+        plugins: { 
+          legend: { display: false },
+          doughnutBorder: { 
+            outerBorderColor: '--crimson-light', 
+            outerBorderWidth: 2, 
+            innerBorderColor: '--gold', 
+            innerBorderWidth: 2 
+          }
+        } 
+      } 
+    });
   }
 }
 
 let selectedStatusIndex = -1;
 let selectedGenreIndex = -1;
+let selectedRatingIndex = -1;
 
 function toggleAuthorBooks(el, authorName) {
   const dropdown = el.nextElementSibling;
-  const isActive = dropdown.classList.contains('active');
+  const isActive = dropdown.classList.contains('active'); // Check if the dropdown is currently active
   
   // Close others for a clean accordion effect
   document.querySelectorAll('.author-books-dropdown').forEach(d => {
@@ -3384,7 +3565,7 @@ function toggleAuthorBooks(el, authorName) {
   });
 
   if (!isActive) {
-    const authorBooks = books.filter(b => b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").trim() === authorName);
+    const authorBooks = books.filter(b => processScribeNameMilitaryFormatting(b.author) === authorName);
     dropdown.innerHTML = authorBooks.map(b => {
       const statusClass = statusKey(b.status);
       const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
@@ -3428,8 +3609,10 @@ function renderCharts() {
 
   selectedStatusIndex = -1;
   selectedGenreIndex = -1;
+  selectedRatingIndex = -1;
   document.getElementById('statusChartCenterText').style.transform = "translate(-50%, -50%) scale(1)";
   document.getElementById('genreChartCenterText').style.transform = "translate(-50%, -50%) scale(1)";
+  document.getElementById('ratingChartCenterText').style.transform = "translate(-50%, -50%) scale(1)";
 
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
@@ -3528,11 +3711,14 @@ function renderCharts() {
   const genreLookup = {};
   [...MASTER_GENRE_LIST, 'Other'].forEach(g => genreLookup[g] = 0);
 
-  // Count occurrences from books based on their primary normalized genre
+  // Multi-Tag Analytics: Count every genre found in the book, not just the first one
   books.forEach(b => {
-    const primary = normalizeGenre(b.genre?.split(',')[0]);
-    if (genreLookup.hasOwnProperty(primary)) genreLookup[primary]++;
-    else genreLookup['Other']++;
+    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+    const uniqueTags = [...new Set(bookTags)]; // Avoid double counting if a book has redundant tags
+    uniqueTags.forEach(tag => {
+      if (genreLookup.hasOwnProperty(tag)) genreLookup[tag]++;
+      else genreLookup['Other']++;
+    });
   });
 
   let topG = "None";
@@ -3605,6 +3791,81 @@ function renderCharts() {
         }
       },
       elements: { arc: { borderWidth: 0 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} volumes` } },
+        doughnutBorder: { outerBorderColor: '--crimson-light', outerBorderWidth: 3, innerBorderColor: '--gold', innerBorderWidth: 3 }
+      }
+    }
+  });
+
+  const ratedBooks = books.filter(b => b.myRating != null);
+  const avgScore = ratedBooks.length > 0 ? (ratedBooks.reduce((s,b)=>s+b.myRating,0)/ratedBooks.length).toFixed(1) : "0.0";
+
+  document.getElementById('ratingChartCenterText').innerHTML = `
+    <span class="main-val" style="color:var(--gold);">${avgScore}</span>
+    <span class="sub-val">Avg Rating</span>
+  `;
+  
+  // Define rainbow colors for 11 segments (10, 9.5, 9 down to 1)
+  const rainbowColors = [
+    '#FF0000', // Red (10)
+    '#FF4500', // OrangeRed (9.5)
+    '#FF7F00', // Orange (9)
+    '#FFFF00', // Yellow (8)
+    '#00FF00', // Green (7)
+    '#00FFFF', // Cyan (6)
+    '#0000FF', // Blue (5)
+    '#4B0082', // Indigo (4)
+    '#9400D3', // Violet (3)
+    '#FF1493', // Deep Pink (2)
+    '#8B4513'  // Saddle Brown (1)
+  ];
+
+  const ratingSteps = [10, 9.5, 9, 8, 7, 6, 5, 4, 3, 2, 1];
+  const ratingEntries = [];
+  ratingSteps.forEach((star, i) => {
+    const count = books.filter(b => b.myRating === star).length;
+    if (count > 0) {
+      ratingEntries.push({ label: `${star} Stars`, val: count, color: rainbowColors[i] });
+    }
+  });
+
+  if(activeCharts.rating) activeCharts.rating.destroy();
+  activeCharts.rating = new Chart(document.getElementById('ratingPieChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ratingEntries.map(e => e.label),
+      datasets: [{
+        data: ratingEntries.map(e => e.val),
+        backgroundColor: ratingEntries.map(e => e.color),
+        offset: ratingEntries.map(() => 0)
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '80%',
+      layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
+      onClick: (evt, elements, chart) => {
+        const centerNode = document.getElementById('ratingChartCenterText');
+        if (elements.length > 0) {
+          const idx = elements[0].index;
+          if (selectedRatingIndex === idx) {
+            selectedRatingIndex = -1;
+            chart.data.datasets[0].offset = chart.data.labels.map(() => 0);
+            chart.options.plugins.doughnutBorder.outerBorderColor = '--crimson-light';
+            centerNode.innerHTML = `<span class="main-val" style="color:var(--gold);">${avgScore}</span><span class="sub-val">Avg Rating</span>`;
+            centerNode.style.transform = "translate(-50%, -50%) scale(1)";
+          } else {
+            selectedRatingIndex = idx;
+            const e = ratingEntries[idx];
+            chart.data.datasets[0].offset = chart.data.labels.map((_, i) => i === idx ? 50 : 0);
+            chart.options.plugins.doughnutBorder.outerBorderColor = e.color; // Use segment color for outer border
+            centerNode.innerHTML = `<span class="main-val" style="color:${e.color};">${e.val}</span><span class="sub-val">${e.label}</span>`;
+            centerNode.style.transform = "translate(-50%, -50%) scale(1.15)";
+          }
+          chart.update();
+        }
+      },
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} volumes` } },
@@ -3687,7 +3948,292 @@ function showView(viewName) {
     document.getElementById('goalsView').classList.add('visible');
     document.getElementById('navGoals').classList.add('active');
     // No specific rendering needed for an empty page yet
+    renderProspects();
   }
+}
+
+// ── FUTURE PROSPECTS (WISHLIST) ENGINE ──────────────────────────────────────
+const PROSPECTS_RAW = [
+  [1, "Jujutsu Kaisen", "Akutami G.", "Jujutsu Kaisen 1"],
+  [2, "Six of Crows", "Bardugo, L.", "Six of Crows 1"],
+  [3, "Crooked Kingdom", "Bardugo, L.", "Six of Crows 2"],
+  [4, "A Darker SHore: Letters from Ketterdam", "Bardugo, L.", "Six of Crows 2.5"],
+  [5, "The Inheritance Games", "Barnes, J. L.", "The Inheritance Games 1"],
+  [6, "The Hawthorne Legacy", "Barnes, J. L.", "The Inheritance Games 2"],
+  [7, "The Final Gambit", "Barnes, J. L.", "The Inheritance Games 3"],
+  [8, "The Brothers Hawthorne", "Barnes, J. L.", "The Inheritance Games 4"],
+  [9, "Games untold", "Barnes, J. L.", "The Inheritance Games 5"],
+  [10, "The Tainted Cup", "Bennett R. J.", "Shadow of the Leviathan 1"],
+  [11, "A Drop of Corruption", "Bennett R. J.", "Shadow of the Leviathan 2"],
+  [12, "A Trade of Blood", "Bennett R. J.", "Shadow of the Leviathan 3"],
+  [13, "On Wings of Blood", "Boleyn, B.", "Bloodwing Academy 1"],
+  [14, "The Bond That Burns", "Boleyn, B.", "Bloodwing Academy 2"],
+  [15, "The Wings That Bind", "Boleyn, B.", "Bloodwing Academy 3"],
+  [16, "Songbird & Heart of Stone", "Broadbent C.", "Crowns of Nyaxia 3"],
+  [17, "Slaying the Vampire Conqueror", "Broadbent C.", "Crowns of Nyaxia 2.5"],
+  [18, "The Fallen The Kiss Of Dusk", "Broadbent C.", "Crowns of Nyaxia 4"],
+  [19, "Six Scorched Roses", "Broadbent C.", "Crowns of Nyaxia 1.5"],
+  [20, "The Burnborn Duet", "Broadbent C.", "Crowns of Nyaxia 5-6"],
+  [21, "Serpent & Wings of Night", "Broadbent, C.", "Crowns of Nyaxia 1"],
+  [22, "The Ashes & Star-Cursed King", "Broadbent, C.", "Crowns of Nyaxia 2"],
+  [23, "The Songbird of heart of the Stone", "Broadbent, C.", "Crowns of Nyaxia 3"],
+  [24, "The Lion and The Deathless Dark", "Broadbent, C.", "Crowns of Nyaxia 5"],
+  [25, "Iron Gold", "Brown, P.", "Red Rising Series 4"],
+  [26, "Dark Age", "Brown, P.", "Red Rising Saga 5"],
+  [27, "Light Bringer", "Brown, P.", "Red Rising 6"],
+  [28, "Red God", "Brown, P.", "Red Rising Series 7"],
+  [29, "Between Two Fires", "Buehlman C.", "stand alone"],
+  [30, "Cyberpunk 2077: Team Trauma", "Bunn, C. ", "Cyberpunk 2077: Trauma Team 1"],
+  [31, "Spark of the EverFlame", "Cole, P. ", "The Kindred's Curse Saga 1"],
+  [32, "Glow of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 2"],
+  [33, "Heat of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 3"],
+  [34, "Burn of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 4"],
+  [35, "Carl's Doomsday Scenario", "Dinniman, M.", "Dungeon Crawler Carl 2"],
+  [36, "The Dungeons Anarchist's Cook Book", "Dinniman, M.", "Dungeon Crawler Carl 3"],
+  [37, "The Fate of the Feral Gods", "Dinniman, M.", "Dungeon Crawler Carl 3"],
+  [38, "The Butchers Masquerade", "Dinniman, M.", "Dungeon Crawler Carl 5"],
+  [39, "The Eye of the Bedlam Bride", "Dinniman, M.", "Dungeon Crawler Carl 6"],
+  [40, "City of Gods & Monsters", "Edwards K.", "House of Devils 1"],
+  [41, "City of Souls & Sinners", "Edwards K.", "House of Devils 2"],
+  [42, "City of Lies & Legends", "Edwards K.", "House of Devils 3"],
+  [43, "City of Smoke & Brimstone", "Edwards K.", "House of Devils 4"],
+  [44, "Silver Elite", "Francis, D.", "Silver Elite 1"],
+  [45, "Broken Dove", "Francis, D.", "Silver Elite 2"],
+  [46, "Spectacular", "Garber S.", "Caraval 3.5"],
+  [47, "The Knave and the Moon", "Gillig, R.", "The Stonewater Kingdom 2"],
+  [48, "A Bone in his teeth", "Graves K.", "Stand alone"],
+  [49, "The Fox and the Dryad", "Graves, K.", "stand alone"],
+  [50, "Prince of Sorrows", "Graves, K.", "Rowan Blood 1"],
+  [51, "Lord of Silver Ashes", "Graves, K.", "Rowan Blood 2"],
+  [52, "Herald of the Witches Mark", "Graves, K.", "Rowan Blood 3"],
+  [53, "Vessel of Woven Night", "Graves, K.", "Rowan Blood 4"],
+  [54, "The Royal Curse", "Grayson, E.", "Twilight Mages 1"],
+  [55, "The Captive Curse", "Grayson, E.", "Twilight Mages 2"],
+  [56, "The Traitors Curse", "Grayson, E.", "Twilight Mages 3"],
+  [57, "Malice", "Gwynne, J.", "The Faithful and the Fallen 1"],
+  [58, "Valor", "Gwynne, J.", "The Faithful and the Fallen 2"],
+  [59, "Ruin", "Gwynne, J.", "The Faithful and the Fallen 3"],
+  [60, "Wrath", "Gwynne, J.", "The Faithful and the Fallen 4"],
+  [61, "A Time of Dread", "Gwynne, J.", "Of Blood and Bone 1"],
+  [62, "A Time of Blood", "Gwynne, J.", "Of Blood and Bone 2"],
+  [63, "A Time of Courage", "Gwynne, J.", "Of Blood and Bone 3"],
+  [64, "Shadow of the Gods", "Gwynne, J.", "The Bloodsworn Saga 1"],
+  [65, "Hunger of the Gods", "Gwynne, J.", "The Bloodsworn Saga 2"],
+  [66, "Fury of the Gods", "Gwynne, J.", "The Bloodsworn Saga 3"],
+  [67, "Reforged", "Haddon, S.", "The World of Reforged 1"],
+  [68, "Reborn", "Haddon, S.", "The World of Reforged 2"],
+  [69, "Reclaimed", "Haddon, S.", "The World of Reforged 3"],
+  [70, "Quicksilver Bonus Scenes: Kingfisher's POV", "Hart, C.", "Fae & Alchemy 1.5"],
+  [71, "Fae & Alchemy 3", "Hart, C.", "Fae & Alchemy 3"],
+  [72, "The Raven School", "Hodgson A.", "Eternal Path Trilogy 1"],
+  [73, "The Shadow of What was Lost", "Islington, J.", "The Licanius Trilogy 1"],
+  [74, "A Echo of Things to Come", "Islington, J.", "The Licanius Trilogy 2"],
+  [75, "The Light of all That Falls", "Islington, J.", "Licanius Trilogy 3"],
+  [76, "The Justice of one", "Islington, J.", "Hierarchy 3"],
+  [77, "The Husband Hoax", "James S.", "Accidental Love 1"],
+  [78, "The Tempest Blade", "Jensen, D. L.", "The Bridge Kingdom 6"],
+  [79, "The God Killer ", "Kaner, H.", "Fallen Gods 1"],
+  [80, "Sun Bringer", "Kaner, H.", "Fallen Gods 2"],
+  [81, "Faith breaker", "Kaner, H.", "Fallen Gods 3"],
+  [82, "Gold", "Kennedy, R.", "Plated 5"],
+  [83, "Goldfinch", "Kennedy, R.", "The Plated Prisoner Series 6"],
+  [84, "Hunt the Villain", "Kent, R.", "Kiss the Villain 2"],
+  [85, "Crave the Villain", "Kent, R.", "Villain 3"],
+  [86, "God of Wrath ", "Kent, R.", "Legacy of Gods 3"],
+  [87, "God of Pain", "Kent, R.", "Legacy of Gods 2"],
+  [88, "God of Ruin", "Kent, R.", "Legacy of Gods 4"],
+  [89, "God of War", "Kent, R.", "Legacy of Gods 6"],
+  [90, "God of Fury", "Kent, R.", "Legacy of Gods 5"],
+  [91, "God of Malace", "Kent, R.", "Legacy of Gods 1"],
+  [92, "Trmpting Venom", "Kent, R.", "Vipers 3"],
+  [93, "Beautiful Venom", "Kent, R.", "Vipers 1"],
+  [94, "Sweet Venom", "Kent, R.", "The Vipers 2"],
+  [95, "Dumbledore: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 1"],
+  [96, "Snape: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 2"],
+  [97, "Malfoy: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 3"],
+  [98, "Wolfsong", "Klune, T. J.", "Green Creek 1"],
+  [99, "Ravensong", "Klune, T. J.", "Green Creek 2"],
+  [100, "Heartsong", "Klune, T. J.", "Green Creek 3"],
+  [101, "Brothersong", "Klune, T. J.", "Green Creek 4"],
+  [102, "Cyberpunk 2077: No Coincidence", "Kosik R.", "stand alone"],
+  [103, "Empire of the Vampire", "Kristoff, J.", "Empire of the Vampire 1"],
+  [104, "Empire of the Damned", "Kristoff, J.", "Empire of the Vampire 2"],
+  [105, "Empire of the Dawn", "Kristoff, J.", "Empire of the Vampire 3"],
+  [106, "The Poppy War", "Kuang, R. F.", "Poppy War Series 1"],
+  [107, "The dragon republic", "Kuang, R. F.", "The Poppy War 2"],
+  [108, "The Burning God", "Kuang, R. F.", "Poppy War 3"],
+  [109, "The Wolf and his King", "Longman F.", "Stand alone"],
+  [110, "A Court of Mist and Fury", "Maas, S. J.", "A Court of Thorns and Roses 2"],
+  [111, "A Court of Wings and Ruin", "Maas, S. J.", "A Court of Thorns and Roses 3"],
+  [112, "A Court of Frost and Starlight", "Maas, S. J.", "A Court of Thorns and Roses 4"],
+  [113, "A Court of Silver Flames", "Maas, S. J.", "A Court of Thorns and Roses 5"],
+  [114, "Cyberpunk 2077: 2am she calls", "Marchewka T.", "Stand alone"],
+  [115, "Blood of Hercules", "Mas, J.", "Villains of Lore 1"],
+  [116, "Bonds of Hercules", "Mas, J.", "Villains of Lore 2"],
+  [117, "Winters Orbit", "Maxwell E.", "The Resolution Universe 1"],
+  [118, "The Wolf and the Crown of Blood", "May E.", "The Broken Accords 1"],
+  [119, "A Monstrous Christmas in Camp", "Mayne, L.", "Monstrous 6.5"],
+  [120, "Soul Eater", "Mayne, L.", "Monstrous 1"],
+  [121, "Edin", "Mayne, L.", "Monstrous 2"],
+  [122, "The Rycke", "Mayne, L.", "Monstrous 3"],
+  [123, "Wyn", "Mayne, L.", "Monstrous 3.5"],
+  [124, "Gloam", "Mayne, L.", "Monstrous 4"],
+  [125, "Moth ", "Mayne, L.", "Monstrous 5"],
+  [126, "Seraph", "Mayne, L.", "Monstrous 6"],
+  [127, "Lor", "Mayne, L.", "Monstrous 7"],
+  [128, "A Forbidden Alchemy", "McEwan, S.", "The Artisan Trilogy 1"],
+  [129, "A Forsaken Prophecy", "McEwan, S.", "The Artisan Trilogy 2"],
+  [130, "A Strange And Stubborn Endurance", "Meadows F.", "The Tithenai Chronicles 1"],
+  [131, "Thousand Autumns", "Meng X. S.", "Thousand Autumns: Qian Qiu (Novel) 1"],
+  [132, "Heaven Official's Blessing (Vol. 1–8)", "Mo Xiang T. X.", "Heaven Official's Blessing 1-8"],
+  [133, "Grandmaster of Demonic Cultivation (Vol. 1–5)", "Mo Xiang T. X.", "Grandmaster of Demonic Cultivation 1-5"],
+  [134, "Ennead", "Mojito", "Ennead 1"],
+  [135, "Prince Weaver", "Morgan E. J.", "Land of the Wildest Skies 1"],
+  [136, "Silk &steal", "Nash, A.", "Silk & Steel 1"],
+  [137, "Iron & Fire ", "Nash, A.", "Silk & Steel 2"],
+  [138, "Blood & Ice", "Nash, A.", "Silk & Steel 3"],
+  [139, "Dare to Hold", "Nicole, A.", "Dare To Love 1"],
+  [140, "The Throne of Broken Gods", "Nicole, A.", "Gods and Monsters 2"],
+  [141, "The Dawn of the Cursed Queen", "Nicole, A.", "Gods & Monsters 3"],
+  [142, "The Wrath of the Fallen", "Nicole, A.", "Gods and Monsters 4"],
+  [143, "Death Stranding 1", "Nojima, H.", "Death Stranding 1"],
+  [144, "Death Stranding 2", "Nojima, H.", "Death Stranding 2"],
+  [145, "Shadow Reaper", "Noni, L. ", "Shadow Reaper 1"],
+  [146, "The games gods play", "Owen, A.", "The Games Gods Play 1"],
+  [147, "Things Gods Break", "Owen, A.", "The Crucible 2"],
+  [148, "Wrath Gods Reap", "Owen, A.", "The Crucible 3"],
+  [149, "Captive Prince", "Pacat, C. S.", "The Captive Prince Trilogy 1"],
+  [150, "Prince's Gambit", "Pacat, C. S.", "Captive Prince Trilogy 2"],
+  [151, "Kings Rising", "Pacat, C. S.", "Captive Prince 3"],
+  [152, "The summer palace (Short Stories)", "Pacat, C. S.", "Captive Prince Short Stories 2"],
+  [153, "The Wolf Queen", "Palphreyman, L.", "The Wolf King 3"],
+  [154, "To Bleed a Crystal Bloom", "Parker, S. A.", "Crystal Bloom Series 1"],
+  [155, "To Snap a Silver Stem", "Parker, S. A.", "Crystal Bloom Series 2"],
+  [156, "To Flame a Wild Flower", "Parker, S. A.", "Crystal Bloom 3"],
+  [157, "The ballad of falling dragons ", "Parker, S. A.", "The Moonfall Series 2"],
+  [158, "Dead Girls Don't Talk", "Paul S. J.", "Stand alone"],
+  [159, "Hollow", "Peckham C. & Valenti S.", "Crown of Hearts & Chaos 1"],
+  [160, "The Awakening", "Peckham, C.", "Zodiac Academy 1"],
+  [161, "Ruthless Fae", "Peckham, C.", "Zodiac Academy 2"],
+  [162, "The Reckoning", "Peckham, C.", "Zodiac Academy 3"],
+  [163, "Origins of an Academy bully", "Peckham, C.", "Zodiac Academy 0.5"],
+  [164, "The Awakening as told by the boys", "Peckham, C.", "Zodiac Academy 1.5"],
+  [165, "Shadow Princess", "Peckham, C.", "Zodiac Academy 4"],
+  [166, "Cursed Fates", "Peckham, C.", "Zodiac Academy 5"],
+  [167, "The Big ASS Party", "Peckham, C.", "Zodiac Academy 5.5"],
+  [168, "Fated Throne", "Peckham, C.", "Zodiac Academy 6"],
+  [169, "Sorrow and Starlight", "Peckham, C.", "Zodiac Academy 8"],
+  [170, "Heartless Sky", "Peckham, C.", "Zodiac Academy 7"],
+  [171, "Never Keep", "Peckham, C., Valenti, S.", "Sins of the Zodiac 1"],
+  [172, "Echo Fort", "Peckham, C., Valenti, S.", "Sins of the Zodiac 2"],
+  [173, "Cindervale", "Peckham, C., Valenti, S.", "Sins of the Zodiac 3"],
+  [174, "The Husky and His White Cat", "Rou B. B. C. R.", "The Husky and His White Cat Shizun: Erha He Ta De Bai Mao Shizun (Novel) 1"],
+  [175, "A Taste of Gold and Iron", "Rowland A.", "stand alone"],
+  [176, "Harry Potter and the Philosopher's Stone", "Rowling, J. K.", "Harry Potter 1"],
+  [177, "Harry Potter and the Chamber of Secrets", "Rowling, J. K.", "Harry Potter 2"],
+  [178, "Harry Potter and the Prisoner of Azkaban", "Rowling, J. K.", "Harry Potter 3"],
+  [179, "Harry Potter and the Goblet of Fire ", "Rowling, J. K.", "Harry Potter 4"],
+  [180, "Harry Potter and the Order of the Phoenix ", "Rowling, J. K.", "Harry Potter 5"],
+  [181, "Harry Potter and the Half-Blood Prince", "Rowling, J. K.", "Harry Potter 6"],
+  [182, "Harry Potter and the Deathly Hallows", "Rowling, J. K.", "Harry Potter 7"],
+  [183, "To Catch a Firefly", "Sanders E.", "Stand alone"],
+  [184, "The Way of Kings", "Sanderson B.", "The Stormlight Archive 1"],
+  [185, "Words of Radience", "Sanderson B.", "The Stormlight Archive 2"],
+  [186, "Edgedancer", "Sanderson B.", "The Stormlight Archive 2.5"],
+  [187, "Oathbringer", "Sanderson B.", "The Stormlight Archive 3"],
+  [188, "DawnShard", "Sanderson B.", "The Stormlight Archive 3.5"],
+  [189, "Rythm of War", "Sanderson B.", "The Stormlight Archive 4"],
+  [190, "Slaying the Shadow Prince", "Scheuerer H.", "Legends of Thezmarr 0.5"],
+  [191, "Iron & Embers", "Scheuerer, H.", "The Ashes of Thezmarr 1"],
+  [192, "Thorns & Fire", "Scheuerer, H.", "The Ashes of Thezmarr 2"],
+  [193, "Silvre & Smoke", "Scheuerer, H.", "Legends of Thezmarr 4"],
+  [194, "The Darkness Outside Us", "Schrefer E.", "The Darkness Outside Us 1"],
+  [195, "Bury our Bones in the Midnight Soil", "Schwab V. E.", "stand alone"],
+  [196, "Phantasma", "Smith, K.", "Wicked Games 1"],
+  [197, "Enchantra", "Smith, K.", "Wicked Games 2"],
+  [198, "Beneath ", "Sullivan, A. ", "Thousand Voices 1"],
+  [199, "Core", "Sullivan, A. ", "The Reform Series 2"],
+  [200, "Road of Bones", "Winters, D.", "The Ashen Series 1"],
+  [201, "Kingdom of Claw", "Winters, D.", "The Ashen Series 2"],
+  [202, "Dawn of the North", "Winters, D.", "The Ashen Series 3"],
+  [203, "Dagger Mouth", "Wolfe H. M.", "The Heart 1"]
+];
+
+let prospects = JSON.parse(localStorage.getItem('barbies_prospects') || 'null');
+if (!prospects) {
+  prospects = PROSPECTS_RAW.map(r => ({
+    id: r[0],
+    title: r[1],
+    author: r[2],
+    series: r[3],
+    dateAdded: new Date().toISOString()
+  }));
+}
+
+function renderProspects() {
+  const qInput = document.getElementById('prospectSearchInput');
+  if (!qInput) return;
+  
+  const q = qInput.value.toLowerCase().trim();
+  const sort = parseInt(document.getElementById('prospectSortSelect').value);
+  
+  document.getElementById('prospectGenreScroller').innerHTML = `<div class="genre-chip active">Future Acquisitions</div>`;
+
+  let list = prospects.filter(p => {
+    if (!q) return true;
+    return p.title.toLowerCase().includes(q) || p.author.toLowerCase().includes(q);
+  });
+
+  if (sort === 0) list.sort((a,b) => b.id - a.id);
+  else if (sort === 1) list.sort((a,b) => a.title.localeCompare(b.title));
+  else if (sort === 4) list.sort((a,b) => a.author.localeCompare(b.author));
+
+  document.getElementById('prospectPillCountAll').textContent = prospects.length;
+  document.getElementById('prospectResultsCount').textContent = `${list.length} prospects indexed`;
+
+  document.getElementById('prospectList').innerHTML = list.map(p => {
+    const initials = getTitleInitials(p.title);
+    return `
+      <div class="book-card status-TBR">
+        <div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${initials}</div>
+        <div class="book-info">
+          <div class="book-title">${p.title}</div>
+          <div class="book-author">${p.author}</div>
+          <div class="book-meta" style="font-size: 9px; color: var(--gold); margin-top: 2px;">${p.series || ''}</div>
+          <div class="book-meta">
+            <span class="badge badge-status-TBR">Wishlist</span>
+            <button class="action-sub-btn" style="padding: 2px 6px; font-size: 8px;" onclick="removeProspect(${p.id})">Remove</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function addNewProspect() {
+  const title = prompt("Enter book title for Future Prospects:");
+  if (!title) return;
+  const author = prompt("Enter author name:");
+  const newP = {
+    id: Date.now(),
+    title: title,
+    author: author || "Unknown Author",
+    dateAdded: new Date().toISOString()
+  };
+  prospects.push(newP);
+  saveProspects();
+  renderProspects();
+}
+
+function removeProspect(id) {
+  if (confirm("Remove this book from Future Prospects?")) {
+    prospects = prospects.filter(p => p.id !== id);
+    saveProspects();
+    renderProspects();
+  }
+}
+
+function saveProspects() {
+  localStorage.setItem('barbies_prospects', JSON.stringify(prospects));
 }
 
 function purgeCurrentBookEntry() {
@@ -3767,15 +4313,25 @@ function playCasinoJackpotChimeAudio() {
 }
 
 function initCasinoWheelChips() {
-  const genresPool = [
-    'Romantasy', 'Dark Romantasy', 'High Fantasy', 'Grim Thriller', 'Sci-Fi / Lore',
-    'True Crime / Dossier', 'Memoir / Non-Fiction', 'Gothic / Horror', 'Historical / Classical', 'Dystopian / LitRPG'
-  ].sort((a,b) => a.localeCompare(b));
+  const tbrBooks = books.filter(b => statusKey(b.status) === 'TBR');
+  const genreCounts = {};
   
+  tbrBooks.forEach(b => {
+    const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+    // Use a Set to avoid double-counting the same genre on a single book
+    [...new Set(bookTags)].forEach(t => {
+      if (t) genreCounts[t] = (genreCounts[t] || 0) + 1;
+    });
+  });
+
+  // Filter to only include genres that actually contain TBR books
+  const genresWithBooks = Object.keys(genreCounts).filter(g => g !== 'Other').sort((a, b) => a.localeCompare(b));
+
   document.getElementById('casinoDynamicGenreChips').innerHTML = 
     `<div class="stake-chip ${activeCasinoGenreFilter === 'All' ? 'active':''}" onclick="setCasinoGenreFilter(this,'All')">All Narratives</div>` +
-    genresPool.map(g => `<div class="stake-chip ${activeCasinoGenreFilter === g ? 'active':''}" onclick="setCasinoGenreFilter(this,'${g.replace(/'/g, "\\'")}')">${g}</div>`).join('');
-    
+    genresWithBooks.map(g => `<div class="stake-chip ${activeCasinoGenreFilter === g ? 'active':''}" onclick="setCasinoGenreFilter(this,'${g.replace(/'/g, "\\'")}')">${g} (${genreCounts[g]})</div>`).join('') +
+    (genreCounts['Other'] ? `<div class="stake-chip ${activeCasinoGenreFilter === 'Other' ? 'active':''}" onclick="setCasinoGenreFilter(this,'Other')">Other (${genreCounts['Other']})</div>` : '');
+
   configureRouletteDataPool();
 }
 
@@ -3804,10 +4360,8 @@ function getCasinoPoolBooks() {
     if (currentWheelWeightFilter === 'long' && pCount <= 550) return false;
     
     if (activeCasinoGenreFilter !== 'All') {
-      if (!b.genre.toLowerCase().includes(activeCasinoGenreFilter.toLowerCase())) return false;
-      const bookTags = b.genre?.split(',').map(t => t.trim().toLowerCase()) || [];
-      const targetTag = activeCasinoGenreFilter.toLowerCase();
-      if (!bookTags.includes(targetTag)) return false;
+      const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+      if (!bookTags.includes(activeCasinoGenreFilter)) return false;
     }
     
     return true;
@@ -4108,13 +4662,14 @@ window.addEventListener('DOMContentLoaded', async () => {
   const savedTheme = localStorage.getItem('barbies_library_theme') || 'dark';
   executeThemeSwitch(savedTheme);
   
-  await initializeLoreEngine();
+  // Run the Lore Engine in the background so it doesn't block the UI from loading
+  initializeLoreEngine().catch(e => console.warn("Lore Engine Startup Interrupted:", e));
 
-  setTimeout(() => { 
-    renderGenreRow(); 
-    renderBooks(); 
-    showView('home'); 
-    overlay.classList.add('hidden'); 
-  }, 1800); 
+  // Immediately prepare and show the main interface
+  renderGenreRow(); 
+  renderBooks(); 
+  showView('home'); 
+  
+  setTimeout(() => { overlay.classList.add('hidden'); }, 800); 
 });
 </script>
