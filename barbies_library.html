@@ -2303,10 +2303,61 @@ function normalizeTitle(t) {
   return t ? t.toLowerCase().replace(/['"\u2018\u2019\u201C\u201D]/g, "").replace(/[^a-z0-9]/g, "").trim() : "";
 }
 
+/**
+ * Dedicated Quote Engine: Queries for verbatim book quotes, parses for dialogue patterns,
+ * and updates the lore archive.
+ */
+async function fetchAndProcessBookQuotes(book) {
+  const normTitle = normalizeTitle(book.title);
+  // Skip if we already have quotes
+  if (COMPLETED_BOOK_QUOTES.some(q => q.normalizedSource === normTitle)) return [];
+
+  let snippets = [];
+  try {
+    // Optimized query to target verbatim text/dialogue
+    const query = encodeURIComponent(`intitle:"${book.title}" ${book.author.split(',')[0]} "book quotes"`);
+    const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`);
+    const data = await response.json();
+    const item = data.items?.[0];
+    
+    // Pool description and search snippet to find actual lines from the book
+    const pool = (item?.volumeInfo?.description || "") + " " + (item?.searchInfo?.textSnippet || "");
+    const cleanPool = pool.replace(/<[^>]*>/g, '');
+    
+    // Logic: Look for text inside quotation marks (Proper Quote Detection)
+    const quoteRegex = /"([^"]{30,280})"/g;
+    let match;
+    while ((match = quoteRegex.exec(cleanPool)) !== null) {
+      snippets.push(match[1].trim());
+    }
+
+    // Fallback: If no verbatim quotes found, extract the most descriptive sentences
+    if (snippets.length === 0) {
+      const sentences = cleanPool.match(/[^.!?]+[.!?]+/g) || [cleanPool];
+      snippets = sentences.map(s => s.trim()).filter(s => s.length > 40 && s.length < 220).slice(0, 2);
+    }
+  } catch (e) { console.warn("Quote Engine Error:", e); }
+
+  if (snippets.length === 0) snippets = ["In the silence of the library, a new story waits to be told."];
+
+  const newEntries = snippets.slice(0, 2).map(text => ({
+    source: book.title,
+    normalizedSource: normTitle,
+    text: text
+  }));
+  
+  // Update local memory
+  COMPLETED_BOOK_QUOTES.push(...newEntries);
+  dynamicLoreSources.add(normTitle);
+  
+  return newEntries;
+}
+
 async function initializeLoreEngine() {
   // Step 1: Merge static quotes with dynamically discovered ones from localStorage
   const statusText = document.getElementById('loadingStatusText');
   const isInitialLoad = !document.getElementById('loadingOverlay').classList.contains('hidden');
+
   if (isInitialLoad && statusText) statusText.textContent = "Enchanting Quotes ✨";
 
   try {
@@ -2337,17 +2388,19 @@ async function initializeLoreEngine() {
     const missingLore = books.filter(b => (b.status === 'Complete' || b.status === 'Old') && !booksWithQuotes.has(normalizeTitle(b.title)));
 
     if (missingLore.length > 0) {
+      // The status text is already set to "Enchanting Quotes ✨" at the start.
+      // It will be updated per book inside enchantMissingLore.
       await enchantMissingLore(missingLore);
 
       // Step 3: Persistent Learning - Save newly found quotes to localStorage
       const newlyEnchantedQuotes = COMPLETED_BOOK_QUOTES.slice(quotesBeforeEnchantmentCount);
       if (newlyEnchantedQuotes.length > 0) {
         const existingDynamic = JSON.parse(localStorage.getItem('barbies_dynamic_quotes') || '[]');
-        const updatedDynamicQuotes = [...existingDynamic, ...newlyEnchantedQuotes];
-        localStorage.setItem('barbies_dynamic_quotes', JSON.stringify(updatedDynamicQuotes));
+        const combinedDynamic = [...existingDynamic, ...newlyEnchantedQuotes];
+        localStorage.setItem('barbies_dynamic_quotes', JSON.stringify(combinedDynamic));
         console.log(`Lore Engine: Saved ${newlyEnchantedQuotes.length} new dynamic quotes to localStorage.`);
       }
-      
+
       // Refresh view to show new enchantment marks
       if (currentView === 'library') renderBooks();
       if (currentView === 'home') updateHomeView();
@@ -2392,6 +2445,14 @@ async function enchantMissingLore(missingBooks) {
         } else if (candidates.length === 1) {
           snippets = [candidates[0], "A legendary chronicle waiting to be uncovered."];
         }
+      }
+
+      // Robust Fallback (Step 5)
+      if (snippets.length === 0) {
+        snippets = [
+          `In the heart of ${book.genre.split(',')[0] || 'the story'}, a new destiny unfolds.`,
+          "A legendary chronicle waiting to be uncovered."
+        ];
       }
 
       snippets.forEach(text => {
@@ -3078,8 +3139,7 @@ async function openInfoCardOverlay(id) {
   const coverImg = document.getElementById('infoCardCoverImg'); const fallbackIllustration = document.getElementById('infoCardGlyph');
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   const cleanTitle = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
-
+  
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
   document.getElementById('infoCardGenre').textContent = currentBook.genre?.split(',')[0]?.trim() || 'Other';
@@ -3089,15 +3149,27 @@ async function openInfoCardOverlay(id) {
   if (document.getElementById('infoCardInner')) document.getElementById('infoCardInner').classList.remove('is-flipped');
 
   const normTitle = normalizeTitle(currentBook.title);
-  const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
+  let bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
+
+  // If empty, search for new quotes on click
+  if (bookQuotes.length === 0) { // Always attempt to fetch if no quotes are present
+    document.getElementById('infoCardLore').innerHTML = `<p><i>Searching archives for proper quotes...</i></p>`;
+    const newlyFetched = await fetchAndProcessBookQuotes(currentBook);
+    if (newlyFetched.length > 0) {
+      const existing = JSON.parse(localStorage.getItem('barbies_dynamic_quotes') || '[]');
+      localStorage.setItem('barbies_dynamic_quotes', JSON.stringify([...existing, ...newlyFetched]));
+      bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
+    }
+  }
+
   if (bookQuotes.length > 0) {
     const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
     loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
   } else if (BOOK_BLURBS_REGISTRY[currentBook.title]) {
     loreHtml = `<p>${BOOK_BLURBS_REGISTRY[currentBook.title]}</p>`;
   } else {
-    loreHtml = `<p><i>${systemNote}</i></p>`;
+    loreHtml = `<p><i>SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.</i></p>`;
   }
   document.getElementById('infoCardLore').innerHTML = loreHtml;
   
@@ -3106,6 +3178,11 @@ async function openInfoCardOverlay(id) {
     const userNotes = currentBook.notes || "No internal observations recorded for this archive.";
     backNotes.textContent = `${userNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   }
+
+  const inner = document.getElementById('infoCardInner');
+  if (inner) inner.classList.remove('is-flipped');
+
+  document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
   
   if (currentBook.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, currentBook.coverUrl); return; }
   const targetISBN = currentBook.isbn || PRELOADED_ISBN_REGISTRY[currentBook.title];
@@ -3941,7 +4018,6 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   const cleanTitle = paralysisWinningBookPointer.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   const normTitle = normalizeTitle(paralysisWinningBookPointer.title);
   const cleanAuthor = paralysisWinningBookPointer.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-  const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
              
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   document.getElementById('cardBookTitle').textContent = cleanTitle;
@@ -3949,28 +4025,36 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
-
-  overlayCardNode.classList.add('show'); 
-  if (isFromSpin) triggerCasinoEmoteFountainSplash();
-  if (document.getElementById('casinoCardInner')) document.getElementById('casinoCardInner').classList.remove('is-flipped');
+  document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
   
+  const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
   const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
   if (bookQuotes.length > 0) {
+    loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
+    // Randomly select one of the available quotes
     const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
     loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
   } else if (BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]) {
     loreHtml = `<p>${BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]}</p>`;
   } else {
-    loreHtml = `<p><i>${systemNote}</i></p>`;
+    loreHtml = `<p>A legendary chronicle waiting to be uncovered within the deep stacks.</p>`;
+    loreHtml = `<p><i>SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.</i></p>`;
   }
   document.getElementById('cardBookLore').innerHTML = loreHtml;
                
   const backNotes = document.getElementById('cardBookNotesBack');
   if (backNotes) {
     const userNotes = paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered.";
+    backNotes.textContent = `${userNotes}\n\n${systemNote}`;
     backNotes.textContent = `${userNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
   }
+
+  const inner = document.getElementById('casinoCardInner');
+  if (inner) inner.classList.remove('is-flipped');
+
+  overlayCardNode.classList.add('show'); 
+  if (isFromSpin) triggerCasinoEmoteFountainSplash();
                
   if (paralysisWinningBookPointer.coverUrl) { assignImageToTargetNode(coverImg, fallbackIllustration, paralysisWinningBookPointer.coverUrl); return; }
   const targetISBN = paralysisWinningBookPointer.isbn || PRELOADED_ISBN_REGISTRY[paralysisWinningBookPointer.title];
