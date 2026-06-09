@@ -1226,12 +1226,12 @@
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search by title, author, trope or genre..." oninput="processSearch()">
     </div>
-    <button class="sort-btn" id="sortBtn" onclick="cycleSort()">Sort Mode</button>
     <select class="sort-btn" id="sortSelect" onchange="applySort(this.value)">
-      <option value="0">Default Sort</option>
+      <option value="0">Recently Uploaded</option>
       <option value="1">Title A–Z</option>
       <option value="2">My Rating</option>
       <option value="3">Goodreads Rating</option>
+      <option value="4">Author A–Z</option>
     </select>
   </div>
 
@@ -1543,11 +1543,13 @@
 // ── APP CONSOLE CONFIGURATION SCHEMA ──────────────────────────────────────────
 const SYSTEM_BUILD_VERSION = "4.0";
 const MASTER_GENRE_LIST = [
-  'Academic Settings', 'Dark Romantasy', 'Dystopian / LitRPG', 'Enemies to Lovers',
-  'Fated Mates', 'Forced Proximity', 'Found Family', 'Gothic / Horror',
-  'Grim Thriller', 'High Fantasy', 'Historical / Classical', 'LGBTQ+',
+  'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
+  'Dystopian / LitRPG', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity',
+  'Found Family', 'Gothic / Horror', 'Graphic Novel', 'Grim Thriller',
+  'High Fantasy', 'Historical / Classical', 'LGBTQ+', 'Literary Fiction',
   'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
-  'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier'
+  'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier', 'Urban Fantasy',
+  'Young Adult'
 ];
 
 // ── DATA REGISTRY PACKAGES ──────────────────────────────────
@@ -1822,8 +1824,8 @@ function loadSaved() {
 }
 loadSaved();
 
-let activeStatus = 'All'; let activeGenre = 'All'; let sortMode = 0;
-const sortLabels = ['Default Sort', 'Title A–Z', 'My Rating', 'Goodreads Rating'];
+let activeStatus = 'All'; let activeGenres = []; let sortMode = 0;
+const sortLabels = ['Recently Uploaded', 'Title A–Z', 'My Rating', 'Goodreads Rating', 'Author A–Z'];
 let currentBook = null; let currentView = 'home';
 
 function updateUIRowCounters() {
@@ -2217,12 +2219,15 @@ let isAdvancedFilterOpenState = false; // State-machine tracker for dynamic acco
 function renderGenreRow() {
   const uniqueButtonsSet = new Set();
   
-  const baseCategories = [
-    'Academic Settings', 'Dark Romantasy', 'Dystopian / LitRPG', 'Enemies to Lovers',
-    'Fated Mates', 'Forced Proximity', 'Found Family', 'Gothic / Horror',
-    'Grim Thriller', 'High Fantasy', 'Historical / Classical', 'LGBTQ+',
+  // Use the expanded MASTER_GENRE_LIST directly
+  const baseCategories = [ 
+    'Academic Settings', 'Allegorical Fiction', 'Dark Romantasy', 'Drama',
+    'Dystopian / LitRPG', 'Enemies to Lovers', 'Fated Mates', 'Forced Proximity',
+    'Found Family', 'Gothic / Horror', 'Graphic Novel', 'Grim Thriller',
+    'High Fantasy', 'Historical / Classical', 'LGBTQ+', 'Literary Fiction',
     'Locked Room', 'Memoir / Non-Fiction', 'Morally Grey Hero', 'Political Intrigue',
-    'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier'
+    'Romance', 'Romantasy', 'Sci-Fi / Lore', 'True Crime / Dossier', 'Urban Fantasy',
+    'Young Adult'
   ];
   
   baseCategories.forEach(cat => uniqueButtonsSet.add(cat));
@@ -2234,24 +2239,18 @@ function renderGenreRow() {
   
   const allButtons = Array.from(uniqueButtonsSet).sort((a, b) => a.localeCompare(b));
   
-  // Strict State-Machine: Toggle between All and Advanced Filter highlighting styles
-  document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
-    `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenre === 'All') ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
+  const scrollerLine = document.getElementById('systemGlobalResetScrollerLine');
+  scrollerLine.innerHTML = 
+    `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenres.length === 0) ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
     `<div class="genre-chip advanced-filter-chip ${isAdvancedFilterOpenState ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
 
-  // Populate the Advanced Filter Dropdown with Genres and Tropes
   const dropdownNode = document.getElementById('advancedFilterDropdown');
   if (dropdownNode) {
     const buttonsHtml = allButtons.map(btn => 
-      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === btn) ? 'active':''}" onclick="filterGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn}</div>`
-    ).join('') + `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenre === 'Other') ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
-
+      `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenres.includes(btn)) ? 'active':''}" onclick="filterGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn}</div>`
+    ).join('') + `<div class="genre-chip ${(isAdvancedFilterOpenState && activeGenres.includes('Other')) ? 'active':''}" onclick="filterGenre(this,'Other')">Other</div>`;
     dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${buttonsHtml}</div>`;
   }
-
-  document.getElementById('systemGlobalResetScrollerLine').innerHTML = 
-    `<div class="genre-chip ${(!isAdvancedFilterOpenState && activeGenre === 'All') ? 'active':''}" onclick="clearAdvancedFilterMode(this)">All Categories</div>` +
-    `<div class="genre-chip advanced-filter-chip ${isAdvancedFilterOpenState ? 'active' : ''}" id="advancedFilterTrigger" onclick="switchAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
 }
 
 function switchAdvancedFilterWorkflowToggle(triggerElement) {
@@ -2272,8 +2271,8 @@ function clearAdvancedFilterMode(allCategoriesElement) {
   const dropdown = document.getElementById('advancedFilterDropdown');
   
   // Terminate internal pipeline advanced lock state completely
-  isAdvancedFilterOpenState = false; 
-  activeGenre = 'All'; // Clear targeted categorical records
+  isAdvancedFilterOpenState = false;
+  activeGenres = []; // Clear targeted categorical records
   
   dropdown.classList.remove('active');
   
@@ -2282,12 +2281,17 @@ function clearAdvancedFilterMode(allCategoriesElement) {
 }
 
 function filterGenre(el, aestheticItem) { 
-  activeGenre = aestheticItem; 
-  
-  // Target only active states inside advanced matrix to prevent killing dashboard container
-  document.querySelectorAll('#advancedFilterDropdown .genre-chip').forEach(c => c.classList.remove('active')); 
-  el.classList.add('active'); 
-  
+  const index = activeGenres.indexOf(aestheticItem);
+  if (index > -1) {
+    // Remove if already selected (toggle off)
+    activeGenres.splice(index, 1);
+  } else {
+    // Add to selection (toggle on)
+    activeGenres.push(aestheticItem);
+  }
+
+  // Re-render to update the 'active' highlighting on all selected chips
+  renderGenreRow();
   renderBooks();
 }
 
@@ -2308,9 +2312,11 @@ const processSearch = debounce(() => renderBooks());
 
 function renderBooks() {
   let list = getFiltered(); 
-  if(sortMode === 1) list.sort((a,b) => a.title.localeCompare(b.title));
+  if(sortMode === 0) list.sort((a,b) => b.id - a.id);
+  else if(sortMode === 1) list.sort((a,b) => a.title.localeCompare(b.title));
   else if(sortMode === 2) list.sort((a,b) => (b.myRating || 0) - (a.myRating || 0));
   else if(sortMode === 3) list.sort((a,b) => (b.grRating || 0) - (a.grRating || 0));
+  else if(sortMode === 4) list.sort((a,b) => a.author.localeCompare(b.author));
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
     const statusClass = statusKey(b.status); const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
@@ -2345,13 +2351,12 @@ function getFiltered() {
   return books.filter(b => { 
      if (activeStatus !== 'All' && statusKey(b.status) !== activeStatus) return false; 
 
-     
-     // HIGH-PRECISION FILTERING: Exact match within categorical array
-     if (isAdvancedFilterOpenState && activeGenre !== 'All') {
+     // HIGH-PRECISION FILTERING: Multi-genre match (OR logic)
+     if (isAdvancedFilterOpenState && activeGenres.length > 0) {
        const bookTags = b.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
-       if (!bookTags.includes(activeGenre)) return false;
+       const hasMatch = activeGenres.some(g => bookTags.includes(g));
+       if (!hasMatch) return false;
      }
-     
      if (q) {
        const insideTitle = b.title.toLowerCase().includes(q); 
        const insideAuthor = b.author.toLowerCase().includes(q);
@@ -2562,20 +2567,74 @@ function renderHomepageChartsPreview() {
 }
 
 function renderCharts() {
-  const rated = books.filter(b => b.myRating != null).sort((a,b)=>b.myRating - a.myRating); const p1 = rated[0] || { title: "Empty", myRating: "—" }; const p2 = rated[1] || { title: "Empty", myRating: "—" }; const p3 = rated[2] || { title: "Empty", myRating: "—" };
+  const rated = books.filter(b => b.myRating != null).sort((a, b) => (b.myRating || 0) - (a.myRating || 0));
+  const p1 = rated[0] || { title: "Empty", myRating: "—" };
+  const p2 = rated[1] || { title: "Empty", myRating: "—" };
+  const p3 = rated[2] || { title: "Empty", myRating: "—" };
+
   document.getElementById('podiumContainerMount').innerHTML = `
       <div class="f1-podium-container charts-view-podium-height">
         <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p2.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-2" style="height:50px"><span class="podium-number">II</span></div></div>
         <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="font-weight:800;color:var(--gold) !important;">${p1.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-1" style="height:80px"><span class="podium-number">I</span></div></div>
         <div class="podium-column"><div class="podium-book-title charts-view-title-size" style="color:var(--gold) !important;">${p3.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="podium-block podium-step-3" style="height:35px"><span class="podium-number">III</span></div></div>
       </div>`;
+
   document.getElementById('subRankingsMount').innerHTML = rated.slice(3, 10).map((b, i) => `
     <div class="sub-rank-item"><span class="sub-rank-num">#${i+4}</span><div class="sub-rank-details"><div class="sub-rank-title">${b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div><div class="sub-rank-author" style="color:var(--gold);">${b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div></div><span class="sub-rank-score"> ${b.myRating}</span></div>`).join('');
 
-  if(activeCharts.status) activeCharts.status.destroy(); if(activeCharts.genre) activeCharts.genre.destroy();
-  activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), { type: 'pie', data: { labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'], datasets: [{ data: [books.filter(b=>b.status==='TBR').length, books.filter(b=>b.status==='Reading').length, books.filter(b=>b.status==='Complete').length, books.filter(b=>b.status==='DNF').length, books.filter(b=>b.status==='Old').length], backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
-  const lookup = {}; books.forEach(b => { const n = normalizeGenre(b.genre.split(',')[0]); lookup[n] = (lookup[n] || 0) + 1; }); const sorted = Object.entries(lookup).sort((a,b)=>b[1]-a[1]).slice(0, 5);
-  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), { type: 'pie', data: { labels: sorted.map(x=>x[0]), datasets: [{ data: sorted.map(x=>x[1]), backgroundColor: ['#a62626', '#b39243', '#5e35b1', '#e63946', '#2b7a4b'], borderWidth: 2, borderColor: '#1c181c' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } } });
+  if(activeCharts.status) activeCharts.status.destroy();
+  if(activeCharts.genre) activeCharts.genre.destroy();
+
+  // Status Pie Chart
+  activeCharts.status = new Chart(document.getElementById('statusPieChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: ['To Read', 'Reading', 'Completed', 'Dropped', 'Past Reads'],
+      datasets: [{
+        data: [
+          books.filter(b => statusKey(b.status) === 'TBR').length,
+          books.filter(b => statusKey(b.status) === 'Reading').length,
+          books.filter(b => statusKey(b.status) === 'Complete').length,
+          books.filter(b => statusKey(b.status) === 'DNF').length,
+          books.filter(b => statusKey(b.status) === 'Old').length
+        ],
+        backgroundColor: ['#5e35b1', '#e63946', '#2b7a4b', '#a62626', '#b39243'],
+        borderWidth: 2, borderColor: '#1c181c'
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#8c7f70', font: { family: "'JetBrains Mono', monospace" } } } } }
+  });
+
+  // Comprehensive Genre Chart
+  const genreLookup = {};
+  [...MASTER_GENRE_LIST, 'Other'].forEach(g => genreLookup[g] = 0);
+
+  // Count occurrences from books based on their primary normalized genre
+  books.forEach(b => {
+    const primary = normalizeGenre(b.genre?.split(',')[0]);
+    if (genreLookup.hasOwnProperty(primary)) genreLookup[primary]++;
+    else genreLookup['Other']++;
+  });
+
+  const chartLabels = Object.keys(genreLookup).filter(l => genreLookup[l] > 0).sort();
+  const chartData = chartLabels.map(l => genreLookup[l]);
+  const spectrum = ['#a62626', '#d4af37', '#5e35b1', '#2b7a4b', '#e63946', '#b39243', '#8e9aaf', '#8c7f70', '#ffadad', '#ffd670', '#9bf6ff', '#a0c4ff', '#bdb2ff', '#ffc6ff', '#55efc4', '#81ecec', '#74b9ff', '#a29bfe', '#fab1a0', '#ff7675', '#fd79a8', '#636e72', '#00b894', '#00cec9', '#0984e3', '#6c5ce7', '#ffeaa7'];
+
+  activeCharts.genre = new Chart(document.getElementById('genrePieChart').getContext('2d'), {
+    type: 'pie',
+    data: {
+      labels: chartLabels,
+      datasets: [{ data: chartData, backgroundColor: spectrum.slice(0, chartLabels.length), borderWidth: 2, borderColor: '#1c181c' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }, // Keep it clean; hover to see category names
+        tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} volumes` } }
+      }
+    }
+  });
+
   const authLookup = {}; books.forEach(b => { if(b.author) { const c = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authLookup[c] = (authLookup[c] || 0) + 1; } });
   document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `<div class="author-item-row"><span>${idx + 1}. ${name}</span><span class="author-book-pill" style="color:var(--gold); font-weight:700;">${count} books</span></div>`).join('');
 }
