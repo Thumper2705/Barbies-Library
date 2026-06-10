@@ -499,8 +499,6 @@
   }
 
   /* VIEW ENGINE */
-  .home-view, .library-view, .charts-view, .paralysis-view { display: none; }
-  .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible { display: block; }
   .home-view, .library-view, .charts-view, .paralysis-view, .goals-view { display: none; }
   .home-view.visible, .library-view.visible, .charts-view.visible, .paralysis-view.visible, .goals-view.visible { display: block; }
 
@@ -628,7 +626,7 @@
   .stat-label, .home-preview-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold) !important; }
   .stat-number { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; color: var(--crimson-light) !important; margin-bottom: 4px; }
   
-  .home-canvas-holder { position: relative; height: 165px; width: 100%; }
+  .home-canvas-holder { position: relative; height: 185px; width: 100%; padding: 10px 0; }
 
   .pie-charts-flex-row {
     display: flex;
@@ -648,11 +646,9 @@
   }
   .chart-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--crimson-light) !important; margin-bottom: 14px; text-align: center; }
   .chart-brief { font-size: 10px; color: var(--text-muted); text-align: center; margin: -10px 0 16px; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.5px; }
-  .canvas-holder { position: relative; height: 480px; width: 100%; flex: 1; min-width: 0; }
-  .canvas-holder { position: relative; height: 600px; width: 100%; flex: 1; min-width: 0; }
   .canvas-holder { 
     position: relative; 
-    height: 450px; 
+    height: 600px; 
     width: calc(100% + 32px); 
     margin-left: -16px; 
     margin-right: -16px; 
@@ -666,20 +662,16 @@
     transform: translate(-50%, -50%);
     text-align: center;
     pointer-events: none;
-    width: 60%;
-    width: 50%;
     width: 75%;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @media(min-width: 640px) {
-    .canvas-holder { height: 720px; } /* 50% larger for PC format */
     .canvas-holder { height: 720px; width: 100%; margin: 0; } 
     .chart-center-text .main-val { font-size: 32px !important; }
     .chart-center-text { width: 60%; }
   }
   .chart-center-text .main-val {
     font-family: 'Cinzel', serif;
-    font-size: 32px;
     font-size: 26px;
     font-weight: 700;
     color: var(--text-parchment);
@@ -772,12 +764,9 @@
   }
 
   .author-books-dropdown.active { 
-    padding-top: 32px;
-    padding-bottom: 60px; /* Extra room at the bottom for the last book */
     padding-top: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border-iron);
-    margin-bottom: 24px;
     margin-bottom: 16px;
   }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
@@ -818,10 +807,27 @@
   /* ANCHORED STICKY DOCK ACTION COMPONENT */
   .sticky-dock-add-trigger-btn {
     width: 44px; height: 44px; border-radius: 4px; border: none; cursor: pointer; font-size: 18px; font-weight: 700;
+    width: 44px; height: 44px; border-radius: 4px; border: 1px solid var(--gold) !important; cursor: pointer; font-size: 18px; font-weight: 700;
     display: flex; align-items: center; justify-content: center; background: var(--crimson) !important; color: #fff !important;
     box-shadow: -4px 0 16px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(166, 38, 38, 0.4); z-index: 110; transition: all 0.15s;
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(166, 38, 38, 0.4); z-index: 110; 
+    transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s, filter 0.15s;
+    overflow: hidden; white-space: nowrap; gap: 0;
   }
   .sticky-dock-add-trigger-btn:hover { filter: brightness(1.2); }
+  .sticky-dock-add-trigger-btn:hover, .sticky-dock-add-trigger-btn:active { 
+    width: 175px; 
+    filter: brightness(1.2); 
+    gap: 8px;
+  }
+  .sticky-dock-add-trigger-btn .btn-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text-parchment);
+    text-transform: uppercase; opacity: 0; width: 0; transition: opacity 0.2s, width 0.3s; white-space: nowrap; overflow: hidden;
+    letter-spacing: 1px;
+  }
+  .sticky-dock-add-trigger-btn:hover .btn-text, .sticky-dock-add-trigger-btn:active .btn-text { 
+    opacity: 1; width: auto; 
+  }
   
   .toolbar { padding: 12px 0 4px; display: flex; gap: 10px; align-items: center; }
   .search-wrap { flex: 1; position: relative; }
@@ -1361,6 +1367,12 @@
      <div class="magic-lane-flashback-text" id="memoryLanePane">Reading internal data slots...</div>
   </div>
 
+  <div class="global-footer">
+    <div>— Established MMXXIV —</div>
+    <div>Barbie's <span>Private Library</span> • Archival Division</div>
+    <div style="opacity: 0.5; margin-top: 4px;">System Build v6.0 • Powered by Scribe Engine</div>
+  </div>
+
 </div>
 
 <div class="library-view" id="libraryView">
@@ -1394,26 +1406,31 @@
         <span class="count" id="pillCountWont">0</span><span class="label">Won't Continue</span>
       </div>
     </div>
-    <button class="sticky-dock-add-trigger-btn" onclick="openAddBookModal()">➕</button>
   </div>
   
-  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
-    <div class="genre-row" id="systemGlobalResetScrollerLine"></div>
-    <div id="advancedFilterDropdown" class="advanced-filter-dropdown"></div>
-  </div>
-
   <div class="toolbar" style="padding: 12px 16px 4px;">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" id="searchInput" placeholder="Search by title, author, trope or genre..." oninput="processSearch()">
     </div>
-    <select class="sort-btn" id="sortSelect" onchange="applySort(this.value)">
-      <option value="0">Recently Uploaded</option>
-      <option value="1">Title A–Z</option>
-      <option value="2">My Rating</option>
-      <option value="3">Goodreads Rating</option>
-      <option value="4">Author A–Z</option>
-    </select>
+  </div>
+
+  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
+    <div class="genre-row" id="systemGlobalResetScrollerLine"></div>
+    <div id="advancedFilterDropdown" class="advanced-filter-dropdown"></div>
+    <div style="padding: 12px 16px 12px; display: flex; justify-content: space-between; align-items: center;">
+      <select class="sort-btn" id="sortSelect" onchange="applySort(this.value)">
+        <option value="0">Recently Uploaded</option>
+        <option value="1">Title A–Z</option>
+        <option value="2">My Rating</option>
+        <option value="3">Goodreads Rating</option>
+        <option value="4">Author A–Z</option>
+      </select>
+      <button class="sticky-dock-add-trigger-btn" onclick="openAddBookModal()">
+        <span class="icon">➕</span>
+        <span class="btn-text">Add Enchantment</span>
+      </button>
+    </div>
   </div>
 
   <div class="results-count" id="resultsCount">0 records populated</div>
@@ -1624,23 +1641,29 @@
         <span class="count" id="prospectPillCountAll">0</span><span class="label">Total Wishlist</span>
       </div>
     </div>
-    <button class="sticky-dock-add-trigger-btn" onclick="addNewProspect()">➕</button>
   </div>
   
-  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
-    <div class="genre-row" id="prospectGenreScroller"></div>
-  </div>
-
   <div class="toolbar" style="padding: 12px 16px 4px;">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input type="text" id="prospectSearchInput" placeholder="Search wishlist..." oninput="renderProspects()">
     </div>
-    <select class="sort-btn" id="prospectSortSelect" onchange="renderProspects()">
-      <option value="0">Recently Added</option>
-      <option value="1">Title A–Z</option>
-      <option value="4">Author A–Z</option>
-    </select>
+  </div>
+
+  <div class="master-filter-deck-wrapper" style="padding: 8px 0 12px;">
+    <div class="genre-row" id="prospectGenreScroller"></div>
+    <div id="prospectAdvancedFilterDropdown" class="advanced-filter-dropdown"></div>
+    <div style="padding: 12px 16px 12px; display: flex; justify-content: space-between; align-items: center;">
+      <select class="sort-btn" id="prospectSortSelect" onchange="renderProspects()">
+        <option value="0">Recently Added</option>
+        <option value="1">Title A–Z</option>
+        <option value="4">Author A–Z</option>
+      </select>
+      <button class="sticky-dock-add-trigger-btn" onclick="openAddBookModal()">
+        <span class="icon">➕</span>
+        <span class="btn-text">Add Enchantment</span>
+      </button>
+    </div>
   </div>
 
   <div class="results-count" id="prospectResultsCount">0 prospects indexed</div>
@@ -1695,8 +1718,23 @@
     </div>
     <div class="modal-body">
       <div class="modal-section">
+      <div class="modal-section" id="modalStatusSection">
         <div class="modal-label">Reading Status</div>
         <div class="status-select-row" id="statusBtns"></div>
+      </div>
+      
+      <div class="modal-section" id="modalFormatSection" style="display:none;">
+        <div class="modal-label">Format Type</div>
+        <div class="status-select-row" id="formatBtns">
+           <button class="status-sel-btn" onclick="selectFormat(this, 'Fiction')">Fiction</button>
+           <button class="status-sel-btn" onclick="selectFormat(this, 'Non-Fiction')">Non-Fiction</button>
+           <button class="status-sel-btn" onclick="selectFormat(this, 'Manga')">Manga</button>
+        </div>
+      </div>
+
+      <div class="modal-section" id="modalGRScoreSection" style="display:none;">
+        <div class="modal-label">Goodreads Score</div>
+        <input type="number" id="inputGRScore" class="simple-text-input" step="0.01" min="0" max="5">
       </div>
       
       <div class="modal-section">
@@ -1709,6 +1747,7 @@
         <input type="number" id="inputCurrentPage" class="simple-text-input" min="0">
       </div>
       <div class="modal-section">
+      <div class="modal-section" id="modalRatingSection">
         <div class="modal-label">My Rating Evaluation (out of 10)</div>
         <div class="stars-row" id="ratingBtns"></div>
       </div>
@@ -1995,6 +2034,7 @@ let targetAddBookStatus = 'TBR';
 let activeCharts = {};
 let html5QrCodeScannerInstance = null;
 let masterFileHandlePointerPC = null; 
+let currentBookIsProspect = false;
 let isWheelCurrentlySpinning = false;
 
 const BOOK_BLURBS_REGISTRY = {
@@ -2575,21 +2615,33 @@ function loadSaved() {
 }
 loadSaved();
 
+function getStatusCounts() {
+  return {
+    TBR: books.filter(b => statusKey(b.status) === 'TBR').length,
+    Complete: books.filter(b => statusKey(b.status) === 'Complete').length,
+    Reading: books.filter(b => statusKey(b.status) === 'Reading').length,
+    DNF: books.filter(b => statusKey(b.status) === 'DNF').length,
+    Old: books.filter(b => statusKey(b.status) === 'Old').length,
+    Wont: books.filter(b => statusKey(b.status) === 'Wont').length,
+    All: books.length
+  };
+}
+
 let activeStatus = 'All'; let activeGenres = []; let sortMode = 0;
 const sortLabels = ['Recently Uploaded', 'Title A–Z', 'My Rating', 'Goodreads Rating', 'Author A–Z'];
 let currentBook = null; let currentView = 'home';
 
 function updateUIRowCounters() {
-  const countAll = books.length; 
-  document.getElementById('headerTrackerCount').textContent = countAll;
+  const counts = getStatusCounts();
+  document.getElementById('headerTrackerCount').textContent = counts.All;
   if(document.getElementById('pillCountAll')) {
-    document.getElementById('pillCountAll').textContent = countAll;
-    document.getElementById('pillCountTBR').textContent = books.filter(b => statusKey(b.status) === 'TBR').length;
-    document.getElementById('pillCountComplete').textContent = books.filter(b => statusKey(b.status) === 'Complete').length;
-    document.getElementById('pillCountReading').textContent = books.filter(b => statusKey(b.status) === 'Reading').length;
-    document.getElementById('pillCountDNF').textContent = books.filter(b => statusKey(b.status) === 'DNF').length;
-    document.getElementById('pillCountOld').textContent = books.filter(b => statusKey(b.status) === 'Old').length;
-    document.getElementById('pillCountWont').textContent = books.filter(b => statusKey(b.status) === 'Wont').length;
+    document.getElementById('pillCountAll').textContent = counts.All;
+    document.getElementById('pillCountTBR').textContent = counts.TBR;
+    document.getElementById('pillCountComplete').textContent = counts.Complete;
+    document.getElementById('pillCountReading').textContent = counts.Reading;
+    document.getElementById('pillCountDNF').textContent = counts.DNF;
+    document.getElementById('pillCountOld').textContent = counts.Old;
+    document.getElementById('pillCountWont').textContent = counts.Wont;
   }
 }
 
@@ -2620,15 +2672,15 @@ function updateHomeView() {
     }
   } else { card.classList.remove('show'); }
   
-  const countComplete = books.filter(b => statusKey(b.status) === 'Complete').length;
-  document.getElementById('statTBR').textContent = books.filter(b => statusKey(b.status) === 'TBR').length;
-  document.getElementById('statRead').textContent = countComplete;
-  document.getElementById('statDNF').textContent = books.filter(b => statusKey(b.status) === 'DNF').length;
-  document.getElementById('statOld').textContent = books.filter(b => statusKey(b.status) === 'Old').length;
+  const counts = getStatusCounts();
+  document.getElementById('statTBR').textContent = counts.TBR;
+  document.getElementById('statRead').textContent = counts.Complete;
+  document.getElementById('statDNF').textContent = counts.DNF;
+  document.getElementById('statOld').textContent = counts.Old;
 
   const targetThreshold = 50; 
-  const targetPercentage = Math.min(100, Math.round((countComplete / targetThreshold) * 100));
-  document.getElementById('milestoneCounterLabel').textContent = `${countComplete} / ${targetThreshold} Books`;
+  const targetPercentage = Math.min(100, Math.round((counts.Complete / targetThreshold) * 100));
+  document.getElementById('milestoneCounterLabel').textContent = `${counts.Complete} / ${targetThreshold} Books`;
   document.getElementById('milestoneFillTrack').style.width = `${targetPercentage}%`;
   document.getElementById('milestoneMessageLabel').textContent = `${targetPercentage}% progress toward your 50 volume book goal.`;
 
@@ -2730,6 +2782,15 @@ function resetSandbox() { if (confirm("Reset custom data entries and clear brows
 function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre.split(',')[0]); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
 
 function openAddBookModal() { 
+  const statusSection = document.getElementById('addStatusBtns').parentElement;
+  const modalTitle = document.querySelector('#addBookModal .modal-title');
+  if (currentView === 'goals') {
+    statusSection.style.display = 'none';
+    if (modalTitle) modalTitle.textContent = "Add to Future Prospects";
+  } else {
+    statusSection.style.display = 'block';
+    if (modalTitle) modalTitle.textContent = "Add New Book to Collection";
+  }
   document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
   document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
   document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
@@ -2921,8 +2982,35 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
 function commitNewBook() {
   const t = document.getElementById('addTitle').value.trim(); const rawAuthor = document.getElementById('addAuthor').value.trim(); const g = document.getElementById('addGenre').value.trim();
   const p = document.getElementById('addPages').value.trim(); const gr = document.getElementById('addGR').value.trim(); const mIsbn = document.getElementById('addManualISBNInput').value.trim();
-  if(!t || !rawAuthor || !g) { alert('Missing core dataset details.'); return; } if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
-  const obj = { id: Math.max(...books.map(b => b.id)) + 1, title: t, author: processScribeNameMilitaryFormatting(rawAuthor), status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: null };
+  const coverUrl = document.getElementById('addCustomCoverUrl')?.value.trim() || null;
+  if(!t || !rawAuthor || !g) { alert('Missing core dataset details.'); return; } 
+
+  if (currentView === 'goals') {
+    if (prospects.some(p => p.title.toLowerCase().trim() === t.toLowerCase())) { 
+      triggerSentryAlert("This volume is already present in your vision of the future."); 
+      return; 
+    }
+    const newP = {
+      id: Date.now(),
+      title: t,
+      author: processScribeNameMilitaryFormatting(rawAuthor),
+      series: "",
+      genre: g,
+      pages: p || 300,
+      grRating: parseFloat(gr) || 4.0,
+      isbn: mIsbn || null,
+      coverUrl: coverUrl,
+      dateAdded: new Date().toISOString()
+    };
+    prospects.push(newP);
+    saveProspects();
+    renderProspects();
+    closeAddBookModal();
+    return;
+  }
+
+  if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
+  const obj = { id: Math.max(0, ...books.map(b => b.id)) + 1, title: t, author: processScribeNameMilitaryFormatting(rawAuthor), status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: coverUrl };
   books.push(obj); const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); arr.push(obj); localStorage.setItem('barbies_library_added', JSON.stringify(arr));
   closeAddBookModal(); updateHomeView(); showView('library'); executeAutomatedBackgroundPipelineAutosave();
   initializeLoreEngine();
@@ -3274,8 +3362,9 @@ function getFiltered() {
   });
 }
 
-async function openInfoCardOverlay(id) {
-  currentBook = books.find(b => b.id === id); if (!currentBook) return;
+async function openInfoCardOverlay(id, isProspect = false) {
+  currentBookIsProspect = isProspect;
+  currentBook = (isProspect ? prospects : books).find(b => b.id === id); if (!currentBook) return;
   const coverImg = document.getElementById('infoCardCoverImg'); const fallbackIllustration = document.getElementById('infoCardGlyph');
   coverImg.style.display = "none"; fallbackIllustration.style.display = "block";
   const cleanTitle = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
@@ -3283,7 +3372,8 @@ async function openInfoCardOverlay(id) {
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
   document.getElementById('infoCardGenre').textContent = currentBook.genre?.split(',')[0]?.trim() || 'Other';
-  document.getElementById('infoCardMass').textContent = currentBook.pages; document.getElementById('infoCardMetric').textContent = currentBook.grRating.toFixed(2);
+  document.getElementById('infoCardMass').textContent = currentBook.pages || "000"; 
+  document.getElementById('infoCardMetric').textContent = (currentBook.grRating || 0).toFixed(2);
   
   document.getElementById('globalInfoCardOverlaySleeve').classList.add('show');
   if (document.getElementById('infoCardInner')) document.getElementById('infoCardInner').classList.remove('is-flipped');
@@ -3350,6 +3440,39 @@ function pivotToConfigurationModal() {
   closeInfoCardOverlay(); document.getElementById('mTitle').textContent = currentBook.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); 
   document.getElementById('mAuthor').textContent = "By Author " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
   document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
+
+  const statusSec = document.getElementById('modalStatusSection');
+  const ratingSec = document.getElementById('modalRatingSection');
+  const progressSec = document.getElementById('modalProgressWrapper');
+  const grSec = document.getElementById('modalGRScoreSection');
+  const formatSec = document.getElementById('modalFormatSection');
+
+  if (currentBookIsProspect) {
+    statusSec.style.display = 'none';
+    ratingSec.style.display = 'none';
+    progressSec.style.display = 'none';
+    grSec.style.display = 'block';
+    formatSec.style.display = 'block';
+
+    document.getElementById('inputGRScore').value = currentBook.grRating || 0;
+    
+    const format = currentBook.format || 'Fiction';
+    document.querySelectorAll('#formatBtns .status-sel-btn').forEach(btn => {
+      if (btn.textContent === format) btn.classList.add('selected');
+      else btn.classList.remove('selected');
+    });
+    currentBook._pendingFormat = format;
+  } else {
+    statusSec.style.display = 'block';
+    ratingSec.style.display = 'block';
+    grSec.style.display = 'none';
+    formatSec.style.display = 'none';
+
+    document.getElementById('statusBtns').innerHTML = ['TBR','Reading','Complete','Old','DNF',"Won't Continue"].map(s => `<button class="status-sel-btn ${currentBook.status === s ? 'selected':''}" onclick="selectStatus(this,'${s}')">${statusLabel(s)}</button>`).join('');
+    
+    const w = document.getElementById('modalProgressWrapper'); if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
+    renderStarSelectors(currentBook.myRating);
+  }
   
   const completeOperationalAestheticsList = [...MASTER_GENRE_LIST, 'Other'].sort((a, b) => a.localeCompare(b));
   
@@ -3386,6 +3509,7 @@ function pivotToConfigurationModal() {
 
   const w = document.getElementById('modalProgressWrapper'); if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
   renderStarSelectors(currentBook.myRating); document.getElementById('notesInput').value = currentBook.notes || ''; document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('notesInput').value = currentBook.notes || ''; document.getElementById('modalOverlay').classList.add('open');
 }
 
 function toggleGenreMultiOverrideSelection(buttonDomPointer, tagLabelString) {
@@ -3432,6 +3556,8 @@ function triggerCasinoEmoteFountainSplash() {
 function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 function selectStatus(el, val) { currentBook._pendingStatus = val; document.querySelectorAll('#statusBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); const w = document.getElementById('modalProgressWrapper'); if(val === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; } }
 
+function selectFormat(el, val) { currentBook._pendingFormat = val; document.querySelectorAll('#formatBtns .status-sel-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
+
 function saveBook() { 
   // VALIDATION: Enforce minimum 4 genres/tropes before allowing save
   if (!currentBook._stagedGenresList || currentBook._stagedGenresList.length < 4) {
@@ -3442,6 +3568,15 @@ function saveBook() {
   if(currentBook._pendingStatus) currentBook.status = currentBook._pendingStatus; 
   if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
   
+  if (currentBookIsProspect) {
+    currentBook.grRating = parseFloat(document.getElementById('inputGRScore').value) || 0;
+    currentBook.format = currentBook._pendingFormat || 'Fiction';
+  } else {
+    if(currentBook._pendingStatus) currentBook.status = currentBook._pendingStatus; 
+    if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
+    if(currentBook.status === 'Reading') currentBook.currentPage = parseInt(document.getElementById('inputCurrentPage').value) || 0;
+  }
+
   if(currentBook._stagedGenresList) {
     if (currentBook._stagedGenresList.length === 0) {
       currentBook.genre = "Other";
@@ -3471,7 +3606,13 @@ function saveBook() {
     }
   } catch(e) {}
   
+  if (currentView === 'goals') {
+    saveProspects();
+    renderProspects();
+  }
+
   currentBook._pendingStatus = null; 
+  currentBook._pendingFormat = null;
   currentBook._pendingRating = undefined; 
   
   updateHomeView(); 
@@ -3499,25 +3640,20 @@ function renderHomepageChartsPreview() {
   const centerTextNode = document.getElementById('homeStatusChartCenterText');
   if (canvasEl) {
     if(activeCharts.homeStatus) activeCharts.homeStatus.destroy();
-    const sTBR = books.filter(b => statusKey(b.status) === 'TBR').length;
-    const sRead = books.filter(b => statusKey(b.status) === 'Complete').length;
-    const sCurr = books.filter(b => statusKey(b.status) === 'Reading').length;
-    const sDNF = books.filter(b => statusKey(b.status) === 'DNF').length;
-    const sOld = books.filter(b => statusKey(b.status) === 'Old').length;
-    const sWont = books.filter(b => statusKey(b.status) === 'Wont').length;
+    const counts = getStatusCounts();
 
     const statusEntries = [
-      { label: 'To Read', val: sTBR, color: '#5e35b1' },
-      { label: 'Reading', val: sCurr, color: '#e63946' },
-      { label: 'Completed', val: sRead, color: '#2b7a4b' },
-      { label: 'Dropped', val: sDNF, color: '#a62626' },
-      { label: 'Past Reads', val: sOld, color: '#b39243' },
-      { label: 'Won\'t Continue', val: sWont, color: '#8c7f70' }
+      { label: 'To Read', val: counts.TBR, color: '#5e35b1' },
+      { label: 'Reading', val: counts.Reading, color: '#e63946' },
+      { label: 'Completed', val: counts.Complete, color: '#2b7a4b' },
+      { label: 'Dropped', val: counts.DNF, color: '#a62626' },
+      { label: 'Past Reads', val: counts.Old, color: '#b39243' },
+      { label: 'Won\'t Continue', val: counts.Wont, color: '#8c7f70' }
     ].sort((a, b) => a.val - b.val);
 
     if (centerTextNode) {
       centerTextNode.innerHTML = `
-        <span class="main-val" style="color:var(--gold); font-size: 20px;">${sRead} / ${sTBR}</span>
+        <span class="main-val" style="color:var(--gold); font-size: 20px;">${counts.Complete} / ${counts.TBR}</span>
         <span class="sub-val" style="font-size: 8px;">Finished / TBR</span>
       `;
     }
@@ -3536,6 +3672,7 @@ function renderHomepageChartsPreview() {
         responsive: true, 
         maintainAspectRatio: false, 
         cutout: '80%',
+        layout: { padding: { top: 10, bottom: 10 } },
         plugins: { 
           legend: { display: false },
           doughnutBorder: { 
@@ -3561,7 +3698,7 @@ function toggleAuthorBooks(el, authorName) {
   // Close others for a clean accordion effect
   document.querySelectorAll('.author-books-dropdown').forEach(d => {
     d.classList.remove('active');
-    d.style.maxHeight = null;
+    d.style.maxHeight = "0px";
   });
 
   if (!isActive) {
@@ -3627,25 +3764,20 @@ function renderCharts() {
   if(activeCharts.status) activeCharts.status.destroy();
   if(activeCharts.genre) activeCharts.genre.destroy();
 
-  const sTBR = books.filter(b => statusKey(b.status) === 'TBR').length;
-  const sRead = books.filter(b => statusKey(b.status) === 'Complete').length;
-  const sCurr = books.filter(b => statusKey(b.status) === 'Reading').length;
-  const sDNF = books.filter(b => statusKey(b.status) === 'DNF').length;
-  const sOld = books.filter(b => statusKey(b.status) === 'Old').length;
-  const sWont = books.filter(b => statusKey(b.status) === 'Wont').length;
+  const counts = getStatusCounts();
 
   document.getElementById('statusChartCenterText').innerHTML = `
-    <span class="main-val" style="color:var(--gold);">${sRead} / ${sTBR}</span>
+    <span class="main-val" style="color:var(--gold);">${counts.Complete} / ${counts.TBR}</span>
     <span class="sub-val">Finished / TBR</span>
   `;
 
   const statusEntries = [
-    { label: 'To Read', val: sTBR, color: '#5e35b1' },
-    { label: 'Reading', val: sCurr, color: '#e63946' },
-    { label: 'Completed', val: sRead, color: '#2b7a4b' },
-    { label: 'Dropped', val: sDNF, color: '#a62626' },
-    { label: 'Past Reads', val: sOld, color: '#b39243' },
-    { label: 'Won\'t Continue', val: sWont, color: '#8c7f70' }
+    { label: 'To Read', val: counts.TBR, color: '#5e35b1' },
+    { label: 'Reading', val: counts.Reading, color: '#e63946' },
+    { label: 'Completed', val: counts.Complete, color: '#2b7a4b' },
+    { label: 'Dropped', val: counts.DNF, color: '#a62626' },
+    { label: 'Past Reads', val: counts.Old, color: '#b39243' },
+    { label: 'Won\'t Continue', val: counts.Wont, color: '#8c7f70' }
   ].sort((a, b) => a.val - b.val);
 
   // Status Pie Chart
@@ -3661,14 +3793,10 @@ function renderCharts() {
     },
     options: {
       rotation: 0,
-      responsive: true, maintainAspectRatio: false, cutout: '50%',
-      responsive: true, maintainAspectRatio: false, cutout: '70%',
-      layout: { padding: 50 },
-      responsive: true, maintainAspectRatio: false, cutout: '80%',
       responsive: true, 
       maintainAspectRatio: false, 
       cutout: '80%',
-      layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
+      layout: { padding: { left: 10, right: 10, top: 20, bottom: 20 } },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('statusChartCenterText');
         const defaultOuterColor = '--crimson-light';
@@ -3694,7 +3822,7 @@ function renderCharts() {
           selectedStatusIndex = -1;
           chart.data.datasets[0].offset = chart.data.labels.map(() => 0);
           chart.options.plugins.doughnutBorder.outerBorderColor = defaultOuterColor;
-          centerTextNode.innerHTML = `<span class="main-val" style="color:var(--gold);">${sRead} / ${sTBR}</span><span class="sub-val">Finished / TBR</span>`;
+          centerTextNode.innerHTML = `<span class="main-val" style="color:var(--gold);">${counts.Complete} / ${counts.TBR}</span><span class="sub-val">Finished / TBR</span>`;
           centerTextNode.style.transform = "translate(-50%, -50%) scale(1)";
           chart.update();
         }
@@ -3755,14 +3883,10 @@ function renderCharts() {
     },
     options: {
       rotation: 0,
-      responsive: true, maintainAspectRatio: false,
-      cutout: '50%',
-      cutout: '70%',
-      layout: { padding: 50 },
       responsive: true, 
       maintainAspectRatio: false, 
       cutout: '80%',
-      layout: { padding: { left: 10, right: 10, top: 50, bottom: 50 } },
+      layout: { padding: { left: 10, right: 10, top: 20, bottom: 20 } },
       onClick: (evt, elements, chart) => {
         const centerTextNode = document.getElementById('genreChartCenterText');
         const defaultOuterColor = '--crimson-light';
@@ -3874,7 +3998,7 @@ function renderCharts() {
     }
   });
 
-  const authLookup = {}; books.forEach(b => { if(b.author) { const c = b.author.trim().replace(/['"\u2018\u2019\u201C\u201D]/g, ""); authLookup[c] = (authLookup[c] || 0) + 1; } });
+  const authLookup = {}; books.forEach(b => { if(b.author) { const c = processScribeNameMilitaryFormatting(b.author); authLookup[c] = (authLookup[c] || 0) + 1; } });
   document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `
     <div class="author-expand-container">
       <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
@@ -4166,8 +4290,90 @@ if (!prospects) {
     title: r[1],
     author: r[2],
     series: r[3],
+    genre: "",
     dateAdded: new Date().toISOString()
   }));
+}
+
+let activeProspectGenres = [];
+let isProspectAdvancedFilterOpenState = false;
+
+function renderProspectGenreRow() {
+  const scrollerLine = document.getElementById('prospectGenreScroller');
+  if (!scrollerLine) return;
+
+  const genreCounts = {};
+  prospects.forEach(p => {
+    const tags = p.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+    [...new Set(tags)].forEach(t => { if(t) genreCounts[t] = (genreCounts[t] || 0) + 1; });
+  });
+
+  scrollerLine.innerHTML = 
+    `<div class="genre-chip ${(!isProspectAdvancedFilterOpenState && activeProspectGenres.length === 0) ? 'active':''}" onclick="clearProspectAdvancedFilterMode(this)">All Future Acquisitions</div>` +
+    `<div class="genre-chip advanced-filter-chip ${(isProspectAdvancedFilterOpenState || activeProspectGenres.length > 0) ? 'active' : ''}" id="prospectAdvancedFilterTrigger" onclick="switchProspectAdvancedFilterWorkflowToggle(this)">Advanced Filter</div>`;
+
+  const dropdownNode = document.getElementById('prospectAdvancedFilterDropdown');
+  if (dropdownNode) {
+    const clearBtnHtml = `<div class="genre-chip" style="border-color: var(--crimson); color: var(--crimson-light); font-weight: 700;" onclick="resetProspectGenreFilters()">Clear Selections</div>`;
+    const buttonsHtml = MASTER_GENRE_LIST.map(btn => {
+      const count = genreCounts[btn] || 0;
+      return `<div class="genre-chip ${activeProspectGenres.includes(btn) ? 'active':''}" onclick="filterProspectGenre(this,'${btn.replace(/'/g, "\\'")}')">${btn} (${count})</div>`;
+    }).join('');
+
+    dropdownNode.innerHTML = `<div class="dropdown-chip-grid">${clearBtnHtml}${buttonsHtml}</div>`;
+  }
+}
+
+function switchProspectAdvancedFilterWorkflowToggle(triggerElement) {
+  const dropdown = document.getElementById('prospectAdvancedFilterDropdown');
+  event.stopPropagation();
+  if (isProspectAdvancedFilterOpenState) {
+    closeProspectAdvancedFilterUI();
+  } else {
+    isProspectAdvancedFilterOpenState = true; 
+    triggerElement.classList.add('active');
+    dropdown.classList.add('active');
+    document.addEventListener('mousedown', handleProspectOutsideClick);
+    renderProspectGenreRow();
+  }
+}
+
+function handleProspectOutsideClick(event) {
+  const dropdown = document.getElementById('prospectAdvancedFilterDropdown');
+  const trigger = document.getElementById('prospectAdvancedFilterTrigger');
+  if (isProspectAdvancedFilterOpenState && dropdown && trigger && !dropdown.contains(event.target) && !trigger.contains(event.target)) {
+    closeProspectAdvancedFilterUI();
+  }
+}
+
+function closeProspectAdvancedFilterUI() {
+  const dropdown = document.getElementById('prospectAdvancedFilterDropdown');
+  const trigger = document.getElementById('prospectAdvancedFilterTrigger');
+  isProspectAdvancedFilterOpenState = false;
+  if(dropdown) dropdown.classList.remove('active');
+  if(trigger) trigger.classList.remove('active');
+  document.removeEventListener('mousedown', handleProspectOutsideClick);
+  renderProspectGenreRow();
+  renderProspects();
+}
+
+function filterProspectGenre(el, aestheticItem) {
+  const index = activeProspectGenres.indexOf(aestheticItem);
+  if (index > -1) activeProspectGenres.splice(index, 1);
+  else activeProspectGenres.push(aestheticItem);
+  renderProspectGenreRow();
+  renderProspects();
+}
+
+function resetProspectGenreFilters() {
+  activeProspectGenres = [];
+  renderProspectGenreRow();
+  renderProspects();
+}
+
+function clearProspectAdvancedFilterMode(el) {
+  activeProspectGenres = [];
+  closeProspectAdvancedFilterUI();
 }
 
 function renderProspects() {
@@ -4177,11 +4383,17 @@ function renderProspects() {
   const q = qInput.value.toLowerCase().trim();
   const sort = parseInt(document.getElementById('prospectSortSelect').value);
   
-  document.getElementById('prospectGenreScroller').innerHTML = `<div class="genre-chip active">Future Acquisitions</div>`;
+  renderProspectGenreRow();
 
   let list = prospects.filter(p => {
-    if (!q) return true;
-    return p.title.toLowerCase().includes(q) || p.author.toLowerCase().includes(q);
+    if (q && !(p.title.toLowerCase().includes(q) || p.author.toLowerCase().includes(q))) return false;
+
+    if (activeProspectGenres.length > 0) {
+      const prospectTags = p.genre?.split(',').map(t => normalizeGenre(t.trim())) || [];
+      const hasMatch = activeProspectGenres.some(g => prospectTags.includes(g));
+      if (!hasMatch) return false;
+    }
+    return true;
   });
 
   if (sort === 0) list.sort((a,b) => b.id - a.id);
@@ -4192,43 +4404,35 @@ function renderProspects() {
   document.getElementById('prospectResultsCount').textContent = `${list.length} prospects indexed`;
 
   document.getElementById('prospectList').innerHTML = list.map(p => {
-    const initials = getTitleInitials(p.title);
+    const cleanTitle = p.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+    const cleanAuthor = p.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+    const initials = getTitleInitials(cleanTitle);
+    const visualGenreLabel = normalizeGenre(p.genre?.split(',')[0] || 'Other');
+
     return `
-      <div class="book-card status-TBR">
+      <div class="book-card status-TBR" onclick="openInfoCardOverlay(${p.id}, true)">
         <div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${initials}</div>
         <div class="book-info">
-          <div class="book-title">${p.title}</div>
-          <div class="book-author">${p.author}</div>
-          <div class="book-meta" style="font-size: 9px; color: var(--gold); margin-top: 2px;">${p.series || ''}</div>
-          <div class="book-meta">
-            <span class="badge badge-status-TBR">Wishlist</span>
-            <button class="action-sub-btn" style="padding: 2px 6px; font-size: 8px;" onclick="removeProspect(${p.id})">Remove</button>
-          </div>
+           <div class="book-title">${cleanTitle}</div>
+           <div class="book-author">${cleanAuthor}</div>
+           <div class="book-meta" style="font-size: 9px; color: var(--gold); margin-bottom: 4px;">${p.series || ''}</div>
+           <div class="book-meta">
+             <span class="badge badge-status-TBR">Wishlist</span>
+             <span class="badge badge-genre">${visualGenreLabel}</span>
+           </div>
         </div>
       </div>`;
   }).join('');
 }
 
-function addNewProspect() {
-  const title = prompt("Enter book title for Future Prospects:");
-  if (!title) return;
-  const author = prompt("Enter author name:");
-  const newP = {
-    id: Date.now(),
-    title: title,
-    author: author || "Unknown Author",
-    dateAdded: new Date().toISOString()
-  };
-  prospects.push(newP);
-  saveProspects();
-  renderProspects();
-}
-
 function removeProspect(id) {
-  if (confirm("Remove this book from Future Prospects?")) {
+  const p = prospects.find(x => x.id === id);
+  const title = p ? p.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "") : "this book";
+  if (confirm(`Remove "${title}" from Future Prospects?`)) {
     prospects = prospects.filter(p => p.id !== id);
     saveProspects();
     renderProspects();
+    closeInfoCardOverlay();
   }
 }
 
@@ -4239,7 +4443,13 @@ function saveProspects() {
 function purgeCurrentBookEntry() {
   if (!currentBook) return;
   if (confirm(`Are you absolutely sure you want to remove "${currentBook.title}" from your library archives?`)) {
-    books = books.filter(b => b.id !== currentBook.id);
+    if (currentView === 'goals') {
+      prospects = prospects.filter(p => p.id !== currentBook.id);
+      saveProspects();
+      renderProspects();
+    } else {
+      books = books.filter(b => b.id !== currentBook.id);
+    }
     try {
       const saved = JSON.parse(localStorage.getItem('barbies_library') || '{}');
       delete saved[currentBook.id];
