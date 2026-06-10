@@ -740,34 +740,30 @@
   .sub-rank-score { font-weight: 700; color: var(--gold); }
 
   /* Author Analytics Rankings Dropdown Styling */
-  .author-expand-container { margin-bottom: 12px; }
-
+  .author-expand-container { margin-bottom: 8px; border: 1px solid var(--border-iron); border-radius: 4px; overflow: hidden; }
   .author-item-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 16px;
-    border-bottom: 1px solid var(--border-iron);
+    padding: 14px 16px;
     font-size: 13px;
     cursor: pointer;
     transition: background 0.2s;
+    background: var(--card-slate);
   }
-  .author-item-row:hover { background: rgba(255, 255, 255, 0.03); }
-
-  .author-books-dropdown { 
-    max-height: 0; 
-    overflow: hidden; 
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s ease; 
-    background: #000; 
-    border-radius: 0 0 4px 4px; 
-    padding: 0 24px;
+  .author-item-row:hover { background: rgba(255, 255, 255, 0.05); }
+  .author-books-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s ease;
+    background: #050405;
+    padding: 0 16px;
   }
-
-  .author-books-dropdown.active { 
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border-iron);
-    margin-bottom: 16px;
+  .author-books-dropdown.active {
+    padding-top: 12px;
+    padding-bottom: 4px;
+    padding: 12px 16px 4px;
   }
   .author-book-pill { background: #000; color: var(--gold); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 2px; border: 1px solid var(--border-iron); }
 
@@ -902,11 +898,58 @@
 
   /* 📚 CARD STRUCTURAL LAYOUTS */
   .book-list { padding: 4px 0 100px; display: flex; flex-direction: column; gap: 12px; }
-  .book-card { 
-    background: var(--card-slate); border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border-iron); 
-    display: flex; align-items: center; gap: 16px; cursor: pointer; transition: transform 0.15s ease, border-color 0.15s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+  .book-card-wrapper {
+    perspective: 1000px;
+    min-height: 145px;
+    height: 145px;
+    width: 100%;
   }
+  .book-card-inner {
+    position: relative;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+  }
+  .book-card-wrapper.flipped .book-card-inner {
+    transform: rotateY(180deg);
+  }
+  .book-card-front, .book-card-back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 145px;
+    height: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border-iron);
+    background: var(--card-slate);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .book-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px 16px;
+    align-items: center;
+    text-align: center;
+    padding: 12px;
+  }
+  .book-card { 
+    background: var(--card-slate); border-radius: 4px; border: 1px solid var(--border-iron); 
+    display: flex; align-items: center; gap: 14px; padding: 12px 14px; cursor: pointer; 
+    transition: border-color 0.15s, transform 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); position: relative; overflow: hidden;
+    box-sizing: border-box;
+  }
+  .book-card-wrapper .book-card { position: absolute; height: 100%; width: 100%; top: 0; left: 0; }
   .book-card:hover { border-color: #4a3b45; transform: translateY(-1px); }
   .book-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: transparent; }
   .book-card.status-TBR::before { background: var(--purple-void); }
@@ -915,9 +958,11 @@
   .book-card.status-DNF::before { background: var(--crimson); }
   .book-card.status-Old::before { background: var(--gold); }
   .book-card.status-Wont::before { background: var(--text-muted); }
+  .flip-btn { position: absolute; top: 10px; right: 10px; font-size: 14px; color: var(--gold); cursor: pointer; opacity: 0.5; z-index: 5; }
+  .flip-btn:hover { opacity: 1; }
 
   .book-info { flex: 1; min-width: 0; margin-left: 4px; }
-  .book-title { font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 70%; }
+  .book-title { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--text-parchment); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 85%; }
   .book-author { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
   .book-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; align-items: center; }
   .badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
@@ -1102,6 +1147,7 @@
   .card-attributes-strip { background: #000; border: 1px solid var(--border-iron); padding: 6px; display: flex; justify-content: space-around; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
   .card-attr-item span { color: var(--gold); }
   .card-lore-box { background: #090709; border: 1px dashed var(--border-iron); padding: 10px; font-size: 11px; line-height: 1.5; color: var(--text-parchment); min-height: 66px; }
+  .card-lore-box { background: #090709; border: 1px dashed var(--border-iron); padding: 10px; font-size: 11px; line-height: 1.5; color: var(--text-parchment); min-height: 66px; max-height: 125px; overflow-y: auto; }
   .book-quote { margin-bottom: 8px; font-style: italic; } /* Styling for individual quotes */
 
   /* 🔝 KINETIC SCROLL-TO-TOP FLOATING APPARATUS */
@@ -1717,7 +1763,6 @@
       <div class="modal-author" id="mAuthor" style="color: var(--gold);"></div>
     </div>
     <div class="modal-body">
-      <div class="modal-section">
       <div class="modal-section" id="modalStatusSection">
         <div class="modal-label">Reading Status</div>
         <div class="status-select-row" id="statusBtns"></div>
@@ -1746,7 +1791,6 @@
         <div class="modal-label">Current Page Tracker</div>
         <input type="number" id="inputCurrentPage" class="simple-text-input" min="0">
       </div>
-      <div class="modal-section">
       <div class="modal-section" id="modalRatingSection">
         <div class="modal-label">My Rating Evaluation (out of 10)</div>
         <div class="stars-row" id="ratingBtns"></div>
@@ -1755,9 +1799,9 @@
         <div class="modal-label">Personal Notes & Thoughts</div>
         <textarea class="notes-input" id="notesInput" placeholder="Write down Observations here..."></textarea>
       </div>
-      <button class="save-btn" onclick="saveBook()">Save Changes ✓</button>
-      <button class="danger-button" style="margin-top: 16px;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
     </div>
+    <button class="save-btn" onclick="saveBook()" style="margin: 0 20px;">Save Changes ✓</button>
+    <button class="danger-button" style="margin: 16px 20px 40px;" onclick="purgeCurrentBookEntry()">Delete Book from Library 🗑️</button>
   </div>
 </div>
 
@@ -1830,6 +1874,18 @@ const MASTER_GENRE_LIST = [
   'Romance', 'Romantasy', 'Sci-Fi', 'True Crime / Dossier', 'Urban Fantasy',
   'Young Adult'
 ];
+
+// ── CARD INFO EXTRACTION HELPERS ──────────────────────────────────────────
+function getSmutRating(notes) {
+  if (!notes) return null;
+  const match = notes.match(/Smut:\s*([🌶️]+|📖\s*Clean)/i);
+  return match ? match[1].trim() : null;
+}
+function getBookQuoteSnippet(title) {
+  const norm = normalizeTitle(title);
+  const q = COMPLETED_BOOK_QUOTES.find(q => q.normalizedSource === norm);
+  return q ? q.text : null;
+}
 
 // ── DATA REGISTRY PACKAGES ──────────────────────────────────
 const BOOKS_RAW = [
@@ -2782,18 +2838,26 @@ function resetSandbox() { if (confirm("Reset custom data entries and clear brows
 function getTopGenres() { const counts = {}; books.forEach(b => { const g = normalizeGenre(b.genre.split(',')[0]); counts[g] = (counts[g]||0)+1; }); return Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(x=>x[0]); }
 
 function openAddBookModal() { 
-  const statusSection = document.getElementById('addStatusBtns').parentElement;
+  const statusBtnContainer = document.getElementById('addStatusBtns');
+  const statusSection = statusBtnContainer ? statusBtnContainer.parentElement : null;
   const modalTitle = document.querySelector('#addBookModal .modal-title');
+  
   if (currentView === 'goals') {
-    statusSection.style.display = 'none';
+    if (statusSection) statusSection.style.display = 'none';
     if (modalTitle) modalTitle.textContent = "Add to Future Prospects";
   } else {
-    statusSection.style.display = 'block';
+    if (statusSection) statusSection.style.display = 'block';
     if (modalTitle) modalTitle.textContent = "Add New Book to Collection";
   }
+
   document.getElementById('addBookOptionsSelectorPanel').style.display = 'block';
   document.getElementById('addBookScannerWorkflowPanel').style.display = 'none';
   document.getElementById('addBookManualFormWorkflowPanel').style.display = 'none';
+  
+  // Reset status selection to default 'TBR'
+  targetAddBookStatus = 'TBR';
+  document.querySelectorAll('#addStatusBtns .status-sel-btn').forEach(btn => btn.classList.toggle('selected', btn.textContent === 'To Read'));
+
   document.getElementById('addBookModalOverlay').classList.add('open'); 
 }
 
@@ -2980,22 +3044,28 @@ async function executeISBNDeepIntelQuery(forcedISBN = null) {
 }
 
 function commitNewBook() {
-  const t = document.getElementById('addTitle').value.trim(); const rawAuthor = document.getElementById('addAuthor').value.trim(); const g = document.getElementById('addGenre').value.trim();
-  const p = document.getElementById('addPages').value.trim(); const gr = document.getElementById('addGR').value.trim(); const mIsbn = document.getElementById('addManualISBNInput').value.trim();
+  const t = document.getElementById('addTitle').value.trim();
+  const rawAuthor = document.getElementById('addAuthor').value.trim();
+  const g = document.getElementById('addGenre').value.trim();
+  const p = document.getElementById('addPages').value.trim();
+  const gr = document.getElementById('addGR').value.trim();
+  const mIsbn = document.getElementById('addManualISBNInput').value.trim();
   const coverUrl = document.getElementById('addCustomCoverUrl')?.value.trim() || null;
-  if(!t || !rawAuthor || !g) { alert('Missing core dataset details.'); return; } 
+
+  if (!t || !rawAuthor || !g) { alert('Missing core dataset details.'); return; }
 
   if (currentView === 'goals') {
-    if (prospects.some(p => p.title.toLowerCase().trim() === t.toLowerCase())) { 
-      triggerSentryAlert("This volume is already present in your vision of the future."); 
-      return; 
+    const existing = prospects.find(p => p.title.toLowerCase().trim() === t.toLowerCase());
+    if (existing) {
+      triggerSentryAlert("This volume is already present in your vision of the future.");
+      return;
     }
     const newP = {
       id: Date.now(),
       title: t,
       author: processScribeNameMilitaryFormatting(rawAuthor),
       series: "",
-      genre: g,
+      genre: g.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0).join(', '),
       pages: p || 300,
       grRating: parseFloat(gr) || 4.0,
       isbn: mIsbn || null,
@@ -3004,15 +3074,58 @@ function commitNewBook() {
     };
     prospects.push(newP);
     saveProspects();
+    activeProspectGenres = [];
+    if (document.getElementById('prospectSearchInput')) document.getElementById('prospectSearchInput').value = '';
     renderProspects();
     closeAddBookModal();
     return;
   }
 
-  if (books.some(b => b.title.toLowerCase().trim() === t.toLowerCase())) { triggerSentryAlert(); return; }
-  const obj = { id: Math.max(0, ...books.map(b => b.id)) + 1, title: t, author: processScribeNameMilitaryFormatting(rawAuthor), status: targetAddBookStatus, series: null, genre: g, pages: p || 300, grRating: parseFloat(gr) || 4.0, myRating: null, notes: null, currentPage: 0, isbn: mIsbn || null, coverUrl: coverUrl };
-  books.push(obj); const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]'); arr.push(obj); localStorage.setItem('barbies_library_added', JSON.stringify(arr));
-  closeAddBookModal(); updateHomeView(); showView('library'); executeAutomatedBackgroundPipelineAutosave();
+  const existingBook = books.find(b => b.title.toLowerCase().trim() === t.toLowerCase());
+  if (existingBook) { triggerSentryAlert(); return; }
+
+  const obj = {
+    id: Math.max(0, ...books.map(b => b.id)) + 1,
+    title: t,
+    author: processScribeNameMilitaryFormatting(rawAuthor),
+    status: targetAddBookStatus,
+    series: null,
+    genre: g.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0).join(', '),
+    pages: p || 300,
+    grRating: parseFloat(gr) || 4.0,
+    myRating: null,
+    notes: null,
+    currentPage: 0,
+    isbn: mIsbn || null,
+    coverUrl: coverUrl
+  };
+
+  let tokens = obj.genre.split(',').map(t => t.trim()).filter(t => t.length > 0);
+  if (tokens.length < 4) {
+    const inferred = inferNarrativeTropes(obj);
+    inferred.forEach(t => { if (!tokens.includes(t)) tokens.push(t); });
+    obj.genre = tokens.join(', ');
+  }
+
+  books.push(obj);
+  const arr = JSON.parse(localStorage.getItem('barbies_library_added') || '[]');
+  arr.push(obj);
+  localStorage.setItem('barbies_library_added', JSON.stringify(arr));
+
+  activeStatus = 'All';
+  activeGenres = [];
+  if (document.getElementById('searchInput')) document.getElementById('searchInput').value = '';
+  const allPill = document.getElementById('filterPillAll');
+  if (allPill) {
+    document.querySelectorAll('#statsRow2 .stat-pill').forEach(p => p.classList.remove('active'));
+    allPill.classList.add('active');
+  }
+
+  closeAddBookModal();
+  updateHomeView();
+  showView('library');
+  updateUIRowCounters();
+  executeAutomatedBackgroundPipelineAutosave();
   initializeLoreEngine();
 }
 
@@ -3311,29 +3424,31 @@ function renderBooks() {
   else if(sortMode === 4) list.sort((a,b) => a.author.localeCompare(b.author));
   document.getElementById('resultsCount').textContent = `${list.length} records populated`;
   document.getElementById('bookList').innerHTML = list.map(b => {
-    const statusClass = statusKey(b.status); const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, ""); const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-    
-    let thumbnailImgTag = b.coverUrl ? 
-      `<img src="${b.coverUrl}" style="width:36px; height:52px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
-      `<div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
-      
-    const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
+    const statusClass = statusKey(b.status);
+    const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+    const cleanAuthor = b.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     const isEnchanted = dynamicLoreSources.has(normalizeTitle(b.title));
 
+    const thumbnail = b.coverUrl ? 
+      `<img src="${b.coverUrl}" style="width:48px; height:72px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
+      `<div style="width:48px; height:72px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:11px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
+
     return `
-      <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
-        ${thumbnailImgTag}
-        <div class="book-info">
-           <div class="book-title">${cleanTitle}${isEnchanted ? '<span style="color:var(--gold); margin-left:4px; font-size:10px;" title="Enchanted Lore">✨</span>' : ''}</div>
-           <div class="book-author">${cleanAuthor}</div>
-           <div class="book-meta">
-             <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
-             <span class="badge badge-genre">${visualGenreLabel}</span>
-           </div>
-        </div>
-        <div class="book-ratings">
-          <div class="rating-row-value">${b.myRating != null ? `<span>★</span>${b.myRating}` : '<div style="color:var(--border-iron);font-weight:500;">–</div>'}</div>
-          <div class="rating-gr-subtext">GR ${b.grRating || '–'}</div>
+      <div class="book-card-wrapper" id="list-card-${b.id}">
+        <div class="book-card status-${statusClass}" onclick="openInfoCardOverlay(${b.id})">
+          ${thumbnail}
+          <div class="book-info">
+            <div class="book-title">${cleanTitle}${isEnchanted ? ' ✨' : ''}</div>
+            ${b.series ? `<div style="color:var(--gold); font-size:9px; margin-bottom:1px; opacity:0.8;">${b.series.replace(/['"\u2018\u2019\u201C\u201D]/g, "")}</div>` : ''}
+            <div class="book-author">${cleanAuthor}</div>
+            <div class="book-meta">
+              <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
+              <span class="badge badge-genre">GR ${b.grRating || '–'}</span>
+            </div>
+          </div>
+          <div class="book-ratings">
+            <div class="rating-row-value">${b.myRating != null ? `<span>★</span>${b.myRating}` : '–'}</div>
+          </div>
         </div>
       </div>`;
   }).join('');
@@ -3372,6 +3487,7 @@ async function openInfoCardOverlay(id, isProspect = false) {
   document.getElementById('infoCardTitle').textContent = `📜 TOME RAIDER: ${cleanTitle}`;
   document.getElementById('infoCardAuthor').textContent = "ARCHIVAL SCRIBE: " + currentBook.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "").toUpperCase();
   document.getElementById('infoCardGenre').textContent = currentBook.genre?.split(',')[0]?.trim() || 'Other';
+  document.getElementById('infoCardGenre').textContent = (currentBook.genre?.split(',')[0]?.trim() || 'Other').replace(/Smut:\s*([🌶️]+|📖\s*Clean)[. ]*/gi, "");
   document.getElementById('infoCardMass').textContent = currentBook.pages || "000"; 
   document.getElementById('infoCardMetric').textContent = (currentBook.grRating || 0).toFixed(2);
   
@@ -3381,32 +3497,26 @@ async function openInfoCardOverlay(id, isProspect = false) {
   const normTitle = normalizeTitle(currentBook.title);
   let bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
-
-  // If empty, search for new quotes on click
-  if (bookQuotes.length === 0) { // Always attempt to fetch if no quotes are present
-    document.getElementById('infoCardLore').innerHTML = `<p><i>Searching archives for proper quotes...</i></p>`;
-    const newlyFetched = await fetchAndProcessBookQuotes(currentBook);
-    if (newlyFetched.length > 0) {
-      const existing = JSON.parse(localStorage.getItem('barbies_dynamic_quotes') || '[]');
-      localStorage.setItem('barbies_dynamic_quotes', JSON.stringify([...existing, ...newlyFetched]));
-      bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
-    }
-  }
-
   if (bookQuotes.length > 0) {
-    const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
-    loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
-  } else if (BOOK_BLURBS_REGISTRY[currentBook.title]) {
-    loreHtml = `<p>${BOOK_BLURBS_REGISTRY[currentBook.title]}</p>`;
-  } else {
+    loreHtml += bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
+  }
+  if (BOOK_BLURBS_REGISTRY[currentBook.title]) {
+    if (loreHtml) loreHtml += '<hr style="border:0; border-top:1px dashed var(--border-iron); margin:8px 0;">';
+    loreHtml += `<p>${BOOK_BLURBS_REGISTRY[currentBook.title]}</p>`;
+  }
+  if (!loreHtml) {
     loreHtml = `<p><i>SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.</i></p>`;
   }
   document.getElementById('infoCardLore').innerHTML = loreHtml;
   
   const backNotes = document.getElementById('infoCardNotesBack');
   if (backNotes) {
-    const userNotes = currentBook.notes || "No internal observations recorded for this archive.";
-    backNotes.textContent = `${userNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
+    backNotes.textContent = `${currentBook.notes || "No internal observations recorded for this archive."}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
+    const displayNotes = currentBook.notes 
+      ? currentBook.notes.replace(/Smut:\s*([🌶️]+|📖\s*Clean)[. ]*/gi, "").trim() 
+      : "No internal observations recorded for this archive.";
+      
+    backNotes.textContent = `${displayNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${currentBook.genre}.`;
   }
 
   const inner = document.getElementById('infoCardInner');
@@ -3508,8 +3618,9 @@ function pivotToConfigurationModal() {
   }).join('');
 
   const w = document.getElementById('modalProgressWrapper'); if(currentBook.status === 'Reading') { w.style.display = "block"; document.getElementById('inputCurrentPage').value = currentBook.currentPage || 0; } else { w.style.display = "none"; }
-  renderStarSelectors(currentBook.myRating); document.getElementById('notesInput').value = currentBook.notes || ''; document.getElementById('modalOverlay').classList.add('open');
-  document.getElementById('notesInput').value = currentBook.notes || ''; document.getElementById('modalOverlay').classList.add('open');
+  renderStarSelectors(currentBook.myRating); 
+  document.getElementById('notesInput').value = currentBook.notes || ''; 
+  document.getElementById('modalOverlay').classList.add('open');
 }
 
 function toggleGenreMultiOverrideSelection(buttonDomPointer, tagLabelString) {
@@ -3565,9 +3676,6 @@ function saveBook() {
     return;
   }
 
-  if(currentBook._pendingStatus) currentBook.status = currentBook._pendingStatus; 
-  if(currentBook._pendingRating !== undefined) currentBook.myRating = currentBook._pendingRating;
-  
   if (currentBookIsProspect) {
     currentBook.grRating = parseFloat(document.getElementById('inputGRScore').value) || 0;
     currentBook.format = currentBook._pendingFormat || 'Fiction';
@@ -3693,48 +3801,42 @@ let selectedRatingIndex = -1;
 
 function toggleAuthorBooks(el, authorName) {
   const dropdown = el.nextElementSibling;
-  const isActive = dropdown.classList.contains('active'); // Check if the dropdown is currently active
+  const isOpening = !dropdown.classList.contains('active');
   
-  // Close others for a clean accordion effect
-  document.querySelectorAll('.author-books-dropdown').forEach(d => {
+  // Close all other author dropdowns and handle reset
+  document.querySelectorAll('.author-books-dropdown.active').forEach(d => {
     d.classList.remove('active');
     d.style.maxHeight = "0px";
   });
 
-  if (!isActive) {
+  if (isOpening) {
     const authorBooks = books.filter(b => processScribeNameMilitaryFormatting(b.author) === authorName);
     dropdown.innerHTML = authorBooks.map(b => {
       const statusClass = statusKey(b.status);
-      const cleanTitle = b.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
+      const cleanTitle = (b.title || "Untitled").replace(/['"\u2018\u2019\u201C\u201D]/g, "");
       const visualGenreLabel = normalizeGenre(b.genre?.split(',')[0] || 'Other');
-
-      let thumbnail = b.coverUrl ?
-        `<img src="${b.coverUrl}" style="width:28px; height:40px; object-fit:cover; border-radius:2px; border:1px solid var(--border-iron);" alt="">` :
-        `<div style="width:28px; height:40px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:8px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
-
       const isEnchanted = dynamicLoreSources.has(normalizeTitle(b.title));
+      const thumbnail = b.coverUrl ? 
+        `<img src="${b.coverUrl}" style="width:32px; height:48px; object-fit:cover; border-radius:2px; flex-shrink:0;" alt="">` :
+        `<div style="width:32px; height:48px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:9px; color:var(--text-muted); flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>`;
+
       return `
-        <div class="book-card status-${statusClass}" style="margin-bottom:16px; padding:12px; border-width: 1px 1px 1px 4px;" onclick="openInfoCardOverlay(${b.id})">
+        <div class="book-card status-${statusClass}" style="margin-bottom:10px; border-width: 1px 1px 1px 4px; width:100%; height:auto; position:relative;" onclick="openInfoCardOverlay(${b.id})">
           ${thumbnail}
           <div class="book-info">
-            <div class="book-title" style="font-size:13px;">${cleanTitle}${isEnchanted ? ' ✨' : ''}</div>
+            <div class="book-title" style="font-size:12px; white-space:normal;">${cleanTitle}${isEnchanted ? ' ✨' : ''}</div>
             <div class="book-meta">
               <span class="badge badge-status-${statusClass}">${statusLabel(b.status)}</span>
               <span class="badge badge-genre">${visualGenreLabel}</span>
             </div>
           </div>
-          <div class="rating-row-value" style="font-size:11px;">
-            ${b.myRating != null ? `<span>★</span>${b.myRating}` : '<div style="color:var(--border-iron);">–</div>'}
-          </div>
         </div>`;
     }).join('');
-    dropdown.classList.add('active');
     
-    // Timeout ensures the browser has applied the 'active' class padding before calculating height
-    setTimeout(() => {
-      // Adding a 20px buffer to scrollHeight ensures no clipping occurs during the transition
-      dropdown.style.maxHeight = (dropdown.scrollHeight + 20) + "px";
-    }, 20);
+    dropdown.classList.add('active');
+    // Force a reflow to ensure the transition from 0px triggers correctly
+    dropdown.offsetHeight; 
+    dropdown.style.maxHeight = (dropdown.scrollHeight + 10) + "px";
   }
 }
 
@@ -3999,7 +4101,7 @@ function renderCharts() {
   });
 
   const authLookup = {}; books.forEach(b => { if(b.author) { const c = processScribeNameMilitaryFormatting(b.author); authLookup[c] = (authLookup[c] || 0) + 1; } });
-  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).slice(0, 10).map(([name, count], idx) => `
+  document.getElementById('topAuthorsListMount').innerHTML = Object.entries(authLookup).sort((a,b)=>b[1]-a[1]).map(([name, count], idx) => `
     <div class="author-expand-container">
       <div class="author-item-row" style="cursor:pointer;" onclick="toggleAuthorBooks(this, '${name.replace(/'/g, "\\'")}')">
         <span>${idx + 1}. ${name}</span>
@@ -4078,221 +4180,185 @@ function showView(viewName) {
 
 // ── FUTURE PROSPECTS (WISHLIST) ENGINE ──────────────────────────────────────
 const PROSPECTS_RAW = [
-  [1, "Jujutsu Kaisen", "Akutami G.", "Jujutsu Kaisen 1"],
-  [2, "Six of Crows", "Bardugo, L.", "Six of Crows 1"],
-  [3, "Crooked Kingdom", "Bardugo, L.", "Six of Crows 2"],
-  [4, "A Darker SHore: Letters from Ketterdam", "Bardugo, L.", "Six of Crows 2.5"],
-  [5, "The Inheritance Games", "Barnes, J. L.", "The Inheritance Games 1"],
-  [6, "The Hawthorne Legacy", "Barnes, J. L.", "The Inheritance Games 2"],
-  [7, "The Final Gambit", "Barnes, J. L.", "The Inheritance Games 3"],
-  [8, "The Brothers Hawthorne", "Barnes, J. L.", "The Inheritance Games 4"],
-  [9, "Games untold", "Barnes, J. L.", "The Inheritance Games 5"],
-  [10, "The Tainted Cup", "Bennett R. J.", "Shadow of the Leviathan 1"],
-  [11, "A Drop of Corruption", "Bennett R. J.", "Shadow of the Leviathan 2"],
-  [12, "A Trade of Blood", "Bennett R. J.", "Shadow of the Leviathan 3"],
-  [13, "On Wings of Blood", "Boleyn, B.", "Bloodwing Academy 1"],
-  [14, "The Bond That Burns", "Boleyn, B.", "Bloodwing Academy 2"],
-  [15, "The Wings That Bind", "Boleyn, B.", "Bloodwing Academy 3"],
-  [16, "Songbird & Heart of Stone", "Broadbent C.", "Crowns of Nyaxia 3"],
-  [17, "Slaying the Vampire Conqueror", "Broadbent C.", "Crowns of Nyaxia 2.5"],
-  [18, "The Fallen The Kiss Of Dusk", "Broadbent C.", "Crowns of Nyaxia 4"],
-  [19, "Six Scorched Roses", "Broadbent C.", "Crowns of Nyaxia 1.5"],
-  [20, "The Burnborn Duet", "Broadbent C.", "Crowns of Nyaxia 5-6"],
-  [21, "Serpent & Wings of Night", "Broadbent, C.", "Crowns of Nyaxia 1"],
-  [22, "The Ashes & Star-Cursed King", "Broadbent, C.", "Crowns of Nyaxia 2"],
-  [23, "The Songbird of heart of the Stone", "Broadbent, C.", "Crowns of Nyaxia 3"],
-  [24, "The Lion and The Deathless Dark", "Broadbent, C.", "Crowns of Nyaxia 5"],
-  [25, "Iron Gold", "Brown, P.", "Red Rising Series 4"],
-  [26, "Dark Age", "Brown, P.", "Red Rising Saga 5"],
-  [27, "Light Bringer", "Brown, P.", "Red Rising 6"],
-  [28, "Red God", "Brown, P.", "Red Rising Series 7"],
-  [29, "Between Two Fires", "Buehlman C.", "stand alone"],
-  [30, "Cyberpunk 2077: Team Trauma", "Bunn, C. ", "Cyberpunk 2077: Trauma Team 1"],
-  [31, "Spark of the EverFlame", "Cole, P. ", "The Kindred's Curse Saga 1"],
-  [32, "Glow of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 2"],
-  [33, "Heat of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 3"],
-  [34, "Burn of the Everflame", "Cole, P. ", "The Kindred's Curse Saga 4"],
-  [35, "Carl's Doomsday Scenario", "Dinniman, M.", "Dungeon Crawler Carl 2"],
-  [36, "The Dungeons Anarchist's Cook Book", "Dinniman, M.", "Dungeon Crawler Carl 3"],
-  [37, "The Fate of the Feral Gods", "Dinniman, M.", "Dungeon Crawler Carl 3"],
-  [38, "The Butchers Masquerade", "Dinniman, M.", "Dungeon Crawler Carl 5"],
-  [39, "The Eye of the Bedlam Bride", "Dinniman, M.", "Dungeon Crawler Carl 6"],
-  [40, "City of Gods & Monsters", "Edwards K.", "House of Devils 1"],
-  [41, "City of Souls & Sinners", "Edwards K.", "House of Devils 2"],
-  [42, "City of Lies & Legends", "Edwards K.", "House of Devils 3"],
-  [43, "City of Smoke & Brimstone", "Edwards K.", "House of Devils 4"],
-  [44, "Silver Elite", "Francis, D.", "Silver Elite 1"],
-  [45, "Broken Dove", "Francis, D.", "Silver Elite 2"],
-  [46, "Spectacular", "Garber S.", "Caraval 3.5"],
-  [47, "The Knave and the Moon", "Gillig, R.", "The Stonewater Kingdom 2"],
-  [48, "A Bone in his teeth", "Graves K.", "Stand alone"],
-  [49, "The Fox and the Dryad", "Graves, K.", "stand alone"],
-  [50, "Prince of Sorrows", "Graves, K.", "Rowan Blood 1"],
-  [51, "Lord of Silver Ashes", "Graves, K.", "Rowan Blood 2"],
-  [52, "Herald of the Witches Mark", "Graves, K.", "Rowan Blood 3"],
-  [53, "Vessel of Woven Night", "Graves, K.", "Rowan Blood 4"],
-  [54, "The Royal Curse", "Grayson, E.", "Twilight Mages 1"],
-  [55, "The Captive Curse", "Grayson, E.", "Twilight Mages 2"],
-  [56, "The Traitors Curse", "Grayson, E.", "Twilight Mages 3"],
-  [57, "Malice", "Gwynne, J.", "The Faithful and the Fallen 1"],
-  [58, "Valor", "Gwynne, J.", "The Faithful and the Fallen 2"],
-  [59, "Ruin", "Gwynne, J.", "The Faithful and the Fallen 3"],
-  [60, "Wrath", "Gwynne, J.", "The Faithful and the Fallen 4"],
-  [61, "A Time of Dread", "Gwynne, J.", "Of Blood and Bone 1"],
-  [62, "A Time of Blood", "Gwynne, J.", "Of Blood and Bone 2"],
-  [63, "A Time of Courage", "Gwynne, J.", "Of Blood and Bone 3"],
-  [64, "Shadow of the Gods", "Gwynne, J.", "The Bloodsworn Saga 1"],
-  [65, "Hunger of the Gods", "Gwynne, J.", "The Bloodsworn Saga 2"],
-  [66, "Fury of the Gods", "Gwynne, J.", "The Bloodsworn Saga 3"],
-  [67, "Reforged", "Haddon, S.", "The World of Reforged 1"],
-  [68, "Reborn", "Haddon, S.", "The World of Reforged 2"],
-  [69, "Reclaimed", "Haddon, S.", "The World of Reforged 3"],
-  [70, "Quicksilver Bonus Scenes: Kingfisher's POV", "Hart, C.", "Fae & Alchemy 1.5"],
-  [71, "Fae & Alchemy 3", "Hart, C.", "Fae & Alchemy 3"],
-  [72, "The Raven School", "Hodgson A.", "Eternal Path Trilogy 1"],
-  [73, "The Shadow of What was Lost", "Islington, J.", "The Licanius Trilogy 1"],
-  [74, "A Echo of Things to Come", "Islington, J.", "The Licanius Trilogy 2"],
-  [75, "The Light of all That Falls", "Islington, J.", "Licanius Trilogy 3"],
-  [76, "The Justice of one", "Islington, J.", "Hierarchy 3"],
-  [77, "The Husband Hoax", "James S.", "Accidental Love 1"],
-  [78, "The Tempest Blade", "Jensen, D. L.", "The Bridge Kingdom 6"],
-  [79, "The God Killer ", "Kaner, H.", "Fallen Gods 1"],
-  [80, "Sun Bringer", "Kaner, H.", "Fallen Gods 2"],
-  [81, "Faith breaker", "Kaner, H.", "Fallen Gods 3"],
-  [82, "Gold", "Kennedy, R.", "Plated 5"],
-  [83, "Goldfinch", "Kennedy, R.", "The Plated Prisoner Series 6"],
-  [84, "Hunt the Villain", "Kent, R.", "Kiss the Villain 2"],
-  [85, "Crave the Villain", "Kent, R.", "Villain 3"],
-  [86, "God of Wrath ", "Kent, R.", "Legacy of Gods 3"],
-  [87, "God of Pain", "Kent, R.", "Legacy of Gods 2"],
-  [88, "God of Ruin", "Kent, R.", "Legacy of Gods 4"],
-  [89, "God of War", "Kent, R.", "Legacy of Gods 6"],
-  [90, "God of Fury", "Kent, R.", "Legacy of Gods 5"],
-  [91, "God of Malace", "Kent, R.", "Legacy of Gods 1"],
-  [92, "Trmpting Venom", "Kent, R.", "Vipers 3"],
-  [93, "Beautiful Venom", "Kent, R.", "Vipers 1"],
-  [94, "Sweet Venom", "Kent, R.", "The Vipers 2"],
-  [95, "Dumbledore: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 1"],
-  [96, "Snape: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 2"],
-  [97, "Malfoy: An Unofficial Exploration", "Khaytman, I.", "The Unofficial Harry Potter Character Series 3"],
-  [98, "Wolfsong", "Klune, T. J.", "Green Creek 1"],
-  [99, "Ravensong", "Klune, T. J.", "Green Creek 2"],
-  [100, "Heartsong", "Klune, T. J.", "Green Creek 3"],
-  [101, "Brothersong", "Klune, T. J.", "Green Creek 4"],
-  [102, "Cyberpunk 2077: No Coincidence", "Kosik R.", "stand alone"],
-  [103, "Empire of the Vampire", "Kristoff, J.", "Empire of the Vampire 1"],
-  [104, "Empire of the Damned", "Kristoff, J.", "Empire of the Vampire 2"],
-  [105, "Empire of the Dawn", "Kristoff, J.", "Empire of the Vampire 3"],
-  [106, "The Poppy War", "Kuang, R. F.", "Poppy War Series 1"],
-  [107, "The dragon republic", "Kuang, R. F.", "The Poppy War 2"],
-  [108, "The Burning God", "Kuang, R. F.", "Poppy War 3"],
-  [109, "The Wolf and his King", "Longman F.", "Stand alone"],
-  [110, "A Court of Mist and Fury", "Maas, S. J.", "A Court of Thorns and Roses 2"],
-  [111, "A Court of Wings and Ruin", "Maas, S. J.", "A Court of Thorns and Roses 3"],
-  [112, "A Court of Frost and Starlight", "Maas, S. J.", "A Court of Thorns and Roses 4"],
-  [113, "A Court of Silver Flames", "Maas, S. J.", "A Court of Thorns and Roses 5"],
-  [114, "Cyberpunk 2077: 2am she calls", "Marchewka T.", "Stand alone"],
-  [115, "Blood of Hercules", "Mas, J.", "Villains of Lore 1"],
-  [116, "Bonds of Hercules", "Mas, J.", "Villains of Lore 2"],
-  [117, "Winters Orbit", "Maxwell E.", "The Resolution Universe 1"],
-  [118, "The Wolf and the Crown of Blood", "May E.", "The Broken Accords 1"],
-  [119, "A Monstrous Christmas in Camp", "Mayne, L.", "Monstrous 6.5"],
-  [120, "Soul Eater", "Mayne, L.", "Monstrous 1"],
-  [121, "Edin", "Mayne, L.", "Monstrous 2"],
-  [122, "The Rycke", "Mayne, L.", "Monstrous 3"],
-  [123, "Wyn", "Mayne, L.", "Monstrous 3.5"],
-  [124, "Gloam", "Mayne, L.", "Monstrous 4"],
-  [125, "Moth ", "Mayne, L.", "Monstrous 5"],
-  [126, "Seraph", "Mayne, L.", "Monstrous 6"],
-  [127, "Lor", "Mayne, L.", "Monstrous 7"],
-  [128, "A Forbidden Alchemy", "McEwan, S.", "The Artisan Trilogy 1"],
-  [129, "A Forsaken Prophecy", "McEwan, S.", "The Artisan Trilogy 2"],
-  [130, "A Strange And Stubborn Endurance", "Meadows F.", "The Tithenai Chronicles 1"],
-  [131, "Thousand Autumns", "Meng X. S.", "Thousand Autumns: Qian Qiu (Novel) 1"],
-  [132, "Heaven Official's Blessing (Vol. 1–8)", "Mo Xiang T. X.", "Heaven Official's Blessing 1-8"],
-  [133, "Grandmaster of Demonic Cultivation (Vol. 1–5)", "Mo Xiang T. X.", "Grandmaster of Demonic Cultivation 1-5"],
-  [134, "Ennead", "Mojito", "Ennead 1"],
-  [135, "Prince Weaver", "Morgan E. J.", "Land of the Wildest Skies 1"],
-  [136, "Silk &steal", "Nash, A.", "Silk & Steel 1"],
-  [137, "Iron & Fire ", "Nash, A.", "Silk & Steel 2"],
-  [138, "Blood & Ice", "Nash, A.", "Silk & Steel 3"],
-  [139, "Dare to Hold", "Nicole, A.", "Dare To Love 1"],
-  [140, "The Throne of Broken Gods", "Nicole, A.", "Gods and Monsters 2"],
-  [141, "The Dawn of the Cursed Queen", "Nicole, A.", "Gods & Monsters 3"],
-  [142, "The Wrath of the Fallen", "Nicole, A.", "Gods and Monsters 4"],
-  [143, "Death Stranding 1", "Nojima, H.", "Death Stranding 1"],
-  [144, "Death Stranding 2", "Nojima, H.", "Death Stranding 2"],
-  [145, "Shadow Reaper", "Noni, L. ", "Shadow Reaper 1"],
-  [146, "The games gods play", "Owen, A.", "The Games Gods Play 1"],
-  [147, "Things Gods Break", "Owen, A.", "The Crucible 2"],
-  [148, "Wrath Gods Reap", "Owen, A.", "The Crucible 3"],
-  [149, "Captive Prince", "Pacat, C. S.", "The Captive Prince Trilogy 1"],
-  [150, "Prince's Gambit", "Pacat, C. S.", "Captive Prince Trilogy 2"],
-  [151, "Kings Rising", "Pacat, C. S.", "Captive Prince 3"],
-  [152, "The summer palace (Short Stories)", "Pacat, C. S.", "Captive Prince Short Stories 2"],
-  [153, "The Wolf Queen", "Palphreyman, L.", "The Wolf King 3"],
-  [154, "To Bleed a Crystal Bloom", "Parker, S. A.", "Crystal Bloom Series 1"],
-  [155, "To Snap a Silver Stem", "Parker, S. A.", "Crystal Bloom Series 2"],
-  [156, "To Flame a Wild Flower", "Parker, S. A.", "Crystal Bloom 3"],
-  [157, "The ballad of falling dragons ", "Parker, S. A.", "The Moonfall Series 2"],
-  [158, "Dead Girls Don't Talk", "Paul S. J.", "Stand alone"],
-  [159, "Hollow", "Peckham C. & Valenti S.", "Crown of Hearts & Chaos 1"],
-  [160, "The Awakening", "Peckham, C.", "Zodiac Academy 1"],
-  [161, "Ruthless Fae", "Peckham, C.", "Zodiac Academy 2"],
-  [162, "The Reckoning", "Peckham, C.", "Zodiac Academy 3"],
-  [163, "Origins of an Academy bully", "Peckham, C.", "Zodiac Academy 0.5"],
-  [164, "The Awakening as told by the boys", "Peckham, C.", "Zodiac Academy 1.5"],
-  [165, "Shadow Princess", "Peckham, C.", "Zodiac Academy 4"],
-  [166, "Cursed Fates", "Peckham, C.", "Zodiac Academy 5"],
-  [167, "The Big ASS Party", "Peckham, C.", "Zodiac Academy 5.5"],
-  [168, "Fated Throne", "Peckham, C.", "Zodiac Academy 6"],
-  [169, "Sorrow and Starlight", "Peckham, C.", "Zodiac Academy 8"],
-  [170, "Heartless Sky", "Peckham, C.", "Zodiac Academy 7"],
-  [171, "Never Keep", "Peckham, C., Valenti, S.", "Sins of the Zodiac 1"],
-  [172, "Echo Fort", "Peckham, C., Valenti, S.", "Sins of the Zodiac 2"],
-  [173, "Cindervale", "Peckham, C., Valenti, S.", "Sins of the Zodiac 3"],
-  [174, "The Husky and His White Cat", "Rou B. B. C. R.", "The Husky and His White Cat Shizun: Erha He Ta De Bai Mao Shizun (Novel) 1"],
-  [175, "A Taste of Gold and Iron", "Rowland A.", "stand alone"],
-  [176, "Harry Potter and the Philosopher's Stone", "Rowling, J. K.", "Harry Potter 1"],
-  [177, "Harry Potter and the Chamber of Secrets", "Rowling, J. K.", "Harry Potter 2"],
-  [178, "Harry Potter and the Prisoner of Azkaban", "Rowling, J. K.", "Harry Potter 3"],
-  [179, "Harry Potter and the Goblet of Fire ", "Rowling, J. K.", "Harry Potter 4"],
-  [180, "Harry Potter and the Order of the Phoenix ", "Rowling, J. K.", "Harry Potter 5"],
-  [181, "Harry Potter and the Half-Blood Prince", "Rowling, J. K.", "Harry Potter 6"],
-  [182, "Harry Potter and the Deathly Hallows", "Rowling, J. K.", "Harry Potter 7"],
-  [183, "To Catch a Firefly", "Sanders E.", "Stand alone"],
-  [184, "The Way of Kings", "Sanderson B.", "The Stormlight Archive 1"],
-  [185, "Words of Radience", "Sanderson B.", "The Stormlight Archive 2"],
-  [186, "Edgedancer", "Sanderson B.", "The Stormlight Archive 2.5"],
-  [187, "Oathbringer", "Sanderson B.", "The Stormlight Archive 3"],
-  [188, "DawnShard", "Sanderson B.", "The Stormlight Archive 3.5"],
-  [189, "Rythm of War", "Sanderson B.", "The Stormlight Archive 4"],
-  [190, "Slaying the Shadow Prince", "Scheuerer H.", "Legends of Thezmarr 0.5"],
-  [191, "Iron & Embers", "Scheuerer, H.", "The Ashes of Thezmarr 1"],
-  [192, "Thorns & Fire", "Scheuerer, H.", "The Ashes of Thezmarr 2"],
-  [193, "Silvre & Smoke", "Scheuerer, H.", "Legends of Thezmarr 4"],
-  [194, "The Darkness Outside Us", "Schrefer E.", "The Darkness Outside Us 1"],
-  [195, "Bury our Bones in the Midnight Soil", "Schwab V. E.", "stand alone"],
-  [196, "Phantasma", "Smith, K.", "Wicked Games 1"],
-  [197, "Enchantra", "Smith, K.", "Wicked Games 2"],
-  [198, "Beneath ", "Sullivan, A. ", "Thousand Voices 1"],
-  [199, "Core", "Sullivan, A. ", "The Reform Series 2"],
-  [200, "Road of Bones", "Winters, D.", "The Ashen Series 1"],
-  [201, "Kingdom of Claw", "Winters, D.", "The Ashen Series 2"],
-  [202, "Dawn of the North", "Winters, D.", "The Ashen Series 3"],
-  [203, "Dagger Mouth", "Wolfe H. M.", "The Heart 1"]
+  { id: 1, title: "Jujutsu Kaisen", author: "Akutami G.", series: "Jujutsu Kaisen 1", genre: "Graphic Novel", grRating: 4.5, notes: null, format: "Manga", dateAdded: new Date().toISOString() },
+  { id: 2, title: "Six of Crows", author: "Bardugo, L.", series: "Six of Crows 1", genre: "Young Adult Fantasy, Heist, M/F", grRating: 4.5, notes: "Smut: 🌶️. TW: Violence, Gore, Slavery, Trafficking, Addiction.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 3, title: "Crooked Kingdom", author: "Bardugo, L.", series: "Six of Crows 2", genre: "Young Adult Fantasy, Romantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Abuse, Kidnapping, Torture, Addiction.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 4, title: "A Darker SHore: Letters from Ketterdam", author: "Bardugo, L.", series: "Six of Crows 2.5", genre: "Fantasy, Mystery, M/F", grRating: 4.9, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Slavery, Massacre.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 5, title: "The Inheritance Games", author: "Barnes, J. L.", series: "The Inheritance Games 1", genre: "Young Adult Mystery, Contemporary Romance, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Abuse, Death, Violence, Trauma, Abandonment.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 6, title: "The Hawthorne Legacy", author: "Barnes, J. L.", series: "The Inheritance Games 2", genre: "Young Adult Mystery, Thriller, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Death, Violence, Kidnapping, Explosions, Guns.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 7, title: "The Final Gambit", author: "Barnes, J. L.", series: "The Inheritance Games 3", genre: "YA Mystery, Thriller, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Violence, Murder, Suicide, Assault, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 8, title: "The Brothers Hawthorne", author: "Barnes, J. L.", series: "The Inheritance Games 4", genre: "Young Adult Mystery, Contemporary Romance, M/F", grRating: 3.9, notes: "Smut: 📖 Clean. TW: Death, Violence, Grief, Neglect, Abandonment.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 9, title: "Games untold", author: "Barnes, J. L.", series: "The Inheritance Games 5", genre: "Contemporary Mystery, Young Adult, M/F", grRating: 4.0, notes: "Smut: 📖 Clean. TW: Drugs, Violence, Death, Grief, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 10, title: "The Tainted Cup", author: "Bennett R. J.", series: "Shadow of the Leviathan 1", genre: "Fantasy Mystery, Murder Mystery, M/F", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Blood, Gore, Murder, Drugs, Experimentation.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 11, title: "A Drop of Corruption", author: "Bennett R. J.", series: "Shadow of the Leviathan 2", genre: "Fantasy Mystery, Murder Mystery, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Blood, Gore, Murder, Animals.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 12, title: "A Trade of Blood", author: "Bennett R. J.", series: "Shadow of the Leviathan 3", genre: "Fantasy Mystery, Murder Mystery, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Murder, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 13, title: "On Wings of Blood", author: "Boleyn, B.", series: "Blood & Ash", genre: "Dark Academia Romantasy, Fantasy Romance, M/F", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Bullying, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 14, title: "The Bond That Burns", author: "Boleyn, B.", series: "Blood & Ash", genre: "Dark Academia, Fantasy Romance, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Bullying, Betrayal.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 15, title: "The Wings That Bind", author: "Boleyn, B.", series: "Blood & Ash", genre: "Dark Academia Romantasy, Dark Fantasy, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Betrayal, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 16, title: "Serpent & Wings of Night", author: "Broadbent, C.", series: "Nightborn", genre: "Dark Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Blood, Death, Torture, Assault.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 17, title: "The Ashes & Star-Cursed King", author: "Broadbent, C.", series: "Nightborn", genre: "Fantasy Romance, Dark Fantasy, M/F", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 18, title: "The Songbird of heart of the Stone", author: "Broadbent, C.", series: "Nightborn", genre: "Fantasy Romance, Vampire Romantasy, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Gore, Grooming, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 19, title: "The Lion and The Deathless Dark", author: "Broadbent, C.", series: "Nightborn", genre: "Dark Fantasy, Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Betrayal, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 20, title: "Iron Gold", author: "Brown, P.", series: "The Red Rising Saga", genre: "Science Fiction, Dystopia, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Torture, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 21, title: "Dark Age", author: "Brown, P.", series: "The Red Rising Saga", genre: "Science Fiction, Space Opera, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 22, title: "Light Bringer", author: "Brown, P.", series: "The Red Rising Saga", genre: "Science Fiction, Space Opera, M/F", grRating: 4.8, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, War, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 23, title: "Red God", author: "Brown, P.", series: "The Red Rising Saga", genre: "Science Fiction, Dystopia, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Grief, Oppression.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 24, title: "Spark of the EverFlame", author: "Cole, P.", series: "The Kindred's Curse", genre: "Epic Romantasy, New Adult Fantasy, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Assault, Suicide.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 25, title: "Glow of the Everflame", author: "Cole, P.", series: "The Kindred's Curse", genre: "Epic Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️. TW: Death, Violence, Gore, Profanity, Alcohol.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 26, title: "Heat of the Everflame", author: "Cole, P.", series: "The Kindred's Curse", genre: "Fantasy Romance, Epic Fantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Sex, Violence, Gore, Death, Drugs.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 27, title: "Burn of the Everflame", author: "Cole, P.", series: "The Kindred's Curse", genre: "Epic Fantasy, Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Blood, Death, War, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 28, title: "Whispers Beneath Crowstone", author: "Cooper, N.", series: "The Legacy of the lost witch", genre: "Dark Fantasy, Romantasy, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Betrayal, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 29, title: "Carl's Doomsday Scenario", author: "Dinniman, M.", series: "Dungeon Crawler Carl", genre: "LitRPG, Science Fantasy, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Animals, Fetishism.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 30, title: "The Dungeons Anarchist's Cook Book", author: "Dinniman, M.", series: "Dungeon Crawler Carl", genre: "LitRPG, Science Fiction, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Explosions, Cruelty.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 31, title: "The Fate of the Feral Gods", author: "Dinniman, M.", series: "Dungeon Crawler Carl", genre: "LitRPG, Action Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 32, title: "The Butchers Masquerade", author: "Dinniman, M.", series: "Dungeon Crawler Carl", genre: "LitRPG, Science Fantasy, M/F", grRating: 4.7, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Slavery, Drugs.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 33, title: "The Eye of the Bedlam Bride", author: "Dinniman, M.", series: "Dungeon Crawler Carl", genre: "LitRPG, Science Fantasy, M/F", grRating: 4.7, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Slavery, Animals.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 34, title: "City of Gods & Monsters", author: "Edwards K.", series: "House of Devils", genre: "Urban Romantasy, New Adult Fantasy, M/F", grRating: 3.8, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Gore, Drugs, Death, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 35, title: "City of Souls & Sinners", author: "Edwards K.", series: "House of Devils", genre: "Urban Romantasy, New Adult Fantasy, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Gore, Drugs, Death, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 36, title: "City of Lies & Legends", author: "Edwards K.", series: "House of Devils", genre: "Urban Fantasy, Romantasy, M/F", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Blood, Trauma, Addiction.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 37, title: "City of Smoke & Brimstone", author: "Edwards K.", series: "House of Devils", genre: "Dark Fantasy Romance, Urban Fantasy, M/F", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️. TW: War, Blood, Death, Suicide, Injury.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 38, title: "Silver Elite", author: "Francis, D.", series: "Silver Elite", genre: "Dystopian Romance, Romantasy, M/F", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Assault, Blood, Slavery.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 39, title: "Broken Dove", author: "Francis, D.", series: "Silver Elite", genre: "Dystopian Romance, Fantasy Romance, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Abuse, Grooming, Murder, Kidnapping, Violence.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 40, title: "Spectacular", author: "Garber S.", series: "Caraval", genre: "Young Adult Fantasy, Romantasy, M/F", grRating: 3.6, notes: "Smut: 📖 Clean. TW: Fantasy, Deception, Kidnapping, Heartbreak, Magic.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 41, title: "The Knave and the Moon", author: "Gillig, R.", series: "The Stonewater Kingdodm", genre: "Gothic Fantasy, Romantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Drugs, Captivity.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 42, title: "The Royal Curse", author: "Grayson, E.", series: "The Twilight Mages", genre: "Fantasy Romance, M/M", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Assault, Kidnapping, Violence, Non-consent, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 43, title: "The Captive Curse", author: "Grayson, E.", series: "The Twilight Mages", genre: "Fantasy Romance, M/M", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Kidnapping, Violence, Abuse, Injury, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 44, title: "The Traitors Curse", author: "Grayson, E.", series: "The Twilight Mages", genre: "Fantasy Romance, M/M", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Death, Murder, Dub-con, Magic, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 45, title: "The Fox and the Dryad", author: "Graves, K.", series: "Rowan Blood", genre: "Fantasy Romantasy, Fae Fantasy, M/M", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 46, title: "Prince of Sorrows", author: "Graves, K.", series: "Rowan Blood", genre: "Fantasy Romance, Dark Fantasy, M/M", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️. TW: Abuse, Enslavement, Death, Violence, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 47, title: "Lord of Silver Ashes", author: "Graves, K.", series: "Rowan Blood", genre: "Fantasy Romance, Fae Romantasy, M/M", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Torture, Captivity.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 48, title: "Herald of the Witches Mark", author: "Graves, K.", series: "Rowan Blood", genre: "Fantasy Romance, Fae Romance, M/M", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Kidnapping, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 49, title: "Vessel of Woven Night", author: "Graves, K.", series: "Rowan Blood", genre: "Fantasy Romance, Queer Romantasy, M/M", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 50, title: "Malice", author: "Gwynne, J.", series: "The Faithful and the Fallen", genre: "Epic Fantasy", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Bullying, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 51, title: "Valor", author: "Gwynne, J.", series: "The Faithful and the Fallen", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Abortion, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 52, title: "Ruin", author: "Gwynne, J.", series: "The Faithful and the Fallen", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Sex, Violence, Gore, Torture, Murder.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 53, title: "Wrath", author: "Gwynne, J.", series: "The Faithful and the Fallen", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Abuse, Trauma, Drugs, Death, Self-harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 54, title: "A Time of Dread", author: "Gwynne, J.", series: "Blood & Bone", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Decapitation, Warfare.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 55, title: "A Time of Blood", author: "Gwynne, J.", series: "Blood & Bone", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Abuse, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 56, title: "A Time of Courage", author: "Gwynne, J.", series: "Blood & Bone", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, War, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 57, title: "Shadow of the Gods", author: "Gwynne, J.", series: "Bloodsworn", genre: "Epic Fantasy, Norse Mythology, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Slavery, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 58, title: "Hunger of the Gods", author: "Gwynne, J.", series: "Bloodsworn", genre: "Epic Fantasy, Norse Mythology, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Gore, Violence, Slavery, Death, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 59, title: "Fury of the Gods", author: "Gwynne, J.", series: "Bloodsworn", genre: "Epic Fantasy, Norse-inspired Fantasy, M/F", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Slavery.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 60, title: "Reforged", author: "Haddon, S.", series: "The World of Reforged", genre: "Fantasy Romance, High Fantasy, M/M", grRating: 3.5, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Murder, War, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 61, title: "Reborn", author: "Haddon, S.", series: "The World of Reforged", genre: "Fantasy Romance, High Fantasy, M/M", grRating: 3.9, notes: "Smut: 🌶️🌶️. TW: Violence, Death, Gore, War, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 62, title: "Reclaimed", author: "Haddon, S.", series: "The World of Reforged", genre: "Fantasy Romance, Queer Romantasy, M/M", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Violence, Death, Transphobia, Anxiety, Betrayal.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 63, title: "Quicksilver Bonus Scenes: Kingfisher's POV", author: "Hart, C.", series: "Fae and Alchemy", genre: "Fantasy Romantasy, M/F", grRating: 3.9, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Grief, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 64, title: "Fae & Alchemy 3", author: "Hart, C.", series: "Fae and Alchemy", genre: "Fantasy Romantasy, M/F", grRating: 4.7, notes: "Smut: 🌶️🌶️🌶️. TW: War, Blood, Death, Sex, Suicide.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 65, title: "The Shadow of What was Lost", author: "Islington, J.", series: "The Licanius Trilogy", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 66, title: "A Echo of Things to Come", author: "Islington, J.", series: "The Licanius Trilogy", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 67, title: "The Light of all That Falls", author: "Islington, J.", series: "The Licanius Trilogy", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Trauma, Betrayal.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 68, title: "The Justice of one", author: "Islington, J.", series: "The Heirachy", genre: "Epic Fantasy, Cyberpunk, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Assassination, Corruption.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 69, title: "The Tempest Blade", author: "Jensen, D. L.", series: "The Bridge Kingdom", genre: "Fantasy Romance, Epic Fantasy, M/F", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Betrayal, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 70, title: "The God Killer", author: "Kaner, H.", series: "The fallen gods", genre: "Epic Fantasy, Mythology, M/F", grRating: 3.9, notes: "Smut: 🌶️. TW: Violence, Death, Blood, Fire, Bullying.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 71, title: "Sun Bringer", author: "Kaner, H.", series: "The fallen gods", genre: "Epic Fantasy, Mythology, M/F", grRating: 3.9, notes: "Smut: 📖 Clean. TW: War, Death, Violence, Torture, Self-harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 72, title: "Faith breaker", author: "Kaner, H.", series: "The fallen gods", genre: "Epic Fantasy, Dark Fantasy, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: War, Death, Violence, Betrayal, Animals.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 73, title: "Gold", author: "Kennedy, R.", series: "Plated Prisoner", genre: "Dark Fantasy Romance, Romantasy, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Assault, Imprisonment, Abuse, Violence, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 74, title: "Goldfinch", author: "Kennedy, R.", series: "Plated Prisoner", genre: "Dark Fantasy Romantasy, M/F", grRating: 4.0, notes: "Smut: 📖 Clean. TW: Grief, Addiction, Abuse, Violence, Suicide.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 75, title: "Hunt the Villain", author: "Kent, R.", series: "Villans", genre: "Dark Romance, Dark MM Mafia Romance, M/M", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Abuse, Homophobia, Death, Violence, Shootings.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 76, title: "Crave the Villain", author: "Kent, R.", series: "Villans", genre: "Dark Romance, M/M Romance, M/M", grRating: 3.5, notes: "Smut: 🌶️🌶️🌶️🌶️. Specific trigger warnings for Crave the Villain by Rina Kent have not been released yet, as the book is currently unreleased (scheduled for 2027) and details are listed as TBA in official sources.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 77, title: "God of Wrath", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, New Adult Romance, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Non-con, Primal-play, Assault, Dissociation, Violence.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 78, title: "God of Pain", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, New Adult, M/F", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Kidnapping, Violence, Death, Trauma, BDSM.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 79, title: "God of Ruin", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, New Adult, M/F", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Mutism, Trauma, Revenge, Obsession, Sexual-Content.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 80, title: "God of War", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, New Adult Romance, M/F", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Gore, Death, Sex, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 81, title: "God of Fury", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, Contemporary Romance, M/M", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Abuse, Trauma, Violence, Homophobia, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 82, title: "God of Malace", author: "Kent, R.", series: "Legacy of the gods", genre: "Dark Romance, New Adult, M/F", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Assault, Violence, Stalking, Murder, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 83, title: "Trmpting Venom", author: "Kent, R.", series: "Vipers", genre: "Dark Romance, Sports Romance, M/M", grRating: 3.8, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Abuse, Homophobia, Misogyny.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 84, title: "Beautiful Venom", author: "Kent, R.", series: "Vipers", genre: "Dark Sports Romance, New Adult Romance, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Violence, Death, Trauma, Kidnapping, Drugs.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 85, title: "Sweet Venom", author: "Kent, R.", series: "Vipers", genre: "Dark Romance, Contemporary Romance, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Violence, Murder, Stalking, Abuse, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 86, title: "Dumbledore: An Unofficial Exploration", author: "Khaytman, I.", series: "The Ultimate Wizarding World Character Creation", genre: "Literary Criticism, Non-Fiction", grRating: 3.9, notes: "TW: Death, War, Grief, Betrayal, Trauma.", format: "Non-Fiction", dateAdded: new Date().toISOString() },
+  { id: 87, title: "Snape: An Unofficial Exploration", author: "Khaytman, I.", series: "The Ultimate Wizarding World Character Creation", genre: "Literary Criticism, Young Adult, N/A", grRating: 4.2, notes: "TW: Abuse, Bullying, Death, Trauma, Violence.", format: "Non-Fiction", dateAdded: new Date().toISOString() },
+  { id: 88, title: "Malfoy: An Unofficial Exploration", author: "Khaytman, I.", series: "The Ultimate Wizarding World Character Creation", genre: "Juvenile Fiction, Performing Arts", grRating: 4.0, notes: "Smut: 📖 Clean. TW: Safe.", format: "Non-Fiction", dateAdded: new Date().toISOString() },
+  { id: 89, title: "Wolfsong", author: "Klune, T. J.", series: "The Green Creek", genre: "Paranormal Romance, Fantasy Romance, M/M", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Assault.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 90, title: "Ravensong", author: "Klune, T. J.", series: "The Green Creek", genre: "Paranormal Romance, Urban Fantasy, M/M", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️. TW: Abuse, Death, Violence, Torture, Amputation.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 91, title: "Heartsong", author: "Klune, T. J.", series: "The Green Creek", genre: "Fantasy Romance, Paranormal Romance, M/M", grRating: 4.5, notes: "Smut: 🌶️. TW: Blood, Murder, Abuse, Kidnapping, Gaslighting.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 92, title: "Brothersong", author: "Klune, T. J.", series: "The Green Creek", genre: "Paranormal Romance, Fantasy, M/M", grRating: 4.5, notes: "Smut: 🌶️. TW: Death, Violence, Abuse, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 93, title: "Empire of the Vampire", author: "Kristoff, J.", series: "The Empire of the Vampire", genre: "Dark Fantasy, Epic Fantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Gore, Death, Sex, Assault.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 94, title: "Empire of the Damned", author: "Kristoff, J.", series: "The Empire of the Vampire", genre: "Dark Fantasy, Horror Fantasy, M/F", grRating: 4.6, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Gore, Sex, Abuse, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 95, title: "Empire of the Dawn", author: "Kristoff, J.", series: "The Empire of the Vampire", genre: "Dark Fantasy, Vampire Fantasy, M/F", grRating: 4.6, notes: "Smut: 🌶️🌶️🌶️.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 96, title: "The Poppy War", author: "Kuang, R. F.", series: "Poppy War", genre: "Grimdark Fantasy, Military Fantasy, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Violence, Genocide, Gore, Assault, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 97, title: "The dragon republic", author: "Kuang, R. F.", series: "Poppy War", genre: "Epic Fantasy, Grimdark, M/F", grRating: 4.2, notes: "Smut: 📖 Clean. TW: War, Death, Addiction, Self-harm, Assault.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 98, title: "The Burning God", author: "Kuang, R. F.", series: "Poppy War", genre: "Military Fantasy, Grimdark Fantasy, N/A", grRating: 4.4, notes: "Smut: 📖 Clean. TW: War, Death, Violence, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 99, title: "A Court of Mist and Fury", author: "Maas, S. J.", series: "A Court of Thorns and Roses", genre: "Young Adult Fantasy, Romantasy, M/F", grRating: 4.6, notes: "Smut: 🌶️🌶️🌶️. TW: Trauma, Abuse, Violence, Sex, Blood.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 100, title: "A Court of Wings and Ruin", author: "Maas, S. J.", series: "A Court of Thorns and Roses", genre: "New Adult Fantasy, Romantasy, M/F", grRating: 4.5, notes: "Smut: 🌶️🌶️. TW: War, Death, Gore, Torture, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 101, title: "A Court of Frost and Starlight", author: "Maas, S. J.", series: "A Court of Thorns and Roses", genre: "New Adult Fantasy, Romantasy, M/F", grRating: 3.7, notes: "Smut: 🌶️🌶️🌶️. TW: Alcohol, PTSD, Depression, Sex, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 102, title: "A Court of Silver Flames", author: "Maas, S. J.", series: "A Court of Thorns and Roses", genre: "New Adult Fantasy, Romantasy, M/F", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Assault, Trauma, Death, Sex, Alcoholism.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 103, title: "Blood of Hercules", author: "Mas, J.", series: "Villains of Lore", genre: "Dark Romantasy, Mythology Retelling, M/F", grRating: 3.9, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Abuse, Violence, Death, Trauma, Marriage.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 104, title: "Bonds of Hercules", author: "Mas, J.", series: "Villains of Lore", genre: "Dark Romantasy, Fantasy Romance, M/F/M", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 105, title: "A Forbidden Alchemy", author: "McEwan, S.", series: "The Artisan Trilogy", genre: "Adult Romantasy, Fantasy Romance, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Addiction, Death, Grief, Abandonment, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 106, title: "A Forsaken Prophecy", author: "McEwan, S.", series: "The Artisan Trilogy", genre: "Romantasy, Fantasy Romance, M/F", grRating: 4.7, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Betrayal, Imprisonment.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 107, title: "A Monstrous Christmas in Camp", author: "Mayne, L.", series: "Monstrous", genre: "Fantasy Romance, Post-Apocalyptic, M/M", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Death, Grief, Depression, Violence, Blood.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 108, title: "Soul Eater", author: "Mayne, L.", series: "Monstrous", genre: "Fantasy Romance, Dystopian, M/M", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 109, title: "Edin", author: "Mayne, L.", series: "Monstrous", genre: "Monster Romance, Dystopian, M/M", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 110, title: "The Rycke", author: "Mayne, L.", series: "Monstrous", genre: "Post-Apocalyptic Fantasy, Paranormal Romance, M/M", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Torture, Violence, PTSD, Captivity, Injury.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 111, title: "Wyn", author: "Mayne, L.", series: "Monstrous", genre: "Paranormal Romance, Post-Apocalyptic Fantasy, M/M", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Blood, Torture, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 112, title: "Gloam", author: "Mayne, L.", series: "Monstrous", genre: "Dark Fantasy, Romance, M/M", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Torture, Slavery, Gore, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 113, title: "Moth", author: "Mayne, L.", series: "Monstrous", genre: "Fantasy Romance, Post-Apocalyptic, M/M", grRating: 4.6, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Abuse, Torture, Violence, Cannibalism, Cults.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 114, title: "Seraph", author: "Mayne, L.", series: "Monstrous", genre: "Urban Fantasy, Fantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Experimentation, Torture, Captivity, Death, Violence.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 115, title: "Lor", author: "Mayne, L.", series: "Monstrous", genre: "Monster Romance, Post-Apocalyptic, M/M", grRating: 3.8, notes: "Smut: 📖 Clean. TW: Death, Gore, Torture, Murder, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 116, title: "Silk &steal", author: "Nash, A.", series: "Silk and Steel", genre: "Dark Fantasy, M/M Romance, M/M", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Assault, Violence, Torture, Imprisonment, Gore.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 117, title: "Iron & Fire", author: "Nash, A.", series: "Silk and Steel", genre: "Dark Fantasy, MM Romance, M/M", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Abuse, Rape, Slavery, Torture, Violence.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 118, title: "Blood & Ice", author: "Nash, A.", series: "Silk and Steel", genre: "Dark Fantasy, M/M Romance, M/M", grRating: 4.2, notes: "Smut: 📖 Clean. TW: Cold, Blood, Violence, Death, Self-harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 119, title: "Dare to Hold", author: "Nicole, A.", series: "Dare to Love", genre: "Christian Romance, Romantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Trauma, Temptation, Faith, Redemption.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 120, title: "The Throne of Broken Gods", author: "Nicole, A.", series: "Gods and Monsters", genre: "Dark Fantasy, Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Grief, Violence, Death, Suicide, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 121, title: "The Dawn of the Cursed Queen", author: "Nicole, A.", series: "Gods and Monsters", genre: "Dark Fantasy Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Assault, Violence, Gore, Death, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 122, title: "The Wrath of the Fallen", author: "Nicole, A.", series: "Gods and Monsters", genre: "Dark Romantasy, Fantasy Romance, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Murder, Blood, Rape, War.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 123, title: "Death Stranding 1", author: "Nojima, H.", series: "The Death Stranding Novelisation", genre: "Science Fiction, Action-Adventure, M/F", grRating: 3.6, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Infanticide, Horror.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 124, title: "Death Stranding 2", author: "Nojima, H.", series: "The Death Stranding Novelisation", genre: "Action-Adventure, Strand, M/F", grRating: 4.0, notes: "Smut: 📖 Clean. TW: Violence, Gore, Infanticide, Death, Profanity.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 125, title: "The games gods play", author: "Owen, A.", series: "The crucible", genre: "Fantasy Romance, Mythology, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Fire, Bullying.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 126, title: "Things Gods Break", author: "Owen, A.", series: "The crucible", genre: "Fantasy Romance, Mythology, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Torture, Trauma, Drugs.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 127, title: "Wrath Gods Reap", author: "Owen, A.", series: "The crucible", genre: "New Adult Romantasy, Greek Mythology, M/F", grRating: 4.9, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Gore, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 128, title: "Captive Prince", author: "Pacat, C. S.", series: "The Captive Prince", genre: "Fantasy Romance, High Fantasy, M/M", grRating: 3.8, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Slavery, Assault, Violence, Torture, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 129, title: "Prince's Gambit", author: "Pacat, C. S.", series: "The Captive Prince", genre: "Fantasy Romance, LGBTQ+, M/M", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Gore, Slavery, Non-consensual.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 130, title: "Kings Rising", author: "Pacat, C. S.", series: "The Captive Prince", genre: "Fantasy Romance, High Fantasy, M/M", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Sex, Slavery, Assault, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 131, title: "The summer palace (Short Stories)", author: "Pacat, C. S.", series: "The Captive Prince", genre: "Fantasy Romance, LGBTQ+, M/M", grRating: 4.4, notes: "Smut: 🌶️🌶️. TW: Violence, Death, Blood, Sex, Alcohol.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 132, title: "The Wolf Queen", author: "Palphreyman, L.", series: "The Wolf King 3", genre: "Fantasy Romance, Paranormal Romance, M/F", grRating: 3.9, notes: "Smut: 📖 Clean. TW: Violence, Death, Gore, Sexuality, Assault.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 133, title: "To Bleed a Crystal Bloom", author: "Parker, S. A.", series: "Crystal Bloom", genre: "Dark Fantasy Romance, M/F", grRating: 3.7, notes: "Smut: 🌶️🌶️🌶️. TW: Blood, Gore, Drugs, PTSD, Abuse, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 134, title: "To Snap a Silver Stem", author: "Parker, S. A.", series: "Crystal Bloom", genre: "Dark Fantasy Romantasy, M/F", grRating: 3.8, notes: "Smut: 📖 Clean. TW: Blood, Gore, Sex, Death, Self-harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 135, title: "To Flame a Wild Flower", author: "Parker, S. A.", series: "Crystal Bloom", genre: "Dark Fantasy Romance, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Violence, Blood, Gore, Death, Trauma, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 136, title: "The ballad of falling dragons", author: "Parker, S. A.", series: "Moonfall", genre: "Epic Fantasy, Romantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Gore, Death, Betrayal, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 137, title: "The Awakening", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Dark Bully Romantasy, Paranormal Romance, M/F", grRating: 3.8, notes: "Smut: 🌶️🌶️🌶️. TW: Bullying, Non-consent, Abuse, Violence, Blood.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 138, title: "Ruthless Fae", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Urban Fantasy, Paranormal Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Bullying, Abuse, Violence, Assault, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 139, title: "The Reckoning", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Historical Fiction, Legal Thriller, M/F", grRating: 3.8, notes: "Smut: 📖 Clean. TW: Violence, Death, Vampires, Blood, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 140, title: "Origins of an Academy bully", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Young Adult Fantasy, Romantasy, M/F", grRating: 3.7, notes: "Smut: 📖 Clean. TW: Bullying, Abuse, Bloodplay, Violence, Alcohol.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 141, title: "The Awakening as told by the boys", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Dark Fantasy, Romantasy, M/M", grRating: 4.0, notes: "Smut: 📖 Clean. TW: Bullying, Assault, Non-consent, Abuse, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 142, title: "Shadow Princess", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Fantasy Romance, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Assault, Gore, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 143, title: "Cursed Fates", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Young Adult Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 144, title: "The Big ASS Party", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Urban Romantasy, Paranormal Romance, M/F", grRating: 3.8, notes: "Smut: 🌶️🌶️. TW: Sex, Alcohol, Magic, Bullying, Grief.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 145, title: "Fated Throne", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Urban Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Bullying, Violence, Death, Abuse, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 146, title: "Sorrow and Starlight", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Fantasy Romantasy, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Abuse, Bullying, Sex.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 147, title: "Heartless Sky", author: "Peckham, C.", series: "The Zodiac Acadamy", genre: "Dark Fantasy, Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Sex, Gore, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 148, title: "Never Keep", author: "Peckham, C., Valenti, S.", series: "The Zodiac", genre: "Dark Fantasy Romantasy, M/F", grRating: 4.0, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Blood, Bullying, Death, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 149, title: "Echo Fort", author: "Peckham, C., Valenti, S.", series: "The Zodiac", genre: "Fantasy Romantasy, M/F", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Gore, Death, Abuse, Trauma.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 150, title: "Cindervale", author: "Peckham, C., Valenti, S.", series: "The Zodiac", genre: "Adult Romantasy, Paranormal Romance, M/F", grRating: 4.7, notes: "Smut: 🌶️🌶️🌶️🌶️🌶️. TW: Violence, Death, Blood, Abuse, Kidnapping.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 151, title: "Harry Potter and the Philosopher's Stone", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, High Fantasy, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Abuse, Neglect, Bullying, Death, Violence.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 152, title: "Harry Potter and the Chamber of Secrets", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, Mystery, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Abuse, Snakes, Spiders, Death, Blood.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 153, title: "Harry Potter and the Prisoner of Azkaban", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Death, Abuse, Kidnapping, Snakes, Spiders.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 154, title: "Harry Potter and the Goblet of Fire", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Torture, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 155, title: "Harry Potter and the Order of the Phoenix", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, M/F", grRating: 4.5, notes: "Smut: 📖 Clean. TW: Violence, Death, Murder, Abuse, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 156, title: "Harry Potter and the Half-Blood Prince", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Death, Blood, Violence, Alcohol, Self-harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 157, title: "Harry Potter and the Deathly Hallows", author: "Rowling, J. K.", series: "Harry Potter", genre: "Young Adult Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Abuse, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 158, title: "The Way of Kings", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.7, notes: "Smut: 📖 Clean. TW: Violence, War, Slavery, Depression, Suicide.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 159, title: "Words of Radience", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.8, notes: "Smut: 📖 Clean. TW: Violence, Gore, Abuse, Trauma, Suicide.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 160, title: "Edgedancer", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.1, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Trauma, Neglect.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 161, title: "Oathbringer", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Death, Blood, Trauma, Addiction.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 162, title: "DawnShard", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.3, notes: "Smut: 📖 Clean. TW: Violence, Blood, Death, Paraplegia, Racism.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 163, title: "Rythm of War", author: "Sanderson B.", series: "The Stormlight Archive", genre: "Epic Fantasy, High Fantasy, M/F", grRating: 4.6, notes: "Smut: 📖 Clean. TW: Violence, Trauma, Self-harm, Slavery, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 164, title: "Iron & Embers", author: "Scheuerer, H.", series: "The Legends of Thezmarr", genre: "Adult Fantasy Romantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, PTSD.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 165, title: "Thorns & Fire", author: "Scheuerer, H.", series: "The Legends of Thezmarr", genre: "Adult Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, PTSD.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 166, title: "Silvre & Smoke", author: "Scheuerer, H.", series: "The Legends of Thezmarr", genre: "Romantasy, M/F", grRating: 4.4, notes: "Smut: 📖 Clean. TW: Violence, Blood, Alchemy, Alcohol, Infidelity.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 167, title: "Phantasma", author: "Smith, K.", series: "Wicked Games", genre: "Gothic Romantasy, Paranormal Romance, M/F", grRating: 4.1, notes: "Smut: 🌶️🌶️🌶️🌶️. TW: Gore, Death, Violence, OCD, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 168, title: "Enchantra", author: "Smith, K.", series: "Wicked Games", genre: "Gothic Fantasy, Romantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Sexual-Content, Self-Harm.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 169, title: "Beneath", author: "Sullivan, A.", series: "Conform", genre: "Dystopian Romance, Romantasy, M/F", grRating: 4.4, notes: "Smut: 📖 clean. TW: Violence, Blood, Trauma, War, Death.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 170, title: "Core", author: "Sullivan, A.", series: "Conform", genre: "Dystopian Romance, M/F", grRating: 3.5, notes: "Smut: 📖 clean. TW: Safe.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 171, title: "Road of Bones", author: "Winters, D.", series: "The Ashen Series", genre: "Romantic Fantasy, Viking Fantasy, M/F", grRating: 4.2, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Blood, Addiction, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 172, title: "Kingdom of Claw", author: "Winters, D.", series: "The Ashen Series", genre: "Fantasy Romance, Norse Mythology, M/F", grRating: 4.4, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Gore, Death, Slavery, Torture.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 173, title: "Dawn of the North", author: "Winters, D.", series: "The Ashen Series", genre: "Fantasy Romantasy, Viking Fantasy, M/F", grRating: 4.5, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Death, Gore, Torture, Abuse.", format: "Fiction", dateAdded: new Date().toISOString() },
+  { id: 174, title: "The twisted Throne", author: "Jensen, D. L.", series: "The Bridge Kingdom", genre: "Fantasy Romantasy, Epic Fantasy, M/F", grRating: 4.3, notes: "Smut: 🌶️🌶️🌶️. TW: Violence, Torture, Assault, Death, Slavery.", format: "Fiction", dateAdded: new Date().toISOString() },
 ];
 
 let prospects = JSON.parse(localStorage.getItem('barbies_prospects') || 'null');
 if (!prospects) {
-  prospects = PROSPECTS_RAW.map(r => ({
-    id: r[0],
-    title: r[1],
-    author: r[2],
-    series: r[3],
-    genre: "",
-    dateAdded: new Date().toISOString()
-  }));
+  prospects = [...PROSPECTS_RAW];
 }
 
 let activeProspectGenres = [];
@@ -4406,20 +4472,20 @@ function renderProspects() {
   document.getElementById('prospectList').innerHTML = list.map(p => {
     const cleanTitle = p.title.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
     const cleanAuthor = p.author.replace(/['"\u2018\u2019\u201C\u201D]/g, "");
-    const initials = getTitleInitials(cleanTitle);
-    const visualGenreLabel = normalizeGenre(p.genre?.split(',')[0] || 'Other');
 
     return `
-      <div class="book-card status-TBR" onclick="openInfoCardOverlay(${p.id}, true)">
-        <div style="width:36px; height:52px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:10px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${initials}</div>
-        <div class="book-info">
-           <div class="book-title">${cleanTitle}</div>
-           <div class="book-author">${cleanAuthor}</div>
-           <div class="book-meta" style="font-size: 9px; color: var(--gold); margin-bottom: 4px;">${p.series || ''}</div>
-           <div class="book-meta">
-             <span class="badge badge-status-TBR">Wishlist</span>
-             <span class="badge badge-genre">${visualGenreLabel}</span>
-           </div>
+      <div class="book-card-wrapper" id="prospect-card-${p.id}">
+        <div class="book-card status-TBR" onclick="openInfoCardOverlay(${p.id}, true)">
+          <div style="width:48px; height:72px; display:flex; align-items:center; justify-content:center; background:#000; border:1px dashed var(--border-iron); font-size:11px; color:var(--text-muted); font-weight:700; flex-shrink:0;">${getTitleInitials(cleanTitle)}</div>
+          <div class="book-info">
+             <div class="book-title">${cleanTitle}</div>
+             ${p.series ? `<div style="color:var(--gold); font-size:9px; margin-bottom:1px; opacity:0.8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.series}</div>` : ''}
+             <div class="book-author">${cleanAuthor}</div>
+             <div class="book-meta">
+               <span class="badge badge-status-TBR">Wishlist</span>
+               <span class="badge badge-genre">GR ${p.grRating || '–'}</span>
+             </div>
+          </div>
         </div>
       </div>`;
   }).join('');
@@ -4797,29 +4863,30 @@ async function triggerTradingCardEncounterModal(isFromSpin = false) {
   document.getElementById('cardBookGenre').textContent = normalizeGenre(paralysisWinningBookPointer.genre);
   document.getElementById('cardBookHp').textContent = paralysisWinningBookPointer.pages;
   document.getElementById('cardBookPower').textContent = paralysisWinningBookPointer.grRating.toFixed(2);
-  document.getElementById('cardBookLore').textContent = BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title] || "A legendary chronicle waiting to be uncovered within the deep stacks.";
   
   const systemNote = `SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
   const bookQuotes = COMPLETED_BOOK_QUOTES.filter(q => q.normalizedSource === normTitle);
   let loreHtml = "";
   if (bookQuotes.length > 0) {
-    loreHtml = bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
-    // Randomly select one of the available quotes
-    const randomQuote = bookQuotes[Math.floor(Math.random() * bookQuotes.length)];
-    loreHtml = `<p class="book-quote">"${randomQuote.text}"</p>`;
-  } else if (BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]) {
-    loreHtml = `<p>${BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]}</p>`;
-  } else {
-    loreHtml = `<p>A legendary chronicle waiting to be uncovered within the deep stacks.</p>`;
+    loreHtml += bookQuotes.map(q => `<p class="book-quote">"${q.text}"</p>`).join('');
+  }
+  if (BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]) {
+    if (loreHtml) loreHtml += '<hr style="border:0; border-top:1px dashed var(--border-iron); margin:8px 0;">';
+    loreHtml += `<p>${BOOK_BLURBS_REGISTRY[paralysisWinningBookPointer.title]}</p>`;
+  }
+  if (!loreHtml) {
     loreHtml = `<p><i>SYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.</i></p>`;
   }
   document.getElementById('cardBookLore').innerHTML = loreHtml;
                
   const backNotes = document.getElementById('cardBookNotesBack');
   if (backNotes) {
-    const userNotes = paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered.";
-    backNotes.textContent = `${userNotes}\n\n${systemNote}`;
-    backNotes.textContent = `${userNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
+    backNotes.textContent = `${paralysisWinningBookPointer.notes || "A legendary chronicle waiting to be uncovered."}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
+    const displayNotes = paralysisWinningBookPointer.notes 
+      ? paralysisWinningBookPointer.notes.replace(/Smut:\s*([🌶️]+|📖\s*Clean)[. ]*/gi, "").trim() 
+      : "A legendary chronicle waiting to be uncovered.";
+      
+    backNotes.textContent = `${displayNotes}\n\nSYSTEM NOTE: "${cleanTitle}" indexed cleanly with assigned profiles: ${paralysisWinningBookPointer.genre}.`;
   }
 
   const inner = document.getElementById('casinoCardInner');
